@@ -1,0 +1,13 @@
+<?php
+$this->widget('application.extensions.jqAjaxSearch.AjaxSearch', 
+    array('action'=>Yii::app()->createUrl('referenciacion/asignacionServicio/buscaAdolGen'), 
+		'target'=>'resultado', 
+		'minChar'=>2,
+		'numDocAdol'=>$numDocAdol,
+		'url'=>Yii::app()->createUrl('referenciacion/consultasSetvicio/muestraReporteExcel'),
+		'datosAdol'=>$datosAdol,
+		'edad'=>$edad,
+		'telefonoAdol'=>$telefonoAdol
+	)
+);
+?>
