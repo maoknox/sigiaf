@@ -55,7 +55,7 @@ return array(
 			'transportOptions'=>array(
 				'host'=>'smtp.mail.yahoo.com',
 				'username'=>'hingato',
-				'password'=>'$&E m35e',
+				'password'=>'Titan98&',
 				'port'=>'587',
 				//'encryption'=>'openssl',
 			),
@@ -81,7 +81,7 @@ return array(
 		'urlManager'=>array(
 			'urlFormat'=>'path',
 			'showScriptName'=>false,
-			'urlSuffix'=>'.camar',
+			'urlSuffix'=>'.cforjar',
 			'rules'=>array(
 				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
 				'<controller:\w+>/<action:\w+>/<id:\d+>/*'=>'<controller>/<action>',
@@ -96,7 +96,7 @@ return array(
 		
 		'db'=>array(
  	       'tablePrefix'=>'',
- 	       'connectionString' => 'pgsql:host=localhost;port=5432;dbname=cforjarv2_4',
+ 	       'connectionString' => 'pgsql:host=localhost;port=5432;dbname=cforjarv2_3',
  	       'username'=>'postgres',
  	       'password'=>'root',
  	       'charset'=>'UTF8',

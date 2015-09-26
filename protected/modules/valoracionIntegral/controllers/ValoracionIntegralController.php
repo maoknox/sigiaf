@@ -20,7 +20,7 @@ class ValoracionIntegralController extends Controller{
 		return array(//ActionVerifEstadoFilter
 			'enforcelogin',
 			array('application.filters.ActionLogFilter - buscaAdolGen','modulo'=>$this->module->id,'controlador'=>$this->id,'parametros'=>Yii::app()->input->post()),
-			array('application.filters.ActionVerifEstadoFilter + valoracionPsicolForm conceptoIntegral valoracionTrSocForm valoracionTOForm valoracionEnfForm valoracionPsiqForm valoracionNutrForm','num_doc'=>Yii::app()->getSession()->get('numDocAdol'))
+			array('application.filters.ActionVerifEstadoFilter + valoracionPsicolForm conceptoIntegral valoracionTrSocForm valoracionTOForm valoracionEnfForm valoracionPsiqForm valoracionNutrForm perfilOcupacionalForm','num_doc'=>Yii::app()->getSession()->get('numDocAdol'))
 		);
 	}
 	
@@ -3200,7 +3200,7 @@ class ValoracionIntegralController extends Controller{
 	//consulta valoraciones
 	
 	public function actionConsultaValNutr(){
-			$controlAcceso=new ControlAcceso();
+		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="consultaValNutr";
 		$permiso=$controlAcceso->controlAccesoAcciones();
 		if($permiso["acceso_rolmenu"]==1){
@@ -3347,7 +3347,96 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+//*********************************************************** PERFIL OCUPACIONAL ***************************************************************//
+
+public function actionPerfilOcupacionalForm(){
+	$controlAcceso=new ControlAcceso();
+	$controlAcceso->accion="perfilOcupacionalForm";
+	$permiso=$controlAcceso->controlAccesoAcciones();
+	if($permiso["acceso_rolmenu"]==1){
+		$datosInput=Yii::app()->input->post();
+		if(isset($datosInput["numDocAdol"]) && !empty($datosInput["numDocAdol"])){
+			$numDocAdol=$datosInput["numDocAdol"];
+			Yii::app()->getSession()->add('numDocAdol',$numDocAdol);
+		}
+		else{
+			$numDocAdol=Yii::app()->getSession()->get('numDocAdol');
+		}
+		if(!empty($numDocAdol)){
+			$modeloAspectoValTO=new AspectoValteo();
+			$modeloFactorVteo=new FactorVteo();
+			$modeloValTO=new ValoracionTeo();
+			$operaciones=new OperacionesGenerales();
+			$consultaGeneral=new ConsultasGenerales();
+			$datosAdol=$consultaGeneral->consultaDatosAdol($numDocAdol);					
+			$edad=$operaciones->hallaEdad($datosAdol["fecha_nacimiento"],date("Y-m-d"));				
 	
+			$modeloValTO->num_doc=$numDocAdol;
+			$valTO=$modeloValTO->consultaIdValTO();
+			$modeloValTO->attributes=$valTO;
+			
+			$aspectosPerfOc=$modeloAspectoValTO->consultaAspectoPerfOc();
+			if(!empty($valTO)){					
+				$modeloValTO->id_valor_teo=$valTO["id_valor_teo"];
+				$modeloAspectoValTO->id_valor_teo=$modeloValTO->id_valor_teo;
+				$consultaAspectoValTO=$modeloAspectoValTO->consultaAspectosValTo();
+				if(empty($consultaAspectoValTO)){
+					$modeloAspectoValTO->creaAspectoValTo();
+					$consultaAspectoValTO=$modeloAspectoValTO->consultaAspectosValTo();
+				}
+			}	
+		}
+		$this->render("_perfilOcupacionalForm",array(
+			'modeloAspectoValTO'=>$modeloAspectoValTO,
+			'modeloValTO'=>$modeloValTO,
+			'numDocAdol'=>$numDocAdol,
+			'datosAdol'=>$datosAdol,					
+			'edad'=>$edad,
+			'valTO'=>$valTO,
+			'aspectosPerfOc'=>$aspectosPerfOc,
+			'modeloFactorVteo'=>$modeloFactorVteo,
+			'consultaAspectoValTO'=>$consultaAspectoValTO
+		));
+	}
+	else{
+		throw new CHttpException(403,'No tiene acceso a esta acción');
+	}
+	
+	
+}
+
+
+	public function actionRegistraAspectoValTo(){
+		$controlAcceso=new ControlAcceso();
+		$controlAcceso->accion="perfilOcupacionalForm";
+		$permiso=$controlAcceso->controlAccesoAcciones();
+		if($permiso["acceso_rolmenu"]==1){			
+			$modeloFactorVteo=new FactorVteo();
+			$datosInput=Yii::app()->input->post();
+			//print_r($datosInput);exit;
+			$modeloFactorVteo->attributes=$datosInput["FactorVteo"];
+			$modeloAspectoValTO=new AspectoValteo();
+			$modeloAspectoValTO->id_aspectovteo=$datosInput["FactorVteo"]["id_aspectovteo"];
+			$modeloAspectoValTO->observacion_aspecto=$datosInput["obsAspectoValTO"];
+			$modeloAspectoValTO->porcentaje_factor=$datosInput["porcentaje"];						
+			$modeloFactorVteo->id_aspectovteo=$datosInput["FactorVteo"]["id_aspectovteo"];
+			
+			$modeloFactorVteo->factorGrado=$datosInput["factorGrado"];
+
+			//print_r($modeloFactorVteo->factorGrado);exit;
+			$modeloFactorVteo->delAspectoFactVto();
+			$resultado=$modeloFactorVteo->creaFactorAspectoVTeo();
+			if($resultado=="exito"){
+				$resultado=$modeloAspectoValTO->actDatosAspectoValTO();
+			}
+			echo CJSON::encode(array("estadoComu"=>"exito","resultado"=>$resultado));		
+		}	
+		else{
+			throw new CHttpException(403,'No tiene acceso a esta acción');
+		}
+	}
+
+
 	// Uncomment the following methods and override them if needed
 	/*
 	public function filters()
