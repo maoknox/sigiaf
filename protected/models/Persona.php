@@ -235,6 +235,23 @@ class Persona extends CActiveRecord
 		return $resFuncionarios;
 		
 	}
+	public function consultaFuncionarioValoracion(){
+		$conect= Yii::app()->db;
+		$sqlConsFuncionarios="select (nombre_personal ||' '||apellidos_personal)as nombres,* from persona as a 
+			left join cforjar_personal as b on b.id_cedula=a.id_cedula 
+			left join centro_forjar as c on b.id_forjar=c.id_forjar 
+			left join usuario as d on d.id_cedula=a.id_cedula
+			where b.id_forjar=:id_forjar and pers_habilitado is true and id_rol=4 or id_rol=5 or id_rol=6 or id_rol=7 or id_rol=9 or id_rol=18";
+		$consFuncionarios=$conect->createCommand($sqlConsFuncionarios);
+		$consFuncionarios->bindParam(":id_forjar",Yii::app()->user->getState('sedeForjar'));
+		$readFuncionarios=$consFuncionarios->query();
+		$resFuncionarios=$readFuncionarios->readAll();
+		$readFuncionarios->close();
+		return $resFuncionarios;
+		
+	}
+
+	
 	public function consultaPersona(){
 		$conect= Yii::app()->db;
 		$sqlConsPersona="select * from persona where id_cedula=:id_cedula";

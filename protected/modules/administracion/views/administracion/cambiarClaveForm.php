@@ -99,7 +99,7 @@
 									//$("#MensajeRef").html("Hay un error en el servidor del Sistema de información. Comuníquese con el área encargada del Sistema de información");
 								}
 								else{
-									jAlert("No se ha creado el registro del adolescente debido al siguiente error \n"+xhr.responseText+" Comuníquese con el ingeniero encargado", "Mensaje");
+									jAlert("Acción no satisfactoria debido al siguiente error: \n"+xhr.responseText+" Comuníquese con el ingeniero encargado", "Mensaje");
 								}	
 							}
 						}'

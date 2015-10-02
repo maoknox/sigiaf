@@ -5,6 +5,10 @@ class ConsultasGenerales extends CFormModel{
 	public $termi;
 	public $termii;
 	public $numDocAdol;
+	public $idCedula;
+	public $fechaInicio;
+	public $fechaFinal;
+	public $idValPsicol;
 	
 	public function consultaTiempoActuacion(){
 		$conect= Yii::app()->db;
@@ -799,6 +803,118 @@ class ConsultasGenerales extends CFormModel{
 		$readAntFam->close();
 		return $resAntFam;		
 	}
+	//consultas de estado de valoraciones
+	
+	public function consultaDatosAdolValoraciones(){
+		$conect= Yii::app()->db;
+		$sqlConsultaAdol="select * from adolescente where num_doc=:numDoc";
+		$queryConsultaAdol=$conect->createCommand($sqlConsultaAdol);
+		$queryConsultaAdol->bindParam(':numDoc',$this->numDocAdol,PDO::PARAM_STR);
+		$readConsultaAdol=$queryConsultaAdol->query();
+		$resConsultaAdol=$readConsultaAdol->read();
+		$readConsultaAdol->close();			
+		return $resConsultaAdol;
+	}
+
+	
+	
+	public function consultaAdolFuncionarioHisPers(){
+		$conect=Yii::app()->db;
+		$sqlConsAdolFunc="select * from hist_personal_adol as a left 
+			join forjar_adol as b on b.num_doc=a.num_doc 
+			where fecha_vinc_forjar >=:fecha_ini and fecha_vinc_forjar <=:fecha_fin and a.id_cedula=:id_cedulai 
+			or fecha_vinc_forjar is null and a.id_cedula=:id_cedulaii order by fecha_vinc_forjar desc";
+		$consAdolFunc=$conect->createCommand($sqlConsAdolFunc);
+		
+		$consAdolFunc->bindParam(":fecha_ini",$this->fechaInicio);
+		$consAdolFunc->bindParam(":fecha_fin",$this->fechaFinal);
+		$consAdolFunc->bindParam(":id_cedulai",$this->idCedula);		
+		$consAdolFunc->bindParam(":id_cedulaii",$this->idCedula);		
+		$readAdolFunc=$consAdolFunc->query();
+		$resAdolFunc=$readAdolFunc->readAll();
+		$readAdolFunc->close();
+		return $resAdolFunc;		
+	}
+	public function consultaAdolFuncionario(){
+		$conect=Yii::app()->db;
+		$sqlConsAdolFunc="select *  from forjar_adol 
+			where fecha_vinc_forjar >=:fecha_ini and fecha_vinc_forjar <=:fecha_fin 
+			or fecha_vinc_forjar is null order by fecha_vinc_forjar desc";
+		$consAdolFunc=$conect->createCommand($sqlConsAdolFunc);
+		$consAdolFunc->bindParam(":fecha_ini",$this->fechaInicio);
+		$consAdolFunc->bindParam(":fecha_fin",$this->fechaFinal);
+		$readAdolFunc=$consAdolFunc->query();
+		$resAdolFunc=$readAdolFunc->readAll();
+		$readAdolFunc->close();
+		return $resAdolFunc;		
+	}
+
+	public function consultaValPsicolReporte(){
+		$conect=Yii::app()->db;
+		$sqlConsValPsicolAdol="select * from valoracion_psicologia
+			where num_doc=:num_doc and val_act_psicol is true";
+		$consValPsicolAdol=$conect->createCommand($sqlConsValPsicolAdol);
+		$consValPsicolAdol->bindParam(":num_doc",$this->numDocAdol);
+		$readValPsicolAdol=$consValPsicolAdol->query();
+		$resValPsicolAdol=$readValPsicolAdol->read();
+		$readValPsicolAdol->close();
+		return $resValPsicolAdol;
+	}	
+	public function consultaValTrSocReporte(){
+		$conect=Yii::app()->db;
+		$sqlConsValPsicolAdol="select * from valoracion_trabajo_social
+			where num_doc=:num_doc and val_act_trsoc is true";
+		$consValPsicolAdol=$conect->createCommand($sqlConsValPsicolAdol);
+		$consValPsicolAdol->bindParam(":num_doc",$this->numDocAdol);
+		$readValPsicolAdol=$consValPsicolAdol->query();
+		$resValPsicolAdol=$readValPsicolAdol->read();
+		$readValPsicolAdol->close();
+		return $resValPsicolAdol;
+	}	
+	public function consultaValTOReporte(){
+		$conect=Yii::app()->db;
+		$sqlConsValPsicolAdol="select * from valoracion_teo
+			where num_doc=:num_doc and val_act_to is true";
+		$consValPsicolAdol=$conect->createCommand($sqlConsValPsicolAdol);
+		$consValPsicolAdol->bindParam(":num_doc",$this->numDocAdol);
+		$readValPsicolAdol=$consValPsicolAdol->query();
+		$resValPsicolAdol=$readValPsicolAdol->read();
+		$readValPsicolAdol->close();
+		return $resValPsicolAdol;
+	}	
+	public function consultaValPsiqReporte(){
+		$conect=Yii::app()->db;
+		$sqlConsValPsicolAdol="select * from valoracion_psiquiatria
+			where num_doc=:num_doc and val_act_psiq is true";
+		$consValPsicolAdol=$conect->createCommand($sqlConsValPsicolAdol);
+		$consValPsicolAdol->bindParam(":num_doc",$this->numDocAdol);
+		$readValPsicolAdol=$consValPsicolAdol->query();
+		$resValPsicolAdol=$readValPsicolAdol->read();
+		$readValPsicolAdol->close();
+		return $resValPsicolAdol;
+	}	
+	public function consultaValEnfReporte(){
+		$conect=Yii::app()->db;
+		$sqlConsValPsicolAdol="select * from valoracion_enfermeria
+			where num_doc=:num_doc and val_act_enf is true";
+		$consValPsicolAdol=$conect->createCommand($sqlConsValPsicolAdol);
+		$consValPsicolAdol->bindParam(":num_doc",$this->numDocAdol);
+		$readValPsicolAdol=$consValPsicolAdol->query();
+		$resValPsicolAdol=$readValPsicolAdol->read();
+		$readValPsicolAdol->close();
+		return $resValPsicolAdol;
+	}	
+	public function consultaValNutrReporte(){
+		$conect=Yii::app()->db;
+		$sqlConsValPsicolAdol="select * from valoracion_nutricional
+			where num_doc=:num_doc and val_act_nutr is true";
+		$consValPsicolAdol=$conect->createCommand($sqlConsValPsicolAdol);
+		$consValPsicolAdol->bindParam(":num_doc",$this->numDocAdol);
+		$readValPsicolAdol=$consValPsicolAdol->query();
+		$resValPsicolAdol=$readValPsicolAdol->read();
+		$readValPsicolAdol->close();
+		return $resValPsicolAdol;
+	}	
 }  
 
 

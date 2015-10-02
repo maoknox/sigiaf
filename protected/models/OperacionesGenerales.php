@@ -2,11 +2,6 @@
 
 class OperacionesGenerales{
 	
-	public function validaFecha($fecha=null){
-		
-		
-	}
-	
 	public function validaFormatoFecha($fechaPas,$formato='Y-m-d'){
 		$version = explode('.', phpversion());
 		if (((int) $version[0] >= 5 && (int) $version[1] >= 2 && (int) $version[2] > 17)) {

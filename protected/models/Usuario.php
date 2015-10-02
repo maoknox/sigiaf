@@ -42,17 +42,21 @@ class Usuario extends CActiveRecord
 	}
 
 	public function validaNombreUsr($attribute,$params){
-		$usuario=$this->consultaUsuario();		
-		if(count($usuario)!=0){
-			$this->addError('nombre_usuario',"El nombre de usuario ya está registrado, digite uno diferente");
-		}		
+		if(Yii::app()->controller->action->id!="restablecerClave"){
+			$usuario=$this->consultaUsuario();		
+			if(count($usuario)!=0){
+				$this->addError('nombre_usuario',"El nombre de usuario ya está registrado, digite uno diferente");
+			}
+		}
 	}
 	public function verificaClave(){
-		if(isset($_POST["Usuario"]["verificaClave"])){
-			if($this->clave!=$this->verificaClave){
-				$this->addError('clave',"La clave no coincide con la verificación");
-			}
-		}	
+		if(Yii::app()->controller->action->id!="restablecerClave"){
+			if(isset($_POST["Usuario"]["verificaClave"])){
+				if($this->clave!=$this->verificaClave){
+					$this->addError('clave',"La clave no coincide con la verificación");
+				}
+			}	
+		}
 	}
 
 	/**
@@ -126,6 +130,16 @@ class Usuario extends CActiveRecord
 		$slqConsUsr="select * from usuario where id_cedula=:id_cedula";
 		$consUsr=$conect->createCommand($slqConsUsr);
 		$consUsr->bindParam(":id_cedula",Yii::app()->user->getState('cedula'));
+		$readUsr=$consUsr->query();
+		$resUsr=$readUsr->read();
+		$readUsr->close();
+		return $resUsr;
+	}
+	public function consultaUsuarioVal(){
+		$conect=Yii::app()->db;
+		$slqConsUsr="select id_rol from usuario where id_cedula=:id_cedula";
+		$consUsr=$conect->createCommand($slqConsUsr);
+		$consUsr->bindParam(":id_cedula",$this->id_cedula);
 		$readUsr=$consUsr->query();
 		$resUsr=$readUsr->read();
 		$readUsr->close();
@@ -212,5 +226,33 @@ class Usuario extends CActiveRecord
 			$transaction->rollBack();
 			return $e->getMessage();			
 		}
+	}
+	public function restablecerClave(){
+		$conecta=Yii::app()->db;
+		$transaction=$conecta->beginTransaction();
+		try{
+			$sqlCambiaClave="update usuario set clave=:clave where nombre_usuario=:nombre_usuario";
+			$cambiaClave=$conecta->createCommand($sqlCambiaClave);
+			$cambiaClave->bindParam(":clave",$this->clave);
+			$cambiaClave->bindParam(":nombre_usuario",$this->nombre_usuario);
+			$cambiaClave->execute();
+			$transaction->commit();
+			return "exito";
+		}
+		catch(CDbCommand $e){
+			$transaction->rollBack();
+			return $e->getMessage();			
+		}
+	}
+
+	public function consultaCorreoFuncionario(){
+		$conect=Yii::app()->db;
+		$slqConsUsr="select correo_electronico from usuario as a left join persona as b on a.id_cedula=b.id_cedula where nombre_usuario=:nombre_usuario";
+		$consUsr=$conect->createCommand($slqConsUsr);
+		$consUsr->bindParam(":nombre_usuario",$this->nombre_usuario);
+		$readUsr=$consUsr->query();
+		$resUsr=$readUsr->read();
+		$readUsr->close();
+		return $resUsr["correo_electronico"];
 	}
 }

@@ -11,7 +11,7 @@ class AdministracionController extends Controller{
 	}
 	
 	public function filters(){
-		return array('enforcelogin',array('application.filters.ActionLogFilter - buscaAdolGen','modulo'=>$this->module->id,'controlador'=>$this->id,'parametros'=>Yii::app()->input->post()));
+		return array('enforcelogin -restablecerClaveForm restablecerClave',array('application.filters.ActionLogFilter - buscaAdolGen restablecerClaveForm restablecerClave','modulo'=>$this->module->id,'controlador'=>$this->id,'parametros'=>Yii::app()->input->post()));
 	}
 	public function actionCambiarClaveForm(){
 		$controlAcceso=new ControlAcceso();
@@ -1054,6 +1054,60 @@ class AdministracionController extends Controller{
 		}
 	}
 	
+	public function actionRestablecerClaveForm(){
+			$modeloUsuario=new Usuario();
+			$datosUsuario=$modeloUsuario->consultaUsuarioCedula();
+			$this->render('_restablecerClaveForm',array('modeloUsuario'=>$modeloUsuario,'datosUsuario'=>$datosUsuario));		
+	}
+	
+	public function actionRestablecerClave(){
+		$datosInput=Yii::app()->input->post();
+		$modeloUsuario=new Usuario();
+		$modeloUsuario->attributes=$datosInput["Usuario"];			
+		if($modeloUsuario->validate()){
+			$modeloPersona=new Persona();
+			$modeloPersona->correo_electronico=$modeloUsuario->consultaCorreoFuncionario();
+			if(!empty($modeloPersona->correo_electronico)){
+				$cadenaAleatoria=$this->generaCadenaAleatoria();
+				$modeloOperacionesGenerales=new OperacionesGenerales();
+				$modeloUsuario->clave=$modeloOperacionesGenerales->encriptaClaveHMAC($cadenaAleatoria);
+				$resultado=$modeloUsuario->restablecerClave();
+				if($resultado=="exito"){	
+					$cuerpoCorreo=split("@",$modeloPersona->correo_electronico);
+					$correoOculto="";
+					$correoSplit=str_split($modeloPersona->correo_electronico);
+					for($i=0;$i<count(str_split($cuerpoCorreo[0]));$i++){
+						if($i<2){
+							$correoOculto.=$correoSplit[$i];
+						}
+						else{
+							$correoOculto.="*";							
+						}
+					}
+					$correoOculto.="@".$cuerpoCorreo[1];
+					try{
+						Yii::import('application.extensions.yii-mail-master.YiiMailMessage');
+						$message            = new YiiMailMessage;
+			   //this points to the file test.php inside the view path
+						$message->view = "test";
+						$params              = array('modeloUsuario'=>$modeloUsuario,'clave'=>$cadenaAleatoria);
+						$message->subject    = 'Datos Acceso';
+						$message->setBody($params, 'text/html');                
+						$message->addTo($modeloPersona->correo_electronico);
+						$message->from = Yii::app()->params['adminEmail'];
+						Yii::app()->mail->send($message);   
+					}
+					catch(Exception $e){
+						echo CJSON::encode(array("estadoComu"=>"exito",'resultado'=>$e->getMessage()));
+					}
+				}
+			}			
+			echo CJSON::encode(array("estadoComu"=>"exito",'resultado'=>$resultado,'correo'=>$correoOculto));
+		}
+		else{
+			echo CActiveForm::validate($modeloUsuario);
+		}
+	}
 	//
 	// Uncomment the following methods and override them if needed
 	/*

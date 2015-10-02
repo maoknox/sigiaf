@@ -6,7 +6,6 @@ Yii::import('application.modules.gestionSeguimSJ.models.GestionSociojuridica');
 Yii::import('application.modules.valoracionIntegral.models.NutricionAdol');	
 Yii::import('application.modules.valoracionIntegral.models.ValoracionNutricional');	
 
-
 class ReportesController extends Controller{
 	public function filterEnforcelogin($filterChain){
 		if(Yii::app()->user->isGuest){
@@ -337,7 +336,39 @@ class ReportesController extends Controller{
 		}
 	}
 	
-
+	public function actionConsultarEstadoValsForm(){
+		$controlAcceso=new ControlAcceso();
+		$controlAcceso->accion="consultarEstadoValsForm";
+		$permiso=$controlAcceso->controlAccesoAcciones();
+		$modeloPersona=new Persona();
+		$funcionarios=$modeloPersona->consultaFuncionarioValoracion();
+		if($permiso["acceso_rolmenu"]==1){
+			if(!empty($_POST)){
+				$datosInput=Yii::app()->input->post();
+				$idCedula=$datosInput["Persona"]["id_cedula"];
+				$fechaIniRep=$datosInput["fecha_inicio"];
+				$fechaFinRep=$datosInput["fecha_fin_reporte"];
+				$modeloUsuario=new Usuario();
+				$modeloUsuario->id_cedula=$idCedula;
+				$datosUsuario=$modeloUsuario->consultaUsuarioVal();
+				$modeloConsultasGenerales=new ConsultasGenerales();
+			}			
+			$this->render("_consultarEstadoValsForm",
+				array(
+					"funcionarios"=>$funcionarios,
+					"modeloPersona"=>$modeloPersona,
+					"idCedula"=>$idCedula,
+					"fechaIniRep"=>$fechaIniRep,
+					"fechaFinRep"=>$fechaFinRep,
+					"datosUsuario"=>$datosUsuario,
+					"modeloConsultasGenerales"=>$modeloConsultasGenerales
+				)
+			);
+		}
+		else{
+			throw new CHttpException(403,'No tiene acceso a esta acción');
+		}
+	}
 	// Uncomment the following methods and override them if needed
 	/*
 	public function filters()
