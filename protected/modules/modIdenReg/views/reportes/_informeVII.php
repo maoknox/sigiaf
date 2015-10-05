@@ -78,6 +78,7 @@ $sancion="";
 			$compSancInfJud=$infJudicial;
 		}
 		foreach($compSancInfJud as $infJudCab){
+			$delRem="";
 			$modeloInfJud->id_inf_judicial=$infJudCab["id_inf_judicial"];
 			$delitos=$modeloInfJud->consultaDelito();
 			foreach($delitos as $delito){

@@ -31,7 +31,7 @@ $tabla="<table>
 			$valoracionAdol="";
 			$valoracionAdol=$consultaGeneral->consultaValoracionTrSoc();
 			if(!empty($valoracionAdol)){
-							$tabla.="<td style='border:1px solid #003'>".$valoracionAdol["id_valtsoc"]."</td>";
+							//$tabla.="<td style='border:1px solid #003'>".$valoracionAdol["id_valtsoc"]."</td>";
 				$link=$consultaGeneral->conectaBDSinPdo();
 				$sqlConsProbAdol="select * from problema_valtsocial where id_valtsoc=$1";
 				$queryProbAdol=pg_prepare($link,"consProbAdol".$adolescente["id_numero_carpeta"],$sqlConsProbAdol);

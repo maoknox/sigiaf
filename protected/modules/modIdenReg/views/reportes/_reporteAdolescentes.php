@@ -205,27 +205,24 @@
 				$tabla.="<td>Sin Inf.</td>";
 				$tabla.="<td>Sin Inf.</td>";
 			}
-			$consDocRem=$consultaGeneral->consultaDocRemitidos();
-			if(!empty($consDocRem)){
-				foreach($consDocRem as $docRem){
-					if($docRem["doc_presentado"]==1){
-						$tabla.="<td>Presentado</td>";
+			
+			$consDocumentos=$consultaGeneral->consultaDocumentos();
+			if(!empty($consDocumentos)){
+				foreach($consDocumentos as $documento){
+					$consultaGeneral->idDoccespa=$documento["id_doccespa"];
+					$consDocRem=$consultaGeneral->consultaDocRemitido();
+					if(!empty($consDocRem)){
+						if($docRem["doc_presentado"]==1){
+							$tabla.="<td>Presentado</td>";
+						}
+						else{
+							$tabla.="<td>No presentado</td>";
+						}
 					}
 					else{
-						$tabla.="<td>No presentado</td>";
-					}
+						$tabla.="<td>Sin Inf.</td>";
+					}					
 				}			
-			}
-			else{
-				$tabla.="<td>Sin Inf.</td>";
-				$tabla.="<td>Sin Inf.</td>";
-				$tabla.="<td>Sin Inf.</td>";
-				$tabla.="<td>Sin Inf.</td>";
-				$tabla.="<td>Sin Inf.</td>";
-				$tabla.="<td>Sin Inf.</td>";
-				$tabla.="<td>Sin Inf.</td>";
-				$tabla.="<td>Sin Inf.</td>";
-				$tabla.="<td>Sin Inf.</td>";
 			}
 			$consAcud=$consultaGeneral->consultaAcudiente();
 			if(!empty($consAcud)){

@@ -272,7 +272,7 @@ class ReportesController extends Controller{
 	}
 	public function actionConsumoSPARep(){
 		$controlAcceso=new ControlAcceso();
-		$controlAcceso->accion="reporteAdolCambioDoc";
+		$controlAcceso->accion="consumoSPARep";
 		$permiso=$controlAcceso->controlAccesoAcciones();
 		if($permiso["acceso_rolmenu"]==1){
 			$consultaGeneral=new ConsultasGenerales();

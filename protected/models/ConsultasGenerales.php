@@ -9,6 +9,7 @@ class ConsultasGenerales extends CFormModel{
 	public $fechaInicio;
 	public $fechaFinal;
 	public $idValPsicol;
+	public $idDoccespa;
 	
 	public function consultaTiempoActuacion(){
 		$conect= Yii::app()->db;
@@ -646,7 +647,7 @@ class ConsultasGenerales extends CFormModel{
 	}
 	public function consultaDocRemitidos(){
 		$conect=Yii::app()->db;
-		$sqlConsDocRem="select * from adol_doccespa as a left join documento_cespa as b on a.id_doccespa=b.id_doccespa where num_doc=:num_doc";
+		$sqlConsDocRem="select * from adol_doccespa as a left join documento_cespa as b on a.id_doccespa=b.id_doccespa where num_doc=:num_doc order by b.id_doccespa asc";
 		$consDocRem=$conect->createCommand($sqlConsDocRem);
 		$consDocRem->bindParam(":num_doc",$this->numDocAdol,PDO::PARAM_STR);
 		$readDocRem=$consDocRem->query();
@@ -654,6 +655,28 @@ class ConsultasGenerales extends CFormModel{
 		$readDocRem->close();
 		return $resDocRem;
 	}
+	public function consultaDocRemitido(){
+		$conect=Yii::app()->db;
+		$sqlConsDocRem="select * from adol_doccespa where num_doc=:num_doc and id_doccespa=:id_doccespa";
+		$consDocRem=$conect->createCommand($sqlConsDocRem);
+		$consDocRem->bindParam(":num_doc",$this->numDocAdol,PDO::PARAM_STR);
+		$consDocRem->bindParam(":id_doccespa",$this->idDoccespa,PDO::PARAM_STR);
+		$readDocRem=$consDocRem->query();
+		$resDocRem=$readDocRem->read();
+		$readDocRem->close();
+		return $resDocRem;
+	}
+	public function consultaDocumentos(){
+		$conect=Yii::app()->db;
+		$sqlConsDocRem="select * from documento_cespa order by id_doccespa asc";
+		$consDocRem=$conect->createCommand($sqlConsDocRem);
+		$consDocRem->bindParam(":num_doc",$this->numDocAdol,PDO::PARAM_STR);
+		$readDocRem=$consDocRem->query();
+		$resDocRem=$readDocRem->readAll();
+		$readDocRem->close();
+		return $resDocRem;
+	}
+	
 	public function consultaAcudiente(){
 		$conect=Yii::app()->db;
 		$sqlConsAcud="select b.nombres_familiar,b.apellidos_familiar,f.tipo_doc,b.num_doc_fam,i.parentesco,d.localidad,c.barrio,c.direccion,e.estrato 
