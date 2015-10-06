@@ -96,7 +96,7 @@ return array(
 		
 		'db'=>array(
  	       'tablePrefix'=>'',
- 	       'connectionString' => 'pgsql:host=localhost;port=5432;dbname=cforjarv2_3',
+ 	       'connectionString' => 'pgsql:host=localhost;port=5432;dbname=cforjarv2_4',
  	       'username'=>'postgres',
  	       'password'=>'root',
  	       'charset'=>'UTF8',
