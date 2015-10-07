@@ -457,7 +457,12 @@ class IdentificacionRegistroController extends Controller
 		$datos=Yii::app()->input->post();
 		$consAdol=new ConsultasGenerales();
 		$consAdol->searchTerm=$datos["search_term"];
-		$res=$consAdol->buscaAdolGen();
+		if(!empty($datos["search_term"])){
+			$res=$consAdol->buscaAdolGen();
+		}
+		else{
+			//$res[]=array( "numDocAdol" =>0, "nombre"=>'');
+		}
 		 echo CJSON::encode($res);
 	}	//Consulta Municipio segun departamento
 	

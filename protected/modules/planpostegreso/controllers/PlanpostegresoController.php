@@ -357,6 +357,10 @@ class PlanpostegresoController extends Controller{
 				if($modeloVerifDerechos->validate()){
 					$modeloVerifDerechos->atributos=$derechosAdol["DerechoAdol"];
 					$resultado=$modeloVerifDerechos->modVerifDerAdol();
+					$modeloForjarAdol=new ForjarAdol();		
+					$modeloForjarAdol->num_doc=$modeloVerifDerechos->num_doc;
+					$modeloForjarAdol->id_estado_adol=2;
+					$resultado=$modeloForjarAdol->cambiaEstadoAdol();
 					echo CJSON::encode(array("estadoComu"=>"exito",'resultado'=>'exito','msnError'=>$modeloVerifDerechos->msnErrorDerecho));
 				}
 				else{

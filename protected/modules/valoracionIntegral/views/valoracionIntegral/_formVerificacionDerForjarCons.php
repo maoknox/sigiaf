@@ -5,7 +5,9 @@
 	$modeloVerifDerechos->id_momento_verif=1; 	
 	$derechos=$modeloVerifDerechos->consultaDerechos();//id_derechocespa
 ?>
-<?php if(!empty($derechos)):?>
+<?php 
+//print_r($derechos);
+if(!empty($derechos)):?>
 
 <?php $formAdolDerechos=$this->beginWidget('CActiveForm', array(
 	'id'=>'formularioVerifDer',

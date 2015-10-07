@@ -18,8 +18,8 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
 		<?php
         //print_r($infJudicial);
         $psc=false;
-        foreach($infJudicial as $infJudicial){
-            if($infJudicial["id_tipo_sancion"]==3){
+        foreach($infJudicial as $infJudicialPsc){
+            if($infJudicialPsc["id_tipo_sancion"]==3){
                 $psc=true;
             }
         }

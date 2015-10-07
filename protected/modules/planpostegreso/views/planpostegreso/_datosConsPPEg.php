@@ -32,7 +32,7 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
                             'infJudicial'=>$infJudicial,
                             'tipoSancion'=>$tipoSancion
                         ),true,false),
-				  'Análisis de situación de derechos Forjar Egreso'=>$this->renderPartial("_formVerificacionDerForjarCons", 
+				  'Análisis de situación de derechos Forjar Egreso'=>$this->renderPartial("_formVerificacionDerForjarEgresoCons", 
                         array(
                             'modeloVerifDerechos'=>$modeloVerifDerechos,
                             'derechos'=>$derechos,

@@ -16,3 +16,5 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
 <?php
 print_r($infJudicial);
 ?>
+
+

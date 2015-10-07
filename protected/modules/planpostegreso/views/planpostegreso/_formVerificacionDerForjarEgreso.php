@@ -124,7 +124,7 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
                                     Loading.hide();		
                                     if(datosVerifDer.estadoComu=="exito"){
                                         if(datosVerifDer.resultado=="exito"){
-                                            jAlert("Se ha creado el registro de la verificación de derechos del Cespa","Mensaje");	
+                                            jAlert("Se ha creado el registro de la verificación de derechos para el egreso","Mensaje");	
                                             $("#formularioVerifDer #formularioVerifDer_es_").html("");                                                    
                                             $("#formularioVerifDer #formularioVerifDer_es_").hide();
                                             $("#formularioVerifDer").find("input, textarea, button, select").attr("disabled",true);

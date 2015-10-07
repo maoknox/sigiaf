@@ -106,6 +106,8 @@
 			}
 		})
 	); 
+	
+	
 		function cerrarAp(){
 			jAlert("pasaron 5 minutos de inactividad, se cerrará la aplicación","Mensaje")
 			window.location="<?php echo Yii::app()->createAbsoluteUrl('site/logout')?>";
@@ -361,12 +363,8 @@ $this->endWidget('zii.widgets.jui.CJuiDialog');
 
 <?php 
 if(Yii::app()->user->hasState('cedula')){
-	//glyphicon glyphicon-warning-sign
-	//glyphicon glyphicon-ok
-	
 	$icono="glyphicon glyphicon-ok";
 	Yii::app()->getClientScript()->registerScript('scriptAlertas','
-	
 		$.ajax({
 			url:"'.Yii::app()->createAbsoluteUrl('alertas/asociaAlertas').'",
 			//data:$("#"+nombreForm).serialize()+"&idValPsicol="+$("#idValPsicol").val()+"&numDocAdolValPsicol="+$("#numDocAdolValPsicol").val(),
@@ -437,7 +435,13 @@ if(Yii::app()->user->hasState('cedula')){
 			});
 			
 		}
-
+		$(document).ready(	
+			$("#search_term_"+"'.Yii::app()->getSession()->get('numDocAdol').'").keypress(function(e){
+				if(e.which == 13){
+					return false;
+				}
+			})
+		); 
 	'
 	,CClientScript::POS_END);
 }

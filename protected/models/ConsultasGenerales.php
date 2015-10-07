@@ -508,7 +508,6 @@ class ConsultasGenerales extends CFormModel{
 		$conect=Yii::app()->db;
 		$compConsSql="";
 		$compCondicion="";
-		
 		if(Yii::app()->user->getState('rol')==4 or Yii::app()->user->getState('rol')==5){
 			$compConsSql=", hist_personal_adol as c ";
 			$compCondicion="and c.num_doc=a.num_doc and c.id_cedula=:idCedula";

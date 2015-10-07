@@ -65,12 +65,17 @@ $sancion="";
 		}
 		
 		if(!empty($paiActual)){
-			foreach($infJudicial as $infJudicialCompSan){				
-				$resInfJud=$modeloCompSanc->consultaPaiSanc($infJudicialCompSan["id_inf_judicial"]);
-				if(!empty($resInfJud)){
-					if($paiActual["id_pai"]==$resInfJud["id_pai"]){
-						$compSancInfJud[]=$infJudicialCompSan;
-					}
+			
+			$compSancInfJud=$infJudicial;						
+					
+			if(!empty($infJudicial)){			
+				foreach($infJudicial as $pkSan=>$infJudicialCompSan){				
+					$resInfJud=$modeloCompSanc->consultaPaiSanc($infJudicialCompSan["id_inf_judicial"]);
+					if(!empty($resInfJud)){
+						if($paiActual["id_pai"]==$resInfJud["id_pai"]){
+							$compSancInfJud[]=$infJudicialCompSan;
+						}
+					}					
 				}
 			}
 		}

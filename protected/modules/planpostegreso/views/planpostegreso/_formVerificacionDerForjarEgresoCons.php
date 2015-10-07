@@ -1,16 +1,3 @@
-<?php
-$this->widget('application.extensions.jqAjaxSearch.AjaxSearch', 
-    array('action'=>Yii::app()->createUrl('modIdenReg/IdentificacionRegistro/buscaAdolGen'), 
-		'target'=>'resultado', 
-		'minChar'=>2,
-		'numDocAdol'=>$numDocAdol,
-		'url'=>Yii::app()->createUrl('planpostegreso/planpostegreso/verificacionDerechosEgresoForm'),
-		'datosAdol'=>$datosAdol,
-		'edad'=>$edad,
-		'telefonoAdol'=>$telefonoAdol
-	)
-);
-?>
 <?php if(!empty($numDocAdol)):?>
 <div class="panel-heading color-sdis">VERIFICACIÓN DE DERECHOS AL EGRESO</div>
 <?php
