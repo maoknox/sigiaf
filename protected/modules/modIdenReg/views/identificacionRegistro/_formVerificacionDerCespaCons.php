@@ -1,7 +1,7 @@
 <div id="MensajeVerifDer" style="font-size:14px;"></div>
 <?php
 	$modeloVerifDerechos->num_doc=$numDocAdol;
-	$modeloVerifDerechos->id_instanciader=2; 
+	$modeloVerifDerechos->id_instanciader=1; 
 	$modeloVerifDerechos->id_momento_verif=1; 	
 	$derechos=$modeloVerifDerechos->consultaDerechos();//id_derechocespa
 ?>

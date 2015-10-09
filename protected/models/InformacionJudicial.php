@@ -41,6 +41,7 @@ class InformacionJudicial extends CActiveRecord
 	public $id_inf_actual;
 	public $id_inf_nueva;
 	public $mensajeErrorInfJud="";
+	public $idPai;
 	public function tableName()
 	{
 		return 'informacion_judicial';
@@ -185,6 +186,7 @@ class InformacionJudicial extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	
 	
 	public function registraInfJudAdminAdol(){
 		$conect=Yii::app()->db;
@@ -425,6 +427,31 @@ class InformacionJudicial extends CActiveRecord
 		$readInfJud->close();
 		return $resInfJud;
 	}
+	public function consultaInfJudPai(){
+		$conect=Yii::app()->db;
+		$sqlConsInfJud="select * from informacion_judicial where num_doc=:num_doc";		
+		$consInfJud=$conect->createCommand($sqlConsInfJud);
+		$consInfJud->bindParam(":num_doc",$this->num_doc);
+		$readConsInfJud=$consInfJud->query();
+		$resConsInfJud=array();
+		$resConsInfJud=$readConsInfJud->readAll();
+		$readConsInfJud->close();
+		$infJudSinPai=array();		
+		foreach($resConsInfJud as $consInfJud){
+			$sqlConsInfJudSinPai="select * from  componente_sancion where id_inf_judicial=:id_inf_judicial";
+			$consInfJudSinPai=$conect->createCommand($sqlConsInfJudSinPai);
+			$consInfJudSinPai->bindParam(":id_inf_judicial",$consInfJud["id_inf_judicial"]);
+			$readInfJudSinPai=$consInfJudSinPai->query();
+			$resInfJudSinPai=$readInfJudSinPai->read();
+			$readInfJudSinPai->close();
+			if(empty($readInfJudSinPai)){
+				$infJudSinPai[]=$consInfJud;				
+			}
+			//
+		}
+		return $infJudSinPai;
+	}
+
 	public function consultaInfJudInd(){
 		$conect=Yii::app()->db;
 		$sqlConsInfJud="select * from informacion_judicial where id_inf_judicial=:id_inf_judicial";

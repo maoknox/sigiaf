@@ -5,6 +5,134 @@
 
 /* $this->widget('application.extensions.magnific-popup.EMagnificPopup', array('target' => '.test-popup-link'));*/
 ?>
+<fieldset id="afSalud">
+<div class="panel-heading color-sdis">Afiliación a salud</div> 
+<?php $formSgsssAdol=$this->beginWidget('CActiveForm', array(
+	'id'=>'formularioSgsssAdol',
+	'enableAjaxValidation'=>false,
+	'enableClientValidation'=>true,
+	'clientOptions'=>array(
+		'validateOnSubmit'=>false,
+	),
+	'htmlOptions' => array('class' => 'form-horizontal')
+));
+?>
+<table style="border-collapse:collapse; border:1px solid #000; width:100%" id="vincPrevSrpaTable">
+	<tr>
+        <td style=" border:1px solid #000; width:25%"><label class="control-label">Regimen salud</label></td>
+        <td style=" border:1px solid #000;width:25%"><label class="control-label">EPS</label></td>
+	</tr>
+    <tr>        
+        <td style=" border:1px solid #000;width:25%">
+            <div class="form-group">
+                <div class="col-md-12">		
+					<?php 
+                        $opTipoRegSal[$modeloSgsss->id_regimen_salud]=array('selected'=>true);
+                        echo $formSgsssAdol->dropDownList($modeloSgsss,'id_regimen_salud',CHtml::listData($regSalud,'id_regimen_salud','regimen_salud'),
+                            array(
+                                'prompt'=>"seleccione un régimen",
+                                'options' => $opTipoRegSal,
+                                'class'=>'selectpicker form-control','data-hide-disabled'=>'true','data-live-search'=>'true',
+                                'onchange'=>'js:$("#afSalud").addClass("has-warning");$("#formularioSgsssAdol").addClass("unsavedForm");'
+                            )
+                        );
+                        $opTipoRegSal="";
+                    ?> 
+                    <?php echo $formSgsssAdol->error($modeloSgsss,'id_regimen_salud',array('style' => 'color:#F00'));?>
+                </div>
+        	</div>
+        </td>
+        <td style=" border:1px solid #000;width:25%">
+            <div class="form-group">
+                <div class="col-md-12">		
+					<?php 
+                        $opTipoEps[$modeloSgsss->id_eps_adol]=array('selected'=>true);
+                        echo $formSgsssAdol->dropDownList($modeloSgsss,'id_eps_adol',CHtml::listData($eps,'id_eps_adol','eps_adol'),
+                            array(
+                                'prompt'=>"seleccione eps",
+                                'options' => $opTipoEps,
+                                'class'=>'selectpicker form-control','data-hide-disabled'=>'true','data-live-search'=>'true',
+                                'onchange'=>'js:$("#afSalud").addClass("has-warning");$("#formularioSgsssAdol").addClass("unsavedForm");'
+                            )
+                        );
+                        $opTipoEps="";
+                    ?> 
+                    <?php echo $formSgsssAdol->error($modeloSgsss,'id_eps_adol',array('style' => 'color:#F00'));?>
+                </div>
+        	</div>
+        </td>
+	</tr>
+    <tr>        
+        <td style=" border:1px solid #000;width:25%" colspan="2">
+ <?php
+ 		//$modeloSgsss->num_doc=$modeloValEnf->num_doc;
+		if(!empty($sgs)){
+			$accion="modificaSgsss";
+		}
+		else{
+			$accion="registraSgsss";
+		}
+		echo $formSgsssAdol->hiddenField($modeloSgsss,'num_doc');
+		$boton=CHtml::ajaxSubmitButton (
+						'Crear Registro',   
+						array('valoracionIntegral/'.$accion),
+						array(				
+							'dataType'=>'json',
+							'type' => 'post',
+							'beforeSend'=>'function (){Loading.show();}',
+							'success' => 'function(datos) {	
+								Loading.hide();
+								if(datos.estadoComu=="exito"){
+									if(datos.resultado=="\'exito\'"){
+										$("#Mensaje").html("Registro realizado satisfactoriamente");	
+										$("#formularioSgsssAdol").removeClass("unsavedForm");
+										$("#afSalud").removeClass("has-warning")
+									}
+									else{
+										$("#Mensaje").html("Ha habido un error en la creación del registro. Código del error: "+datos.resultado);
+									}
+								}
+								else{						
+									$("#btnFormSgsss").show();
+									$.each(datos, function(key, val) {
+										$("#formularioSgsssAdol #"+key+"_em_").text(val);                                                    
+										$("#formularioSgsssAdol #"+key+"_em_").show();                                                
+									});
+								}
+								
+							}',
+							'error'=>'function (xhr, ajaxOptions, thrownError) {
+								Loading.hide();
+								//0 para error en comunicación
+								//200 error en lenguaje o motor de base de datos
+								//500 Internal server error
+								if(xhr.status==0){
+									$("#Mensaje").html("Se ha perdido la cumunicación con el servidor.  Espere unos instantes y vuelva a intentarlo. <br/> Si el problema persiste comuníquese con el área encargada del Sistema");
+									$("#btnFormAdolId").show();
+								}
+								else{
+									if(xhr.status==500){
+										$("#Mensaje").html("Hay un error en el servidor del Sistema de información. Comuníquese con el área encargada del Sistema de información");
+									}
+									else{
+										$("#Mensaje").html("No se ha creado el registro del adolescente debido al siguiente error \n"+xhr.responseText+" Comuníquese con el ingeniero encargado");
+									}	
+								}
+								
+							}'
+						),
+						array('id'=>'btnFormSgsss','class'=>'btn btn-default btn-sdis','name'=>'btnFormSgsss')
+				);
+    ?>
+    <?php echo $boton; //CHtml::submitButton('Crear');?>        
+        
+        </td>
+	</tr>
+</table>
+<?php $this->endWidget();?>
+</fieldset>
+<hr />
+
 <fieldset id="grupoFam">
 <div class="panel-heading color-sdis">Grupo Familiar</div> 
 <table style="border-collapse:collapse; border:1px solid #000; width:100%" id="datosFamiliarTab">
@@ -275,12 +403,12 @@ else{
 		<?php echo  $formProbAsoc->errorSummary($modeloProblemaValtsocial,'','',array('style' => 'font-size:14px;color:#F00')); ?>
 		<?php 
 		//print_r($probAsocAdol);
-			foreach($probAsoc as $pkPrA=>$probAsoc){
+			foreach($probAsoc as $pkPrA=>$probAsoci){
 				$checked=false;
 				$checkedVinc=false;
 				if(!empty($probAsocAdol)){
 					foreach($probAsocAdol as $probAsocAdoli){
-						if($probAsocAdoli["id_problema_asoc"]==$probAsoc["id_problema_asoc"]){	
+						if($probAsocAdoli["id_problema_asoc"]==$probAsoci["id_problema_asoc"]){	
 							$checked=true;											
 							if(!empty($probAsocAdoli["vinc_act_prob"])){
 								$checkedVinc=true;	
@@ -288,7 +416,7 @@ else{
 						}
 					}
 				}
-				if(strpos($probAsoc["problema_asoc"],'pandillas')>0){
+				if(strpos($probAsoci["problema_asoc"],'pandillas')>0){
 					?>
                     <div class="col-md-12">
                     	<div class="checkbox">
@@ -296,9 +424,9 @@ else{
 							<?php
                             echo CHtml::CheckBox('ProblemaValtsocial[probasoc][prob_asoc_'.$pkPrA.']',$checked, array (
                                 'id'=>'prob_asoc_'.$pkPrA,
-                                'value'=>$probAsoc["id_problema_asoc"],
+                                'value'=>$probAsoci["id_problema_asoc"],
                                 'onclick'=>'js:$("#btnProbAsoc").css("color","#F00")'
-                            ))." ".$probAsoc["problema_asoc"]."<br/>-".
+                            ))." ".$probAsoci["problema_asoc"]."<br/>-".
                             CHtml::CheckBox('vinc_pand',$checkedVinc, array (
                                 'value'=>'true',
                                 'onclick'=>'js:$("#btnProbAsoc").css("color","#F00")'
@@ -309,7 +437,7 @@ else{
                     </div>
                     <?php 	
 				}
-				elseif(strpos($probAsoc["problema_asoc"],'futbolistas')>0){		
+				elseif(strpos($probAsoci["problema_asoc"],'futbolistas')>0){		
 					?>
                     <div class="col-md-12">
                     	<div class="checkbox">
@@ -317,9 +445,9 @@ else{
 							<?php			
                             echo CHtml::CheckBox('ProblemaValtsocial[probasoc][prob_asoc_'.$pkPrA.']',$checked, array (
                                 'id'=>'prob_asoc_'.$pkPrA,
-                                'value'=>$probAsoc["id_problema_asoc"],
+                                'value'=>$probAsoci["id_problema_asoc"],
                                 'onclick'=>'js:$("#btnProbAsoc").css("color","#F00")'
-                            ))." ".$probAsoc["problema_asoc"]."<br/> -".
+                            ))." ".$probAsoci["problema_asoc"]."<br/> -".
                             CHtml::CheckBox('vinc_barr_fut',$checkedVinc, array (
                                 'value'=>'true',
                                 'onclick'=>'js:$("#btnProbAsoc").css("color","#F00")'

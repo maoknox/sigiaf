@@ -102,6 +102,140 @@ class PaiController extends Controller{
 					$delitoRem=$consultaGeneral->consultaEntidades('delito_rem_cespa','id_del_rc');
 					$modeloInfJud->num_doc=$numDocAdol;
 					$infJudicial=$modeloInfJud->consultaInfJud();
+					$infJudicialPai=$modeloInfJud->consultaInfJud();	
+					//$infJudSinPai=$modeloInfJud->consultaInfJudPai();
+					if(!empty($infJudicial)){
+						foreach($infJudicial as $pk=>$infJudicialNov){
+							$infJud=$modeloInfJud->consultaInfJudNov($infJudicialNov["id_inf_judicial"]);
+							if(!empty($infJud)){
+								$infJudicial[$pk]=$infJud;
+							}			
+						}
+					}
+					//$compSancInfJud="";
+					foreach($infJudicial as $infJudicialCompSan){
+						//echo $infJudicial["id_inf_judicial"];
+						$resInfJud=$modeloCompSanc->consultaPaiSanc($infJudicialCompSan["id_inf_judicial"]);
+						if(!empty($resInfJud)){							
+							if($modeloPAI->id_pai==$resInfJud["id_pai"]){
+								//print_r($resInfJud);
+								$compSancInfJud[]=$resInfJud;
+							}
+						}
+						else{
+							$compSancInfJud[]=$infJudicialCompSan;
+						}
+					}
+					/*if(!empty($infJudSinPai)){
+						foreach($infJudSinPai as $infJud){
+							$compSancInfJud[]=$infJud;							
+						}						
+					}*/
+				}
+			}
+			$this->render('_creaModifPai',array(
+				'modeloPAI'=>$modeloPAI,
+				'modeloCompDer'=>$modeloCompDer,
+				'modeloCompSanc'=>$modeloCompSanc,
+				'modeloVerifDerechos'=>$modeloVerifDerechos,
+				'numDocAdol'=>$numDocAdol,	
+				'datosAdol'=>$datosAdol,
+				'edad'=>$edad,
+				'conceptoInt'=>$conceptoInt	,
+				'derechos'=>$derechos,
+				'participacion'=>$participacion,
+				'proteccion'=>$proteccion,
+				'instanciaRem'=>$instanciaRem,
+				'espProcJud'=>$espProcJud	,
+				'delitoRem'=>$delitoRem,
+				'modeloInfJud'=>$modeloInfJud,
+				'infJudicial'=>$compSancInfJud,
+				'compSancInfJud'=>$compSancInfJud,
+				'tipoSancion'=>$tipoSancion,
+				'infJudicialPai'=>$infJudicialPai,
+				'modeloSegComDer'=>$modeloSegComDer,
+				'modeloSegComSanc'=>$modeloSegComSanc,
+				'consultaDerechoAdol'=>$consultaDerechoAdol,
+				'consultaGeneral'=>$consultaGeneral
+			));
+		}
+		else{
+			throw new CHttpException(403,'No tiene acceso a esta acción');
+		}
+	}
+	public function actionConsultarPAITabs(){
+		$controlAcceso=new ControlAcceso();
+		$controlAcceso->accion="consultarPAITabs";
+		$permiso=$controlAcceso->controlAccesoAcciones();
+		if($permiso["acceso_rolmenu"]==1){			
+			$datosInput=Yii::app()->input->post();
+			if(isset($datosInput["numDocAdol"]) && !empty($datosInput["numDocAdol"])){
+				$numDocAdol=$datosInput["numDocAdol"];
+				Yii::app()->getSession()->add('numDocAdol',$numDocAdol);
+			}
+			else{
+				$numDocAdol=Yii::app()->getSession()->get('numDocAdol');
+			}		
+			if(!empty($numDocAdol)){
+				$modeloForjarAdol=new ForjarAdol();
+				$modeloForjarAdol->num_doc=$numDocAdol;
+				$estadoAdol=$modeloForjarAdol->consultaDatosForjarAdol();	
+				$operaciones=new OperacionesGenerales();
+				$consultaGeneral=new ConsultasGenerales();
+				$datosAdol=$consultaGeneral->consultaDatosAdol($numDocAdol);	
+				$edad=$operaciones->hallaEdad($datosAdol["fecha_nacimiento"],date("Y-m-d"));			
+				$consultaGeneral->numDocAdol=$numDocAdol;
+	
+				if($estadoAdol["id_estado_adol"]==2){
+					Yii::app()->user->setFlash('verifEstadoAdolForjar', "El adolescente está en este momento egresado del servicio.");									
+				}
+				else{
+					$modeloPAI=new Pai();
+					$modeloVerifDerechos=new DerechoAdol();			
+					$modeloCompDer=new ComponenteDerecho();
+					$modeloCompSanc=new ComponenteSancion();
+					$modeloInfJud=new InformacionJudicial();
+					$operaciones=new OperacionesGenerales();
+					$modeloSegComDer=new SeguimientoCompderecho();
+					$modeloSegComSanc=new SeguimientoCompsancion();
+					$conceptoInt=$consultaGeneral->consultaConcInt();//Consulta el concepto integral
+					$derechos=$consultaGeneral->consultaDerechos();
+					$modeloPAI->num_doc=$numDocAdol;
+					$paiActual=$modeloPAI->consultaPAIActual();
+					$modeloPAI->attributes=$paiActual;
+					if(empty($paiActual)){
+						$pai=$modeloPAI->consultaPAI();
+						if(empty($pai)){
+							$modeloPAI->id_pai=1;
+						}
+						else{				
+							$modeloPAI->estadoPaiActual();
+							$modeloPAI->id_pai=(int)$pai["id_pai"]+1;
+						}
+						$modeloPAI->creaPAI();
+					}
+					$idPai=$modeloPAI->id_pai;
+					$modeloCompDer->id_pai=$idPai;
+					$modeloCompSanc->id_pai=$idPai;
+					//consulta Participación
+					$participacion=$consultaGeneral->consultaParticipacion();
+					//consulta Protección
+					$proteccion=$consultaGeneral->consultaProteccion();
+					$idInstanciaDer=1;
+					$consultaDerechoAdol=$modeloVerifDerechos->findAll('num_doc=:numDoc and id_instanciader=:id_instanciader',
+						array(
+						':numDoc'=>$numDocAdol,
+						':id_instanciader'=>$idInstanciaDer
+						)
+					);
+					//consulta información judicial
+					$instanciaRem=$consultaGeneral->consultaEntidades('instancia_remisora','id_instancia_rem');
+					$espProcJud=$consultaGeneral->consultaEntidades('estado_proc_judicial','id_proc_jud');
+					$tipoSancion=$consultaGeneral->consultaEntidades('tipo_sancion','id_tipo_sancion');
+					$delitoRem=$consultaGeneral->consultaEntidades('delito_rem_cespa','id_del_rc');
+					$modeloInfJud->num_doc=$numDocAdol;
+					$modeloInfJud->idPai=$idPai;
+					$infJudicial=$modeloInfJud->consultaInfJud();
 					$infJudicialPai=$modeloInfJud->consultaInfJud();
 					if(!empty($infJudicial)){
 						foreach($infJudicial as $pk=>$infJudicialNov){
@@ -126,7 +260,7 @@ class PaiController extends Controller{
 					}
 				}
 			}
-			$this->render('_creaModifPai',array(
+			$this->render('_consultaPAITabs',array(
 				'modeloPAI'=>$modeloPAI,
 				'modeloCompDer'=>$modeloCompDer,
 				'modeloCompSanc'=>$modeloCompSanc,

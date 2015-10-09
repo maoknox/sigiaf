@@ -64,13 +64,13 @@
 					<?php foreach($consSegCompDer as $pk=>$segCompder): $item=$pk+1;echo $item."-";?>
                     <?php echo CHtml::link(
   						 $segCompder["fecha_seguim_compderecho"],
-					  	'#',
+					  	'javascript:retorna();',
 					  	array( // ajaxOptions
 							'type' => 'POST',
 							'onclick' => "js:								
 								$('#ui-id-1').text('".CHtml::encode("Fecha de seguimiento: ".$segCompder["fecha_seguim_compderecho"])."');
-								$('#juiDialog').text(".CJavaScript::encode(CJavaScript::quote($segCompder["seguim_compderecho"])).");
-							   	$('#juiDialog').dialog('open');
+								$('#juiDialogConsSeg').text(".CJavaScript::encode(CJavaScript::quote($segCompder["seguim_compderecho"])).");
+							   	$('#juiDialogConsSeg').dialog('open');
 							"							
 					  	)
 					);?> 
@@ -154,8 +154,8 @@
 							'type' => 'POST',
 							'onclick' => "js:								
 								$('#ui-id-1').text('".CHtml::encode("Fecha de seguimiento: ".$segCompSanc["fecha_seguim_compsancion"])."');
-								$('#juiDialog').text(".CJavaScript::encode(CJavaScript::quote($segCompSanc["seguim_compsancion"])).");
-							   	$('#juiDialog').dialog('open');
+								$('#juiDialogConsSeg').text(".CJavaScript::encode(CJavaScript::quote($segCompSanc["seguim_compsancion"])).");
+							   	$('#juiDialogConsSeg').dialog('open');
 							"							
 					  	)
 					);?> 
@@ -172,7 +172,7 @@
 </fieldset>
                    <?php 
 $this->beginWidget('zii.widgets.jui.CJuiDialog',array(
-                'id'=>'juiDialog',
+                'id'=>'juiDialogConsSeg',
                 'options'=>array(
                     'title'=>'Show data',
                     'autoOpen'=>false,

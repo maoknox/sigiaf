@@ -641,6 +641,13 @@ class ValoracionIntegralController extends Controller{
 				$tipoFamilia=$consultaGeneral->consultaEntidades('tipo_familia','id_tipo_familia');
 				$tipoFamiliaAdol=$modelValTrSoc->consultaTipoFamilia();
 				$munCiudad=$consultaGeneral->consultaEntidades('municipio','id_municipio');
+				//consulta seguridad social				
+				$modeloSgsss= new Sgsss();
+				$eps=$consultaGeneral->consultaEntidades('eps_adol','id_eps_adol');
+				$regSalud=$consultaGeneral->consultaEntidades('regimen_salud','id_regimen_salud');
+				$modeloSgsss->num_doc=$numDocAdol;
+				$sgs=$modeloSgsss->consultaSegSocial();
+				$modeloSgsss->attributes=$sgs;
 				if(!empty($modelValTrSoc->fecha_inicio_valtsoc)){
 					$consultaGeneral->numDocAdol=$numDocAdol;
 					$tiempoAct=$consultaGeneral->consultaTiempoActuacion();
@@ -669,7 +676,7 @@ class ValoracionIntegralController extends Controller{
 			else{
 				$formRender="_valoracionTrSocCons";
 			}
-			$this->render($formRender,array(
+			$this->render($formRender,array(				
 				'modelValTrSoc'=>$modelValTrSoc,
 				'idValTrSoc'=>$idValTrSoc,
 				'formularioCargaDerechos'=>$formularioCargaDerechos,
@@ -704,7 +711,11 @@ class ValoracionIntegralController extends Controller{
 				'modeloAntFFamilia'=>$modeloAntFFamilia,
 				'modeloProblemaValtsocial'=>$modeloProblemaValtsocial,
 				'modeloServprotecValtsocial'=>$modeloServprotecValtsocial,
-				'render'=>'valoracionTrSocForm'
+				'modeloSgsss'=>$modeloSgsss,				
+				'eps'=>$eps,
+				'regSalud'=>$regSalud,
+				'sgs'=>$sgs,
+				'render'=>'valoracionTrSocForm',
 			));
 		}
 		else{
@@ -1992,7 +2003,7 @@ class ValoracionIntegralController extends Controller{
 	}
 	public function actionRegistraSgsss(){
 		$controlAcceso=new ControlAcceso();
-		$controlAcceso->accion="valoracionEnfForm";
+		$controlAcceso->accion="valoracionTrSocForm";
 		$permiso=$controlAcceso->controlAccesoAcciones();
 		if($permiso["acceso_rolmenu"]==1){
 			$datosInput=Yii::app()->input->post();
@@ -2013,7 +2024,7 @@ class ValoracionIntegralController extends Controller{
 	}
 	public function actionModificaSgsss(){
 		$controlAcceso=new ControlAcceso();
-		$controlAcceso->accion="valoracionEnfForm";
+		$controlAcceso->accion="valoracionTrSocForm";
 		$permiso=$controlAcceso->controlAccesoAcciones();
 		if($permiso["acceso_rolmenu"]==1){
 			$datosInput=Yii::app()->input->post();

@@ -1,5 +1,65 @@
 <!--<a class="test-popup-link" href="http://farm9.staticflickr.com/8241/8589392310_7b6127e243_b.jpg">Open popup</a>-->
 <div id="formConsTrSoc" >
+<fieldset id="afSalud">
+<div class="panel-heading color-sdis">Afiliación a salud</div> 
+<?php $formSgsssAdol=$this->beginWidget('CActiveForm', array(
+	'id'=>'formularioSgsssAdol',
+	'enableAjaxValidation'=>false,
+	'enableClientValidation'=>true,
+	'clientOptions'=>array(
+		'validateOnSubmit'=>false,
+	),
+	'htmlOptions' => array('class' => 'form-horizontal')
+));
+?>
+<table style="border-collapse:collapse; border:1px solid #000; width:100%" id="vincPrevSrpaTable">
+	<tr>
+        <td style=" border:1px solid #000; width:25%"><label class="control-label">Regimen salud</label></td>
+        <td style=" border:1px solid #000;width:25%"><label class="control-label">EPS</label></td>
+	</tr>
+    <tr>        
+        <td style=" border:1px solid #000;width:25%">
+            <div class="form-group">
+                <div class="col-md-12">		
+					<?php 
+                        $opTipoRegSal[$modeloSgsss->id_regimen_salud]=array('selected'=>true);
+                        echo $formSgsssAdol->dropDownList($modeloSgsss,'id_regimen_salud',CHtml::listData($regSalud,'id_regimen_salud','regimen_salud'),
+                            array(
+                                'prompt'=>"seleccione un régimen",
+                                'options' => $opTipoRegSal,
+                                'class'=>' form-control','data-hide-disabled'=>'true','data-live-search'=>'true',
+                            )
+                        );
+                        $opTipoRegSal="";
+                    ?> 
+                    <?php echo $formSgsssAdol->error($modeloSgsss,'id_regimen_salud',array('style' => 'color:#F00'));?>
+                </div>
+        	</div>
+        </td>
+        <td style=" border:1px solid #000;width:25%">
+            <div class="form-group">
+                <div class="col-md-12">		
+					<?php 
+                        $opTipoEps[$modeloSgsss->id_eps_adol]=array('selected'=>true);
+                        echo $formSgsssAdol->dropDownList($modeloSgsss,'id_eps_adol',CHtml::listData($eps,'id_eps_adol','eps_adol'),
+                            array(
+                                'prompt'=>"seleccione eps",
+                                'options' => $opTipoEps,
+                                'class'=>'form-control','data-hide-disabled'=>'true','data-live-search'=>'true',
+                            )
+                        );
+                        $opTipoEps="";
+                    ?> 
+                    <?php echo $formSgsssAdol->error($modeloSgsss,'id_eps_adol',array('style' => 'color:#F00'));?>
+                </div>
+        	</div>
+        </td>
+	</tr>
+</table>
+<?php $this->endWidget();?>
+</fieldset>
+<hr />
+
 <fieldset id="grupoFam">
 <div class="panel-heading color-sdis">Grupo Familiar</div> 
 <table style="border-collapse:collapse; border:1px solid #000; width:100%" id="datosFamiliarTab">
@@ -90,7 +150,7 @@
             'obs_familiares_ts',
             array('class'=>'form-control'));
         ?>
-	<?php echo $formObsFam->error($modelValTrSoc,'obs_familiares_ts',array('style' => 'color:#F00'));?>
+		<?php echo $formObsFam->error($modelValTrSoc,'obs_familiares_ts',array('style' => 'color:#F00'));?>
     	</div>
     </div>
 <?php $this->endWidget();?>
@@ -333,6 +393,7 @@ else{
         <?php $this->endWidget();?>
     </td>
 </table>
+</fieldset>
 <hr />
 <fieldset id="tipoFamilia">
 <?php 
@@ -419,9 +480,8 @@ else{
     </div>
 <?php $this->endWidget();?>
 
-</fieldset>
 
-</div>
+</fieldset></div>
 <?php
 Yii::app()->getClientScript()->registerScript('scripValTrSoc_1','
 	$("#formConsTrSoc").find(":input").attr("disabled","true");

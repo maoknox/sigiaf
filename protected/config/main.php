@@ -53,10 +53,10 @@ return array(
 			'class' => 'application.extensions.yii-mail-master.YiiMail',
 			'transportType'=>'smtp',
 			'transportOptions'=>array(
-				'host'=>'smtp.mail.yahoo.com',
-				'username'=>'hingato',
-				'password'=>'Titan98&',
-				'port'=>'587',
+				'host'=>'smtp.gmail.com',
+				'username'=>'soportecentroforjar@gmail.com',
+				'password'=>'SDIS_&%_1',
+				'port'=>'587 ',
 				//'encryption'=>'openssl',
 			),
 				'viewPath' => 'application.views.mail',
@@ -127,7 +127,7 @@ return array(
 	// using Yii::app()->params['paramName']
 	'params'=>array(
 		// this is used in contact page Yii::app()->params[$name])
-		'adminEmail'=>'hingato@yahoo.com.ar',
+		'adminEmail'=>'soportecentroforjar@gmail.com',
 		'webRoot' => dir(dirname(__FILE__).DIRECTORY_SEPARATOR.'..'),
 		'verArchivos'=>$protocol.$_SERVER['SERVER_NAME'].$pathInfo["dirname"]."/pdf/",
 		'subirArchivos'=>$_SERVER['DOCUMENT_ROOT'].$pathInfo["dirname"]."/pdf/",

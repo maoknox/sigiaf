@@ -51,6 +51,10 @@ $this->widget('zii.widgets.jui.CJuiTabs', array(
 				'modeloAntFFamilia'=>$modeloAntFFamilia,
 				'modeloProblemaValtsocial'=>$modeloProblemaValtsocial,
 				'modeloServprotecValtsocial'=>$modeloServprotecValtsocial,
+				'modeloSgsss'=>$modeloSgsss,				
+				'eps'=>$eps,
+				'regSalud'=>$regSalud,
+				'sgs'=>$sgs
 			),true,false),
     	'Valoración Escolaridad'=>$this->renderPartial('_valoracionEscolaridadCons', 
 			array(

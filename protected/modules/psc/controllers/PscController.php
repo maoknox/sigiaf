@@ -194,6 +194,90 @@ class PscController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+
+	public function actionConsultarPscCoord(){
+		$controlAcceso=new ControlAcceso();
+		$controlAcceso->accion="consultarPscCoord";
+		$permiso=$controlAcceso->controlAccesoAcciones();
+		if($permiso["acceso_rolmenu"]==1){
+			$modeloPsc=new Psc();
+			$modeloDatosTelefono=new Telefono();
+			$consGen=new ConsultasGenerales();	
+			$operaciones=new OperacionesGenerales();
+			$datosAdol="";
+			$edad="";
+			$telefono="";
+			$dataInput=Yii::app()->input->post();
+			if(isset($dataInput["offset"]) && !empty($dataInput["offset"])){
+				$offset=$dataInput["offset"];
+			}
+			else{
+				$offset=0;
+			}
+			if(isset($_POST["numDocAdol"]) && !empty($_POST["numDocAdol"])){
+				$numDocAdol=htmlspecialchars(strip_tags(trim($_POST["numDocAdol"])));
+				Yii::app()->getSession()->add('numDocAdol',htmlspecialchars(strip_tags(trim($_POST["numDocAdol"]))));
+			}
+			else{
+				$numDocAdol=Yii::app()->getSession()->get('numDocAdol');
+			}
+			if(!empty($numDocAdol)){
+				$datosAdol=$consGen->consultaDatosAdol($numDocAdol);
+				$edad=$operaciones->hallaEdad($datosAdol["fecha_nacimiento"],date("Y-m-d"));
+				$telefono=$modeloDatosTelefono->consultaTelefono($numDocAdol);
+				$modeloPsc->num_doc=$numDocAdol;
+				$pscDes=$modeloPsc->consultaPscOff($offset);
+			}
+			//consulta Instancia remisora
+			$this->render('_consultaPSCCoord',
+				array(
+					'modeloPsc'=>$modeloPsc,
+					'pscDes'=>$pscDes,
+					'numDocAdol'=>$numDocAdol,
+					'datosAdol'=>$datosAdol,
+					'edad'=>$edad,
+					'telefono'=>$telefono,
+					'offset'=>$offset
+				)
+			);		
+		}
+		else{
+			throw new CHttpException(403,'No tiene acceso a esta acción');
+		}
+	}
+	public function actionConsultaPscForm(){
+		$datosInput=Yii::app()->input->post();
+		if(isset($datosInput["Psc"]["num_doc"]) && !empty($datosInput["Psc"]["num_doc"])&&($datosInput["Psc"]["id_psc"]) && !empty($datosInput["Psc"]["id_psc"])){
+			$numDocAdol=$datosInput["Psc"]["num_doc"];
+			Yii::app()->getSession()->add('numDocAdol',$numDocAdol);
+		}
+		else{
+			$numDocAdol=Yii::app()->getSession()->get('numDocAdol');
+		}		
+		if(!empty($numDocAdol)){
+			$modeloPsc= new Psc();
+			$modeloDiaHora=new DiaHora();
+			$operaciones=new OperacionesGenerales();
+			$consultaGeneral=new ConsultasGenerales();
+			$datosAdol=$consultaGeneral->consultaDatosAdol($numDocAdol);	
+			$edad=$operaciones->hallaEdad($datosAdol["fecha_nacimiento"],date("Y-m-d"));
+			$estadoPsc=$consultaGeneral->consultaEntidades('estado_psc','id_estadopsc');
+			$modeloPsc->num_doc=$numDocAdol;
+			$modeloPsc->id_psc=$datosInput["Psc"]["id_psc"];
+			$infPsc=$modeloPsc->consultaPsc();
+			$modeloPsc->attributes=$infPsc;			
+		}
+		$this->render('_consultaPscForm',array(
+			'modeloPsc'=>$modeloPsc,
+			'modeloDiaHora'=>$modeloDiaHora,
+			'numDocAdol'=>$numDocAdol,	
+			'datosAdol'=>$datosAdol,
+			'edad'=>$edad,	
+			'infPsc'=>$infPsc,
+			'estadoPsc'=>$estadoPsc		
+		));
+	}
+
 	public function actionActEstadoPscForm(){
 		$datosInput=Yii::app()->input->post();
 		if(isset($datosInput["Psc"]["num_doc"]) && !empty($datosInput["Psc"]["num_doc"])&&($datosInput["Psc"]["id_psc"]) && !empty($datosInput["Psc"]["id_psc"])){

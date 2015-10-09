@@ -5,7 +5,7 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
 		'target'=>'resultado', 
 		'minChar'=>2,
 		'numDocAdol'=>$numDocAdol,
-		'url'=>Yii::app()->createUrl('referenciacion/asignacionServicio/muestraServicio'),
+		'url'=>Yii::app()->createUrl('referenciacion/asignacionServicio/consultaServicioForm'),
 		'datosAdol'=>$datosAdol,
 		'edad'=>$edad,
 		'telefonoAdol'=>$telefonoAdol
@@ -74,7 +74,7 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
 			echo CHtml::hiddenField('id_referenciacion',$datosRef["id_referenciacion"]);
 			echo CHtml::hiddenField('numDocAdol',$numDocAdol);
 			echo CHtml::button(
-			'Ir a seguimiento',
+			'Consultar en detalle',
 			array('onclick'=>'js:servicioSegForm("'.$pk.'")')
 		);//echo $offset//echo $datosRef["id_referenciacion"]?>
     </td>

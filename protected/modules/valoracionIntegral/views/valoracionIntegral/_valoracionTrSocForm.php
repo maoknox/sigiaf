@@ -52,6 +52,10 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
                         'modeloAntFFamilia'=>$modeloAntFFamilia,
                         'modeloProblemaValtsocial'=>$modeloProblemaValtsocial,
                         'modeloServprotecValtsocial'=>$modeloServprotecValtsocial,
+						'modeloSgsss'=>$modeloSgsss,				
+						'eps'=>$eps,
+						'regSalud'=>$regSalud,
+						'sgs'=>$sgs
                     ),true,false),
                 'Valoración Escolaridad'=>$this->renderPartial('_valoracionEscolaridadTab', 
                     array(
