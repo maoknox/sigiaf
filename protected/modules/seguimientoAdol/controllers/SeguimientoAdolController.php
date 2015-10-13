@@ -520,7 +520,89 @@ class SeguimientoAdolController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}	
 	}
-
+	public function actionConsSegAdol(){
+		$controlAcceso=new ControlAcceso();
+		$controlAcceso->accion="consSegAdol";
+		$permiso=$controlAcceso->controlAccesoAcciones();
+		if($permiso["acceso_rolmenu"]==1){
+			$datosInput=Yii::app()->input->post();
+			if(isset($datosInput["numDocAdol"]) && !empty($datosInput["numDocAdol"])){
+				$numDocAdol=$datosInput["numDocAdol"];
+				Yii::app()->getSession()->add('numDocAdol',$numDocAdol);
+			}
+			else{
+				$numDocAdol=Yii::app()->getSession()->get('numDocAdol');
+			}		
+			if(!empty($numDocAdol)){
+				$modeloPlanPostegreso=new PlanPostegreso();
+				$modeloSeguimiento=new SeguimientoAdol();
+				$modeloPsc=new Psc();
+				$modeloAsistenciaPsc=new AsistenciaPsc();
+				$modeloSeguimientoPsc=new SeguimientoPsc();
+				$modeloInfJud=new InformacionJudicial();
+				$modeloPai= new Pai();
+				$modeloPai->num_doc=$numDocAdol;				
+				$paiAdol=$modeloPai->consultaPAIActual();													
+				if(empty($paiAdol)){					
+					$modeloPlanPostegreso->num_doc=$numDocAdol;
+					$planPEgreso=$modeloPlanPostegreso->consultaPlanPe();	
+					$modeloPlanPostegreso->attributes=$planPEgreso;
+					$modeloPai->id_pai=$modeloPlanPostegreso->id_pai;
+					$paiAdol=$modeloPai->consultaPAIPlanPE();
+					$modeloPai->attributes=$paiAdol;						
+				}						
+				$operaciones=new OperacionesGenerales();
+				$consultaGeneral=new ConsultasGenerales();
+				$datosAdol=$consultaGeneral->consultaDatosAdol($numDocAdol);	
+				$edad=$operaciones->hallaEdad($datosAdol["fecha_nacimiento"],date("Y-m-d"));
+				$modeloInfJud->num_doc=$numDocAdol;
+				$modeloSeguimiento->num_doc=$numDocAdol;
+				$infJudicial=$modeloInfJud->consultaInfJud();
+				/*if(!empty($infJudicial)){
+					foreach($infJudicial as $pk=>$infJudicialNov){
+						$infJud=$modeloInfJud->consultaInfJudNov($infJudicialNov["id_inf_judicial"]);
+						if(!empty($infJud)){
+							$infJudicial[$pk]=$infJud;
+						}			
+					}
+				}*/
+				$tipoSeguimiento=$consultaGeneral->consTipoSeguimiento();
+				$areaDisc=$consultaGeneral->consAreaDisciplina();
+				$seguimientos=$modeloSeguimiento->consSegAdol();
+				$seguimientoPosEgreso=$modeloSeguimiento->consSegAdolPosEgreso();
+				$modeloPsc->num_doc=$numDocAdol;
+				$pscSinCulm=$modeloPsc->consultaPscSinCulm();	
+				$seguimientoPsc=$modeloSeguimientoPsc->consSeguimientosPsc();
+				$pscDes=$modeloPsc->consultaPscSeg(0);
+				$offset=0;
+	
+			//Yii::app()->user->getState('rol');
+			}
+			$this->render('_consSegForm',array(
+				'numDocAdol'=>$numDocAdol,	
+				'datosAdol'=>$datosAdol,
+				'edad'=>$edad,
+				'modeloInfJud'=>$modeloInfJud,
+				'infJudicial'=>$infJudicial,
+				'modeloSeguimiento'=>$modeloSeguimiento,
+				'tipoSeguimiento'=>$tipoSeguimiento,
+				'areaDisc'=>$areaDisc,
+				'seguimientos'=>$seguimientos,
+				'seguimientoPosEgreso'=>$seguimientoPosEgreso,
+				'modeloPsc'=>$modeloPsc,
+				'pscSinCulm'=>$pscSinCulm,
+				'modeloSeguimientoPsc'=>$modeloSeguimientoPsc,
+				'modeloAsistenciaPsc'=>$modeloAsistenciaPsc,
+				'pscDes'=>$pscDes,
+				'offset'=>$offset,
+				'paiAdol'=>$paiAdol
+					
+			));
+		}
+		else{
+			throw new CHttpException(403,'No tiene acceso a esta acción');
+		}
+	}
 	// Uncomment the following methods and override them if needed
 	/*
 	public function filters()
