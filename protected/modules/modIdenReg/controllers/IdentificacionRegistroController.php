@@ -419,8 +419,8 @@ class IdentificacionRegistroController extends Controller
 			$modeloInfJudAdmon->num_doc=$numDocAdol;
 			$infJudicial=$modeloInfJudAdmon->consultaInfJudOffset($offset);
 			if(!empty($infJudicial)){
-				foreach($infJudicial as $pk=>$infJudicialNov){
-					$infJud=$modeloInfJudAdmon->consultaInfJudNov($infJudicialNov["id_inf_judicial"]);
+				foreach($infJudicial as $pk=>$infJudicialAct){
+					$infJud=$modeloInfJudAdmon->consultaInfJudNov($infJudicialAct["id_inf_judicial"]);
 					if(!empty($infJud)){
 						$infJudicial[$pk]=$infJud;
 					}			
@@ -1258,7 +1258,7 @@ class IdentificacionRegistroController extends Controller
 		if(isset($_POST["InformacionJudicial"])){
 		 	$modeloInfJudAdmon->attributes=$datosInput["InformacionJudicial"];			
 			if($modeloInfJudAdmon->validate()){
-				$modeloInfJudAdmon->id_inf_judicial=$datosInput["InformacionJudicial"]["id_inf_actual"];
+				$modeloInfJudAdmon->id_inf_judicial=$datosInput["InformacionJudicial"]["id_inf_judicial"];
 				$modeloInfJudAdmon->id_inf_actual=$datosInput["InformacionJudicial"]["id_inf_actual"];
 				$modeloInfJudAdmon->novedad_infjud='true';
 				$resultado=$modeloInfJudAdmon->registraInfJudAdminAdol();

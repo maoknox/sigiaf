@@ -3,7 +3,7 @@
     Fecha de remisión (aaaa/mm/dd): <?php if(!empty($infJudicial["fecha_remision"])): echo CHtml::encode($infJudicial["fecha_remision"]); else:?>Sin Inf. <?php   endif;?> <br />
     Remitido por: <?php 
 		if(!empty($infJudicial["id_instancia_rem"])): 
-			foreach($instanciaRem as $id=>$instanciaRem){
+			foreach($instanciaRem as $id=>$instanciaRem){//revisar
 				if($instanciaRem["id_instancia_rem"]===$infJudicial["id_instancia_rem"]){
 					echo CHtml::encode($instanciaRem["nombre_instancia_rem"]);
 				}
@@ -22,14 +22,14 @@
     Delito: <?php //echo $infJudicial["id_inf_judicial"];
 		$modeloInfJud->id_inf_judicial=$infJudicial["id_inf_judicial"];
 		$delitosAdol=$modeloInfJud->consultaDelito();
-		foreach($delitosAdol as  $delitosAdol){
+		foreach($delitosAdol as  $delitosAdol){//revisar
 			echo CHtml::encode($delitosAdol["del_remcespa"]);
 		}
 	
 	?><br />
     Estado del proceso: <?php 
 		if(!empty($infJudicial["id_proc_jud"])): 
-			foreach($espProcJud as $id=>$espProcJud){
+			foreach($espProcJud as $id=>$espProcJud){//revisar
 				if($espProcJud["id_proc_jud"]===$infJudicial["id_proc_jud"]){
 					echo CHtml::encode($espProcJud["proc_jud"]);
 				}
@@ -38,7 +38,7 @@
     PARD con vinculación al SRP:<?php if(!empty($infJudicial["pard"])): ?> Si <?php else:?>No <?php   endif;?> <br />
     Id Tipo Sancion: <?php 
 		if(!empty($infJudicial["id_tipo_sancion"])): 
-			foreach($tipoSancion as $id=>$tipoSancion){
+			foreach($tipoSancion as $id=>$tipoSancion){//revisar
 				if($tipoSancion["id_tipo_sancion"]===$infJudicial["id_tipo_sancion"]){
 					echo CHtml::encode($tipoSancion["tipo_sancion"]);
 				}

@@ -49,7 +49,9 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
 <?php 
 //echo $offset//echo $datosRef["id_referenciacion"]
 	//echo count($infJudicial);
-	foreach($infJudicial as $pk=>$infJudicial):
+	$infsJudicial=$infJudicial;
+	$infJudicial="";
+	foreach($infsJudicial as $pk=>$infJudicial)://revisar
 ?>
 <?php 	
 	$formConsRef=$this->beginWidget('CActiveForm', array(
@@ -77,7 +79,7 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
 			}*/
 			$modeloInfJudAdmon->id_inf_judicial=$infJudicial["id_inf_judicial"];
 	   		$delitosAdol=$modeloInfJudAdmon->consultaDelito();
-			foreach($delitosAdol as  $delitosAdol){
+			foreach($delitosAdol as  $delitosAdol){//revisar
 				echo CHtml::encode($delitosAdol["del_remcespa"]);
 			}	   		
 		?>
@@ -94,9 +96,9 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
 			echo $formConsRef->hiddenField($modeloInfJudAdmon,"id_inf_judicial");
 			// si es novedad es instanciado el id de la información judicial original.
 			if(empty($infJudicial["id_inf_judicial_princ"])){
+				echo $infJudicial["id_inf_judicial_princ"];
 				$infJudicial["id_inf_judicial_princ"]=$infJudicial["id_inf_judicial"];
 			}
-			
 			echo CHtml::hiddenField("id_inf_jud_primaria",$infJudicial["id_inf_judicial_princ"],array('name'=>"id_inf_jud_primaria"));
 			$boton=CHtml::button(
 					'Ir al registro',

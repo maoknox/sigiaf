@@ -61,7 +61,7 @@
                     <?php echo CHtml::label($laboratorio["laboratorio_clin"],$laboratorio["laboratorio_clin"],array('class'=>'col-md-4 control-label','for'=>'searchinput'));	?>
                     <?php //echo $formularioLabClinicos->labelEx($modeloLabclinValnutr,'resultado_labclin',array('class'=>'col-md-4 control-label','for'=>'searchinput'));//'onblur'=>'js:enviaFormNutr("formularioHistVida","divObsNacim")'?>
                     <div class="col-sm-2">
-                        <?php echo $formularioLabClinicos->textField($modeloLabclinValnutr,'resultado_labclin',array('class'=>'form-control input-md','onchange'=>'js:$("#formularioLabClinicos'.$pk.'").addClass("has-warning");'));?>
+                        <?php echo $formularioLabClinicos->textArea($modeloLabclinValnutr,'resultado_labclin',array('class'=>'form-control input-md','onchange'=>'js:$("#formularioLabClinicos'.$pk.'").addClass("has-warning");'));?>
                         <?php echo $formularioLabClinicos->error($modeloLabclinValnutr,'resultado_labclin',array('style' => 'color:#F00'));?>
                     </div>
                     <div class="col-sm-2">

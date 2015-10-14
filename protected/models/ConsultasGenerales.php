@@ -465,7 +465,7 @@ class ConsultasGenerales extends CFormModel{
 		$read_ConsEnt=$query_ConsEnt->query();
 		$res_ConsEnt=$read_ConsEnt->readAll();
 		$read_ConsEnt->close();
-		foreach($res_ConsEnt as $res_ConsEnt){
+		foreach($res_ConsEnt as $res_ConsEnt){//revisar
 			$res[]=array("id"=>$res_ConsEnt["id"],"contenido"=>$res_ConsEnt["contenido"]);
 		}
 		return $res;			
@@ -937,6 +937,69 @@ class ConsultasGenerales extends CFormModel{
 		$readValPsicolAdol->close();
 		return $resValPsicolAdol;
 	}	
+	public function consultaSgsss(){
+		$conect=Yii::app()->db;
+		$sqlConsSgsssAdol="select * from sgsss as a 
+			left join regimen_salud as b on b.id_regimen_salud=a.id_regimen_salud 
+			left join eps_adol as c on c.id_eps_adol=a.id_eps_adol  
+			where num_doc=:num_doc";		
+		$consSgsssAdol=$conect->createCommand($sqlConsSgsssAdol);
+		$consSgsssAdol->bindParam(":num_doc",$this->numDocAdol);
+		$readSgsssAdol=$consSgsssAdol->query();
+		$resSgsssAdol=$readSgsssAdol->read();
+		$readSgsssAdol->close();
+		return $resSgsssAdol;
+	}
+	public function consultaInfJudicial(){
+		$conect=Yii::app()->db;
+		$sqlConsInfJudicial="select * from informacion_judicial as a 
+			left join instancia_remisora as b on b.id_instancia_rem=a.id_instancia_rem 
+			left join tipo_sancion as c on c.id_tipo_sancion=a.id_tipo_sancion
+			where num_doc=:num_doc and novedad_infjud='false'";
+		$consInfJudicial=$conect->createCommand($sqlConsInfJudicial);
+		$consInfJudicial->bindParam(":num_doc",$this->numDocAdol);
+		$readInfJudicial=$consInfJudicial->query();
+		$resInfJudicial=$readInfJudicial->readAll();
+		$readInfJudicial->close();
+		return $resInfJudicial;
+	}
+	public function consultaInfJudNov($idInfJud){
+		$conect=Yii::app()->db;
+		$sqlConsInfJud="select * from novedad_inf_judicial as a 
+			left join informacion_judicial as b on a.nov_id_inf_judicial=b.id_inf_judicial 
+			left join instancia_remisora as c on c.id_instancia_rem=b.id_instancia_rem 
+			left join tipo_sancion as d on d.id_tipo_sancion=b.id_tipo_sancion
+			where a.id_inf_judicial=:id_inf_judicial order by fecha_reg_novedad desc limit 1";
+		$consInfJud=$conect->createCommand($sqlConsInfJud);	
+		$consInfJud->bindParam(":id_inf_judicial",$idInfJud,PDO::PARAM_INT);
+		$readInfJud=$consInfJud->query();
+		$resInfJud=$readInfJud->read();
+		$readInfJud->close();
+		return $resInfJud;
+	}
+	public function consultaInfJudicialPorId(){
+		$conect=Yii::app()->db;
+		$sqlConsInfJudicial="select * from informacion_judicial as a 
+			left join instancia_remisora as b on b.id_instancia_rem=a.id_instancia_rem 
+			left join tipo_sancion as c on c.id_tipo_sancion=a.id_tipo_sancion
+			where num_doc=:num_doc and novedad_infjud='false'";
+		$consInfJudicial=$conect->createCommand($sqlConsInfJudicial);
+		$consInfJudicial->bindParam(":num_doc",$this->numDocAdol);
+		$readInfJudicial=$consInfJudicial->query();
+		$resInfJudicial=$readInfJudicial->read();
+		$readInfJudicial->close();
+		return $resInfJudicial;
+	}
+	public function consDelitos($idInfJud){
+		$conect=Yii::app()->db;
+		$sqlConsDelitos="select * from infjud_del_remcesp as a left join delito_rem_cespa as b on b.id_del_rc=a.id_del_rc where id_inf_judicial=:id_inf_judicial";
+		$consDelitos=$conect->createCommand($sqlConsDelitos);
+		$consDelitos->bindParam(":id_inf_judicial",$idInfJud);
+		$readDelitos=$consDelitos->query();
+		$resDelitos=$readDelitos->readAll();
+		$readDelitos->close();
+		return $resDelitos;
+	}
 }  
 
 

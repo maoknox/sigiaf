@@ -21,7 +21,8 @@
 		//$consDelitoVinc[]=array('1'=>'1');$consDelitoVinc[]=array('1'=>'1');
 	 if(!empty($consDelitoVinc)):?>
     	
-		<?php  foreach($consDelitoVinc as $pk=>$consDelitoVinc): $pk+=1;?>
+		<?php  foreach($consDelitoVinc as $pk=>$consDelitoVinc): //revisar
+		$pk+=1;?>
 			<tr>
             	<td style=" border:1px solid #000; width:25%">
 					<?php echo $pk;

@@ -19,7 +19,7 @@
     <div class="radio">
     <?php 
 		$selOpt=false;
-		foreach($estadoCompVal as $estadoCompVal){
+		foreach($estadoCompVal as $estadoCompVal){//revisar
 			if($modeloValPsicol->id_estado_val==$estadoCompVal["id_estado_val"]){$selOpt=true;}
 			echo CHtml::radioButton('ValoracionPsicologia[id_estado_val]',$selOpt,array('value'=>$estadoCompVal["id_estado_val"],'id'=>'estValPsic'.$estadoCompVal["id_estado_val"],
 			'onclick'=>'js:$("#estadoVal").addClass("has-warning");validaDilValoracion("formularioEstVal","estadoVal")'))."".$estadoCompVal["estado_val"]."<br/>";

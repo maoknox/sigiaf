@@ -33,7 +33,7 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
     	<p class="col-md-4 form-control">
 			<?php 
             if(!empty($modeloRef->id_beneficiario)){
-                foreach($beneficiario as $beneficiario){
+                foreach($beneficiario as $beneficiario){//revisar
                     if($beneficiario["id_beneficiario"]==$modeloRef->id_beneficiario){
 						echo $beneficiario["beneficiario"];
                     }
@@ -53,7 +53,7 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
     	<p class="col-md-4 form-control">
 			<?php 
             if(!empty($modeloRef->id_esp_sol)){
-                foreach($espNi as $espNi){
+                foreach($espNi as $espNi){//revisar
                     if($espNi["id_esp_sol"]==$modeloRef->id_esp_sol){
                         echo $espNi["esp_sol"];
                     }
@@ -72,7 +72,7 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
     	<p class="col-md-4 form-control">
 			<?php 
             if(!empty($modeloRef->id_esp_solii)){
-                foreach($espNii as $espNii){
+                foreach($espNii as $espNii){//revisar
                     if($espNii["id_esp_solii"]===$modeloRef->id_esp_solii){
                         echo $espNii["esp_solii"];
                     }
@@ -90,7 +90,7 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
     <div class="col-md-4">
     	<p class="col-md-4 form-control">
 			<?php 
-            if(!empty($modeloRef->id_esp_soliii)){
+            if(!empty($modeloRef->id_esp_soliii)){//revisar
                 foreach($espNiii as $espNiii){
                     if($espNiii["id_esp_soliii"]===$modeloRef->id_esp_soliii){
                         echo $espNiii["esp_soliii"];
@@ -138,7 +138,7 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
     <div class="col-md-4">
     	<p class="col-md-4 form-control">
 			<?php
-            foreach($estadoRef as $estadoRef){
+            foreach($estadoRef as $estadoRef){//revisar
                 if($estadoRef["id_estadoref"]===$modeloRef->id_estadoref){
                     echo $estadoRef["estado_ref"];
                 }
@@ -169,7 +169,7 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
     <div class="col-md-4">
     	<p class="col-md-4 form-control">
 			<?php 
-			foreach($rol as $rol):
+			foreach($rol as $rol)://revisar
 				if($rol["id_rol"]===$profesional["id_rol"]):
 					echo $rol["nombre_rol"];
 				 endif;?>

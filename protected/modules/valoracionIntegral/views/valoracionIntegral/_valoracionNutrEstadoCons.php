@@ -17,7 +17,7 @@
     <div class="radio">
     <?php 
 		$selOpt=false;
-		foreach($estadoCompVal as $estadoCompVal){
+		foreach($estadoCompVal as $estadoCompVal){//revisar
 			if($modeloValNutr->id_estado_val==$estadoCompVal["id_estado_val"]){$selOpt=true;}
 			echo CHtml::radioButton('ValoracionNutricional[id_estado_val]',$selOpt,array('value'=>$estadoCompVal["id_estado_val"],'id'=>'estValPsic'.$estadoCompVal["id_estado_val"]))."".$estadoCompVal["estado_val"]."<br/>";
 			$selOpt=false;

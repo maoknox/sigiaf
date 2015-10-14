@@ -222,7 +222,7 @@
                 $op=array();
                 foreach($origenAlimentos as $origenAlimento){
                     if(!empty($origenAlimentosHogar) && is_array($origenAlimentosHogar)){
-                        foreach($origenAlimentosHogar as $$origenAlimentoHogar){						
+                        foreach($origenAlimentosHogar as $origenAlimentoHogar){						
                             if($origenAlimento["id_origen_alim"]==$origenAlimentoHogar["id_origen_alim"]){
                                 $op[$origenAlimento["id_origen_alim"]]=array('selected'=>true);
                             }

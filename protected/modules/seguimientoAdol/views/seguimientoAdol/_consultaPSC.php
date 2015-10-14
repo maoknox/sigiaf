@@ -15,7 +15,7 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
 <?php if(!empty($numDocAdol)):
 	$psc=false;
 	if(!empty($infJudicial)):
-		foreach($infJudicial as $infJudicial){
+		foreach($infJudicial as $infJudicial){//revisar
 			if($infJudicial["id_tipo_sancion"]==3){
 				$psc=true;
 			}

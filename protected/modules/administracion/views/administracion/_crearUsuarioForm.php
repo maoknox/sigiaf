@@ -95,7 +95,7 @@
 									if(datos.resultado=="\'exito\'"){
 										$("#formularioCreaUsuario #formularioCreaUsuario_es_").html("");                                                    
 										$("#formularioCreaUsuario #formularioCreaUsuario_es_").hide(); 
-										$("#Mensaje").text("Se creo el usuario exitosamente");
+										jAlert("Se creo el usuario exitosamente","Mensaje");
 										$("#formularioCreaUsuario").removeClass("unsavedForm");   
 									}
 									else{

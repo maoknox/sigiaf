@@ -94,7 +94,7 @@
 <td style=" border:1px solid #003; width:60%;">SEGUIMIENTO</td>
 <td style=" border:1px solid #003; width:20%;">HISTÓRICO SEGUIMIENTO</td>
 </table>
-	<?php foreach($infJudicialPai as $infJudicialPai):
+	<?php foreach($infJudicialPai as $infJudicialPai)://revisar
 		$modeloCompSanc->id_inf_judicial=$infJudicialPai["id_inf_judicial"];
 		$consCompSancPai=$modeloCompSanc->consultaPaiSancAdol();	
 		$modeloCompSanc->attributes=$consCompSancPai;

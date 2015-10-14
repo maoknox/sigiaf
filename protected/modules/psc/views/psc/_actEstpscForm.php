@@ -62,7 +62,7 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
                         $modeloDiaHora->num_doc=$modeloPsc->num_doc;
                         $horario=$modeloDiaHora->consultaHorario();
                         if(!empty($horario)){
-                            foreach($horario as $horario):?>
+                            foreach($horario as $horario)://revisar?>
                                 <tr>
                                     <td><?php echo $horario["nomb_dia"]?></td>
                                     <td><?php echo $horario["hora_inicio"]."-".$horario["hora_inicio_m"];?></td>

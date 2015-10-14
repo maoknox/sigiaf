@@ -20,7 +20,7 @@
 <?php
 	//$grupoFamiliar=array('id'=>1);
 	if(!empty($grupoFamiliar)):?>
-		<?php foreach($grupoFamiliar as $pk=>$grupoFamiliar): $pk+=1;	?>
+		<?php foreach($grupoFamiliar as $pk=>$grupoFamiliar): $pk+=1;	//revisar?>
 			<tr>
             	<td style=" border:1px solid #000;width:15%"><?php echo CHtml::textField('nomb_fam_'.$pk,$grupoFamiliar["nombres_familiar"]); ?></td>
                 <td style=" border:1px solid #000;width:15%"><?php echo CHtml::textField('ap_fam_'.$pk,$grupoFamiliar["apellidos_familiar"]); ?></td>
@@ -133,7 +133,7 @@
     </tr>
     <td>
 		<?php 
-			foreach($antFam as $pkAnt=>$antFam){
+			foreach($antFam as $pkAnt=>$antFam){ //revisar
 				echo CHtml::CheckBox('intprev',false, array (
 					'id'=>'intprev_'.$pkAnt,
 					'value'=>$antFam["id_ant_fam"]
@@ -145,7 +145,7 @@
 		<?php 
 			//print_r($probAsoc);
 			
-			foreach($probAsoc as $pkPrA=>$probAsoc){
+			foreach($probAsoc as $pkPrA=>$probAsoc){ //revisar
 				if(strpos($probAsoc["problema_asoc"],'pandillas')>0){
 					echo CHtml::CheckBox('prob_asoc',false, array (
 						'id'=>'prob_asoc_'.$pkPrA,
@@ -180,7 +180,7 @@
     <td>
      	<?php 
 			//print_r($servProt);
-			foreach($servProt as $pkSrPr=>$servProt){
+			foreach($servProt as $pkSrPr=>$servProt){ //revisar
 				echo CHtml::CheckBox('prob_asoc',false, array (
 					'id'=>'prob_asoc_'.$pkSrPr,
 					'value'=>$servProt["id_serv_protec"]

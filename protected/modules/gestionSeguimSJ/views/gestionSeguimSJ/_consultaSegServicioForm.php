@@ -37,7 +37,7 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
         
     </tr>
 <?php 
-	foreach($datosRef as $pk=>$datosRef):
+	foreach($datosRef as $pk=>$datosRef)://revisar variable
 ?>
 <?php $formConsRef=$this->beginWidget('CActiveForm', array(
 	'id'=>'formularioConsRef_'.$pk,

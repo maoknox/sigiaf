@@ -81,7 +81,7 @@ class AsignacionServicioController extends Controller{
 			$consEspNi=$consGen->consultaNivelEsp($datosInput["id_tiporef"]);
 			$consBen=$consGen->consultaBeneficiario($datosInput["id_tiporef"]);
 			//echo CHtml::tag('option',array('value'=>''),CHtml::encode('Seleccione un Municipio'),true);
-			foreach($consEspNi as $consEspNi){
+			foreach($consEspNi as $consEspNi){//revsiar
 				$consEsp[$consEspNi["id_esp_sol"]]=array("cont"=>$consEspNi["esp_sol"],"idben"=>$consBen["id_beneficiario"]);
     		}
 			echo json_encode($consEsp);			
@@ -95,7 +95,7 @@ class AsignacionServicioController extends Controller{
 			$consEspNii=$consGen->consultaNivelEspii($datosInput["ReferenciacionAdol"]["id_esp_sol"]);
 			if(!empty($consEspNii)){
 				echo CHtml::tag('option',array('value'=>''),CHtml::encode('Seleccione una espnii'),true);
-				foreach($consEspNii as $consEspNii){
+				foreach($consEspNii as $consEspNii){//revisar
 					echo CHtml::tag('option',array('value'=>$consEspNii["id_esp_solii"]),CHtml::encode($consEspNii["esp_solii"]),true);
 				}
 			}
@@ -112,7 +112,7 @@ class AsignacionServicioController extends Controller{
 			$consEspNii=$consGen->consultaNivelEspiii($datosInput["ReferenciacionAdol"]["id_esp_solii"]);
 			if(!empty($consEspNii)){
 				echo CHtml::tag('option',array('value'=>''),CHtml::encode('Seleccione una espniii'),true);
-				foreach($consEspNii as $consEspNii){
+				foreach($consEspNii as $consEspNii){//revisar
 					echo CHtml::tag('option',array('value'=>$consEspNii["id_esp_solii"]),CHtml::encode($consEspNii["esp_solii"]),true);
 				}
 			}

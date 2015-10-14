@@ -24,6 +24,9 @@
 </fieldset>
 <?php
 	if(!empty($numDocAdol)):
+	Yii::import('application.models.ConsultasGenerales');	
+	$modeloConsultasGen=new ConsultasGenerales();
+	$modeloConsultasGen->numDocAdol=$numDocAdol;
 ?>
 <div class="panel-heading color-sdis">Datos del Adolescente</div>
 <fieldset>
@@ -65,15 +68,96 @@
         </td>
         <td style="border:1px solid #003;">
          Telefono: 
-        	<?php if(!empty($telefonoAdol)):?>
-            	<?php foreach($telefonoAdol as $pk=>$telefono):
-					echo $telefono["tipo_telefono"].": ".$telefono["telefono"]." ";				
+        	<?php 
+				$telefonosAdol=$modeloConsultasGen->consultaTelefono();
+				if(!empty($telefonosAdol)):?>
+            	<?php foreach($telefonosAdol as $pk=>$telefonoAdol):
+					echo $telefonoAdol["tipo_telefono"].": ".$telefonoAdol["telefono"]." ";				
 				 endforeach;?>
         	<?php else:?>
             	Sin Información
             <?php endif;?>
         </td>
-    </tr>
+        </tr>
+        <tr>
+        <td>
+        	<?php
+				$salud=$modeloConsultasGen->consultaSgsss();
+				if(empty($salud)){
+					$salud["regimen_salud"]="Sin Inf.";
+					$salud["eps_adol"]="Sin Inf.";
+				}
+			?>
+        	Régimen: <?= $salud["regimen_salud"]; ?> 
+        </td>
+        <td>
+        	EPS: <?= $salud["eps_adol"]; ?>
+        </td>
+        </tr>
+        <tr>
+        	<td>
+            	<?php
+					$datosVinc=$modeloConsultasGen->consultaDatosRemision();
+					if(empty($datosVinc)){
+						$datosVinc["fecha_vinc_forjar"]="Sin Inf.";
+					}
+				?>
+                Fecha de ingreso: <?= $datosVinc["fecha_vinc_forjar"];?>     
+            </td>
+            <td>
+            
+            </td>
+            </tr>
+        <?php
+			$infsJudicial=$modeloConsultasGen->consultaInfJudicial();
+			$infJudiciali=array();
+			 if(!empty($infsJudicial)){
+				foreach($infsJudicial as $pk=>$infJudiciali){
+					$consNovedadInfJud=$modeloConsultasGen->consultaInfJudNov($infJudiciali["id_inf_judicial"]);
+					if(!empty($consNovedadInfJud)){
+						//print_r($consNovedadInfJud);
+						$infsJudicial[$pk]=$consNovedadInfJud;
+					}
+				}
+			 }
+		?> 
+        <?php
+			if(!empty($infsJudicial)):
+			//$infJudicial=array(); 
+				foreach($infsJudicial as $infJudicial):?>    
+				 <tr>
+					<td>
+						Remisión por: <?= $infJudicial["nombre_instancia_rem"]?>
+					</td>
+					<td>
+						Sanción Actual: <?= $infJudicial["tipo_sancion"]?>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<?php
+							$consDelitos=$modeloConsultasGen->consDelitos($infJudicial["id_inf_judicial"]);
+						?>
+						Delito(s):
+						<?php foreach($consDelitos as $delito):?>
+							<div>-<?= $delito["del_remcespa"]?></div>
+						<?php endforeach;?>
+					</td>
+					<td>
+						Número de proceso: <?= $infJudicial["no_proceso"]?>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Juez: <?= $infJudicial["juez"]?>
+					</td>
+					<td>
+						Defensor: <?= $infJudicial["defensor"]?>
+					</td>
+				</tr>
+                
+			<?php endforeach;
+			endif;?>
 </table>
 </fieldset>
 <?php endif;?>

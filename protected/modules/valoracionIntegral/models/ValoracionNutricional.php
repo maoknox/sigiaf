@@ -23,6 +23,7 @@
  * @property string $quirurgicos
  * @property string $hospitaliz_causas
  * @property string $alergicos
+ * @property string $toxicos 
  * @property string $familiares_nutr
  * @property string $otros_nutr
  * @property string $obs_esquema_vac
@@ -105,10 +106,10 @@ class ValoracionNutricional extends CActiveRecord
 			array('num_doc', 'length', 'max'=>15),
 			array('semanas_gestacion, talla_nacim_cms, peso_nacim_kgs', 'length', 'max'=>20),
 			array('tiempo_lactancia, tiempo_biberon, quien_cocina_casa, donde_recibe_alim', 'length', 'max'=>100),
-			array('observaciones_nacim, patologicos, quirurgicos, hospitaliz_causas, alergicos, familiares_nutr, otros_nutr, obs_esquema_vac, control_crec_des, obs_crec_des, medicamentos_nutr, procedencia_padres, alimentos_preferidos, alimentos_rechazados, alimentos_intolerados, supl_compl_nutr, recibio_leche_mat, recibio_biberon, quien_cocina_casa, donde_recibe_alim, desarrollo_psicomotor, examen_fisico, concepto_nutr, estrategia_intervencion, objetivo_aliment_nutr, diagnostico_clasif_nutr, fecha_ini_vnutr, fecha_modif_vnutr, val_hab_nutr, val_act_nutr, observ_estvalnutr, estado_val_nutr', 'safe'),
+			array('observaciones_nacim, patologicos, quirurgicos, hospitaliz_causas, alergicos, toxicos, familiares_nutr, otros_nutr, obs_esquema_vac, control_crec_des, obs_crec_des, medicamentos_nutr, procedencia_padres, alimentos_preferidos, alimentos_rechazados, alimentos_intolerados, supl_compl_nutr, recibio_leche_mat, recibio_biberon, quien_cocina_casa, donde_recibe_alim, desarrollo_psicomotor, examen_fisico, concepto_nutr, estrategia_intervencion, objetivo_aliment_nutr, diagnostico_clasif_nutr, fecha_ini_vnutr, fecha_modif_vnutr, val_hab_nutr, val_act_nutr, observ_estvalnutr, estado_val_nutr', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id_val_nutricion, id_esquema_vac, id_masticacion, id_apetito, id_digestion, id_estado_val, id_hab_intest, id_ingesta, id_nivel_act_fis, num_doc, id_tipo_parto, semanas_gestacion, talla_nacim_cms, peso_nacim_kgs, observaciones_nacim, patologicos, quirurgicos, hospitaliz_causas, alergicos, familiares_nutr, otros_nutr, obs_esquema_vac, control_crec_des, obs_crec_des, medicamentos_nutr, procedencia_padres, alimentos_preferidos, alimentos_rechazados, alimentos_intolerados, supl_compl_nutr, recibio_leche_mat, tiempo_lactancia, recibio_biberon, tiempo_biberon, personas_alim_olla, quien_cocina_casa, num_comidas_diarias, donde_recibe_alim, inicio_almient_compl, horas_sueno, desarrollo_psicomotor, examen_fisico, concepto_nutr, estrategia_intervencion, objetivo_aliment_nutr, diagnostico_clasif_nutr, fecha_ini_vnutr, fecha_modif_vnutr, val_hab_nutr, val_act_nutr, observ_estvalnutr, estado_val_nutr', 'safe', 'on'=>'search'),
+			array('id_val_nutricion, id_esquema_vac, id_masticacion, id_apetito, id_digestion, id_estado_val, id_hab_intest, id_ingesta, id_nivel_act_fis, num_doc, id_tipo_parto, semanas_gestacion, talla_nacim_cms, peso_nacim_kgs, observaciones_nacim, patologicos, quirurgicos, hospitaliz_causas, alergicos, toxicos, familiares_nutr, otros_nutr, obs_esquema_vac, control_crec_des, obs_crec_des, medicamentos_nutr, procedencia_padres, alimentos_preferidos, alimentos_rechazados, alimentos_intolerados, supl_compl_nutr, recibio_leche_mat, tiempo_lactancia, recibio_biberon, tiempo_biberon, personas_alim_olla, quien_cocina_casa, num_comidas_diarias, donde_recibe_alim, inicio_almient_compl, horas_sueno, desarrollo_psicomotor, examen_fisico, concepto_nutr, estrategia_intervencion, objetivo_aliment_nutr, diagnostico_clasif_nutr, fecha_ini_vnutr, fecha_modif_vnutr, val_hab_nutr, val_act_nutr, observ_estvalnutr, estado_val_nutr', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -168,6 +169,7 @@ class ValoracionNutricional extends CActiveRecord
 			'quirurgicos' => 'Quirúrgicos',
 			'hospitaliz_causas' => 'Hosptialización y # de causas',//hospitaliz_causas
 			'alergicos' => 'Alérgicos',
+			'toxicos' => 'Tóxicos',
 			'familiares_nutr' => 'Familiares',
 			'otros_nutr' => 'Otros',
 			'obs_esquema_vac' => 'Observación del esquema de vacunación',
@@ -241,6 +243,7 @@ class ValoracionNutricional extends CActiveRecord
 		$criteria->compare('quirurgicos',$this->quirurgicos,true);
 		$criteria->compare('hospitaliz_causas',$this->hospitaliz_causas,true);
 		$criteria->compare('alergicos',$this->alergicos,true);
+		$criteria->compare('toxicos',$this->toxicos,true);
 		$criteria->compare('familiares_nutr',$this->familiares_nutr,true);
 		$criteria->compare('otros_nutr',$this->otros_nutr,true);
 		$criteria->compare('obs_esquema_vac',$this->obs_esquema_vac,true);

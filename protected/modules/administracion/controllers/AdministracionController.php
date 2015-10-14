@@ -456,7 +456,7 @@ class AdministracionController extends Controller{
 						$params              = array('modeloUsuario'=>$modeloUsuario,'clave'=>$clave);
 						$message->subject    = 'Datos Acceso';
 						$message->setBody($params, 'text/html');                
-						$message->addTo("femauro@gmail.com");
+						$message->addTo($modeloPersona->correo_electronico);
 						$message->from = Yii::app()->params['adminEmail'];
 						Yii::app()->mail->send($message);   
 					}

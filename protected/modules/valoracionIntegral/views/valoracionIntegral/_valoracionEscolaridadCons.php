@@ -14,7 +14,8 @@
 <?php
 	//$escolaridadAdol=array('id'=>1);
 	if(!empty($escolaridadAdol)):?>
-		<?php foreach($escolaridadAdol as $pk=>$escolaridadAdol): $pk+=1;	?>
+		<?php foreach($escolaridadAdol as $pk=>$escolaridadAdol): //revisar
+		$pk+=1;	?>
 			<tr id="<?php echo $pk;?>">
             	<td style=" border:1px solid #000;width:15%">
 					<?php

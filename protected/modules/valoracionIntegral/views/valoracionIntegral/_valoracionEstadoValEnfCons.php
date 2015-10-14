@@ -19,7 +19,7 @@
         <div class="radio">
             <?php 
                 $selOpt=false;
-                foreach($estadoCompVal as $estadoCompVal){
+                foreach($estadoCompVal as $estadoCompVal){//revisar
                     if($modeloValEnf->id_estado_val==$estadoCompVal["id_estado_val"]){$selOpt=true;}
                     echo CHtml::radioButton('ValoracionEnfermeria[id_estado_val]',$selOpt,
                         array(

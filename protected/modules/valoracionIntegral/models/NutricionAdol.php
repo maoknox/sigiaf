@@ -306,7 +306,7 @@ class NutricionAdol extends CActiveRecord
 			where
 				id_nutradol=:id_nutradol and 
 				id_val_nutricion=:id_val_nutricion and
-				id_tipoact_pld=id_tipoact_pld and				
+				id_tipoact_pld=id_tipoact_pld				
 			";
 			$regNutrAdol=$conect->createCommand($sqlRegNutrAdol);
 			$regNutrAdol->bindParam(":id_nutradol",$this->id_nutradol,PDO::PARAM_STR);

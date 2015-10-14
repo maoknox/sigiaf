@@ -151,7 +151,7 @@
 	//$grupoFamiliar=array('id'=>1);
 	//print_r($grupoFamiliar);
 	if(!empty($grupoFamiliar)):?>
-		<?php foreach($grupoFamiliar as $pk=>$grupoFamiliar): $pk+=1;	?>
+		<?php foreach($grupoFamiliar as $pk=>$grupoFamiliar): $pk+=1;	//revisar?>
 			<tr id="<?php echo $pk;?>">
             	<td style=" border:1px solid #000;width:15%"><?php echo CHtml::textField('nomb_fam_'.$pk,$grupoFamiliar["nombres_familiar"]); ?></td>
                 <td style=" border:1px solid #000;width:15%"><?php echo CHtml::textField('ap_fam_'.$pk,$grupoFamiliar["apellidos_familiar"]); ?></td>
@@ -351,7 +351,7 @@ else{
         ?>
 		<?php echo  $formAntFam->errorSummary($modeloAntFFamilia,'','',array('style' => 'font-size:14px;color:#F00')); ?>
 		<?php 
-			foreach($antFam as $pkAnt=>$antFam){
+			foreach($antFam as $pkAnt=>$antFam){//revisar
 				$checked=false;
 				if(!empty($antFamAdol)){
 					foreach($antFamAdol as $antFamAdoli){
@@ -506,7 +506,7 @@ else{
 		<?php echo  $formServProt->errorSummary($modeloServprotecValtsocial,'','',array('style' => 'font-size:14px;color:#F00')); ?>
      	<?php 
 			//print_r($servProt);
-			foreach($servProt as $pkSrPr=>$servProt){
+			foreach($servProt as $pkSrPr=>$servProt){//revisar
 				$checked=false;
 				if(!empty($servProtAdol)){
 					foreach($servProtAdol as $servProtAdoli){

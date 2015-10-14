@@ -42,7 +42,7 @@
 		//$consConsumoSPA[]=array('1'=>'1');$consDelitoVinc[]=array('1'=>'1');
 	 if(!empty($consConsumoSPA)):?>
     	
-		<?php  foreach($consConsumoSPA as $pk=>$consConsumoSPA): $pk+=1;?>
+		<?php  foreach($consConsumoSPA as $pk=>$consConsumoSPA): $pk+=1; //revisar?>
 			<tr>
             	<td style=" border:1px solid #000; width:10%">
 					<?php
@@ -93,7 +93,7 @@
                     <?php 
 						$modeloValPsicol->idSPACons=$consConsumoSPA["id_tipo_conspa"];
 						$viaAdmonAdol=$modeloValPsicol->consultaViasAdmonAdol();
-							foreach($viaAdmonAdol as $viaAdmonAdol){
+							foreach($viaAdmonAdol as $viaAdmonAdol){//revisar
 								$opViaAdomon[$viaAdmonAdol["id_viaadmon_spa"]]=array('selected'=>true);
 							}                  
 						echo CHtml::dropDownList('viaAdmon_'.$pk,'viaAdmon_'.$pk,CHtml::listData($viaAdmon,'id_viaadmon_spa','viaadmon_spa'),
@@ -186,7 +186,7 @@
 			<div class="radio">
 				<?php 
                     $selOpt=false;
-                    foreach($patronCons as $patronCons){
+                    foreach($patronCons as $patronCons){//revisar
                         if($modeloValPsicol->id_patron_consumo==$patronCons["id_patron_consumo"]){$selOpt=true;}
                         echo CHtml::radioButton('ValoracionPsicologia[id_patron_consumo]',
                             $selOpt,array('id'=>'ValoracionPsicologia_id_patron_consumo_'.$patronCons["id_patron_consumo"],

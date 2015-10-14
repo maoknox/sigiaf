@@ -75,7 +75,8 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
                     Horario
                 </div>
                 <?php if(!empty($horario)): ?>
-                    <?php foreach($horario as $pk=>$horario): $dias[$pk]=$horario["id_dia"];?>
+                    <?php foreach($horario as $pk=>$horario)://revisar
+						 $dias[$pk]=$horario["id_dia"];?>
                         <div class="col-md-6">
                             <p class="cont-inf">
                                 <?php echo $horario["nomb_dia"];?>
@@ -101,7 +102,7 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
                         $horasCumpPsc=$modeloSeguimientoPsc->consHorasCumpPsc();
                         $numHoras=0;
                         if(!empty($horasCumpPsc)){
-                            foreach($horasCumpPsc as $horaCumpPsc){
+                            foreach($horasCumpPsc as $horaCumpPsc){//revisar
                                 $numHoras+=$horaCumpPsc["num_hora"];
                             }
                         }

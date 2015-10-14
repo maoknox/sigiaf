@@ -212,6 +212,25 @@
     	</div>
     </div>
    <?php $this->endWidget();?>
+   	<?php $formularioToxicos=$this->beginWidget('CActiveForm', array(
+			'id'=>'formularioToxicos',
+			'enableAjaxValidation'=>false,
+			'enableClientValidation'=>true,
+			'clientOptions'=>array(
+				'validateOnSubmit'=>false,
+			),
+			'htmlOptions' => array('class' => 'form-horizontal')
+		));
+    ?>
+    <div id="divToxicos" class="form-group"> 
+    	<div class="col-md-12">
+			<?php echo $formularioAlergicos->labelEx($modeloValNutr,'toxicos',array('class'=>'control-label','for'=>'searchinput'));//'onblur'=>'js:enviaFormNutr("formularioHistVida","divObsNacim")'?>
+			<?php echo $formularioAlergicos->textArea($modeloValNutr,'toxicos',array('class'=>'form-control','onkeyup'=>'js:$("#divToxicos").addClass("has-warning");'));?>
+        	<?php echo $formularioAlergicos->error($modeloValNutr,'toxicos',array('style' => 'color:#F00'));?>
+    	</div>
+    </div>
+   <?php $this->endWidget();?>
+
 	<?php $formularioFamiliares=$this->beginWidget('CActiveForm', array(
 			'id'=>'formularioFamiliares',
 			'enableAjaxValidation'=>false,
