@@ -53,7 +53,7 @@ $paiActual=$modeloPai->consultaPAIActual();
 //print_r($paiActual);
 $modeloPai->id_pai=$paiActual["id_pai"];
 //echo $modeloPai->id_pai;
-$sancion="";
+	$sancion="";
 	$modeloInfJud->num_doc=$adolescente["num_doc"];
 	$infJudicial=$modeloInfJud->consultaInfJudCabezote();
 	if(!empty($infJudicial)){
@@ -65,12 +65,27 @@ $sancion="";
 		}
 		
 		if(!empty($paiActual)){
-			foreach($infJudicial as $infJudicialCompSan){				
-				$resInfJud=$modeloCompSanc->consultaPaiSanc($infJudicialCompSan["id_inf_judicial"]);
-				if(!empty($resInfJud)){
-					if($paiActual["id_pai"]==$resInfJud["id_pai"]){
-						$compSancInfJud[]=$infJudicialCompSan;
+			
+			//$compSancInfJud=$infJudicial;						
+					
+			if(!empty($infJudicial)){			
+				foreach($infJudicial as $pkSan=>$infJudicialCompSan){				
+					$resInfJud=$modeloCompSanc->consultaPaiSanc($infJudicialCompSan["id_inf_judicial"]);
+					if(!empty($resInfJud)){
+						if($paiActual["id_pai"]==$resInfJud["id_pai"]){
+							$compSancInfJud[]=$infJudicialCompSan;
+						}
 					}
+					else{
+						$modeloCompSanc->id_pai=$modeloPai->id_pai;
+						$modeloCompSanc->id_inf_judicial=$infJudicialCompSan["id_inf_judicial"];						
+						$infJudSinPai=$modeloCompSanc->consultaSancSinPai();
+						if(empty($infJudSinPai)){
+							$compSancInfJud[]=$infJudicial[$pkSan];
+							
+						}
+						
+					}					
 				}
 			}
 		}

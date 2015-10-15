@@ -137,6 +137,18 @@ class ComponenteSancion extends CActiveRecord
 		$readConsPaiSancAdol->close();
 		return $resConsPaiSancAdol;
 	}
+	public function consultaSancSinPai(){
+		$conect= Yii::app()->db;
+		$sqlConsPaiSancAdol="select * from 	componente_sancion where id_inf_judicial=:id_inf_judicial and id_pai<>:id_pai";
+		$consPaiSancAdol=$conect->createCommand($sqlConsPaiSancAdol);
+		$consPaiSancAdol->bindParam(":id_inf_judicial",$this->id_inf_judicial,PDO::PARAM_INT);
+		$consPaiSancAdol->bindParam(":id_pai",$this->id_pai,PDO::PARAM_INT);
+		$readConsPaiSancAdol=$consPaiSancAdol->query();
+		$resConsPaiSancAdol=$readConsPaiSancAdol->read();
+		$readConsPaiSancAdol->close();
+		return $resConsPaiSancAdol;
+	}
+
 	public function consultaPaiSancAdol(){
 		$conect= Yii::app()->db;
 		$sqlConsPaiSancAdol="select * from componente_sancion where id_pai=:id_pai and id_inf_judicial=:id_inf_judicial and num_doc=:num_doc order by fecha_establec_compsanc desc";

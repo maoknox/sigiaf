@@ -1,7 +1,7 @@
 <?php //Yii::import('application.vendors.*'); require_once('pdftable/lib/pdftable.inc.php');
-		require_once(Yii::getPathOfAlias('webroot').'/protected/vendors/pdftable/lib/pdftable.inc.php');
-		//echo dirname(__FILE__);
-		define('FPDF_FONTPATH','font/');
+require_once(Yii::getPathOfAlias('webroot').'/protected/vendors/pdftable/lib/pdftable.inc.php');
+//echo dirname(__FILE__);
+define('FPDF_FONTPATH','font/');
 $pdf = new PDFTable('P','mm','Letter');
 $pdf->AliasNbPages();
 $pdf->AddPage();
@@ -42,8 +42,6 @@ if(empty($consAcud["barrio"])){$consAcud["barrio"]="Sin Inf.";}
 if(empty($consAcud["direccion"])){$consAcud["direccion"]="Sin Inf.";}
 if(empty($consAcud["estrato"])){$consAcud["estrato"]="Sin Inf.";}
 
-
-
 if(!empty($consAcud)){
 	$consultaGeneral->searchTerm=$consAcud["id_doc_familiar"];
 	$telsAcud=$consultaGeneral->consultaTelAcud();
@@ -53,7 +51,7 @@ $paiActual=$modeloPai->consultaPAIActual();
 //print_r($paiActual);
 $modeloPai->id_pai=$paiActual["id_pai"];
 //echo $modeloPai->id_pai;
-$sancion="";
+	$sancion="";
 	$modeloInfJud->num_doc=$adolescente["num_doc"];
 	$infJudicial=$modeloInfJud->consultaInfJudCabezote();
 	if(!empty($infJudicial)){
@@ -66,7 +64,7 @@ $sancion="";
 		
 		if(!empty($paiActual)){
 			
-			$compSancInfJud=$infJudicial;						
+			//$compSancInfJud=$infJudicial;						
 					
 			if(!empty($infJudicial)){			
 				foreach($infJudicial as $pkSan=>$infJudicialCompSan){				
@@ -75,6 +73,16 @@ $sancion="";
 						if($paiActual["id_pai"]==$resInfJud["id_pai"]){
 							$compSancInfJud[]=$infJudicialCompSan;
 						}
+					}
+					else{
+						$modeloCompSanc->id_pai=$modeloPai->id_pai;
+						$modeloCompSanc->id_inf_judicial=$infJudicialCompSan["id_inf_judicial"];						
+						$infJudSinPai=$modeloCompSanc->consultaSancSinPai();
+						if(empty($infJudSinPai)){
+							$compSancInfJud[]=$infJudicial[$pkSan];
+							
+						}
+						
 					}					
 				}
 			}
@@ -82,30 +90,32 @@ $sancion="";
 		else{
 			$compSancInfJud=$infJudicial;
 		}
-		foreach($compSancInfJud as $infJudCab){
-			$delRem="";
-			$modeloInfJud->id_inf_judicial=$infJudCab["id_inf_judicial"];
-			$delitos=$modeloInfJud->consultaDelito();
-			foreach($delitos as $delito){
-				$delRem.=$delito["del_remcespa"]." ";
+		if(!empty($compSancInfJud)){
+			foreach($compSancInfJud as $infJudCab){
+				$delRem="";
+				$modeloInfJud->id_inf_judicial=$infJudCab["id_inf_judicial"];
+				$delitos=$modeloInfJud->consultaDelito();
+				foreach($delitos as $delito){
+					$delRem.=$delito["del_remcespa"]." ";
+				}
+				$sancion.='
+				<tr>
+					<td colspan="3">'.utf8_decode("Remisión por:").' '.utf8_decode($infJudCab["nombre_instancia_rem"]).'</td>
+				</tr>
+				<tr>
+					<td>'.utf8_decode("Sanción:").' '.utf8_decode($infJudCab["tipo_sancion"]).'</td>
+					<td colspan="2">Delito: <br> '.utf8_decode($delRem).'</td>
+				</tr><tr>
+					<td>'.utf8_decode("Num. Juzgado:").' '.utf8_decode($infJudCab["juzgado"]).'</td>
+					<td>Num. Proceso: '.utf8_decode($infJudCab["no_proceso"]).'</td>
+					<td>'.utf8_decode("Tiempo sanción Meses:").' '.utf8_decode($infJudCab["tiempo_sancion"]).' - '.utf8_decode("Días:").' '.utf8_decode($infJudCab["tiempo_sancion_dias"]).' </td>
+				</tr>
+				<tr>
+					<td >Juez: '.utf8_decode($infJudCab["juez"]).' </td>
+					<td colspan="2">Defensor: '.utf8_decode($infJudCab["defensor"]).' </td>
+				</tr>
+			  ';
 			}
-			$sancion.='
-			<tr>
-				<td colspan="3">'.utf8_decode("Remisión por:").' '.utf8_decode($infJudCab["nombre_instancia_rem"]).'</td>
-			</tr>
-			<tr>
-				<td>'.utf8_decode("Sanción:").' '.utf8_decode($infJudCab["tipo_sancion"]).'</td>
-				<td colspan="2">Delito: <br> '.utf8_decode($delRem).'</td>
-			</tr><tr>
-				<td>'.utf8_decode("Num. Juzgado:").' '.utf8_decode($infJudCab["juzgado"]).'</td>
-				<td>Num. Proceso: '.utf8_decode($infJudCab["no_proceso"]).'</td>
-				<td>'.utf8_decode("Tiempo sanción Meses:").' '.utf8_decode($infJudCab["tiempo_sancion"]).' - '.utf8_decode("Días:").' '.utf8_decode($infJudCab["tiempo_sancion_dias"]).' </td>
-			</tr>
-			<tr>
-				<td >Juez: '.utf8_decode($infJudCab["juez"]).' </td>
-				<td colspan="2">Defensor: '.utf8_decode($infJudCab["defensor"]).' </td>
-			</tr>
-		  ';
 		}
 	}
 $table1='<table width="100%" border="1" cellpadding="0px" cellspacing="0px">
