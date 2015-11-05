@@ -296,13 +296,7 @@ if(!empty($servicios)){
 				$pdf->Cell(0,5,'Cargo: '.utf8_decode($seguimientoRefer["nombre_rol"]));
 				$pdf->Ln(10);	
 			}
-		}
-		else{
-			$pdf->SetFont('Arial','B',12);
-			$pdf->Cell(0,10,utf8_decode('El adolescente no tiene seguimientos en esta referenciación '.$fecha_inicial.' y '.$fecha_fin),0,0,'C');
-			$pdf->Ln();
-		}
-		
+		}		
 		$pdf->Ln(10);	
 	}
 }

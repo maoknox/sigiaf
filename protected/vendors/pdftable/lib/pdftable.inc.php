@@ -68,15 +68,15 @@ function Footer()
     // Arial italic 8
     $this->SetFont('Arial','I',8);
     // Número de página
-    $this->Cell(0,10,utf8_decode('Página ').$this->PageNo().'/{nb}',0,0,'C');
-$this->Image(Yii::getPathOfAlias('webroot').'/images/Logo-Bogota-Humana_0.jpg',$this->dimHor,$this->dimVert,22);
-	
+    $this->Cell(0,20,utf8_decode('Página ').$this->PageNo().'/{nb}',0,0,'C');
+//$this->Image(Yii::getPathOfAlias('webroot').'/images/Logo-Bogota-Humana_0.jpg',$this->dimHor,$this->dimVert,22);
+	$this->Image('http://aplicativos.sdis.gov.co/recursos/monkey/img/logo.png',$this->dimHor,$this->dimVert,44);		
 }
 
 
 function PDFTable($orientation,$unit,$format){
 	parent::FPDF($orientation,$unit,$format);
-	$this->SetMargins(30,20,20);
+	$this->SetMargins(30,20,20,25);
 	$this->SetAuthor('Pham Minh Dung');
 	$this->_makePageSize();
 	$this->isNotYetSetFont = true;
@@ -85,7 +85,7 @@ function PDFTable($orientation,$unit,$format){
 		$this->dimVert='275';
 	}
 	else if($format=='Letter'){
-		$this->dimHor='173';
+		$this->dimHor='153';
 		$this->dimVert='256';
 	}
 	

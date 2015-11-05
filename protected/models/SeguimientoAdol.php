@@ -356,7 +356,7 @@ class SeguimientoAdol extends CActiveRecord
 //where num_doc=:num_doc and fecha_seguimiento>:fecha_inicio and fecha_seguimiento<:fecha_fin
 		$sqlConsSeg="select * from seguimiento_adol as a 
 			left join tipo_seguimiento as b on b.id_tipo_seguim=a.id_tipo_seguim 
-			where num_doc=:num_doc and fecha_seguimiento>:fecha_inicio and fecha_seguimiento<:fecha_fin 
+			where num_doc=:num_doc and fecha_seguimiento>:fecha_inicio and fecha_seguimiento<=:fecha_fin 
 			and seg_posegreso=:seg_posegreso and seg_extraordinario=:seg_extraordinario order by fecha_seguimiento asc";
 		$conect=Yii::app()->db;
 		$consSeg=$conect->createCommand($sqlConsSeg);

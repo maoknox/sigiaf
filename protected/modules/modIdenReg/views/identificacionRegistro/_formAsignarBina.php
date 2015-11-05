@@ -75,7 +75,7 @@ endif;
 											$("#formularioAsignaBina").removeClass("unsavedForm");	
                                         }
                                         else{
-                                            $("#Mensaje").html("Ha habido un error en la creación del registro. Código del error: "+datos.msnError.errorInfo);
+                                            $("#Mensaje").html("Ha habido un error en la creación del registro. Código del error: "+datos.msnError);
                                             $("#formularioAsignaBina #formularioAsignaBina_es_").html("");                                                    
                                             $("#formularioAsignaBina #formularioAsignaBina_es_").hide(); 	
                                         }

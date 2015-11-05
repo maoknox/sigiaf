@@ -14,3 +14,26 @@ $this->widget('application.extensions.jqAjaxSearchDate.AjaxSearch',
 	)
 );
 ?>
+<?php if(!empty($mensaje)):?>
+	    <hr />
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="panel-title">
+                Mensaje
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-lg-3 text-center">
+                    <img src="/login_sdis/public/img/logo.svg" />
+                </div>
+                <div class="col-lg-9 text-justify">
+                    <?php echo $mensaje;?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+
+	
+<?php endif?>

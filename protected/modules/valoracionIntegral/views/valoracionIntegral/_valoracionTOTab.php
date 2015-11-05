@@ -108,6 +108,46 @@
 <?php $this->endWidget();?>
 <hr />
 </fieldset>
+<fieldset id="desempLaboralTxt">
+<?php $formularioDesLabTxt=$this->beginWidget('CActiveForm', array(
+	'id'=>'formularioDesLabTxt',
+	'enableAjaxValidation'=>false,
+	'enableClientValidation'=>true,
+	'clientOptions'=>array(
+		'validateOnSubmit'=>false,
+	),
+	'htmlOptions' => array('class' => 'form-horizontal')
+));
+?>
+	<?php echo  $formularioDesLabTxt->errorSummary($modeloValTO,'','',array('style' => 'font-size:14px;color:#F00')); ?>
+	<!--campo de texto para nombres del adolescente -->	
+	<div class="form-group">
+        <div class="col-md-12">
+			<?php echo $formularioDesLabTxt->labelEx($modeloValTO,'desemp_laboral',array('class'=>'control-label','for'=>'searchinput'));?> - Observaciones
+			<?php echo $formularioDesLabTxt->textArea($modeloValTO,
+                'desemp_laboral',
+                array('style'=>'width:99.5%;',
+                    'onblur'=>'js:enviaForm("formularioDesLabTxt","desempLaboralTxt")',
+                    'onkeyup'=>'js:$("#desempLaboralTxt").addClass("has-warning")'
+                ));
+            ?>
+            <?php echo $formularioDesLabTxt->error($modeloValTO,'desemp_laboral',array('style' => 'color:#F00'));?>
+        </div>    
+    </div>
+	<div class="form-group">
+        <div class="col-md-4">	
+			<?php
+                $boton=CHtml::Button (
+                    'Registrar',   
+                    array('id'=>'btnFormDesemLabTxt','class'=>'btn btn-default btn-sdis','name'=>'btnFormDesemLabTxt','onclick'=>'js:enviaForm("formularioDesLabTxt","desempLaboralTxt")')
+                );
+            ?>
+            <?php echo $boton; //CHtml::submitButton('Crear');?>
+    	</div>
+    </div>
+<?php $this->endWidget();?>
+<hr />
+</fieldset>
 <fieldset id="patronDesemp">
 <?php $formPatDes=$this->beginWidget('CActiveForm', array(
 	'id'=>'formularioPatDes',

@@ -133,7 +133,6 @@
     	</div>
     </div>    
 
-   
     <?php
 		$boton=CHtml::ajaxSubmitButton (
 						'Modificar',   
@@ -216,7 +215,10 @@
 				);
     ?>
 	<?php echo CHtml::hiddenField('Adolescente[numDocAdol]',$formAdol->num_doc,array('id'=>'numDocAdol'));?>
-    	<?php echo $boton; //CHtml::submitButton('Crear');?>
+    	    <div class="form-group">
+            <label class="col-md-4 control-label"></label>
+            	<div class="col-md-4"><?php echo $boton; //CHtml::submitButton('Crear');?></div>
+            </div>
 <?php $this->endWidget();?>
 <?php //script de seguridad que previene dejar la página si no se han guardado los datos
 /*Yii::app()->getClientScript()->registerScript('dejaVentana','

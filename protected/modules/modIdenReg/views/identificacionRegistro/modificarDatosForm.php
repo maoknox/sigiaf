@@ -5,7 +5,7 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
 		'target'=>'resultado', 
 		'minChar'=>2,
 		'numDocAdol'=>$numDocAdol,
-		'url'=>Yii::app()->createUrl('modIdenReg/identificacionRegistro/registrarAsesoriaSJForm'),
+		'url'=>Yii::app()->createUrl('modIdenReg/identificacionRegistro/modificarDatosForm'),
 		'datosAdol'=>$datosAdol,
 		'edad'=>$edad,
 		'telefonoAdol'=>$telefonoAdol

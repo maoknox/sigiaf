@@ -6,6 +6,7 @@
  * The followings are the available columns in table 'seguimiento_compsancion':
  * @property string $fecha_seguim_compsancion
  * @property integer $id_pai
+ * @property string $num_doc 
  * @property integer $id_inf_judicial
  * @property string $id_cedula
  * @property string $fecha_establec_compsanc
@@ -15,6 +16,7 @@
  * @property ComponenteSancion $idInfJudicial
  * @property ComponenteSancion $fechaEstablecCompsanc
  * @property ComponenteSancion $idPai
+ * @property ComponenteSancion $numDoc 
  * @property Persona $idCedula
  */
 class SeguimientoCompsancion extends CActiveRecord
@@ -35,12 +37,13 @@ class SeguimientoCompsancion extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('fecha_establec_compsanc, id_pai, id_inf_judicial, seguim_compsancion', 'required'),
+			array('fecha_seguim_compsancion, id_pai, num_doc, id_inf_judicial, seguim_compsancion', 'required'),
 			array('id_pai, id_inf_judicial', 'numerical', 'integerOnly'=>true),
+			array('num_doc', 'length', 'max'=>15),
 			array('id_cedula, fecha_establec_compsanc', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('fecha_seguim_compsancion, id_pai, id_inf_judicial, id_cedula, fecha_establec_compsanc, seguim_compsancion', 'safe', 'on'=>'search'),
+			array('fecha_seguim_compsancion, id_pai, num_doc, id_inf_judicial, id_cedula, fecha_establec_compsanc, seguim_compsancion', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -55,6 +58,7 @@ class SeguimientoCompsancion extends CActiveRecord
 			'idInfJudicial' => array(self::BELONGS_TO, 'ComponenteSancion', 'id_inf_judicial'),
 			'fechaEstablecCompsanc' => array(self::BELONGS_TO, 'ComponenteSancion', 'fecha_establec_compsanc'),
 			'idPai' => array(self::BELONGS_TO, 'ComponenteSancion', 'id_pai'),
+			'numDoc' => array(self::BELONGS_TO, 'ComponenteSancion', 'num_doc'),
 			'idCedula' => array(self::BELONGS_TO, 'Persona', 'id_cedula'),
 		);
 	}
@@ -67,6 +71,7 @@ class SeguimientoCompsancion extends CActiveRecord
 		return array(
 			'fecha_seguim_compsancion' => 'Fecha Seguim Compsancion',
 			'id_pai' => 'Id Pai',
+			'num_doc' => 'Num Doc',
 			'id_inf_judicial' => 'Id Inf Judicial',
 			'id_cedula' => 'Id Cedula',
 			'fecha_establec_compsanc' => 'Fecha Establec Compsanc',
@@ -94,6 +99,7 @@ class SeguimientoCompsancion extends CActiveRecord
 
 		$criteria->compare('fecha_seguim_compsancion',$this->fecha_seguim_compsancion,true);
 		$criteria->compare('id_pai',$this->id_pai);
+		$criteria->compare('num_doc',$this->num_doc,true);
 		$criteria->compare('id_inf_judicial',$this->id_inf_judicial);
 		$criteria->compare('id_cedula',$this->id_cedula,true);
 		$criteria->compare('fecha_establec_compsanc',$this->fecha_establec_compsanc,true);
@@ -121,6 +127,7 @@ class SeguimientoCompsancion extends CActiveRecord
 			$sqlRegSegSanc="insert into seguimiento_compsancion (
 				fecha_seguim_compsancion,
 				id_pai,
+				num_doc,
 				id_inf_judicial,
 				id_cedula,
 				fecha_establec_compsanc,
@@ -128,6 +135,7 @@ class SeguimientoCompsancion extends CActiveRecord
 			) values (
 				:fecha_seguim_compsancion,
 				:id_pai,
+				:num_doc,
 				:id_inf_judicial,
 				:id_cedula,
 				:fecha_establec_compsanc,
@@ -140,6 +148,7 @@ class SeguimientoCompsancion extends CActiveRecord
 			$regSegSanc=$conect->createCommand($sqlRegSegSanc);
 			$regSegSanc->bindParam(":fecha_seguim_compsancion",$fechaRegSeg,PDO::PARAM_STR);
 			$regSegSanc->bindParam(":id_pai",$this->id_pai,PDO::PARAM_INT);
+			$regSegSanc->bindParam(":num_doc",$this->num_doc,PDO::PARAM_STR);				
 			$regSegSanc->bindParam(":id_inf_judicial",$this->id_inf_judicial,PDO::PARAM_INT);
 			$regSegSanc->bindParam(":id_cedula",Yii::app()->user->getState('cedula'),PDO::PARAM_INT);
 			$regSegSanc->bindParam(":fecha_establec_compsanc",$this->fecha_establec_compsanc,PDO::PARAM_STR);
@@ -157,10 +166,11 @@ class SeguimientoCompsancion extends CActiveRecord
 	public function consultaSeguimientos(){
 		$conect= Yii::app()->db;
 		$sqlConsSegPaiDer="select fecha_seguim_compsancion,seguim_compsancion from seguimiento_compsancion 
-		where id_pai=:id_pai and id_inf_judicial=:id_inf_judicial order by fecha_seguim_compsancion desc";
+		where id_pai=:id_pai and id_inf_judicial=:id_inf_judicial and num_doc=:num_doc order by fecha_seguim_compsancion desc";
 		$segCompDer=$conect->createCommand($sqlConsSegPaiDer);
 		$segCompDer->bindParam(":id_pai",$this->id_pai,PDO::PARAM_INT);
 		$segCompDer->bindParam(":id_inf_judicial",$this->id_inf_judicial,PDO::PARAM_INT);
+		$segCompDer->bindParam(":num_doc",$this->num_doc,PDO::PARAM_STR);		
 		$readConsSegPaiDer=$segCompDer->query();
 		$resConsSegPaiDer=$readConsSegPaiDer->readAll();
 		$readConsSegPaiDer->close();

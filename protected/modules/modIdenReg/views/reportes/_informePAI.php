@@ -68,12 +68,14 @@ $modeloPai->id_pai=$paiActual["id_pai"];
 			
 			//$compSancInfJud=$infJudicial;						
 					
-			if(!empty($infJudicial)){			
-				foreach($infJudicial as $pkSan=>$infJudicialCompSan){				
+			if(!empty($infJudicial)){
+				$modeloCompSanc->id_pai=$modeloPai->id_pai;
+				$modeloCompSanc->num_doc=$adolescente["num_doc"];			
+				foreach($infJudicial as $pkSan=>$infJudicialCompSan){								
 					$resInfJud=$modeloCompSanc->consultaPaiSanc($infJudicialCompSan["id_inf_judicial"]);
 					if(!empty($resInfJud)){
 						if($paiActual["id_pai"]==$resInfJud["id_pai"]){
-							$compSancInfJud[]=$infJudicialCompSan;
+							$compSancInfJudi[]=$infJudicialCompSan;
 						}
 					}
 					else{
@@ -81,42 +83,43 @@ $modeloPai->id_pai=$paiActual["id_pai"];
 						$modeloCompSanc->id_inf_judicial=$infJudicialCompSan["id_inf_judicial"];						
 						$infJudSinPai=$modeloCompSanc->consultaSancSinPai();
 						if(empty($infJudSinPai)){
-							$compSancInfJud[]=$infJudicial[$pkSan];
+							$compSancInfJudi[]=$infJudicial[$pkSan];
 							
-						}
-						
+						}					
 					}					
 				}
 			}
 		}
 		else{
-			$compSancInfJud=$infJudicial;
+			$compSancInfJudi=$infJudicial;
 		}
-		foreach($infJudicial as $infJudCab){
-			$modeloInfJud->id_inf_judicial=$infJudCab["id_inf_judicial"];
-			$delitos=$modeloInfJud->consultaDelito();
-			$delRem="";
-			foreach($delitos as $delito){
-				$delRem.=$delito["del_remcespa"]." ";
+		if(!empty($compSancInfJudi)){
+			foreach($compSancInfJudi as $infJudCab){
+				$modeloInfJud->id_inf_judicial=$infJudCab["id_inf_judicial"];
+				$delitos=$modeloInfJud->consultaDelito();
+				$delRem="";
+				foreach($delitos as $delito){
+					$delRem.=$delito["del_remcespa"]." ";
+				}
+				$sancion.='
+				<tr>
+					<td colspan="3">'.utf8_decode("Remisión por:").' '.utf8_decode($infJudCab["nombre_instancia_rem"]).'</td>
+				</tr>
+				<tr>
+					<td>'.utf8_decode("Sanción:").' '.utf8_decode($infJudCab["tipo_sancion"]).'</td>
+					<td colspan="2">Delito: <br> '.utf8_decode($delRem).'</td>
+				</tr>
+				<tr>
+					<td>'.utf8_decode("Num. Juzgado:").' '.utf8_decode($infJudCab["juzgado"]).'</td>
+					<td>Num. Proceso: '.utf8_decode($infJudCab["no_proceso"]).'</td>
+					<td>'.utf8_decode("Tiempo sanción Meses:").' '.utf8_decode($infJudCab["tiempo_sancion"]).' - '.utf8_decode("Días:").' '.utf8_decode($infJudCab["tiempo_sancion_dias"]).' </td>
+				</tr>
+				<tr>
+					<td >Juez: '.utf8_decode($infJudCab["juez"]).' </td>
+					<td colspan="2">Defensor: '.utf8_decode($infJudCab["defensor"]).' </td>
+				</tr>
+			  ';
 			}
-			$sancion.='
-			<tr>
-				<td colspan="3">'.utf8_decode("Remisión por:").' '.utf8_decode($infJudCab["nombre_instancia_rem"]).'</td>
-			</tr>
-			<tr>
-				<td>'.utf8_decode("Sanción:").' '.utf8_decode($infJudCab["tipo_sancion"]).'</td>
-				<td colspan="2">Delito: <br> '.utf8_decode($delRem).'</td>
-			</tr>
-			<tr>
-				<td>'.utf8_decode("Num. Juzgado:").' '.utf8_decode($infJudCab["juzgado"]).'</td>
-				<td>Num. Proceso: '.utf8_decode($infJudCab["no_proceso"]).'</td>
-				<td>'.utf8_decode("Tiempo sanción Meses:").' '.utf8_decode($infJudCab["tiempo_sancion"]).' - '.utf8_decode("Días:").' '.utf8_decode($infJudCab["tiempo_sancion_dias"]).' </td>
-			</tr>
-			<tr>
-				<td >Juez: '.utf8_decode($infJudCab["juez"]).' </td>
-				<td colspan="2">Defensor: '.utf8_decode($infJudCab["defensor"]).' </td>
-			</tr>
-		  ';
 		}
 	}
 $table1='<table width="100%" border="1" cellpadding="0px" cellspacing="0px">

@@ -55,6 +55,7 @@
         <div class="col-md-4">
 			<?php echo $formAcudiente->textField($modeloAcudiente,'num_doc_fam',array('class'=>'form-control input-md'));?>
             <?php echo $formAcudiente->error($modeloAcudiente,'num_doc_fam',array('style' => 'color:#F00'));?>
+            <?php echo $formAcudiente->hiddenField($modeloAcudiente,'id_doc_familiar',array('class'=>'form-control input-md'));?>
         </div>
     </div>
     <div class="form-group">                                       
@@ -147,10 +148,13 @@
 										if(errorLoc.length !== 0){
 											errorLoc="Aunque ha habido un error en el registro de la localización del acudiente. El código del error es:" +errorLoc;
 										}
-										if(errorTel.length !== 0){
+										if(errorTel != "exito"){
 											errorTel="Aunque ha habido un error en el registro de los teléfonos del acudiente. El código del error es:" +errorTel;											
 										}
-										$("#MensajeFam").html("Se ha creado el registro del acudiente<br/>"+errorLoc+"<br/>"+errorTel);
+										else{
+											errorTel="";
+										}
+										$("#MensajeFam").html("Se ha modificado el registro del acudiente<br/>"+errorLoc+"<br/>"+errorTel);
 										$("#formularioAcudiente").find("input, textarea, button, select").attr("disabled",true);	
 										$("#formularioAcudiente").removeClass("unsavedForm");										
 									}
@@ -197,7 +201,10 @@
 						array('id'=>'btnFormAcud','name'=>'btnFormAcud','class'=>'btn btn-default btn-sdis')
 				);
     ?>
-    <?php echo $boton; //CHtml::submitButton('Crear');?>
+    	    <div class="form-group">
+            <label class="col-md-4 control-label"></label>
+            	<div class="col-md-4"><?php echo $boton; //CHtml::submitButton('Crear');?></div>
+            </div>
 <?php $this->endWidget();?>
 <?php //script de seguridad que previene dejar la página si no se han guardado los datos
 Yii::app()->getClientScript()->registerScript('dejaVentana','

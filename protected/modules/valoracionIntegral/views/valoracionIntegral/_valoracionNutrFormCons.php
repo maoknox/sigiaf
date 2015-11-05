@@ -87,4 +87,14 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
 		)); 		
 		?>
 	</fieldset>
+<?php Yii::app()->getClientScript()->registerScript('scriptValnutr_0','
+$(document).ready(function(){
+	$("form").find("textArea").each(function(){
+		$(this).css("height","200px");
+	});
+});	        		
+'
+,CClientScript::POS_BEGIN);
+?>
+
 <?php endif;?>

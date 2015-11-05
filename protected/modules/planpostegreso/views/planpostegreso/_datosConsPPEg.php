@@ -30,7 +30,9 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
                             'delitoRem'=>$delitoRem,
                             'modeloInfJud'=>$modeloInfJud,
                             'infJudicial'=>$infJudicial,
-                            'tipoSancion'=>$tipoSancion
+                            'tipoSancion'=>$tipoSancion,
+							'modeloCompSanc'=>$modeloCompSanc,
+                            'numDocAdol'=>$numDocAdol,																	
                         ),true,false),
 				  'Análisis de situación de derechos Forjar Egreso'=>$this->renderPartial("_formVerificacionDerForjarEgresoCons", 
                         array(

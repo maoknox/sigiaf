@@ -74,17 +74,17 @@
 				</div>                
 			<div class="col-sm-1">
             	<?php 
-				//echo $planDietario["id_nutradol"];
+				//echo $planDietario["id_nutradol"];				
 					if(empty($planDietario["id_nutradol"])){
 						$modeloGrupocomidaNutradol->id_nutradol=date("Y-m-d");	
 						$modeloPorcionesComida->id_nutradol=date("Y-m-d");	
+						//$modeloNutricionAdol->id_nutradol=date("Y-m-d");
 					}				
 					echo $formularioPorcionesComida->hiddenField($modeloGrupocomidaNutradol,'id_nutradol');	
 					echo $formularioPorcionesComida->hiddenField($modeloPorcionesComida,'id_nutradol');					
 				?>
 
-                <?php 
-					$modeloGrupocomidaNutradol->id_tiempo_alimento=0;					
+                <?php $modeloGrupocomidaNutradol->id_tiempo_alimento=0;						
 					echo $formularioPorcionesComida->hiddenField($modeloGrupocomidaNutradol,'id_tiempo_alimento');?>
 				<?php echo $formularioPorcionesComida->hiddenField($modeloGrupocomidaNutradol,'id_val_nutricion');?>
 				<?php echo $formularioPorcionesComida->hiddenField($modeloGrupocomidaNutradol,'id_grupo_comida');?>

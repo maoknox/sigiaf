@@ -467,9 +467,9 @@ else{
 							<?php
                             echo CHtml::CheckBox('ProblemaValtsocial[probasoc][prob_asoc_'.$pkPrA.']',$checked, array (
                                 'id'=>'prob_asoc_'.$pkPrA,
-                                'value'=>$probAsoc["id_problema_asoc"],
+                                'value'=>$probAsoci["id_problema_asoc"],
                                 'onclick'=>'js:$("#btnProbAsoc").css("color","#F00")'
-                            ))." ".$probAsoc["problema_asoc"]; 	
+                            ))." ".$probAsoci["problema_asoc"]; 	
 							?>
                            </label>
                       	</div>

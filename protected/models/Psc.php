@@ -113,19 +113,19 @@ class Psc extends CActiveRecord
 	{
 		return array(
 			'id_psc' => 'Id Psc',
-			'num_doc' => 'Num Doc',
-			'id_cedula' => 'Id Cedula',
-			'id_institucionpsc' => 'Id Institucionpsc',
+			'num_doc' => 'Número de documento del adolescente',
+			'id_cedula' => 'Cédula del profesional',
+			'id_institucionpsc' => 'Instituto donde se presta el servicio',
 			'id_sector_psc' => 'Sector',
-			'fecha_inicio_psc' => 'Fecha Inicio Psc',
-			'fecha_fin_psc' => 'Fecha Fin Psc',
-			'firma_acuerdos' => 'Firma Acuerdos',
-			'horas_semana' => 'Horas Semana',
-			'culminacion' => 'Culminacion',
-			'observaciones_psc' => 'Observaciones Psc',
-			'responsable_psc' => 'Responsable Psc',
-			'telefono_resp' => 'Telefono Resp',
-			'num_dias_psc' => 'Num Dias Psc',
+			'fecha_inicio_psc' => 'Fecha inicio de PSC',
+			'fecha_fin_psc' => 'Fecha fin PSC',
+			'firma_acuerdos' => 'Firma de acuerdos',
+			'horas_semana' => 'Horas por semana',
+			'culminacion' => 'Culminación',
+			'observaciones_psc' => 'Observaciones PSC',
+			'responsable_psc' => 'Persona de contacto',
+			'telefono_resp' => 'Teléfono de contacto',
+			'num_dias_psc' => 'Número de días de PSC',
 			'nueva_institucionpsc'=>'Nueva organización'
 		);
 	}

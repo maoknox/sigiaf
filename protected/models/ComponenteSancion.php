@@ -126,12 +126,31 @@ class ComponenteSancion extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	
+	public function consultaInfJudComponenteSanc(){
+		$conect= Yii::app()->db;
+		$sqlConsPaiSancAdol="select * from componente_sancion as a 
+			left join pai as b on b.id_pai=a.id_pai 
+			where a.id_inf_judicial=:id_inf_judicial and b.num_doc=:num_doc";
+		$consPaiSancAdol=$conect->createCommand($sqlConsPaiSancAdol);
+		$consPaiSancAdol->bindParam(":id_inf_judicial",$this->id_inf_judicial,PDO::PARAM_INT);
+		$consPaiSancAdol->bindParam(":num_doc",$this->num_doc,PDO::PARAM_STR);
+		$readConsPaiSancAdol=$consPaiSancAdol->query();
+		$resConsPaiSancAdol=$readConsPaiSancAdol->read();
+		$readConsPaiSancAdol->close();
+		return $resConsPaiSancAdol;
+	}
+	
 	public function consultaPaiSanc($id_inf_judicial){
 		$conect= Yii::app()->db;
-		$sqlConsPaiSancAdol="select * from componente_sancion as a left join informacion_judicial as b on a.id_inf_judicial=b.id_inf_judicial 
-			where a.id_inf_judicial=:id_inf_judicial order by fecha_establec_compsanc desc";
+		$sqlConsPaiSancAdol="select * from componente_sancion as a 
+			left join informacion_judicial as b on a.id_inf_judicial=b.id_inf_judicial 
+			left join pai as c on a.id_pai=c.id_pai 
+			where a.id_inf_judicial=:id_inf_judicial and a.id_pai=:id_pai and c.num_doc=:num_doc order by fecha_establec_compsanc desc";
 		$consPaiSancAdol=$conect->createCommand($sqlConsPaiSancAdol);
 		$consPaiSancAdol->bindParam(":id_inf_judicial",$id_inf_judicial,PDO::PARAM_INT);
+		$consPaiSancAdol->bindParam(":id_pai",$this->id_pai,PDO::PARAM_INT);
+		$consPaiSancAdol->bindParam(":num_doc",$this->num_doc,PDO::PARAM_STR);
 		$readConsPaiSancAdol=$consPaiSancAdol->query();
 		$resConsPaiSancAdol=$readConsPaiSancAdol->read();
 		$readConsPaiSancAdol->close();
@@ -270,6 +289,5 @@ class ComponenteSancion extends CActiveRecord
 				$transaction->rollBack();
 			}
 		}
-		
 	}
 }

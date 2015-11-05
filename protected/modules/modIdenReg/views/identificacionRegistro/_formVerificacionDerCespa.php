@@ -2,6 +2,10 @@
 
 <div id="MensajeVerifDer" style="font-size:14px;"></div>
 <p class="note">Campos con <span class="required">*</span> son obligatorios.</p>
+<?php
+	$modeloVerifDerechos->id_instanciader=2; 
+?>
+
 <?php $formAdolDerechos=$this->beginWidget('CActiveForm', array(
 	'id'=>'formularioVerifDer',
 	'enableAjaxValidation'=>true,
@@ -92,7 +96,21 @@
                     <?php
                         // $modeloVerifDerechos->num_doc='2342342';
                         echo $formAdolDerechos->hiddenField($modeloVerifDerechos,'num_doc');?>
-                    <?php echo $formAdolDerechos->error($modeloVerifDerechos,'num_doc',array('style' => 'color:#F00'));?></div>
+                    <?php echo $formAdolDerechos->error($modeloVerifDerechos,'num_doc',array('style' => 'color:#F00'));?>
+                    <?php
+						$modeloVerifDerechos->id_momento_verif=1;
+						$modeloVerifDerechos->estado_derecho="false";
+						$modeloVerifDerechos->fecha_reg_derecho=date("Y-m-d");
+						echo $formAdolDerechos->hiddenField($modeloVerifDerechos,'estado_derecho');
+						echo $formAdolDerechos->hiddenField($modeloVerifDerechos,'id_momento_verif');
+						echo $formAdolDerechos->hiddenField($modeloVerifDerechos,'fecha_reg_derecho');
+                        // $modeloVerifDerechos->num_doc='2342342';
+                        echo $formAdolDerechos->hiddenField($modeloVerifDerechos,'num_doc');?>
+                    <?php echo $formAdolDerechos->error($modeloVerifDerechos,'num_doc',array('style' => 'color:#F00'));?>
+                    
+                    </div>
+                    <div class="row">
+
 <?php
 	// si se quisiera ir a otro controlador se crearia una Url dentro del array 'action'=>$this->createUrl('controlador/metodo');
 $boton=CHtml::ajaxSubmitButton (
@@ -150,10 +168,10 @@ $boton=CHtml::ajaxSubmitButton (
 								}
 							}'
 						),
-						array('id'=>'btnFormVerifDer','name'=>'btnFormVerifDer')
+						array('id'=>'btnFormVerifDer','class'=>'btn btn-default btn-sdis','name'=>'btnFormVerifDer')
 				);	
     ?>
-    <?php echo $boton; //CHtml::submitButton('Crear');?>
+    <?php echo $boton; //CHtml::submitButton('Crear');?></div>
     </td></tr>
 </table>
 <?php $this->endWidget();?>

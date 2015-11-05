@@ -231,7 +231,7 @@ class NutricionAdol extends CActiveRecord
 				:id_tipoact_pld,				
 				:fecha_segnutr			
 			)";
-			$this->id_nutradol=date("Y-m-d H:m:s");
+			$this->id_nutradol=date("Y-m-d H:i:s");
 			$fechaSeg=date("Y-m-d");
 			$regNutrAdol=$conect->createCommand($sqlRegNutrAdol);
 			$regNutrAdol->bindParam(":id_nutradol",$this->id_nutradol,PDO::PARAM_STR);

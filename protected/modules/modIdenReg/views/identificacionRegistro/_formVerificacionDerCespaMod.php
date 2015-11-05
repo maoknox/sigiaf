@@ -1,8 +1,10 @@
 <div id="MensajeVerifDer" style="font-size:14px;"></div>
 <p class="note">Campos con <span class="required">*</span> son obligatorios.</p>
+
 <?php
 	$modeloVerifDerechos->num_doc=$numDocAdol;
 	$modeloVerifDerechos->id_instanciader=2; 
+	$modeloVerifDerechos->id_momento_verif=1;
 	$derechos=$modeloVerifDerechos->consultaDerechos();//id_derechocespa
 ?>
 <?php $formAdolDerechos=$this->beginWidget('CActiveForm', array(
@@ -56,6 +58,7 @@
 
 <hr />
 <?php
+	$op="";
 	$consPart=$modeloVerifDerechos->consultaParticipacion($derecho["id_derecho_adol"]);
 	foreach($consPart as $consPartAdol){
 		$op[$consPartAdol["id_alternativaproc"]]=array('selected'=>true);
@@ -99,7 +102,17 @@
                     <?php
                         // $modeloVerifDerechos->num_doc='2342342';
                         echo $formAdolDerechos->hiddenField($modeloVerifDerechos,'num_doc');?>
-                    <?php echo $formAdolDerechos->error($modeloVerifDerechos,'num_doc',array('style' => 'color:#F00'));?></div>
+                    <?php echo $formAdolDerechos->error($modeloVerifDerechos,'num_doc',array('style' => 'color:#F00'));?>
+                    <?php
+						$modeloVerifDerechos->estado_derecho="false";
+						$modeloVerifDerechos->fecha_reg_derecho=date("Y-m-d");
+						echo $formAdolDerechos->hiddenField($modeloVerifDerechos,'estado_derecho');
+						echo $formAdolDerechos->hiddenField($modeloVerifDerechos,'id_momento_verif');
+						echo $formAdolDerechos->hiddenField($modeloVerifDerechos,'fecha_reg_derecho');
+                        // $modeloVerifDerechos->num_doc='2342342';
+                       ?>
+
+                    </div>
 <?php
 	// si se quisiera ir a otro controlador se crearia una Url dentro del array 'action'=>$this->createUrl('controlador/metodo');
 $boton=CHtml::ajaxSubmitButton (
@@ -116,6 +129,8 @@ $boton=CHtml::ajaxSubmitButton (
 										$("#MensajeVerifDer").text("Se ha creado el registro de la verificación de derechos del Cespa");	
 										$("#formularioVerifDer #formularioVerifDer_es_").html("");                                                    
 										$("#formularioVerifDer #formularioVerifDer_es_").hide();
+										$("#formularioVerifDer").find("input, textarea, button, select").attr("disabled",true);
+										$("#formularioVerifDer").removeClass("unsavedForm");
 									}
 									else{
 										$("#MensajeVerifDer").text("Ha habido un error en la creación del registro. Código del error: "+datosVerifDer.msnError.errorInfo);
@@ -156,7 +171,7 @@ $boton=CHtml::ajaxSubmitButton (
 								}
 							}'
 						),
-						array('id'=>'btnFormVerifDer','name'=>'btnFormVerifDer')
+						array('id'=>'btnFormVerifDer','class'=>'btn btn-default btn-sdis','name'=>'btnFormVerifDer')
 				);	
     ?>
     <?php echo $boton; //CHtml::submitButton('Crear');?>

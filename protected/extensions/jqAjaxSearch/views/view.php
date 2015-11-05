@@ -1,3 +1,4 @@
+
 <fieldset>
 <?php echo CHtml::beginForm($action,'post',array("id"=>"searchform_".$numDocAdol,'class' => 'form-horizontal')); ?>
 	<div class="form-group"> 
@@ -24,8 +25,10 @@
 </fieldset>
 <?php
 	if(!empty($numDocAdol)):
+	Yii::import('application.models.ComponenteSancion');	
 	Yii::import('application.models.ConsultasGenerales');	
 	$modeloConsultasGen=new ConsultasGenerales();
+	$modeloComponenteSancion=new ComponenteSancion();
 	$modeloConsultasGen->numDocAdol=$numDocAdol;
 ?>
 <div class="panel-heading color-sdis">Datos del Adolescente</div>
@@ -123,38 +126,46 @@
 		?> 
         <?php
 			if(!empty($infsJudicial)):
-			//$infJudicial=array(); 
-				foreach($infsJudicial as $infJudicial):?>    
-				 <tr>
-					<td>
-						Remisión por: <?= $infJudicial["nombre_instancia_rem"]?>
-					</td>
-					<td>
-						Sanción Actual: <?= $infJudicial["tipo_sancion"]?>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<?php
-							$consDelitos=$modeloConsultasGen->consDelitos($infJudicial["id_inf_judicial"]);
-						?>
-						Delito(s):
-						<?php foreach($consDelitos as $delito):?>
-							<div>-<?= $delito["del_remcespa"]?></div>
-						<?php endforeach;?>
-					</td>
-					<td>
-						Número de proceso: <?= $infJudicial["no_proceso"]?>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						Juez: <?= $infJudicial["juez"]?>
-					</td>
-					<td>
-						Defensor: <?= $infJudicial["defensor"]?>
-					</td>
-				</tr>
+			//$infJudicial=array(); 			
+				$modeloComponenteSancion->num_doc=$numDocAdol;
+				foreach($infsJudicial as $infJudicial):?>   
+                 	<?php 
+						$infJudActual=array();					 
+						$modeloComponenteSancion->id_inf_judicial=$infJudicial["id_inf_judicial"];
+						//echo $modeloComponenteSancion->num_doc."||".$modeloComponenteSancion->id_inf_judicial."-";
+						$infJudActual=$modeloComponenteSancion->consultaInfJudComponenteSanc();
+						if($infJudActual["pai_actual"]=="true" or empty($infJudActual)):?>
+                         <tr>
+                            <td>
+                                Remisión por: <?= $infJudicial["nombre_instancia_rem"]?>
+                            </td>
+                            <td>
+                                Sanción Actual: <?= $infJudicial["tipo_sancion"]?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <?php
+                                    $consDelitos=$modeloConsultasGen->consDelitos($infJudicial["id_inf_judicial"]);
+                                ?>
+                                Delito(s):
+                                <?php foreach($consDelitos as $delito):?>
+                                    <div>-<?= $delito["del_remcespa"]?></div>
+                                <?php endforeach;?>
+                            </td>
+                            <td>
+                                Número de proceso: <?= $infJudicial["no_proceso"]?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Juez: <?= $infJudicial["juez"]?>
+                            </td>
+                            <td>
+                                Defensor: <?= $infJudicial["defensor"]?>
+                            </td>
+                        </tr>
+                <?php endif; ?>
                 
 			<?php endforeach;
 			endif;?>

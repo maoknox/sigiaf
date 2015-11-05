@@ -130,7 +130,6 @@ class HistPersonalAdol extends CActiveRecord
 			$transaction->rollBack();
 			return $e;
 		}
-		
 	}
 	public function registraEquipoPsic($profesional,$responsable){
 		$conect= Yii::app()->db;

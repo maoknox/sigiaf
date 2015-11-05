@@ -475,8 +475,10 @@ class ValoracionIntegralController extends Controller{
 							$modeloValPsicol->campoFecha="fecha_modifvalpsic";
 							$modeloValPsicol->fecha=date("Y-m-d");
 							$accion=2;
-							$modeloValPsicol->contHist=$valPsicol[$variablesii[0]];
-							$modeloValPsicol->regHistoricoValPsic(); 
+							if(!empty($valPsicol[$variablesii[0]])){
+								$modeloValPsicol->contHist=$valPsicol[$variablesii[0]];
+								$modeloValPsicol->regHistoricoValPsic(); 
+							}
 						}
 						$modeloValPsicol->msnValPsicol=$modeloValPsicol->modificaValoracionPsicol($accion); 
 						echo CJSON::encode(array("estadoComu"=>"exito",'resultado'=>CJavaScript::encode(CJavaScript::quote($modeloValPsicol->msnValPsicol))));
@@ -528,8 +530,10 @@ class ValoracionIntegralController extends Controller{
 								
 							}
 							else{
-								$modeloValPsicol->contHist=$valPsicol[$variablesii[0]];
-								$modeloValPsicol->regHistoricoValPsic(); 
+								if(!empty($valPsicol[$variablesii[0]])){
+									$modeloValPsicol->contHist=$valPsicol[$variablesii[0]];
+									$modeloValPsicol->regHistoricoValPsic(); 
+								}
 							}
 						}
 						if(empty($variablesii[1])){						
@@ -540,9 +544,11 @@ class ValoracionIntegralController extends Controller{
 							$modeloValPsicol->contenidoValoracioni=$dataInput["ValoracionPsicologia"][$variablesii[1]];							
 							$modeloValPsicol->msnValPsicol=$modeloValPsicol->modificaValoracionPsicolOpt($accion); 
 							if($dataInput["ValoracionPsicologia"][$variablesii[1]]!=$valPsicol[$variablesii[1]]){
-								$modeloValPsicol->nombreCampoValoracion=$variablesii[1];
-								$modeloValPsicol->contHist=$valPsicol[$variablesii[1]];
-								$modeloValPsicol->regHistoricoValPsic(); 
+								if(!empty($valPsicol[$variablesii[1]])){
+									$modeloValPsicol->nombreCampoValoracion=$variablesii[1];
+									$modeloValPsicol->contHist=$valPsicol[$variablesii[1]];
+									$modeloValPsicol->regHistoricoValPsic(); 
+								}
 							}
 						}
 						echo CJSON::encode(array("estadoComu"=>"exito",'resultado'=>CJavaScript::encode(CJavaScript::quote($modeloValPsicol->msnValPsicol))));
@@ -782,6 +788,13 @@ class ValoracionIntegralController extends Controller{
 					':id_instanciader'=>$idInstanciaDer
 					)
 				);
+				//consulta seguridad social				
+				$modeloSgsss= new Sgsss();
+				$eps=$consultaGeneral->consultaEntidades('eps_adol','id_eps_adol');
+				$regSalud=$consultaGeneral->consultaEntidades('regimen_salud','id_regimen_salud');
+				$modeloSgsss->num_doc=$numDocAdol;
+				$sgs=$modeloSgsss->consultaSegSocial();
+				$modeloSgsss->attributes=$sgs;
 				$formularioCargaDerechos="_formVerificacionDerForjarCons";
 				$grupoFamiliar=$modeloFamiliar->consultaFamiliarAdol();
 				$otroRef=$modeloFamiliar->consultaOtrRef();
@@ -836,6 +849,10 @@ class ValoracionIntegralController extends Controller{
 				'modeloAntFFamilia'=>$modeloAntFFamilia,
 				'modeloProblemaValtsocial'=>$modeloProblemaValtsocial,
 				'modeloServprotecValtsocial'=>$modeloServprotecValtsocial,
+				'modeloSgsss'=>$modeloSgsss,				
+				'eps'=>$eps,
+				'regSalud'=>$regSalud,
+				'sgs'=>$sgs,
 				'render'=>'consultaValTrSoc'
 			));
 		}
@@ -863,9 +880,11 @@ class ValoracionIntegralController extends Controller{
 					$valTrSoc=$modeloValTrSoc->consultaIdValTrSoc();			
 					if($dataInput["ValoracionTrabajoSocial"][$variablesii[0]]!==$valTrSoc[$variablesii[0]]){					
 						$modeloValTrSoc->nombreCampoValoracion=$variablesii[0];
-						$modeloValTrSoc->contenidoValoracion=$dataInput["ValoracionTrabajoSocial"][$variablesii[0]];						
-						$modeloValTrSoc->contHist=$valTrSoc[$variablesii[0]];
-						$modeloValTrSoc->regHistoricoValTrSoc(); 
+						$modeloValTrSoc->contenidoValoracion=$dataInput["ValoracionTrabajoSocial"][$variablesii[0]];
+						if(!empty($valTrSoc[$variablesii[0]])){						
+							$modeloValTrSoc->contHist=$valTrSoc[$variablesii[0]];
+							$modeloValTrSoc->regHistoricoValTrSoc(); 
+						}
 						if($valTrSoc[$modeloValTrSoc->nombreCampoValoracion]!==$dataInput["ValoracionTrabajoSocial"][$variablesii[0]] && !empty($dataInput["ValoracionTrabajoSocial"][$variablesii[0]])){	
 							
 							if(empty($valTrSoc["fecha_inicio_valtsoc"])){
@@ -933,8 +952,10 @@ class ValoracionIntegralController extends Controller{
 								
 							}
 							else{
-								$modeloValTrSoc->contHist=$valTrSoc[$variablesii[0]];
-								$modeloValTrSoc->regHistoricoValTrSoc(); 
+								if(!empty($variablesii[0])){
+									$modeloValTrSoc->contHist=$valTrSoc[$variablesii[0]];
+									$modeloValTrSoc->regHistoricoValTrSoc(); 
+								}
 							}
 						}
 						if(empty($variablesii[1])){						
@@ -945,8 +966,10 @@ class ValoracionIntegralController extends Controller{
 							$modeloValTrSoc->contenidoValoracioni=$dataInput["ValoracionTrabajoSocial"][$variablesii[1]];
 							$resultado=$modeloValTrSoc->modificaValoracionTrSocOpt($accion);	
 							if($dataInput["ValoracionTrabajoSocial"][$variablesii[1]]!=$valTrSoc[$variablesii[1]]){
-								$modeloValTrSoc->contHist=$valTrSoc[$variablesii[1]];
-								$modeloValTrSoc->regHistoricoValTrSoc(); 
+								if(!empty($variablesii[1])){
+									$modeloValTrSoc->contHist=$valTrSoc[$variablesii[1]];
+									$modeloValTrSoc->regHistoricoValTrSoc(); 
+								}
 							}
 						}
 						echo CJSON::encode(array("estadoComu"=>"exito",'resultado'=>CJavaScript::encode(CJavaScript::quote($resultado))));
@@ -1521,8 +1544,10 @@ class ValoracionIntegralController extends Controller{
 					if($dataInput["ValoracionPsiquiatria"][$variablesii[0]]!==$valPsiq[$variablesii[0]]){					
 						$modeloValPsiq->nombreCampoValoracion=$variablesii[0];
 						$modeloValPsiq->contenidoValoracion=$dataInput["ValoracionPsiquiatria"][$variablesii[0]];	
-						$modeloValPsiq->contHist=$valPsiq[$variablesii[0]];
-						$modeloValPsiq->regHistoricoValPsiq(); 
+						if(!empty($variablesii[0])){
+							$modeloValPsiq->contHist=$valPsiq[$variablesii[0]];
+							$modeloValPsiq->regHistoricoValPsiq(); 
+						}
 						if($valPsiq[$modeloValPsiq->nombreCampoValoracion]!==$dataInput["ValoracionPsiquiatria"][$variablesii[0]] && !empty($dataInput["ValoracionPsiquiatria"][$variablesii[0]])){							
 							if(empty($valPsiq["fecha_ini_vpsiq"])){
 								$modeloValPsiq->campoFecha="fecha_ini_vpsiq";
@@ -1588,8 +1613,10 @@ class ValoracionIntegralController extends Controller{
 								
 							}
 							else{
-								$modeloValPsiq->contHist=$valPsiq[$variablesii[0]];
-								$modeloValPsiq->regHistoricoValPsiq(); 
+								if(!empty($variablesii[0])){
+									$modeloValPsiq->contHist=$valPsiq[$variablesii[0]];
+									$modeloValPsiq->regHistoricoValPsiq(); 
+								}
 							}
 						}
 						if(empty($variablesii[1])){						
@@ -1600,8 +1627,10 @@ class ValoracionIntegralController extends Controller{
 							$modeloValPsiq->contenidoValoracioni=$dataInput["ValoracionPsiquiatria"][$variablesii[1]];
 							$resultado=$modeloValPsiq->modificaValoracionPsiqOpt($accion); 
 							if($dataInput["ValoracionPsiquiatria"][$variablesii[1]]!=$valPsiq[$variablesii[1]]){
-								$modeloValPsiq->contHist=$valPsiq[$variablesii[1]];
-								$modeloValPsiq->regHistoricoValPsiq(); 
+								if(!empty($variablesii[1])){
+									$modeloValPsiq->contHist=$valPsiq[$variablesii[1]];
+									$modeloValPsiq->regHistoricoValPsiq(); 
+								}							
 							}
 						}
 						echo CJSON::encode(array("estadoComu"=>"exito",'resultado'=>CJavaScript::encode(CJavaScript::quote($resultado))));
@@ -1766,8 +1795,10 @@ class ValoracionIntegralController extends Controller{
 					if($dataInput["ValoracionTeo"][$variablesii[0]]!==$valTO[$variablesii[0]]){					
 						$modeloValTO->nombreCampoValoracion=$variablesii[0];
 						$modeloValTO->contenidoValoracion=$dataInput["ValoracionTeo"][$variablesii[0]];	
-						$modeloValTO->contHist=$valTO[$variablesii[0]];
-						$modeloValTO->regHistoricoValTO(); 
+						if(!empty($variablesii[0])){					
+							$modeloValTO->contHist=$valTO[$variablesii[0]];
+							$modeloValTO->regHistoricoValTO(); 
+						}
 						if($valTO[$modeloValTO->nombreCampoValoracion]!==$dataInput["ValoracionTeo"][$variablesii[0]] && !empty($dataInput["ValoracionTeo"][$variablesii[0]])){							
 							if(empty($valTO["fecha_inicio_valteo"])){
 								$modeloValTO->campoFecha="fecha_inicio_valteo";
@@ -1833,8 +1864,10 @@ class ValoracionIntegralController extends Controller{
 								
 							}
 							else{
-								$modeloValTO->contHist=$valTO[$variablesii[0]];
-								$modeloValTO->regHistoricoValTO(); 
+								if(!empty($variablesii[0])){
+									$modeloValTO->contHist=$valTO[$variablesii[0]];
+									$modeloValTO->regHistoricoValTO(); 
+								}
 							}
 						}
 
@@ -1846,8 +1879,10 @@ class ValoracionIntegralController extends Controller{
 							$modeloValTO->contenidoValoracioni=$dataInput["ValoracionTeo"][$variablesii[1]];
 							$resultado=$modeloValTO->modificaValoracionTOOpt($accion); 
 							if($dataInput["ValoracionTeo"][$variablesii[1]]!=$valTO[$variablesii[1]]){
-								$modeloValTO->contHist=$valTO[$variablesii[1]];
-								$modeloValTO->regHistoricoValTO(); 
+								if(!empty($variablesii[1])){
+									$modeloValTO->contHist=$valTO[$variablesii[1]];
+									$modeloValTO->regHistoricoValTO(); 
+								}
 							}							
 						}
 						echo CJSON::encode(array("estadoComu"=>"exito",'resultado'=>CJavaScript::encode(CJavaScript::quote($resultado))));
@@ -2074,9 +2109,10 @@ class ValoracionIntegralController extends Controller{
 					if($dataInput["ValoracionEnfermeria"][$variablesii[0]]!==$valEnf[$variablesii[0]]){					
 						$modeloValEnf->nombreCampoValoracion=$variablesii[0];
 						$modeloValEnf->contenidoValoracion=$dataInput["ValoracionEnfermeria"][$variablesii[0]];	
-						$modeloValEnf->contHist=$valEnf[$variablesii[0]];
-						$modeloValEnf->regHistoricoValEnf(); 
-						
+						if(!empty($variablesii[0])){
+							$modeloValEnf->contHist=$valEnf[$variablesii[0]];
+							$modeloValEnf->regHistoricoValEnf(); 
+						}
 						if($valEnf[$modeloValEnf->nombreCampoValoracion]!==$dataInput["ValoracionEnfermeria"][$variablesii[0]] && !empty($dataInput["ValoracionEnfermeria"][$variablesii[0]])){							
 							if(empty($valEnf["fecha_ini_venf"])){
 								$modeloValEnf->campoFecha="fecha_ini_venf";
@@ -2142,8 +2178,10 @@ class ValoracionIntegralController extends Controller{
 								
 							}
 							else{
-								$modeloValEnf->contHist=$valEnf[$variablesii[0]];
-								$modeloValEnf->regHistoricoValEnf(); 
+								if(!empty($variablesii[0])){
+									$modeloValEnf->contHist=$valEnf[$variablesii[0]];
+									$modeloValEnf->regHistoricoValEnf(); 
+								}
 							}
 						}
 						if(empty($variablesii[1])){						
@@ -2154,8 +2192,10 @@ class ValoracionIntegralController extends Controller{
 							$modeloValEnf->contenidoValoracioni=$dataInput["ValoracionEnfermeria"][$variablesii[1]];
 							$resultado=$modeloValEnf->modificaValoracionEnfOpt($accion);
 							if($dataInput["ValoracionEnfermeria"][$variablesii[1]]!=$valEnf[$variablesii[1]]){
-								$modeloValEnf->contHist=$valEnf[$variablesii[1]];
-								$modeloValEnf->regHistoricoValEnf(); 
+								if(!empty($variablesii[1])){
+									$modeloValEnf->contHist=$valEnf[$variablesii[1]];
+									$modeloValEnf->regHistoricoValEnf(); 
+								}
 							}							
 						}
 						echo CJSON::encode(array("estadoComu"=>"exito",'resultado'=>CJavaScript::encode(CJavaScript::quote($resultado))));
@@ -2325,11 +2365,12 @@ class ValoracionIntegralController extends Controller{
 		$permiso=$controlAcceso->controlAccesoAcciones();
 		if($permiso["acceso_rolmenu"]==1){
 			if(isset($_POST["ConceptoIntegral"]) &&!empty($_POST["ConceptoIntegral"])){
-				$datosInput=Yii::app()->input->post();
+				$datosInput=Yii::app()->input->post();				
 				$modeloConcInt=new ConceptoIntegral();
 				$modeloConcInt->attributes=$datosInput["ConceptoIntegral"];
 				if($modeloConcInt->validate()){
 					$respuesta=$modeloConcInt->modificaConcInt();
+					//print_r($modeloConcInt->attributes);exit;
 					echo CJSON::encode(array("estadoComu"=>"exito",'resultado'=>CJavaScript::encode(CJavaScript::quote($respuesta))));
 				}
 				else{
@@ -2458,10 +2499,10 @@ class ValoracionIntegralController extends Controller{
 				if(strlen($valTO['desemp_area_ocup'])<$numCaracteres){
 					$estado="false";
 				}
-				if(strlen($valTO['desemp_laboral'])<$numCaracteres){
+/*				if(strlen($valTO['desemp_laboral'])<$numCaracteres){
 					$estado="false";
 				}
-				if(strlen($valTO['patron_desemp'])<$numCaracteres){
+*/				if(strlen($valTO['patron_desemp'])<$numCaracteres){
 					$estado="false";
 				}
 				if(strlen($valTO['interes_expect_ocup'])<$numCaracteres){
@@ -2754,8 +2795,10 @@ class ValoracionIntegralController extends Controller{
 							$modeloValNutr->campoFecha="fecha_modif_vnutr";
 							$modeloValNutr->fecha=date("Y-m-d");
 							$accion=2;
-							$modeloValNutr->contHist=$valNutr[$variablesii[0]];
-							$modeloValNutr->regHistoricoValNutr(); 
+							if(!empty($variablesii[0])){
+								$modeloValNutr->contHist=$valNutr[$variablesii[0]];
+								$modeloValNutr->regHistoricoValNutr(); 
+							}							
 						}
 						$restultado=$modeloValNutr->modificaValoracionNutr($accion); 
 						echo CJSON::encode(array("estadoComu"=>"exito",'resultado'=>$restultado));
@@ -2807,12 +2850,13 @@ class ValoracionIntegralController extends Controller{
 		$controlAcceso->accion="valoracionNutrForm";
 		$permiso=$controlAcceso->controlAccesoAcciones();
 		if($permiso["acceso_rolmenu"]==1){
-			$datosInput=Yii::app()->input->post();			
+			$datosInput=Yii::app()->input->post();
+			//print_r($datosInput);exit;
 			$modeloGrupocomidaNutradol=new GrupocomidaNutradol();
 			$modeloNutricionAdol= new NutricionAdol();
 			$modeloPorcionesComida=new PorcionesComida();		
 			$modeloGrupocomidaNutradol->attributes=$datosInput["GrupocomidaNutradol"];	
-			$modeloGrupocomidaNutradol->id_nutradol=$datosInput["idNutrAdol"];	
+			//$modeloGrupocomidaNutradol->id_nutradol=$datosInput["idNutrAdol"];	
 			$porciones=$datosInput["GrupocomidaNutradol"]["grupo_comida"];	
 			foreach($porciones as $porcion){
 				if(!empty($porcion)){
@@ -2821,8 +2865,9 @@ class ValoracionIntegralController extends Controller{
 			}		
 			$modeloNutricionAdol->id_cedula='0';	
 			$modeloPorcionesComida->attributes=$datosInput["PorcionesComida"];
-			//print_r($datosInput);exit;
 			if($modeloGrupocomidaNutradol->validate() && $modeloPorcionesComida->validate()){
+				//print_r($modeloGrupocomidaNutradol->attributes);exit;
+
 				if(empty($datosInput["idNutrAdol"]) && $datosInput["idTipoActividad"]==1){					
 					$modeloNutricionAdol->id_val_nutricion=$datosInput["GrupocomidaNutradol"]["id_val_nutricion"];
 					$modeloNutricionAdol->id_tipoact_pld=$datosInput["idTipoActividad"];					
@@ -2832,7 +2877,8 @@ class ValoracionIntegralController extends Controller{
 						exit;
 					}
 					else{
-						$modeloGrupocomidaNutradol->id_nutradol=$modeloNutricionAdol->id_nutradol;						
+						$modeloGrupocomidaNutradol->id_nutradol=$modeloNutricionAdol->id_nutradol;	
+						$modeloPorcionesComida->id_nutradol=$modeloNutricionAdol->id_nutradol;
 					}
 				}
 				else{
@@ -2849,9 +2895,9 @@ class ValoracionIntegralController extends Controller{
 					$accion="modificar";
 				}
 				$modeloGrupocomidaNutradol->_porciones=$porciones;
-/*				print_r($modeloGrupocomidaNutradol->attributes);
-				print_r($modeloGrupocomidaNutradol->_porciones);exit;				
-*/				$resultado=$modeloGrupocomidaNutradol->creaRegPorciones();
+				//print_r($modeloGrupocomidaNutradol->attributes);
+				//print_r($modeloGrupocomidaNutradol->_porciones);exit;				
+				$resultado=$modeloGrupocomidaNutradol->creaRegPorciones();
 				if($resultado=='exito'){
 					if($accion=='crear'){
 						$resultado=$modeloPorcionesComida->registraPorcionesRec();
@@ -2966,8 +3012,10 @@ class ValoracionIntegralController extends Controller{
 							$modeloLabclinValnutr->contHist=serialize($labClinicosAdol);
 							$modeloLabclinValnutr->id_campovalnutr="laboratorio_clinico";			
 							$modeloLabclinValnutr->nombreCampoValoracion="entidad";
-							$modeloLabclinValnutr->regHistoricoLabClin(); 
-							$resultado=$modeloLabclinValnutr->modificaLabClinico();
+							if(!empty($modeloLabclinValnutr->contHist)){
+								$modeloLabclinValnutr->regHistoricoLabClin(); 
+							}
+							$resultado=$modeloLabclinValnutr->modificaLabClinico();						
 						}
 					}
 					else{
@@ -3188,13 +3236,15 @@ class ValoracionIntegralController extends Controller{
 				$nombresCampos=$modeloValNutr->attributeLabels();
 				if($esquema["udt_name"]=='bool'){
 					//print_r($contenidoVal);
-					if(empty($contenidoVal[$modeloValNutr->nombreCampoValoracion]) && $modeloValNutr->nombreCampoValoracion!="val_hab_nutr"){
-						$estado="false";
-						$camposVacios[]=$nombresCampos[$modeloValNutr->nombreCampoValoracion];
-					}
-					elseif($contenidoVal[$modeloValNutr->nombreCampoValoracion]=='f' && strlen($camposEsp['obs_crec_des'])<$numCaracteres && $modeloValNutr->nombreCampoValoracion=='control_crec_des'){
-						$estado="false";
-						$camposVacios[]=$nombresCampos["obs_crec_des"];						
+					if($modeloValNutr->nombreCampoValoracion!="estado_val_nutr"){
+						if(empty($contenidoVal[$modeloValNutr->nombreCampoValoracion]) && $modeloValNutr->nombreCampoValoracion!="val_hab_nutr"){
+							$estado="false";
+							$camposVacios[]=$nombresCampos[$modeloValNutr->nombreCampoValoracion];
+						}
+						elseif($contenidoVal[$modeloValNutr->nombreCampoValoracion]=='f' && strlen($camposEsp['obs_crec_des'])<$numCaracteres && $modeloValNutr->nombreCampoValoracion=='control_crec_des'){
+							$estado="false";
+							$camposVacios[]=$nombresCampos["obs_crec_des"];						
+						}
 					}
 				}		
 			}

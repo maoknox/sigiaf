@@ -131,20 +131,25 @@ class ForjarAdol extends CActiveRecord
 			$cambiaEstadoAdol->bindParam(":id_estado_adol",$this->id_estado_adol,PDO::PARAM_INT);
 			$cambiaEstadoAdol->bindParam(":num_doc",$this->num_doc,PDO::PARAM_STR);
 			$cambiaEstadoAdol->execute();
-			if($this->id_estado_adol==2){
-				$sqlConsEstadoPai="select culminacion_pai from pai where num_doc=:num_doc and pai_actual='true'";
+			if($this->id_estado_adol==1){
+				$sqlConsEstadoPai="select culminacion_pai from pai where num_doc=:num_doc and pai_actual is true and culminacion_pai is true";
 				$consEstadoPai=$conect->createCommand($sqlConsEstadoPai);
 				$consEstadoPai->bindParam(":num_doc",$this->num_doc,PDO::PARAM_STR);
 				$readEstadoPai=$consEstadoPai->query();
 				$resEstadoPai=$readEstadoPai->read();
 				$readEstadoPai->close();
-				if($resEstadoPai["culminacion_pai"]==2){
+				if(!empty($resEstadoPai)){
+					//cambia estado de plan post egreso en el caso que tenga uno activado anteriormente.
+					$sqlActualizaEstadoPlaPE="update plan_postegreso set plan_peactual='false' where num_doc=:num_doc and plan_peactual='true'";
+					$actualizaEstadoPlaPE=$conect->createCommand($sqlActualizaEstadoPlaPE);
+					$actualizaEstadoPlaPE->bindParam(":num_doc",$this->num_doc,PDO::PARAM_STR);
+					$actualizaEstadoPlaPE->execute();				
 					//Cambia la vigencia del pai a false, es decir el pai culminado ya no es actual, si se crea otro pai será completamente nuevo.
-	/*				$sqlActualizaVigenciaPai="update pai set pai_actual='false' where num_doc=:num_doc and pai_actual='true'";
+					$sqlActualizaVigenciaPai="update pai set pai_actual='false' where num_doc=:num_doc and pai_actual='true'";
 					$actualizaVigenciaPai=$conect->createCommand($sqlActualizaVigenciaPai);
 					$actualizaVigenciaPai->bindParam(":num_doc",$this->num_doc,PDO::PARAM_STR);
 					$actualizaVigenciaPai->execute();
-	*/				//cambia vigencia de valoración en psicología.
+					//cambia vigencia de valoración en psicología.
 					$sqlActualizaVigenciaPsicol="update valoracion_psicologia set val_act_psicol='false' where num_doc=:num_doc and val_act_psicol='true'";
 					$actualizaVigenciaPsicol=$conect->createCommand($sqlActualizaVigenciaPsicol);
 					$actualizaVigenciaPsicol->bindParam(":num_doc",$this->num_doc,PDO::PARAM_STR);

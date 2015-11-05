@@ -316,5 +316,5 @@ Yii::app()->getClientScript()->registerScript('scripValTrSoc_2','
 		});
 	}
 '
-,CClientScript::POS_END);
+,CClientScript::POS_BEGIN);
 ?>

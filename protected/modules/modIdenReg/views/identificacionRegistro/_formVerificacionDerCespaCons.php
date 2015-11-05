@@ -1,7 +1,7 @@
 <div id="MensajeVerifDer" style="font-size:14px;"></div>
 <?php
-	$modeloVerifDerechos->num_doc=$numDocAdol;
-	$modeloVerifDerechos->id_instanciader=1; 
+	$modeloVerifDerechos->num_doc=$numDocAdol; 
+	$modeloVerifDerechos->id_instanciader=2; 
 	$modeloVerifDerechos->id_momento_verif=1; 	
 	$derechos=$modeloVerifDerechos->consultaDerechos();//id_derechocespa
 ?>
@@ -59,6 +59,7 @@
     
     <hr />
     <?php
+		$op="";
         $consPart=$modeloVerifDerechos->consultaParticipacion($derecho["id_derecho_adol"]);
         foreach($consPart as $consPartAdol){
             $op[$consPartAdol["id_alternativaproc"]]=array('selected'=>true);

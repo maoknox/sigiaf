@@ -41,6 +41,7 @@
 	<!--campo de texto para nombres del adolescente -->	
 	<div class="form-group">
        <div class="col-md-4">
+    		<?php echo $formDesLab->labelEx($modeloValTO,'desemp_laboral',array('class'=>'control-label','for'=>'searchinput'));?><br />
 			<?php echo $formDesLab->labelEx($modeloValTO,'id_tipo_trab',array('class'=>'control-label','for'=>'searchinput'));?><br />
 			<?php 
                 $selOpt=false;
@@ -72,6 +73,35 @@
             ?>
             <?php echo $formDesLab->error($modeloValTO,'id_sector_lab',array('style' => 'color:#F00'));?>
     	</div>
+    </div>
+<?php $this->endWidget();?>
+<hr />
+</fieldset>
+<fieldset id="desempLaboralTxt">
+<?php $formularioDesLabTxt=$this->beginWidget('CActiveForm', array(
+	'id'=>'formularioDesLabTxt',
+	'enableAjaxValidation'=>false,
+	'enableClientValidation'=>true,
+	'clientOptions'=>array(
+		'validateOnSubmit'=>false,
+	),
+	'htmlOptions' => array('class' => 'form-horizontal')
+));
+?>
+	<?php echo  $formularioDesLabTxt->errorSummary($modeloValTO,'','',array('style' => 'font-size:14px;color:#F00')); ?>
+	<!--campo de texto para nombres del adolescente -->	
+	<div class="form-group">
+        <div class="col-md-12">
+			<?php echo $formularioDesLabTxt->labelEx($modeloValTO,'desemp_laboral',array('class'=>'control-label','for'=>'searchinput'));?> - Observaciones
+			<?php echo $formularioDesLabTxt->textArea($modeloValTO,
+                'desemp_laboral',
+                array('style'=>'width:99.5%;',
+                    'onblur'=>'js:enviaForm("formularioDesLabTxt","desempLaboralTxt")',
+                    'onkeyup'=>'js:$("#desempLaboralTxt").addClass("has-warning")'
+                ));
+            ?>
+            <?php echo $formularioDesLabTxt->error($modeloValTO,'desemp_laboral',array('style' => 'color:#F00'));?>
+        </div>    
     </div>
 <?php $this->endWidget();?>
 <hr />

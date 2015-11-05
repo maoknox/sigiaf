@@ -238,6 +238,10 @@ class AdministracionController extends Controller{
 			$modeloCambioSede->id_cambio_sede=$datosInput["CambioSede"]["id_cambio_sede"];
 			if($modeloCambioSede->validate()){				
 				$msnRegistro=$modeloCambioSede->registraDecCambioSede();
+				$modeloForjarAdol=new ForjarAdol();			
+				$modeloForjarAdol->id_estado_adol=1;
+				$modeloForjarAdol->num_doc=$modeloCambioSede->num_doc;
+				$resultado=$modeloForjarAdol->cambiaEstadoAdol();
 				echo CJSON::encode(array(
 					"estadoComu"=>"exito",
 					'resultado'=>CJavaScript::encode(CJavaScript::quote($msnRegistro)),

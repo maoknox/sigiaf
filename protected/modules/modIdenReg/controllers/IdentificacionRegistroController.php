@@ -617,16 +617,15 @@ class IdentificacionRegistroController extends Controller
 	}
 	public function actionModAcudiente(){
 		$resultado="exito";
-		$datosAcudiente=Yii::app()->input->post();
+		$datosAcudiente=Yii::app()->input->post();		
 		$modeloAcudiente=new Familiar();
 		$modeloLocalizacion=new LocalizacionViv();		
 		$modeloTelefono=new Telefono();
 		$modeloAcudiente->mensajeErrorAcud="";
 		$modeloTelefono->mensajeErrorTel="";
 		$modeloLocalizacion->mensajeErrorLocAcud="";
-		if(isset($_POST["Familiar"]) && isset($_POST["LocalizacionViv"]) && isset($_POST["Telefono"]) ){
-			
-			$modeloAcudiente->attributes=$datosAcudiente["Familiar"];			
+		if(isset($_POST["Familiar"]) && isset($_POST["LocalizacionViv"]) && isset($_POST["Telefono"])){			
+			$modeloAcudiente->attributes=$datosAcudiente["Familiar"];	
 			$modeloLocalizacion->attributes=$datosAcudiente["LocalizacionViv"];
 			$modeloTelefono->attributes=$datosAcudiente["Telefono"];
 			if($modeloAcudiente->validate() && $modeloLocalizacion->validate() && $modeloTelefono->validate()){
@@ -686,7 +685,8 @@ class IdentificacionRegistroController extends Controller
 				$telefonoSec=$modeloTelefono->consultaTelefonoAcud($modeloAcudiente->id_doc_familiar,2);
 				if(empty($telefonoSec)){				  
 					if(!empty($modeloTelefono->tel_sec)){$modeloTelefono->registraTelefonoAcud(2,$modeloTelefono->tel_sec);
-							$modeloTelefono->mensajeErrorTel.=$modeloTelefono->mensajeErrorTel;}
+						$modeloTelefono->mensajeErrorTel=$modeloTelefono->mensajeErrorTel;
+					}
 				}
 				else{
 					if($modeloTelefono->tel_sec!=$telefonoSec["telefono"]){
@@ -701,7 +701,7 @@ class IdentificacionRegistroController extends Controller
 				$telefonoCel=$modeloTelefono->consultaTelefonoAcud($modeloAcudiente->id_doc_familiar,3);
 				if(empty($telefonoCel)){
 					if(!empty($modeloTelefono->celular)){$modeloTelefono->registraTelefonoAcud(3,$modeloTelefono->celular);
-							$modeloTelefono->mensajeErrorTel.=$modeloTelefono->mensajeErrorTel;}
+							$modeloTelefono->mensajeErrorTel=$modeloTelefono->mensajeErrorTel;}
 				}
 				else{
 					if($modeloTelefono->celular!=$telefonoCel["telefono"]){
@@ -964,6 +964,7 @@ class IdentificacionRegistroController extends Controller
 		$modeloHistPersAdol= new HistPersonalAdol();
 		$consultasGenerales=new ConsultasGenerales();
 		$modeloHistPersAdol->attributes=$dataInput["HistPersonalAdol"];
+		//print_r($dataInput);exit;
 		if($modeloHistPersAdol->validate()){				
 			$respPsicol=false;
 			$respTrabSocial=false;
@@ -976,8 +977,15 @@ class IdentificacionRegistroController extends Controller
 						$resultado=$modeloHistPersAdol->modificaPersAdol($modeloHistPersAdol->psicologosHist,$respPsicol,true);
 					}
 					else{
-						$resultado=$modeloHistPersAdol->modificaPersAdol($profesional["id_cedula"],false,false);
-						$modeloHistPersAdol->registraEquipoPsic($modeloHistPersAdol->psicologosHist,$respPsicol);
+						$resultado=$modeloHistPersAdol->modificaPersAdol($profesional["id_cedula"],false,false);						
+						$consultasGenerales->idCedula=$modeloHistPersAdol->psicologosHist;
+						$consultaHistPersona=$consultasGenerales->consultaProfesionalAdolHistorial();
+						if(empty($consultaHistPersona)){
+							$modeloHistPersAdol->registraEquipoPsic($modeloHistPersAdol->psicologosHist,$respPsicol);
+						}
+						else{
+							$resultado=$modeloHistPersAdol->modificaPersAdol($modeloHistPersAdol->psicologosHist,$respPsicol,true);
+						}
 					}
 				}
 				else{
@@ -986,14 +994,26 @@ class IdentificacionRegistroController extends Controller
 					}
 					else{
 						$resultado=$modeloHistPersAdol->modificaPersAdol($profesional["id_cedula"],false,false);
-						$modeloHistPersAdol->registraEquipoPsic($modeloHistPersAdol->trabSocialsHist,$respTrabSocial);
+						$consultasGenerales->idCedula=$modeloHistPersAdol->trabSocialsHist;
+						$consultaHistPersona=$consultasGenerales->consultaProfesionalAdolHistorial();	
+						if(empty($consultaHistPersona)){					
+							$modeloHistPersAdol->registraEquipoPsic($modeloHistPersAdol->trabSocialsHist,$respTrabSocial);
+						}
+						else{
+							$resultado=$modeloHistPersAdol->modificaPersAdol($modeloHistPersAdol->trabSocialsHist,$respTrabSocial,true);
+						}
+						
 					}
 				}					
+			}
+			if($modeloHistPersAdol->mensajeErrorProf!=" "){
+				$resultado="exito";
 			}
 			echo CJSON::encode(
 			array(
 				"estadoComu"=>"exito",
 				"resultado"=>CJavaScript::encode(CJavaScript::quote($resultado)),
+				"msnError"=>CJavaScript::encode(CJavaScript::quote($modeloHistPersAdol->mensajeErrorProf))
 				)
 			);
 

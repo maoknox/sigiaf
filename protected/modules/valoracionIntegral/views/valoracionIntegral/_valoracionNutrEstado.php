@@ -42,7 +42,7 @@
 <?php
 $boton=CHtml::Button (
 			'Registrar',   
-			array('id'=>'btnFormEstVal','class'=>'btn btn-default btn-sdis','name'=>'btnFormEstVal','onclick'=>'js:enviaFormOpt("formularioEstVal","estadoVal")')
+			array('id'=>'btnFormEstVal','class'=>'btn btn-default btn-sdis','name'=>'btnFormEstVal','onclick'=>'js:validaDilValoracion("formularioEstVal","estadoVal")')
 	);
     ?>
     <?php echo $boton; //CHtml::submitButton('Crear');?>

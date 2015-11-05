@@ -427,6 +427,8 @@ public function actionRegSegPaiDer(){
 			$modeloSegCompDer=new SeguimientoCompderecho();
 			$modeloSegCompDer->attributes=$dataInput["SeguimientoCompderecho"];
 			$modeloSegCompDer->fecha_estab_compderecho=$dataInput["SeguimientoCompderecho"]["fecha_estab_compderecho"];
+			$modeloSegCompDer->fecha_seguim_compderecho="aux";
+			//print_r($modeloSegCompDer->attributes);exit;
 			if($modeloSegCompDer->validate()){
 				$resultado=$modeloSegCompDer->regSegSancionPai();
 				echo CJSON::encode(array("estadoComu"=>"exito",'resultado'=>CJavaScript::encode(CJavaScript::quote("exito"))));
@@ -446,6 +448,7 @@ public function actionRegSegPaiDer(){
 			$modeloSegComSanc=new SeguimientoCompsancion();
 			$modeloSegComSanc->attributes=$dataInput["SeguimientoCompsancion"];
 			//$modeloSegComSanc->fecha_establec_compsanc=$dataInput["SeguimientoCompderecho"]["fecha_establec_compsanc"];
+			$modeloSegComSanc->fecha_seguim_compsancion="aux";
 			if($modeloSegComSanc->validate()){
 				$modeloSegComSanc->fecha_establec_compsanc=$dataInput["SeguimientoCompsancion"]["fecha_establec_compsanc"];
 				$resultado=$modeloSegComSanc->regSegSancionPai();

@@ -44,7 +44,7 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
                         array(
                             'prompt'=>'Seleccione Sector',
                             'class'=>'selectpicker form-control','data-live-search'=>'false',
-							'onChange'=>'js:consOrganizacion(this)',
+							'onChange'=>'js:consOrganizacion(this);$("#formularioPsc").addClass("unsavedForm");',
                         )
                     );						
                 ?>  
@@ -57,7 +57,7 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
 				<?php echo $formularioPsc->dropDownList($modeloPsc,'id_institucionpsc',
 					array(''=>'Debe seleccionar un sector'),
                     array(
-						'onchange'=>'js:habilitaCampo(this)'
+						'onchange'=>'js:habilitaCampo(this);$("#formularioPsc").addClass("unsavedForm");'
 						,'class'=>'form-control','data-live-search'=>'true')
 					); ?>
                 <?php echo $formularioPsc->error($modeloPsc,'id_institucionpsc',array('style' => 'color:#F00'));?> 
@@ -196,7 +196,20 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
         <?php $this->endWidget();?>
         <?php
         Yii::app()->getClientScript()->registerScript('scripPai_1','
+		$(document).ready(function(){
+			$("#formularioPsc").find(":input").change(function(){
+				var dirtyForm = $(this).parents("form");
+				// change form status to dirty
+				dirtyForm.addClass("unsavedForm");
+			});
+		});	
 		
+		var campoText=0;
+		$(window).bind("beforeunload", function(){
+			if($(".unsavedForm").size()){
+				return "va a cerrar";
+			}
+		});
 		function consOrganizacion(objetoSel){
 				 var idSector =$("#"+objetoSel.id).find("option:selected").val();
 				 var datos="Psc[id_sector_psc]="+idSector;
@@ -378,16 +391,18 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
                         $("#formularioPsc #formularioPsc_es_").hide(); 
                         if(datos.resultado=="\'exito\'"){
                             $("#MensajePsc").text("exito");
+							jAlert("PSC registrada","Mensaje");
                             $("#formularioPsc #btnFormCreaPsc").remove();
                             $("#formularioPsc #formularioPsc_es_").html("");                                                    
-                            $("#formularioPsc #formularioPsc_es_").hide(); 							
+                            $("#formularioPsc #formularioPsc_es_").hide(); 	
+							$("#formularioPsc").removeClass("unsavedForm");						
                         }
                         else{
                             $("#MensajePsc").text("Error en la creación del registro.  Motivo "+datos.resultado);
                         }
                     }
                     else{
-                        var errores="Por favor corrija los siguientes errores<br/><ul>";
+                        var errores="Por favor tenga en cuenta lo siguiente<br/><ul>";
                         $.each(datos, function(key, val) {
                             errores+="<li>"+val+"</li>";
                             $("#formularioPsc #"+key+"_em_").text(val);                                                    
@@ -396,6 +411,7 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
                         errores+="</ul>";
                         $("#formularioPsc #formularioPsc_es_").html(errores);                                                    
                         $("#formularioPsc #formularioPsc_es_").show(); 
+						jAlert(errores,"Mensaje");
                     }
                 },
                 error:function (xhr, ajaxOptions, thrownError){

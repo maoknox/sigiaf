@@ -197,6 +197,7 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
 									if(datosRef.resultado=="exito"){
 										if(datosRef.resultadofam=="exito"){
 											$("#MensajeRef").text("Referenciación creada satisfactoriamente");
+											jAlert("Referenciación creada satisfactoriamente","Mensaje");
 										}
 										else{
 											$("#MensajeRef").text("Aunque la referenciación fue creada hubo un error en la asociación del familiar beneficiario. el codigo del error es: "+datosRef.resultadofam);

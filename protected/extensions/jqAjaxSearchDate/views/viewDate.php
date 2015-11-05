@@ -39,7 +39,37 @@
 		
 	?>
     </div>
-    
+    </div>
+  	<div class="form-group"> 
+	<?php echo CHtml::label("Seleccione fecha final","search_term",array('class'=>'col-md-4 control-label','for'=>'searchinput'));?>
+        <div class="col-md-4">
+
+<?php //
+		$this->widget('zii.widgets.jui.CJuiDatePicker',
+			array(
+			'name'=>'fecha_fin_reporte',
+			'id'=>'fecha_fin_reporte',
+			'attribute'=>'fecha_fin_reporte',
+			'value'=>'',
+			'language'=>'es',			
+			'htmlOptions'=>	array('readonly'=>"readonly",'class'=>'form-control'),			
+			'options'=>array('autoSize'=>true,
+					'defaultDate'=>'',
+					'dateFormat'=>'yy-mm-dd',
+					'buttonText'=>'Seleccione Fecha',
+					'selectOtherMonths'=>true,
+					'showAnim'=>'slide',
+					'showOtherMonths'=>true,
+					'changeMonth'=>'true',
+					'changeYear'=>'true',
+					'minDate'=>'2010-1-1',//fecha minima
+					'maxDate'=>'date("Y-m-d")',//fecha maxima
+			),
+		));
+		
+	?>
+    </div>
+  
    </div>
 <?php echo CHtml::hiddenField("numDocAdol","",array('id'=>'numDocAdol'));?>
 <?php

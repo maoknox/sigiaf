@@ -67,6 +67,16 @@ $this->widget('zii.widgets.jui.CJuiTabs', array(
 
 ?>
 </fieldset>
+		<?php Yii::app()->getClientScript()->registerScript('scriptValpsic_0','
+		$(document).ready(function(){
+			$("form").find("textArea").each(function(){
+				$(this).css("height","200px");
+			});
+		});	
+		'
+		,CClientScript::POS_BEGIN);
+		?>
+	<?php else:?>
 
 
 <?php endif;?>

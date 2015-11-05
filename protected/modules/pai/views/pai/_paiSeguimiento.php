@@ -8,12 +8,16 @@
 </table>
 <?php 
 	foreach($derechos as $pk=>$derecho):
+	//echo $modeloCompDer->id_pai;
 		$idPai=$modeloCompDer->id_pai;
 		$modeloCompDer->unsetAttributes();
 		$modeloCompDer->id_pai=$idPai;
 		$modeloCompDer->id_derechocespa=$derecho["id_derechocespa"];
+		$modeloCompDer->num_doc=$numDocAdol;		
 		$derechoAdolPai="";
+		//echo $modeloCompDer->id_derechocespa;
 		$derechoAdolPai=$modeloCompDer->consultaPaiDerechoAdol();
+		//print_r($derechoAdolPai);
 		$modeloCompDer->attributes=$derechoAdolPai;
 		$modeloCompDer->fecha_estab_compderecho=$derechoAdolPai["fecha_estab_compderecho"];
 			//$modeloCompSanc,
@@ -38,11 +42,11 @@
             <?php 			
 				$modeloSegComDer->id_pai=$modeloCompDer->id_pai;
 				$modeloSegComDer->id_derechocespa=$modeloCompDer->id_derechocespa;
+				$modeloSegComDer->num_doc=$numDocAdol;
 				$modeloSegComDer->fecha_estab_compderecho=$modeloCompDer->fecha_estab_compderecho;
 				echo $formPaiSegDer->hiddenField($modeloSegComDer,'id_pai');
 				echo $formPaiSegDer->hiddenField($modeloSegComDer,'id_derechocespa');
-				$modeloCompDer->num_doc=$numDocAdol;
-				echo $formPaiSegDer->hiddenField($modeloCompDer,'num_doc');
+				echo $formPaiSegDer->hiddenField($modeloSegComDer,'num_doc');
 				echo $formPaiSegDer->hiddenField($modeloSegComDer,'fecha_estab_compderecho');
 			?>
             <?php if($modeloPAI->culminacion_pai!=1):?>
@@ -69,9 +73,8 @@
 							'type' => 'POST',
 							'onclick' => "js:								
 								$('#ui-id-1').text('".CHtml::encode("Fecha de seguimiento: ".$segCompder["fecha_seguim_compderecho"])."');
-								$('#juiDialogConsSeg').text(".CJavaScript::encode(CJavaScript::quote($segCompder["seguim_compderecho"])).");
-							   	$('#juiDialogConsSeg').dialog('open');
-							"							
+								$('#juiDialogConsSeg').text(".CJavaScript::encode($segCompder["seguim_compderecho"]).");
+							   	$('#juiDialogConsSeg').dialog('open');"							
 					  	)
 					);?> 
                     <br />
@@ -94,7 +97,10 @@
 <td style=" border:1px solid #003; width:60%;">SEGUIMIENTO</td>
 <td style=" border:1px solid #003; width:20%;">HISTÓRICO SEGUIMIENTO</td>
 </table>
-	<?php foreach($infJudicialPai as $infJudicialPai)://revisar
+<?php if(!empty($infJudicial)):?>
+
+	<?php 
+	foreach($infJudicial as $infJudicialPai)://revisar
 		$modeloCompSanc->id_inf_judicial=$infJudicialPai["id_inf_judicial"];
 		$consCompSancPai=$modeloCompSanc->consultaPaiSancAdol();	
 		$modeloCompSanc->attributes=$consCompSancPai;
@@ -127,8 +133,8 @@
 				$modeloSegComSanc->fecha_establec_compsanc=$modeloCompSanc->fecha_establec_compsanc;
 				echo $formSegPaiCompSanc->hiddenField($modeloSegComSanc,'id_pai');
 				echo $formSegPaiCompSanc->hiddenField($modeloSegComSanc,'id_inf_judicial');
-				$modeloCompSanc->num_doc=$numDocAdol;
-				echo $formSegPaiCompSanc->hiddenField($modeloCompSanc,'num_doc');
+				$modeloSegComSanc->num_doc=$numDocAdol;
+				echo $formSegPaiCompSanc->hiddenField($modeloSegComSanc,'num_doc');
 				echo $formSegPaiCompSanc->hiddenField($modeloSegComSanc,'fecha_establec_compsanc');
 			?>
             <?php if($modeloPAI->culminacion_pai!=1):?>            
@@ -154,7 +160,7 @@
 							'type' => 'POST',
 							'onclick' => "js:								
 								$('#ui-id-1').text('".CHtml::encode("Fecha de seguimiento: ".$segCompSanc["fecha_seguim_compsancion"])."');
-								$('#juiDialogConsSeg').text(".CJavaScript::encode(CJavaScript::quote($segCompSanc["seguim_compsancion"])).");
+								$('#juiDialogConsSeg').text(".CJavaScript::encode($segCompSanc["seguim_compsancion"]).");
 							   	$('#juiDialogConsSeg').dialog('open');
 							"							
 					  	)
@@ -169,6 +175,28 @@
 		<?php endif;
 		endforeach;
 ?>
+<?php else:?>
+ <div class="panel panel-default">
+ 	<div class="panel-heading">
+		<div class="panel-title">
+			AVISO
+        </div>
+    </div>
+  	<div class="panel-body">
+		<div class="row">
+        	 <div class="col-lg-3 text-center">
+             	<img src="/login_sdis/public/img/logo.svg" />
+             </div>
+             <div class="col-lg-9 text-justify">
+               No se ha registrado la información judicial del adolescente.             
+             </div>
+        </div> 
+ 	</div>
+ </div>        
+
+
+<?php endif;?>
+
 </fieldset>
                    <?php 
 $this->beginWidget('zii.widgets.jui.CJuiDialog',array(
@@ -176,7 +204,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog',array(
                 'options'=>array(
                     'title'=>'Show data',
                     'autoOpen'=>false,
-                    'modal'=>'true',
+                    'modal'=>'false',
                     'width'=>'60%',
                     'height'=>'400',
                 ),
@@ -194,6 +222,7 @@ Yii::app()->getClientScript()->registerScript('scripPai_2','
 			return;	
 		}
 		function regSegDer (idComponente){
+			//jAlert($("#formPaiSegDer_"+idComponente).serialize(),"Mensaje"); return;
 			$.ajax({
 				url: "regSegPaiDer",
 				data:$("#formPaiSegDer_"+idComponente).serialize(),

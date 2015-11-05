@@ -181,7 +181,17 @@ class ConsultasGenerales extends CFormModel{
 		$readProfAdol->close();
 		return $resProfAdol;
 	}
-
+	public function consultaProfesionalAdolHistorial(){
+		$conect= Yii::app()->db;
+		$sqlConsProfAdol="select * from hist_personal_adol where id_cedula=:id_cedula and num_doc=:num_doc";
+		$consProfAdol=$conect->createCommand($sqlConsProfAdol);
+		$consProfAdol->bindParam(":id_cedula",$this->idCedula,PDO::PARAM_INT);
+		$consProfAdol->bindParam(":num_doc",$this->numDocAdol,PDO::PARAM_STR);
+		$readProfAdol=$consProfAdol->query();
+		$resProfAdol=$readProfAdol->read();
+		$readProfAdol->close();
+		return $resProfAdol;
+	}
 	public function consultaTipoDocumento(){
 		$conect= Yii::app()->db;
 		$sql_TipoDoc="select * from tipo_documento order by id_tipo_doc asc";
@@ -510,7 +520,7 @@ class ConsultasGenerales extends CFormModel{
 		$compCondicion="";
 		if(Yii::app()->user->getState('rol')==4 or Yii::app()->user->getState('rol')==5){
 			$compConsSql=", hist_personal_adol as c ";
-			$compCondicion="and c.num_doc=a.num_doc and c.id_cedula=:idCedula";
+			$compCondicion="and c.num_doc=a.num_doc and c.id_cedula=:idCedula and c.asignado_actualmente is true";
 		}
 		else{
 			$compConsSql=", forjar_adol as c ";

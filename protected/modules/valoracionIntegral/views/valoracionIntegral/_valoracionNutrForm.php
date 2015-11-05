@@ -88,6 +88,11 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
 		?>
 	</fieldset>
 		<?php Yii::app()->getClientScript()->registerScript('scriptValnutr_0','
+		$(document).ready(function(){
+			$("form").find("textArea").each(function(){
+				$(this).css("height","200px");
+			});
+		});	        		
 		$(window).bind("beforeunload", function(){
 			if($(".unsavedForm").size()){
 				return "Aún hay datos sin guardar si abandona la página estos no se guardaran";//va a cerrar

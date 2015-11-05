@@ -160,7 +160,7 @@ class ConceptoIntegral extends CActiveRecord
 			$regConcInt->bindParam(":num_doc",$this->num_doc,PDO::PARAM_STR);
 			$regConcInt->bindParam(":concepto_integral",$this->concepto_integral,PDO::PARAM_STR);
 			$regConcInt->execute();
-			$transaction->commit($sqlRegConcInt);
+			$transaction->commit();
 			return "exito";
 		}
 		catch(CDbCommand $e){

@@ -107,7 +107,7 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
                             }
                         }
                     ?>
-                    Ha cuplido <strong><?php echo $numHoras;?></strong> horas
+                    Ha realizado <strong><?php echo $numHoras;?></strong> horas
                 </p>
             </div>
         </div>
@@ -350,8 +350,8 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
                             <?php foreach($segsPsc as $pk=>$segPsc):?>
                                 <a name="segpsc_<?php echo $pk;?>"><strong>Fecha del seguimiento: <?php echo $segPsc["fecha_seg_ind"] ?>
                                || Institución: <?php echo $segPsc["institucionpsc"]; ?> || Nombre del profesional <?php echo $segPsc["nombrespersona"]?> || Profesión: <?php echo $segPsc["nombre_rol"]?></strong></a><br /><br />
-                                <p style="margin:0px 10px 0px 0px"><strong>Desarrollo de actividades:</strong><br /><?php echo CHtml::encode($segPsc["desarrollo_act_psc"]); ?></p>
-                                <p style="margin:0px 10px 0px 0px"><strong>Reportes de novedad de la prestación de servicios a la comunidad:</strong><br /><?php echo CHtml::encode($segPsc["reporte_nov_psc"]); ?></p>
+                                <p style="margin:0px 10px 0px 0px"><strong>Desarrollo de actividades:</strong><br /><?php echo CHtml::encode($segPsc["desarrollo_act_psc"]); ?></p><br />
+                                <p style="margin:0px 10px 0px 0px"><strong>Reportes de novedad de la prestación de servicios a la comunidad:</strong><br /><?php echo CHtml::encode($segPsc["reporte_nov_psc"]); ?></p><br />
                                 <p style="margin:0px 10px 0px 0px"><strong>Cumplimiento de acuerdos:</strong><br /><?php echo CHtml::encode($segPsc["cump_acu_psc"]); ?></p> 
                                 <br />
                                 <hr />
@@ -372,6 +372,12 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
             </table>
         </fieldset>
         <?php Yii::app()->getClientScript()->registerScript('script_asignaref','
+				$(document).ready(function(){
+					$("form").find("textArea").each(function(){
+						$(this).css("height","200px");
+					});
+				});	
+
                 function agregaFecha(){
                     //jAlert($("#AsistenciaPsc_fecha_asist_psc").val(),"epa");
                     if($("#AsistenciaPsc_fecha_asist_psc").length){

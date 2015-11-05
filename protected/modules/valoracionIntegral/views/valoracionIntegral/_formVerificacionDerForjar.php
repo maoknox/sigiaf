@@ -1,5 +1,13 @@
 <div id="MensajeVerifDer" style="font-size:14px;"></div>
 <p class="note">Campos con <span class="required">*</span> son obligatorios.</p>
+<?php
+	$modeloVerifDerechos->num_doc=$numDocAdol;
+	$modeloVerifDerechos->id_instanciader=1; 
+	$modeloVerifDerechos->id_momento_verif=1; 
+	//print_r($derechos);	
+	//$derechos=$modeloVerifDerechos->consultaDerechos();//id_derechocespa
+?>
+
 <?php $formAdolDerechos=$this->beginWidget('CActiveForm', array(
 	'id'=>'formularioVerifDer',
 	'enableAjaxValidation'=>true,

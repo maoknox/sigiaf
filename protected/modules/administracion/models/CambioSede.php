@@ -228,7 +228,7 @@ class CambioSede extends CActiveRecord
 			$actCambioSede->execute();
 			
 			if($this->vbno_coord=="true"){
-				$sqlAdolSede="update forjar_adol set id_forjar=:id_forjar,id_estado_adol=1 where num_doc=:num_doc";
+				$sqlAdolSede="update forjar_adol set id_forjar=:id_forjar where num_doc=:num_doc";
 				$adolSede=$conect->createCommand($sqlAdolSede);
 				$adolSede->bindParam(':num_doc',$this->num_doc,PDO::PARAM_STR);
 				$adolSede->bindParam(':id_forjar',$infoSol["sede_nueva"],PDO::PARAM_STR);

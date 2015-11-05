@@ -146,7 +146,13 @@ class JustificacionHabVal extends CActiveRecord
 		if(!empty($roll)){//
 			if($roll==4||$roll==5){
 				$conect=Yii::app()->db;
-				$sqlPersAdol="select (nombre_personal || ' ' || apellidos_personal) as nombrpersona,b.id_cedula from hist_personal_adol as a left join persona as b on a.id_cedula=b.id_cedula left join usuario as c on c.id_cedula=a.id_cedula where id_rol=:id_rol and num_doc=:num_doc and pers_habilitado is true";
+				$sqlPersAdol="select (nombre_personal || ' ' || apellidos_personal) as nombrpersona,b.id_cedula 
+					from hist_personal_adol as a 
+					left join persona as b on a.id_cedula=b.id_cedula 
+					left join usuario as c on c.id_cedula=a.id_cedula 
+					where id_rol=:id_rol and num_doc=:num_doc and 
+						pers_habilitado is true and 
+						asignado_actualmente is true";
 				$persAdol=$conect->createCommand($sqlPersAdol);
 				$persAdol->bindParam(":id_rol",$roll);
 				$persAdol->bindParam(":num_doc",$numDoc);

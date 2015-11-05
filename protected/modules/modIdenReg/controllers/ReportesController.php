@@ -141,7 +141,14 @@ class ReportesController extends Controller{
 		//echo $mes;
 		if($permiso["acceso_rolmenu"]==1){
 			$datosInput=Yii::app()->input->post();
-			if(isset($_POST["numDocAdol"]) && !empty($_POST["numDocAdol"]) && isset($_POST["fecha_reporte"]) && !empty($_POST["fecha_reporte"])){
+			if(isset($_POST["numDocAdol"]) && !empty($_POST["numDocAdol"]) && isset($_POST["fecha_reporte"]) && !empty($_POST["fecha_reporte"]) && !empty($_POST["fecha_fin_reporte"]) ){
+				
+				$fecha_incial = strtotime(date($datosInput["fecha_reporte"],time()));
+				$fecha_final = strtotime(date($datosInput["fecha_fin_reporte"],time()));
+				$dias=$fecha_final-$fecha_incial;
+				if($dias<=0){
+					$mensaje="La fecha inicial no puede ser mayor a la final";
+				}
 				$consultaGeneral=new ConsultasGenerales();
 				$operaciones=new OperacionesGenerales();
 				$modeloVerifDerechos=new DerechoAdol();		
@@ -152,11 +159,11 @@ class ReportesController extends Controller{
 				$adolescente=$consultaGeneral->consultaAdolescenteSede();	
 				$modeloSeguimiento=new SeguimientoAdol();
 				$modeloSegRefer=new SeguimientoRefer();
-				$modeloSeguimiento->fecha_inicial=$datosInput["fecha_reporte"];
+				$modeloSeguimiento->fecha_inicial=$datosInput["fecha_reporte"];				
 				$modeloSeguimiento->num_doc=$datosInput["numDocAdol"];
-				$fecha=split("-",$modeloSeguimiento->fecha_inicial);
-				$diaFin=date("d",(mktime(0,0,0,$fecha[1]+1,1,$fecha[0])-1));
-				$modeloSeguimiento->fecha_fin=$fecha[0]."-".$fecha[1]."-".$diaFin;
+				//$fecha=split("-",$modeloSeguimiento->fecha_inicial);
+				//$diaFin=date("d",(mktime(0,0,0,$fecha[1]+1,1,$fecha[0])-1));
+				$modeloSeguimiento->fecha_fin=$datosInput["fecha_fin_reporte"];//$fecha[0]."-".$fecha[1]."-".$diaFin;				
 				$modeloSeguimiento->seg_posegreso='false';
 				$modeloSeguimiento->seg_extraordinario='false';
 				$seguimientos=$modeloSeguimiento->consultaSeguimiento();
@@ -195,34 +202,42 @@ class ReportesController extends Controller{
 					$modeloNutricionAdol->id_tipoact_pld=2;				
 					$seguimientosNutr=$modeloNutricionAdol->consultaNutricionAdolSeg();
 				}
-				$this->renderPartial('_informeSeguimiento',
-					array(
-						'adolescente'=>$adolescente,
-						'consultaGeneral'=>$consultaGeneral,
-						'operaciones'=>$operaciones,
-						'modeloPai'=>$modeloPai,
-						'modeloInfJud'=>$modeloInfJud,
-						'modeloCompSanc'=>$modeloCompSanc,	
-						'fecha_reporte'=>$datosInput["fecha_reporte"],
-						'seguimientos'=>$seguimientos,
-						'fecha_inicial'=>$modeloSeguimiento->fecha_inicial,
-						'fecha_fin'=>$modeloSeguimiento->fecha_fin,
-						'modeloSeguimiento'=>$modeloSeguimiento,
-						'servicios'=>$servicios,
-						'modeloRef'=>$modeloRef,
-						'modeloSegRefer'=>$modeloSegRefer,
-						'pscAdol'=>$pscAdol,
-						'modeloSegPsc'=>$modeloSegPsc,
-						'seguimientoPEgreso'=>$seguimientoPEgreso,
-						'gestionesSJAdol'=>$gestionesSJAdol,
-						'modeloGestionSociojuridica'=>$modeloGestionSociojuridica,
-						'seguimientosNutr'=>$seguimientosNutr,
-						'valNutr'=>$valNutr,
-					)
-				);
+				if(!empty($mensaje)){
+					$this->render('indexFecha',array('accion'=>$controlAcceso->accion,"mensaje"=>$mensaje));
+				}
+				else{
+					$this->renderPartial('_informeSeguimiento',
+						array(
+							'adolescente'=>$adolescente,
+							'consultaGeneral'=>$consultaGeneral,
+							'operaciones'=>$operaciones,
+							'modeloPai'=>$modeloPai,
+							'modeloInfJud'=>$modeloInfJud,
+							'modeloCompSanc'=>$modeloCompSanc,	
+							'fecha_reporte'=>$datosInput["fecha_reporte"],
+							'seguimientos'=>$seguimientos,
+							'fecha_inicial'=>$modeloSeguimiento->fecha_inicial,
+							'fecha_fin'=>$modeloSeguimiento->fecha_fin,
+							'modeloSeguimiento'=>$modeloSeguimiento,
+							'servicios'=>$servicios,
+							'modeloRef'=>$modeloRef,
+							'modeloSegRefer'=>$modeloSegRefer,
+							'pscAdol'=>$pscAdol,
+							'modeloSegPsc'=>$modeloSegPsc,
+							'seguimientoPEgreso'=>$seguimientoPEgreso,
+							'gestionesSJAdol'=>$gestionesSJAdol,
+							'modeloGestionSociojuridica'=>$modeloGestionSociojuridica,
+							'seguimientosNutr'=>$seguimientosNutr,
+							'valNutr'=>$valNutr,
+						)
+					);
+				}
 			}
 			else{
-				$this->render('indexFecha',array('accion'=>$controlAcceso->accion));
+				if(!empty($datosInput["numDocAdol"]) && empty($datosInput["fecha_reporte"]) || !empty($datosInput["numDocAdol"]) && empty($datosInput["fecha_fin_reporte"])){
+					$mensaje="Debe seleccionar ambas fechas";
+				}
+				$this->render('indexFecha',array('accion'=>$controlAcceso->accion,"mensaje"=>$mensaje));
 			}
 		}
 		else{

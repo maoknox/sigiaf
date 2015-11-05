@@ -241,7 +241,8 @@ Yii::app()->getClientScript()->registerScript('scriptValpsic_1','
   // change form status to dirty
   dirtyForm.addClass("unsavedForm");
 });});	
-		function enviaForm(nombreForm,divGr,campo){
+
+	function enviaForm(nombreForm,divGr,campo){
 			$.ajax({
 				url: "modificaValoracionPsicol",
 				data:$("#"+nombreForm).serialize()+"&idValPsicol="+$("#idValPsicol").val()+"&numDocAdolValPsicol="+$("#numDocAdolValPsicol").val(),

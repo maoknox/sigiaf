@@ -12,12 +12,12 @@
 		'htmlOptions' => array('class' => 'form-horizontal')
     ));
     ?>
-    <?php echo  $formConcInt->errorSummary($modeloConInt,'','',array('style' => 'font-size:14px;color:#F00')); ?>
+    <?php 	echo  $formConcInt->errorSummary($modeloConInt,'','',array('style' => 'font-size:14px;color:#F00')); ?>
 	<div class="form-group">
         <div class="col-md-12">
 			<?php 
                 $modeloConInt->num_doc=$numDocAdol;
-                $modeloConInt->fecha_concint=date("Y-m-d");
+                //$modeloConInt->fecha_concint=date("Y-m-d");
 			 	echo $formConcInt->textArea($modeloConInt,
                 'concepto_integral',
                 array('class'=>'form-control',
@@ -31,7 +31,7 @@
 	<div class="form-group">
         <div class="col-md-4">
 			<?php $boton=CHtml::ajaxSubmitButton (
-				'Registrar Concepto',   
+				'Modificar Concepto',   
 				array('valoracionIntegral/modificaConcInt'),
 				array(				
 					'dataType'=>'json',

@@ -160,7 +160,7 @@
    </div>
    </div>
    </td></tr></table>
-
+   <div class="form-group">
     <?php
 		$boton=CHtml::ajaxSubmitButton (
 						'Crear Registro',   
@@ -173,6 +173,7 @@
 								Loading.hide();
 								if(datos.estadoComu=="exito"){
 									if(datos.resultado=="\'exito\'"){
+										jAlert("Los datos se han enviado satisfactoriamente<br/><strong>El número de carpeta asignado por el sistema es: "+datos.num_carpeta+"</strong><br/>"+datos.msnErrorProf","Mensaje")
 										$("#Mensaje").html("Los datos se han enviado satisfactoriamente<br/><strong>El número de carpeta asignado por el sistema es: "+datos.num_carpeta+"</strong><br/>"+datos.msnErrorProf);	
 										$("#formLocalizacion #LocalizacionViv_num_doc").val($("#Adolescente_num_doc").val());
 										$("#formularioDocCespa #DocumentoCespa_numDocAdol").val($("#Adolescente_num_doc").val());
@@ -239,7 +240,7 @@
 						array('id'=>'btnFormAdolId','name'=>'btnCreaAdolN','class'=>'btn btn-default btn-sdis')
 				);
     ?>
-    <?php echo $boton; //CHtml::submitButton('Crear');?>
+    <?php echo $boton; //CHtml::submitButton('Crear');?></div>
 <?php $this->endWidget();?>
 <?php //script de seguridad que previene dejar la página si no se han guardado los datos
 Yii::app()->getClientScript()->registerScript('dejaVentana','	

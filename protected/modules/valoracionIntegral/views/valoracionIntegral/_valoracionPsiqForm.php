@@ -41,7 +41,12 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
         ?>
         </fieldset>
         <?php Yii::app()->getClientScript()->registerScript('scriptValPsiq_0','
-        var campoText=0;
+		$(document).ready(function(){
+			$("form").find("textArea").each(function(){
+				$(this).css("height","200px");
+			});
+		});	        
+		var campoText=0;
         $(window).bind("beforeunload", function(){
             if($(".unsavedForm").size()){
                 return "va a cerrar";

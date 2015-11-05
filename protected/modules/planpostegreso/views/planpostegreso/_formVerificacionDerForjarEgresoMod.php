@@ -134,7 +134,7 @@ $boton=CHtml::ajaxSubmitButton (
 								Loading.hide();		
 								if(datosVerifDer.estadoComu=="exito"){
 									if(datosVerifDer.resultado=="exito"){
-										jAlert("Se ha creado el registro de la verificación de derechos del Cespa","Mensaje");	
+										jAlert("Modificación exitosa","Mensaje");	
 										$("#formularioVerifDer #formularioVerifDer_es_").html("");                                                    
 										$("#formularioVerifDer #formularioVerifDer_es_").hide();
 									}
