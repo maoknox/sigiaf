@@ -81,13 +81,13 @@ class CambioSede extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_cambio_sede' => 'Id Cambio Sede',
-			'id_doc_soporte' => 'Id Doc Soporte',
-			'num_doc' => 'Num Doc',
+			'id_cambio_sede' => 'Cambio Sede',
+			'id_doc_soporte' => 'Documento soporte',
+			'num_doc' => 'Número de documento del adolescente',
 			'sede_nueva' => 'Sede Nueva',
 			'sede_anterior' => 'Sede Anterior',
-			'vbno_coord' => 'Vbno Coord',
-			'doc_coord' => 'Doc Coord',
+			'vbno_coord' => 'Visto bno. coordinador',
+			'doc_coord' => 'Documento',
 			'fecha_cambio_sede' => 'Fecha Cambio Sede',
 		);
 	}

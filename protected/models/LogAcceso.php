@@ -61,7 +61,7 @@ class LogAcceso extends CActiveRecord
 	{
 		return array(
 			'id_logacceso' => 'Id Logacceso',
-			'id_cedula' => 'Id Cedula',
+			'id_cedula' => 'Profesional',
 			'id_tipoacceso' => 'Id Tipoacceso',
 			'fecha_logacceso' => 'Fecha Logacceso',
 			'ip_acceso' => 'Ip Acceso',

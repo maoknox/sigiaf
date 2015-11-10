@@ -55,9 +55,9 @@ class RolMenu extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_menu' => 'Id Menu',
-			'id_rol' => 'Id Rol',
-			'id_modoacceso' => 'Id Modoacceso',
+			'id_menu' => 'Menu',
+			'id_rol' => 'Rol',
+			'id_modoacceso' => 'Modo acceso',
 			'acceso_rolmenu' => 'Acceso Rolmenu',
 		);
 	}

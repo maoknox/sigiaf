@@ -62,12 +62,12 @@ class PorcionesComida extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_grupo_comida' => 'Id Grupo Comida',
-			'id_nutradol' => 'Id Nutradol',
-			'id_val_nutricion' => 'Id Val Nutricion',
-			'num_porc_cons_diario' => 'Num Porc Cons Diario',
-			'num_porc_recomendadas' => 'Num Porc Recomendadas',
-			'dif_num_porc_cons_rec' => 'Dif Num Porc Cons Rec',
+			'id_grupo_comida' => 'Grupo comida',
+			'id_nutradol' => 'Nutricion adol',
+			'id_val_nutricion' => 'Valoración nutricional',
+			'num_porc_cons_diario' => 'Número de porciones de consumo diario',
+			'num_porc_recomendadas' => 'Número de porciones recomendadas',
+			'dif_num_porc_cons_rec' => 'Diferencia porciones consumidas vs recomendadas',
 		);
 	}
 

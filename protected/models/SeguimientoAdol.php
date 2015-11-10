@@ -90,15 +90,15 @@ class SeguimientoAdol extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'fecha_registro_seg' => 'Fecha Registro Seg',
-			'id_seguimientoadol' => 'Id Seguimientoadol',
-			'num_doc' => 'Num Doc',
-			'id_area_seguimiento' => 'Id Area Seguimiento',
-			'id_tipo_seguim' => 'Id Tipo Seguim',
-			'seguimiento_adol' => 'Seguimiento Adol',
-			'seg_posegreso' => 'Seg Posegreso',
-			'seg_extraordinario' => 'Seg Extraordinario',
-			'seguim_conj' => 'Seguim Conj',
+			'fecha_registro_seg' => 'Fecha registro seguimiento',
+			'id_seguimientoadol' => 'Seguimientoadol',
+			'num_doc' => 'Número de documento',
+			'id_area_seguimiento' => 'Área Seguimiento',
+			'id_tipo_seguim' => 'Tipo Seguimiento',
+			'seguimiento_adol' => 'Seguimiento',
+			'seg_posegreso' => 'Seguimiento Post egreso',
+			'seg_extraordinario' => 'Seguimiento Extraordinario',
+			'seguim_conj' => 'Seguimiento en conjunción',
 			'fecha_seguimiento' => 'Fecha Seguimiento',
 		);
 	}

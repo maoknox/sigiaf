@@ -69,14 +69,14 @@ class SeguimientoPsc extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_seguimiento_ind' => 'Id Seguimiento Ind',
-			'id_psc' => 'Id Psc',
-			'num_doc' => 'Num Doc',
-			'id_cedula' => 'Id Cedula',
-			'desarrollo_act_psc' => 'Desarrollo Act Psc',
-			'reporte_nov_psc' => 'Reporte Nov Psc',
-			'cump_acu_psc' => 'Cump Acu Psc',
-			'fecha_seg_ind' => 'Fecha Seg Ind',
+			'id_seguimiento_ind' => 'Seguimiento',
+			'id_psc' => 'PSC',
+			'num_doc' => 'Número de documento',
+			'id_cedula' => 'Profesional',
+			'desarrollo_act_psc' => 'Desarrollo de actividades PSC',
+			'reporte_nov_psc' => 'Reporte de novedades',
+			'cump_acu_psc' => 'Cumplimiento de acuerdos',
+			'fecha_seg_ind' => 'Fecha seguimiento',
 		);
 	}
 

@@ -70,8 +70,8 @@ class Antropometria extends CActiveRecord
 public function attributeLabels()
 	{
 		return array(
-			'id_antropometria' => 'Id Antropometria',
-			'id_val_nutricion' => 'Id Val Nutricion',
+			'id_antropometria' => 'Antropometría',
+			'id_val_nutricion' => 'Valoración en nutrición',
 			'antr_peso_kgs' => 'Peso (kgs)',
 			'antr_talla_cms' => 'Talla (cms)',
 			'antr_imc' => 'IMC',
@@ -80,7 +80,7 @@ public function attributeLabels()
 			'antr_talla_ideal' => 'Talla ideal (cms)',
 			'antr_ind_p_t_imc_ed' => 'Indice Peso / talla o IMC / Edad',
 			'indice_talla_edad' => 'Indice Talla / Edad',
-			'fecha_antrp' => 'Fecha Antrp',
+			'fecha_antrp' => 'Fecha Antrpopometría',
 		);
 	}
 	/**

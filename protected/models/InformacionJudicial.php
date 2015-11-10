@@ -104,9 +104,9 @@ class InformacionJudicial extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_inf_judicial' => 'Id Inf Judicial',
-			'num_doc' => 'Num Doc',
-			'id_tipo_sancion' => 'Id Tipo Sancion',
+			'id_inf_judicial' => 'Información Judicial',
+			'num_doc' => 'Número de documento',
+			'id_tipo_sancion' => 'Tipo Sanción',
 			'id_instancia_rem' => 'Remitido por: ',
 			'defensor' => 'Defensor de familia:',
 			'juez' => 'Juez',

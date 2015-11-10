@@ -5,6 +5,7 @@
  *
  * The followings are the available columns in table 'valoracion_psicologia':
  * @property integer $id_valoracion_psicol
+ * @property integer $id_estado_val
  * @property integer $id_patron_consumo
  * @property string $num_doc
  * @property boolean $vinc_prev_srpa
@@ -29,10 +30,14 @@
  * @property string $fecha_rem_psiq_psic
  * @property boolean $consumo_spa
  * @property boolean $val_hab_ps
+ * @property boolean $val_act_psicol
+ * @property string $observ_estvalpsicol
  *
  * The followings are the available model relations:
  * @property DelitoPorVinc[] $delitoPorVincs
- * @property ModificaValpsicol[] $modificaValpsicols
+ * @property ModificacionValpsicol[] $modificacionValpsicols
+ * @property ProfesionalValpsicol[] $profesionalValpsicols
+ * @property EstadoValoracion $idEstadoVal
  * @property PatronConsumo $idPatronConsumo
  * @property Adolescente $numDoc
  * @property ConsumoDrogas[] $consumoDrogases
@@ -85,10 +90,10 @@ class ValoracionPsicologia extends CActiveRecord
 			array('num_doc','required'),
 			array('id_patron_consumo, id_estado_val', 'numerical', 'integerOnly'=>true),
 			array('num_doc', 'length', 'max'=>15),
-			array('contHist,vinc_prev_srpa, historia_vida, dn_fn_familiar, hist_conducta, analisis_est_mental, juicio_valpsicol, examen_toxic, resultado_examtox, patron_consumo_desc, caract_relev_comp, concl_gen_vpsicol, pry_plan_interv, remis_psiquiatria, objetivo_remitpsiq, fecha_iniciovalpsicol, estado_valpsicol, ultimo_ep_cons, interv_prev_spa, fecha_modifvalpsic, fecha_rem_psiq_psic, consumo_spa, val_hab_ps,observ_estvalpsicol', 'safe'),
+			array('contHist,vinc_prev_srpa, historia_vida, dn_fn_familiar, hist_conducta, analisis_est_mental, juicio_valpsicol, examen_toxic, resultado_examtox, patron_consumo_desc, caract_relev_comp, concl_gen_vpsicol, pry_plan_interv, remis_psiquiatria, objetivo_remitpsiq, fecha_iniciovalpsicol, estado_valpsicol, ultimo_ep_cons, interv_prev_spa, fecha_modifvalpsic, fecha_rem_psiq_psic, consumo_spa, val_hab_ps, val_act_psicol, observ_estvalpsicol', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('contHist,id_valoracion_psicol,id_estado_val, id_patron_consumo, num_doc, vinc_prev_srpa, historia_vida, dn_fn_familiar, hist_conducta, analisis_est_mental, juicio_valpsicol, examen_toxic, resultado_examtox, patron_consumo_desc, caract_relev_comp, concl_gen_vpsicol, pry_plan_interv, remis_psiquiatria, objetivo_remitpsiq, fecha_iniciovalpsicol, estado_valpsicol, ultimo_ep_cons, interv_prev_spa, fecha_modifvalpsic, fecha_rem_psiq_psic, consumo_spa, val_hab_ps,observ_estvalpsicol', 'safe', 'on'=>'search'),
+			array('contHist,id_valoracion_psicol,id_estado_val, id_patron_consumo, num_doc, vinc_prev_srpa, historia_vida, dn_fn_familiar, hist_conducta, analisis_est_mental, juicio_valpsicol, examen_toxic, resultado_examtox, patron_consumo_desc, caract_relev_comp, concl_gen_vpsicol, pry_plan_interv, remis_psiquiatria, objetivo_remitpsiq, fecha_iniciovalpsicol, estado_valpsicol, ultimo_ep_cons, interv_prev_spa, fecha_modifvalpsic, fecha_rem_psiq_psic, consumo_spa, val_hab_ps, val_hab_ps, val_act_psicol, observ_estvalpsicol', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -115,13 +120,13 @@ class ValoracionPsicologia extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_valoracion_psicol' => 'Id Valoracion Psicol',
-			'id_estado_val' => 'Id Estado Val',
-			'id_patron_consumo' => 'Id Patron Consumo',
-			'num_doc' => 'Num Doc',
+			'id_valoracion_psicol' => 'Valoración en psicología',
+			'id_estado_val' => 'Estado de la valoración',
+			'id_patron_consumo' => 'Patrón de consumo',
+			'num_doc' => 'Número de documento del adolescente',
 			'vinc_prev_srpa' => 'Vinculación previa al sistema de responsabilidad penal adolescente (SRPA)',
 			'historia_vida' => 'Historia de Vida',
-			'dn_fn_familiar' => 'Dinánima y funcionamiento Familiar',
+			'dn_fn_familiar' => 'Dinámica y funcionamiento Familiar',
 			'hist_conducta' => 'Historia analítica de la conducta del/la adolescente que lo vinculó al SRPA, Justicia restaurativa',
 			'analisis_est_mental' => 'Análisis del estado mental',
 			'juicio_valpsicol' => 'Juicio Valpsicol',
@@ -131,17 +136,18 @@ class ValoracionPsicologia extends CActiveRecord
 			'caract_relev_comp' => 'Caract Relev Comp',
 			'concl_gen_vpsicol' => 'Conclusiones Generales',
 			'pry_plan_interv' => 'Proyección y plan de intervención',
-			'remis_psiquiatria' => 'Remis Psiquiatria',
-			'objetivo_remitpsiq' => 'Objetivo Remitpsiq',
-			'fecha_iniciovalpsicol' => 'Fecha Iniciovalpsicol',
-			'estado_valpsicol' => 'Estado Valpsicol',
+			'remis_psiquiatria' => 'Remisión a psiquiatria',
+			'objetivo_remitpsiq' => 'Objetivo de la remisión',
+			'fecha_iniciovalpsicol' => 'Fecha inicio de la valoración',
+			'estado_valpsicol' => 'Estado de la valoración',
 			'ultimo_ep_cons' => 'Último episodio de consumo',
-			'interv_prev_spa' => 'Intervenciones previas al manejo del consum',
-			'fecha_modifvalpsic' => 'Fecha Modifvalpsic',
-			'fecha_rem_psiq_psic' => 'Fecha Rem Psiq Psic',
+			'interv_prev_spa' => 'Intervenciones previas al manejo del consumo',
+			'fecha_modifvalpsic' => 'Fecha de modificación de la valoración',
+			'fecha_rem_psiq_psic' => 'Fecha remisión a psiquatría',
 			'consumo_spa' => 'Consumo Spa',
-			'val_hab_ps' => 'Val Hab Ps',
-			'observ_estvalpsicol'=>'observaciones'
+			'val_hab_ps' => 'Valoración habilitada?',
+			'val_act_psicol' => 'Valoración actual?',
+			'observ_estvalpsicol' => 'Observaciones del estado de la valoración',
 		);
 	}
 

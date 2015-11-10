@@ -51,8 +51,8 @@ class ServprotecValtsocial extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_serv_protec' => 'servicio Protección',
-			'id_valtsoc' => 'Id Valtsoc',
+			'id_serv_protec' => 'servicio protección',
+			'id_valtsoc' => 'Valoración trabajo social',
 		);
 	}
 

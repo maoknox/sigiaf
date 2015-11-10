@@ -58,9 +58,9 @@ class NovedadInfJudicial extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_inf_judicial' => 'Id Inf Judicial',
-			'nov_id_inf_judicial' => 'Nov Id Inf Judicial',
-			'fecha_reg_novedad' => 'Fecha Reg Novedad',
+			'id_inf_judicial' => 'Información judicial',
+			'nov_id_inf_judicial' => 'Nov información Judicial',
+			'fecha_reg_novedad' => 'Fecha registro Novedad',
 		);
 	}
 

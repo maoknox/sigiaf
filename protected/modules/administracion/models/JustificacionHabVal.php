@@ -60,13 +60,13 @@ class JustificacionHabVal extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_hab_val' => 'Id Hab Val',
-			'id_cedula' => 'Id Cedula',
-			'justificacion_habval' => 'Justificacion Habval',
-			'valoracion_hab' => 'Valoracion a habilitar',
-			'id_val_hab' => 'Id Val Hab',
-			'fecha_hab_val' => 'Fecha Hab Val',
-			'numDoc'=>'numero documento'
+			'id_hab_val' => 'Val habilitada',
+			'id_cedula' => 'Profesional',
+			'justificacion_habval' => 'Justificación de habilitación',
+			'valoracion_hab' => 'Valoración a habilitar',
+			'id_val_hab' => 'Valoración habilitada',
+			'fecha_hab_val' => 'Fecha del la habilitación',
+			'numDoc'=>'número de documento'
 		);
 	}
 

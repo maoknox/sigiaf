@@ -137,7 +137,7 @@ class Persona extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_cedula' => 'Id Cedula',
+			'id_cedula' => 'Profesional',
 			'nombre_personal' => 'Nombres Persona',
 			'apellidos_personal' => 'Apellidos Persona',
 			'numero_tarjetaprof' => 'Numero Tarjetaprof',

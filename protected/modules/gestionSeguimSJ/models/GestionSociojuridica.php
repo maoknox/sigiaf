@@ -98,16 +98,16 @@ class GestionSociojuridica extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_gestionsj' => 'Id Gestionsj',
+			'id_gestionsj' => 'Gestión socio jurídica',
 			'id_motivoasesoriasj' => 'Motivo de la asesoría',
 			'id_tipogestionsj' => 'Tipo de gestión',
-			'num_doc' => 'Num Doc',
+			'num_doc' => 'Número de documento',
 			'id_remisionsj' => 'A donde remite',
-			'fecha_regsitrogestionsj' => 'Fecha Regsitrogestionsj',
+			'fecha_regsitrogestionsj' => 'Fecha Regsitro',
 			'fecha_gestionsj' => 'Fecha de la gestión',
 			'dependencia_entidadsj' => 'Dependencia-Entidad',
 			'nombre_contactosj' => 'Nombre del contacto',
-			'telefono_contactosj' => 'Telefono del contacto',
+			'telefono_contactosj' => 'Teléfono del contacto',
 		);
 	}
 

@@ -52,7 +52,7 @@ class OrigenalimValnutr extends CActiveRecord
 	{
 		return array(
 			'id_origen_alim' => 'Origen de los alimentos',
-			'id_val_nutricion' => 'Id Val Nutricion',
+			'id_val_nutricion' => 'Valoración nutricional',
 		);
 	}
 

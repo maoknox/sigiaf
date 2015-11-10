@@ -61,8 +61,8 @@ class EsquemaVacunacion extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_esquema_vac' => 'Id Esquema Vac',
-			'esquema_vac' => 'Esquema Vac',
+			'id_esquema_vac' => 'Esquema vacunación',
+			'esquema_vac' => 'Esquema vacunación',
 		);
 	}
 

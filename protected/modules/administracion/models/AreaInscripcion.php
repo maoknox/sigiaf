@@ -61,8 +61,8 @@ class AreaInscripcion extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_areainteres' => 'Id área interés',
-			'id_areainscr' => 'Id área inscripción',
+			'id_areainteres' => 'Área interés',
+			'id_areainscr' => 'Área inscripción',
 			'area_interes' => 'Área Interés',
 			'areainscr_activa' => 'Estado área interés',
 		);

@@ -105,12 +105,12 @@ class Asistencia extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_asistencia' => 'Id Asistencia',
-			'id_areapresencial' => 'Id Areapresencial',
-			'id_areainteres' => 'Id Areainteres',
-			'num_doc' => 'Num Doc',
+			'id_asistencia' => 'Asistencia',
+			'id_areapresencial' => 'Área presencial',
+			'id_areainteres' => 'Área interés',
+			'num_doc' => 'Número de documento',
 			'fecha_asistencia' => 'Fecha Asistencia',
-			'observacion_asistencia' => 'Observacion Asistencia',
+			'observacion_asistencia' => 'Observación Asistencia',
 		);
 	}
 

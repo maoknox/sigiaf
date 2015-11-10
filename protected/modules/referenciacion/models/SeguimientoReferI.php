@@ -61,7 +61,7 @@ class SeguimientoRefer extends CActiveRecord
 	{
 		return array(
 			'id_seg_refer' => 'Id Seg Refer',
-			'id_cedula' => 'Id Cedula',
+			'id_cedula' => 'Profesional',
 			'id_referenciacion' => 'Id Referenciacion',
 			'seg_refer' => 'Seg Refer',
 			'fecha_seg' => 'Fecha Seg',

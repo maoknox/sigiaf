@@ -83,11 +83,11 @@ class GrupocomidaNutradol extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_grupo_comida' => 'Id Grupo Comida',
-			'id_nutradol' => 'Id Nutradol',
-			'id_val_nutricion' => 'Id Val Nutricion',
-			'id_tiempo_alimento' => 'Id Tiempo Alimento',
-			'num_porciones' => 'Num Porciones',
+			'id_grupo_comida' => 'Grupo Comida',
+			'id_nutradol' => 'Nutrición adol',
+			'id_val_nutricion' => 'Valoración nutrición',
+			'id_tiempo_alimento' => 'Tiempo de alimento',
+			'num_porciones' => 'Número de porciones',
 		);
 	}
 

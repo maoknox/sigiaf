@@ -62,9 +62,9 @@ class GrupocomidaValnutr extends CActiveRecord
 	{
 		return array(
 			'id_frec_cons' => 'Frecuencia de consumo',
-			'id_val_nutricion' => 'Id Val Nutricion',
-			'id_grupo_comida' => 'Id Grupo Comida',
-			'observ_frec_cons' => 'Observ Frec Cons',
+			'id_val_nutricion' => 'Valoración en nutrición',
+			'id_grupo_comida' => 'Grupo comida',
+			'observ_frec_cons' => 'Observaciones',
 		);
 	}
 

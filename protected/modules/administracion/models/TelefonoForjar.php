@@ -61,9 +61,9 @@ class TelefonoForjar extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_telefono_forjar' => 'Id Telefono Forjar',
-			'id_tipo_telefono' => 'Id Tipo Telefono',
-			'id_forjar' => 'Id Forjar',
+			'id_telefono_forjar' => 'Teléfono Forjar',
+			'id_tipo_telefono' => 'Tipo Teléfono',
+			'id_forjar' => 'Forjar',
 			'num_tel_forjar' => 'Número Telefóncio',
 			'numCelular'=>'Número Celular'
 		);

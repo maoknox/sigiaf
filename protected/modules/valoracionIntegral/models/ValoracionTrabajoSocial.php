@@ -85,22 +85,22 @@ class ValoracionTrabajoSocial extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_valtsoc' => 'Id Valtsoc',
-			'num_doc' => 'Num Doc',
-			'id_estado_val' => 'Id Estado Val',
+			'id_valtsoc' => 'Valoración Trabajo social',
+			'num_doc' => 'Número de documento del adolescente',
+			'id_estado_val' => 'Estado de la valoración',
 			'perfil_gener_vuln' => 'Perfil generatividad vulnerabilidad',
 			'dr_hist_escolar' => 'Datos relevantes de la historia escolar',
 			'pa_f_dc' => 'Percepción y análisis de la familia frente al delito o conducta del/la adolescente que lo vinculó al SRPA, Justicia restaurativa',
 			'concepto_social' => 'Concepto social',
 			'pry_pl_int_tsocial' => 'Proyección y plan de intervención',
-			'estado_val_tsoc' => 'Estado Val Tsoc',
-			'fecha_inicio_valtsoc' => 'Fecha Inicio Valtsoc',
+			'estado_val_tsoc' => 'Estado de la valoración',
+			'fecha_inicio_valtsoc' => 'Fecha de inicio de la valoración',
 			'historia_famvaltsic' => 'Historia familiar',
 			'obs_familiares_ts' => 'Observaciones de la familia',
-			'fecha_modifvaltrabsoc' => 'Fecha Modifvaltrabsoc',
-			'val_hab_ts' => 'Val Hab Ts',
-			'observ_estvaltsoc' => 'Observ Estvaltsoc',
-			'val_act_trsoc' => 'Val Act Trsoc',
+			'fecha_modifvaltrabsoc' => 'Fecha de modificación de la valoración',
+			'val_hab_ts' => 'Valoración habilitada?',
+			'observ_estvaltsoc' => 'Observaciones del estado de la valoración',
+			'val_act_trsoc' => 'Valoración actual?',
 		);
 	}
 

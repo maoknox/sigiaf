@@ -118,15 +118,15 @@ class NutricionAdol extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_nutradol' => 'Id Nutradol',
-			'id_cedula' => 'Id Cedula',
-			'id_val_nutricion' => 'Id Val Nutricion',
-			'id_tipoact_pld' => 'Id Tipoact Pld',
+			'id_nutradol' => 'Nutrición adol',
+			'id_cedula' => 'Profesional',
+			'id_val_nutricion' => 'Valoración en nutrición',
+			'id_tipoact_pld' => 'Tipo actividad',
 			'diagnostico_clasif_nutr_na' => 'Diagnostico/Clasificación nutricional',
 			'eval_cumpl_obj_alim' => 'Evaluación de cumplimiento a los objetivos alimentarios y nutricionales propuestos',
 			'plan_nutr' => 'Plan nutricional',
 			'ant_salud_al_cl' => 'Modificación antecedentes de salud, alimentarios o clínicos.',
-			'fecha_segnutr' => 'Fecha Segnutr',
+			'fecha_segnutr' => 'Fecha seguimiento',
 		);
 	}
 

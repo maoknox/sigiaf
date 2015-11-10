@@ -80,21 +80,21 @@ class ValoracionPsiquiatria extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_val_psiquiatria' => 'Id Val Psiquiatria',
-			'id_estado_val' => 'Id Estado Val',
-			'num_doc' => 'Num Doc',
+			'id_val_psiquiatria' => 'Valoración psiquiatría',
+			'id_estado_val' => 'Estado de la valoración',
+			'num_doc' => 'Número de documento del adolescente',
 			'desc_val_psic' => 'Desc Val Psic',
-			'hist_psiq_ant' => 'Historia Psiquiatrica/Antecedentes',
+			'hist_psiq_ant' => 'Historia Psiquiátrica/Antecedentes',
 			'examen_mental' => 'Examen mental',
 			'analisis_psiq' => 'Análisis',
 			'diagnostico_psiq' => 'Diagnóstico',
 			'recomend_psic' => 'Recomendaciones',
-			'fecha_ini_vpsiq' => 'Fecha Ini Vpsiq',
-			'estado_vpsiq' => 'Estado Vpsiq',
-			'fecha_modifvalpsiq' => 'Fecha Modifvalpsiq',
-			'val_hab_psq' => 'Val Hab Psq',
-			'observ_estvalpsiq' => 'Observ Estvalpsiq',
-			'val_act_psiq' => 'Val Act Psiq',
+			'fecha_ini_vpsiq' => 'Fecha de inicio de la valoración',
+			'estado_vpsiq' => 'Estado de la valoración',
+			'fecha_modifvalpsiq' => 'Fecha de modificación de la valoración',
+			'val_hab_psq' => 'Valoración habilitada?',
+			'observ_estvalpsiq' => 'Observaciones del estado de la valoración',
+			'val_act_psiq' => 'Valoración actual?',
 		);
 	}
 

@@ -100,7 +100,7 @@ class DerechoAdol extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_derecho_adol' => 'Id derecho',
+			'id_derecho_adol' => 'Derecho',
 			'id_derechocespa' => 'Derecho',
 			'id_instanciader' => 'Instancia de verificación',
 			'num_doc' => 'Documento del adolescente:',

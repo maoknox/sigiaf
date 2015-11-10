@@ -57,9 +57,9 @@ class ProblemaValtsocial extends CActiveRecord
 	{
 		return array(
 			'id_problema_asoc' => 'Problemas asociados',
-			'id_valtsoc' => 'Id Valtsoc',
-			'vinc_act_prob' => 'Vinc Act Prob',
-			'asociado_probvts' => 'Asociado Probvts',
+			'id_valtsoc' => 'Valoración trabajo social',
+			'vinc_act_prob' => 'Vinculación atual',
+			'asociado_probvts' => 'Asociados',
 		);
 	}
 

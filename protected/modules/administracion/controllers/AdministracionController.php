@@ -48,12 +48,6 @@ class AdministracionController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
-/*	public function actionIndex(){
-		throw new CHttpException("","Módulo Administración");
-		$modeloCForjar=new CentroForjar();
-		$contenido=$this->renderPartial("vistaIndex",array('modeloCForjar'=>$modeloCForjar),true);	
-		Yii::app()->request->sendFile("test.xls",$contenido);
-	}*/
 	public function actionConsCreaSede(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="consCreaSede";

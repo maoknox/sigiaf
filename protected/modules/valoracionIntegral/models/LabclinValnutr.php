@@ -69,10 +69,10 @@ class LabclinValnutr extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_laboratorio' => 'Id Laboratorio',
-			'id_val_nutricion' => 'Id Val Nutricion',
-			'resultado_labclin' => 'Resultado Labclin',
-			'fecha_reslabclin' => 'Fecha Reslabclin',
+			'id_laboratorio' => 'Laboratorio',
+			'id_val_nutricion' => 'Valoración en nutrición',
+			'resultado_labclin' => 'Resultados',
+			'fecha_reslabclin' => 'Fecha de resultados',
 		);
 	}
 

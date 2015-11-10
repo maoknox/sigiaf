@@ -82,21 +82,21 @@ class ValoracionEnfermeria extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_valor_enf' => 'Id Valor Enf',
-			'num_doc' => 'Num Doc',
-			'id_estado_val' => 'Id Estado Val',
-			'peso_adol' => 'Peso Adol',
-			'talla_adol' => 'Talla Adol',
+			'id_valor_enf' => 'Valoración enfermería',
+			'num_doc' => 'Número de documento del adolescente',
+			'id_estado_val' => 'Estado de la valoración',
+			'peso_adol' => 'Peso del adolescente',
+			'talla_adol' => 'Talla del adolescente',
 			'antecedentes_clinic' => 'Antecedentes clínicos y familiares',
 			'examen_fisico_fisiol' => 'Examen físico',
 			'recom_aten_salud' => 'Recomendaciones para atención en salud',
-			'fecha_ini_venf' => 'Fecha Ini Venf',
-			'estado_venf' => 'Estado Venf',
+			'fecha_ini_venf' => 'Fecha inicio valoración enfermería',
+			'estado_venf' => 'Estado de la valoración',
 			'obs_gen_enferm' => 'Observaciones',
-			'fecha_modifvalenf' => 'Fecha Modifvalenf',
-			'val_hab_enf' => 'Val Hab Enf',
-			'observ_estvalenf' => 'Observ Estvalenf',
-			'val_act_enf' => 'Val Act Enf',
+			'fecha_modifvalenf' => 'Fecha modificación de la valoración',
+			'val_hab_enf' => 'Está activa la valoración?',
+			'observ_estvalenf' => 'Observaciones del estado de la valoración',
+			'val_act_enf' => 'Valoración actual?',
 		);
 	}
 

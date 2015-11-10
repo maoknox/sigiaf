@@ -134,6 +134,7 @@ return array(
 		'hash_key'=>'$%||45',
 		'num_caracteres'=>15,
 		'tiempo_verifder'=>5, //5 dias Yii::app()->params["tiempo_verifder"])
-		'tiempo_planpg'=>15//15 dias
+		'tiempo_planpg'=>15,//15 dias
+		'tiempo_alertas'=>15//tiempo para generar alertas Yii::app()->params["tiempo_alertas"])
 	),
 );

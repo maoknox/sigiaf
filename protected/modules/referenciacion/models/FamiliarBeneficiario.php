@@ -59,11 +59,11 @@ class FamiliarBeneficiario extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_fam_benef' => 'Id Fam Benef',
-			'id_referenciacion' => 'Id Referenciacion',
-			'id_doc_fam_ben' => 'Id Doc Fam Ben',
-			'nombres_fam_ben' => 'Nombres Fam Ben',
-			'apellidos_fam_ben' => 'Apellidos Fam Ben',
+			'id_fam_benef' => 'Familiar beneficiario',
+			'id_referenciacion' => 'Referenciacion',
+			'id_doc_fam_ben' => 'Documento del familiar',
+			'nombres_fam_ben' => 'Nombres del familiar',
+			'apellidos_fam_ben' => 'Apellidos del familiar',
 		);
 	}
 

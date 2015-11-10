@@ -70,7 +70,7 @@ class ComponenteDerecho extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'fecha_estab_compderecho' => 'Fecha Estab Compderecho',
+			'fecha_estab_compderecho' => 'Fecha establecimiento',
 			'id_derechocespa' => 'Id Derechocespa',
 			'id_pai' => 'Id Pai',
 			'num_doc' => 'Num Doc',

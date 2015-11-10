@@ -68,10 +68,10 @@ class AsistenciaPsc extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_asist_psc' => 'Id Asist Psc',
-			'id_seguimiento_ind' => 'Id Seguimiento Ind',
+			'id_asist_psc' => 'Asistencia PSC',
+			'id_seguimiento_ind' => 'Seguimiento',
 			'fecha_asist_psc' => 'Fecha de asistencia',
-			'num_hora' => 'Num Hora',
+			'num_hora' => 'Número de horas',
 		);
 	}
 

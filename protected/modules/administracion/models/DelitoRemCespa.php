@@ -56,7 +56,7 @@ class DelitoRemCespa extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_del_rc' => 'Id Del Rc',
+			'id_del_rc' => 'Delito',
 			'del_remcespa' => 'Delito',
 		);
 	}

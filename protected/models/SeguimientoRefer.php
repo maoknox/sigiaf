@@ -60,11 +60,11 @@ class SeguimientoRefer extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_seg_refer' => 'Id Seg Refer',
-			'id_cedula' => 'Id Cedula',
-			'id_referenciacion' => 'Id Referenciacion',
-			'seg_refer' => 'Seg Refer',
-			'fecha_seg' => 'Fecha Seg',
+			'id_seg_refer' => 'Seguimiento refer',
+			'id_cedula' => 'Profesional',
+			'id_referenciacion' => 'Referenciación',
+			'seg_refer' => 'Seguimiento Referenciación',
+			'fecha_seg' => 'Fecha seguimiento',
 		);
 	}
 

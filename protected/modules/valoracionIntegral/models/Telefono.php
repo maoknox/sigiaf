@@ -67,11 +67,11 @@ class Telefono extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_telefono' => 'Id Telefono',
-			'id_doc_familiar' => 'Id Doc Familiar',
-			'id_tipo_telefono' => 'Id Tipo Telefono',
-			'num_doc' => 'Num Doc',
-			'telefono' => 'Telefono',
+			'id_telefono' => 'Teléfono',
+			'id_doc_familiar' => 'Documento del familiar',
+			'id_tipo_telefono' => 'Tipo teléfono',
+			'num_doc' => 'Número de documento del adolescente',
+			'telefono' => 'Teléfono',
 		);
 	}
 

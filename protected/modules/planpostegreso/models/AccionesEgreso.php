@@ -60,12 +60,12 @@ class AccionesEgreso extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_acceg' => 'Id Acceg',
-			'id_planpostegerso' => 'Id Planpostegerso',
-			'objetivo_acceg' => 'Objetivo Acceg',
-			'actividaes_acceg' => 'Actividaes Acceg',
-			'fuente_verif_acceg' => 'Fuente Verif Acceg',
-			'responsable_acceg' => 'Responsable Acceg',
+			'id_acceg' => 'Acción egreso',
+			'id_planpostegerso' => 'Plan post egreso',
+			'objetivo_acceg' => 'Objetivo acción del egreso',
+			'actividaes_acceg' => 'Actividaes',
+			'fuente_verif_acceg' => 'Fuente verificación',
+			'responsable_acceg' => 'Responsable',
 			'tiempo_acceg'=>'Tiempo'
 		);
 	}

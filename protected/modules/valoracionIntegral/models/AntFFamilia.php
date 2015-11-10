@@ -52,7 +52,7 @@ class AntFFamilia extends CActiveRecord
 	{
 		return array(
 			'id_ant_fam' => 'Antecedentes familiares',
-			'id_valtsoc' => 'Id Valtsoc',
+			'id_valtsoc' => 'Valoración Tr. Social',
 		);
 	}
 

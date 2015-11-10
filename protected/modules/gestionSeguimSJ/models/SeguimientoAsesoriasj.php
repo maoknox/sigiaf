@@ -61,8 +61,8 @@ class SeguimientoAsesoriasj extends CActiveRecord
 	{
 		return array(
 			'fecha_registrosegsj' => 'Fecha Registro del seguimiento',
-			'id_gestionsj' => 'Id Gestionsj',
-			'id_cedula' => 'Id Cedula',
+			'id_gestionsj' => 'Gestión socio jurídica',
+			'id_cedula' => 'Profesional',
 			'fecha_seguimientogsj' => 'Fecha del seguimiento',
 			'seguimiento_gestionsj' => 'Seguimiento de la gestión socio jurídica',
 		);

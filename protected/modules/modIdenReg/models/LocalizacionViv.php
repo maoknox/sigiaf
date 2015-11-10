@@ -74,12 +74,12 @@ class LocalizacionViv extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_loc_adol' => 'Id Loc Adol',
+			'id_loc_adol' => 'Localidad',
 			'num_doc' => 'Documento del adolescente: ',
-			'id_estrato' => 'Id Estrato',
-			'id_municipio' => 'Id Municipio',
+			'id_estrato' => 'Estrato',
+			'id_municipio' => 'Municipio',
 			'id_doc_familiar' => 'Documento Familiar',
-			'id_localidad' => 'Id Localidad',
+			'id_localidad' => 'Localidad',
 			'barrio' => 'Barrio',
 			'direccion' => 'Dirección',
 		);

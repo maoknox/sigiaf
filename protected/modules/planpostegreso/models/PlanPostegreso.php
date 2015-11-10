@@ -65,12 +65,12 @@ class PlanPostegreso extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_planpostegerso' => 'Id Planpostegerso',
-			'id_pai' => 'Id Pai',
-			'num_doc' => 'Num Doc',
-			'fecha_registroplan' => 'Fecha Registroplan',
-			'concepto_egreso' => 'Concepto Egreso',
-			'proyeccion_pegreso' => 'Proyeccion Pegreso',
+			'id_planpostegerso' => 'Plan postegerso',
+			'id_pai' => 'Pai',
+			'num_doc' => 'Número de documento',
+			'fecha_registroplan' => 'Fecha registro del plan',
+			'concepto_egreso' => 'Concepto al egreso',
+			'proyeccion_pegreso' => 'Proyección',
 		);
 	}
 

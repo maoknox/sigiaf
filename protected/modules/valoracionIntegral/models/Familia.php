@@ -60,7 +60,7 @@ class Familia extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_familia' => 'Id Familia',
+			'id_familia' => 'Familia',
 			'id_tipo_familia' => 'Tipo Familia',
 			'historia_familiar' => 'Historia Familiar',
 			'num_doc'=>'Documento del adolescente'

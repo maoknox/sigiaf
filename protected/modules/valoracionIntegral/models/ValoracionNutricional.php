@@ -149,8 +149,8 @@ class ValoracionNutricional extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_val_nutricion' => 'Id Val Nutricion',
-			'id_esquema_vac' => 'Esquema vacunación',
+			'id_val_nutricion' => 'Valorción en nutrición',
+			'id_esquema_vac' => 'Esquema de vacunación',
 			'id_masticacion' => 'Masticación',
 			'id_apetito' => 'Apetito',			
 			'id_digestion' => 'Digestión',
@@ -158,7 +158,7 @@ class ValoracionNutricional extends CActiveRecord
 			'id_hab_intest' => 'Hábito intestinal',
 			'id_ingesta' => 'Ingesta',
 			'id_nivel_act_fis'=>'Nivel actividad física',
-			'num_doc' => 'Num Doc',
+			'num_doc' => 'Número de documento',
 			'id_tipo_parto' => 'Tipo de parto',
 			'id_modvalnutr' => 'Id Modvalnutr',
 			'semanas_gestacion' => 'Semanas de gestación',
@@ -175,7 +175,7 @@ class ValoracionNutricional extends CActiveRecord
 			'obs_esquema_vac' => 'Observación del esquema de vacunación',
 			'control_crec_des' => 'Control crecimiento y desarrollo',
 			'obs_crec_des' => 'Observación de control crecimiento y desarrollo',
-			'medicamentos_nutr' => 'Medicamentos Nutr',
+			'medicamentos_nutr' => 'Medicamentos',
 			'procedencia_padres' => 'Procedencia de los padres',
 			'alimentos_preferidos' => 'Alimentos Preferidos',
 			'alimentos_rechazados' => 'Alimentos Rechazados',
@@ -185,7 +185,7 @@ class ValoracionNutricional extends CActiveRecord
 			'tiempo_lactancia' => 'Tiempo de lactancia',
 			'recibio_biberon' => '¿Recibió biberón?',
 			'tiempo_biberon' => 'Tiempo biberón',
-			'personas_alim_olla' => '#Personas que comen de la misma olla  ',
+			'personas_alim_olla' => '# de personas que comen de la misma olla  ',
 			'quien_cocina_casa' => '¿Quién cocina en la casa?',
 			'num_comidas_diarias' => 'Número de comidas diarias',
 			'donde_recibe_alim' => '¿Dónde recibe los alimentos?',
@@ -199,10 +199,10 @@ class ValoracionNutricional extends CActiveRecord
 			'diagnostico_clasif_nutr' => 'Diagnóstico / clasificación nutricional',
 			'fecha_ini_vnutr' => 'Fecha Ini Vnutr',
 			'fecha_modif_vnutr' => 'Fecha Modif Vnutr',
-			'val_hab_nutr' => 'Val Hab Nutr',
-			'val_act_nutr' => 'Val Act Nutr',
-			'observ_estvalnutr' => 'Observ Estvalnutr',
-			'estado_val_nutr' => 'Estado Val Nutr',
+			'val_hab_nutr' => 'Valoración habilitada?',
+			'val_act_nutr' => 'Valoración actual',
+			'observ_estvalnutr' => 'Observaciones al estado de la valoración',
+			'estado_val_nutr' => 'Estado de la valoración',
 		);
 	}
 

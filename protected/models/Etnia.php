@@ -55,7 +55,7 @@ class Etnia extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_etnia' => 'Id Etnia',
+			'id_etnia' => 'Etnia',
 			'etnia' => 'Etnia',
 		);
 	}

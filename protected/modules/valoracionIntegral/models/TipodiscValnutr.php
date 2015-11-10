@@ -52,7 +52,7 @@ class TipodiscValnutr extends CActiveRecord
 	{
 		return array(
 			'id_tipo_discap' => 'Tipo de discapacidad',
-			'id_val_nutricion' => 'Id Val Nutricion',
+			'id_val_nutricion' => 'Valoración nutricional',
 		);
 	}
 

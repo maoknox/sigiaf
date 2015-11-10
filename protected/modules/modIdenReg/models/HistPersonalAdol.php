@@ -58,7 +58,7 @@ class HistPersonalAdol extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_cedula' => 'Id Cedula',
+			'id_cedula' => 'Profesional',
 			'num_doc' => 'Num Doc',
 			'fecha_histreg_pers' => 'Fecha Histreg Pers',
 			'asignado_actualmente' => 'Asignado Actualmente',

@@ -122,7 +122,7 @@ class ReferenciacionAdol extends CActiveRecord
 			'id_referenciacion' => 'Id Referenciacion',
 			'id_cedula'=>'Cédula del Profesional',
 			'id_esp_sol' => 'Id Esp Sol',
-			'id_beneficiario' => 'Id Beneficiario',
+			'id_beneficiario' => 'Beneficiario',
 			'num_doc' => 'Num Doc',
 			'id_motivonovinc' => 'Id Motivonovinc',
 			'id_tipo_referenciacion' => 'Id Tipo Referenciacion',

@@ -77,7 +77,7 @@ class Usuario extends CActiveRecord
 	{
 		return array(
 			'id_cedula' => 'Funcionario',
-			'id_rol' => 'Id Rol',
+			'id_rol' => 'Rol',
 			'clave' => 'Clave',
 			'nombre_usuario' => 'Nombre Usuario',
 			'pers_habilitado' => 'Estado Usuario',

@@ -172,7 +172,7 @@ public function validaAdol($attribute=NULL,$params=NULL){
 			'id_tipo_doc' => 'Tipo de documento',
 			'id_sexo' => 'Sexo',
 			'id_municipio' => 'Municipio',
-			'id_familia' => 'Id Familia',
+			'id_familia' => 'Familia',
 			'id_etnia' => 'Etnia',
 			'apellido_1' => 'Primer Apellido',
 			'apellido_2' => 'Segundo Apellido',
@@ -180,7 +180,9 @@ public function validaAdol($attribute=NULL,$params=NULL){
 			'fecha_nacimiento' => 'Fecha Nacimiento',
 			'edad_ingreso' => 'Edad Ingreso',
 			'edad_actual' => 'Edad Actual',
-			'escIngEgrs'=>'Escolaridad'
+			'escIngEgrs'=>'Escolaridad',
+			'psicologos'=>'Psicólogo',
+			'trabSocials'=>'Trabajador social'
 		);
 	}
 

@@ -115,7 +115,7 @@ class Psc extends CActiveRecord
 		return array(
 			'id_psc' => 'Id Psc',
 			'num_doc' => 'Num Doc',
-			'id_cedula' => 'Id Cedula',
+			'id_cedula' => 'Profesional',
 			'id_institucionpsc' => 'Id Institucionpsc',
 			'id_sector_psc' => 'Id Sector Psc',
 			'fecha_inicio_psc' => 'Fecha Inicio Psc',

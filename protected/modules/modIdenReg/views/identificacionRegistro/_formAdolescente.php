@@ -173,7 +173,7 @@
 								Loading.hide();
 								if(datos.estadoComu=="exito"){
 									if(datos.resultado=="\'exito\'"){
-										jAlert("Los datos se han enviado satisfactoriamente<br/><strong>El número de carpeta asignado por el sistema es: "+datos.num_carpeta+"</strong><br/>"+datos.msnErrorProf","Mensaje")
+										jAlert("Los datos se han enviado satisfactoriamente<br/><strong>El número de carpeta asignado por el sistema es: "+datos.num_carpeta+"</strong><br/>"+datos.msnErrorProf,"Mensaje")
 										$("#Mensaje").html("Los datos se han enviado satisfactoriamente<br/><strong>El número de carpeta asignado por el sistema es: "+datos.num_carpeta+"</strong><br/>"+datos.msnErrorProf);	
 										$("#formLocalizacion #LocalizacionViv_num_doc").val($("#Adolescente_num_doc").val());
 										$("#formularioDocCespa #DocumentoCespa_numDocAdol").val($("#Adolescente_num_doc").val());

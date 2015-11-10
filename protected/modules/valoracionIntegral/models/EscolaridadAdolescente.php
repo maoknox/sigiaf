@@ -76,14 +76,14 @@ class EscolaridadAdolescente extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_escolaridad' => 'Id Escolaridad',
-			'id_estado_escol' => 'Id Estado Escol',
-			'id_jornada_educ' => 'Id Jornada Educ',
-			'num_doc' => 'Num Doc',
-			'id_nivel_educ' => 'Id Nivel Educ',
-			'id_municipio' => 'Id Municipio',
+			'id_escolaridad' => 'Escolaridad',
+			'id_estado_escol' => 'Estado escolaridad',
+			'id_jornada_educ' => 'Jornada educativa',
+			'num_doc' => 'Número de documento',
+			'id_nivel_educ' => 'Nivel educativo',
+			'id_municipio' => 'Municipio',
 			'instituto_escolaridad' => 'Instituto Escolaridad',
-			'anio_escolaridad' => 'Anio Escolaridad',
+			'anio_escolaridad' => 'Año Escolaridad',
 			'escolarizado' => 'Escolarizado',
 			'semestre' => 'Semestre',
 		);

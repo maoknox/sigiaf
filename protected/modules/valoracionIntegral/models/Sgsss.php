@@ -62,9 +62,9 @@ class Sgsss extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_eps_adol' => 'Id Eps Adol',
-			'id_regimen_salud' => 'Id Regimen Salud',
-			'num_doc' => 'Num Doc',
+			'id_eps_adol' => 'Eps del adolescente',
+			'id_regimen_salud' => 'Régimen salud',
+			'num_doc' => 'Número de documento',
 		);
 	}
 

@@ -69,13 +69,13 @@ class SeguimientoCompderecho extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'fecha_seguim_compderecho' => 'Fecha Seguim Compderecho',
-			'id_pai' => 'Id Pai',
+			'fecha_seguim_compderecho' => 'Fecha seguimiento',
+			'id_pai' => 'Pai',
 			'num_doc' => 'Número de documento del adolescente',
-			'id_derechocespa' => 'Id Derechocespa',
-			'id_cedula' => 'Id Cedula',
-			'fecha_estab_compderecho' => 'Fecha Estab Compderecho',
-			'seguim_compderecho' => 'Seguim Compderecho',
+			'id_derechocespa' => 'Derecho cespa',
+			'id_cedula' => 'Profesional',
+			'fecha_estab_compderecho' => 'Fecha establecimiento componente',
+			'seguim_compderecho' => 'Seguimiento componente',
 		);
 	}
 

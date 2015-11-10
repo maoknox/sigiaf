@@ -69,13 +69,13 @@ class SeguimientoCompsancion extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'fecha_seguim_compsancion' => 'Fecha Seguim Compsancion',
-			'id_pai' => 'Id Pai',
-			'num_doc' => 'Num Doc',
-			'id_inf_judicial' => 'Id Inf Judicial',
-			'id_cedula' => 'Id Cedula',
-			'fecha_establec_compsanc' => 'Fecha Establec Compsanc',
-			'seguim_compsancion' => 'Seguim Compsancion',
+			'fecha_seguim_compsancion' => 'Fecha Seguimiento Compsanción',
+			'id_pai' => 'Pai',
+			'num_doc' => 'Número de documento del adolescente',
+			'id_inf_judicial' => 'Información Judicial',
+			'id_cedula' => 'Profesional',
+			'fecha_establec_compsanc' => 'Fecha registro componente',
+			'seguim_compsancion' => 'Seguimiento componente sanción',
 		);
 	}
 

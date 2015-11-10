@@ -61,12 +61,12 @@ class ConceptoIntegral extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'fecha_concint' => 'Fecha Concint',
-			'id_cedula' => 'Id Cedula',
-			'num_doc' => 'Num Doc',
+			'fecha_concint' => 'Fecha concepto integral',
+			'id_cedula' => 'Profesional',
+			'num_doc' => 'Número de documento',
 			'concepto_integral' => 'Concepto Integral',
-			'aprueba_psicol' => 'Aprueba Psicol',
-			'aprueba_tsocial' => 'Aprueba Tsocial',
+			'aprueba_psicol' => 'Aprueba Psicólogo',
+			'aprueba_tsocial' => 'Aprueba Trabajador social',
 		);
 	}
 

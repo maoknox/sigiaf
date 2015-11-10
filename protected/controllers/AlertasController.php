@@ -736,7 +736,7 @@ class AlertasController extends Controller{
 					$dias	= (strtotime($seguimiento["fecha_seguimiento"])-strtotime(date("Y-m-d")))/86400;
 					$dias 	= abs($dias); $dias = floor($dias);	
 					//echo $dias."<br>";
-					if($dias>60){
+					if($dias>Yii::app()->params["tiempo_alertas"]){
 						$this->numCasosSeguim+=1;
 						//echo $this->numCasosSeguim."<br>";
 					}
@@ -1055,7 +1055,7 @@ class AlertasController extends Controller{
 	
 	public function consultaAdol(){
 		$conect= Yii::app()->db;
-		$sqlConsAdol="select * from adolescente as a left join forjar_adol as b on b.num_doc=a.num_doc where id_forjar=:id_forjar";
+		$sqlConsAdol="select * from adolescente as a left join forjar_adol as b on b.num_doc=a.num_doc and id_estado_adol=1 where id_forjar=:id_forjar";
 		$consAdol=$conect->createCommand($sqlConsAdol);
 		$consAdol->bindParam(":id_forjar",$this->sedeForjar);
 		$readAdols=$consAdol->query();
@@ -1065,13 +1065,17 @@ class AlertasController extends Controller{
 	}
 	public function consultaAdolProf(){
 		$conect= Yii::app()->db;
-		$sqlConsAdol="select * from adolescente as a left join hist_personal_adol as b on b.num_doc=a.num_doc where id_cedula=:id_cedula and asignado_actualmente is true";
+		$sqlConsAdol="
+		select * from adolescente as a 
+			left join forjar_adol as b on b.num_doc=a.num_doc 
+			left join hist_personal_adol as c on c.num_doc=a.num_doc 
+		where id_cedula=:id_cedula and id_estado_adol=1 and asignado_actualmente is true";		
 		$consAdol=$conect->createCommand($sqlConsAdol);
 		$consAdol->bindParam(":id_cedula",Yii::app()->user->getState('cedula'));
 		$readAdols=$consAdol->query();
 		$resAdols=$readAdols->readAll();
 		$readAdols->close();
-		return $resAdols;		
+		return "";		
 	}
 	public function consultaAdolPai(){
 		$conect= Yii::app()->db;

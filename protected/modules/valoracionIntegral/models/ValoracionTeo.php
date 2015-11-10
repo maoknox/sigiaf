@@ -94,10 +94,10 @@ class ValoracionTeo extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_valor_teo' => 'Id Valor Teo',
-			'id_estado_val' => 'Id Estado Val',
-			'num_doc' => 'Num Doc',
-			'id_tipo_trab' => 'Tipo trabajador',
+			'id_valor_teo' => 'Valoración TO',
+			'id_estado_val' => 'Estado de la valoración',
+			'num_doc' => 'Número de documento',
+			'id_tipo_trab' => 'Tipo de trabajador',
 			'id_sector_lab' => 'Sector laboral',
 			'desemp_area_ocup' => 'Desempeño en áreas ocupacionales',
 			'desemp_laboral' => 'Desempeño Laboral',
@@ -106,15 +106,15 @@ class ValoracionTeo extends CActiveRecord
 			'aptit_habilid_destrezas' => 'Aptitudes, habilidades y destrezas',
 			'criterios_area_int' => 'Criterios para la ubicación en áreas de interés',
 			'ubicacion_area_intere' => 'Ubicacion Area Intere',
-			'fecha_inicio_valteo' => 'Fecha Inicio Valteo',
-			'estado_val_teo' => 'Estado Val Teo',
-			'recomend_perfoc' => 'Recomend Perfoc',
+			'fecha_inicio_valteo' => 'Fecha de inicio de la valoración',
+			'estado_val_teo' => 'Estado de la valoración',
+			'recomend_perfoc' => 'Recomendaciones según el perfilo ocupacional',
 			'concepto_teo' => 'Concepto ocupacional',
 			'plan_interv_teo' => 'Proyección y plan de intervención',
-			'fecha_modifvalteo' => 'Fecha Modifvalteo',
-			'val_hab_to' => 'Val Hab To',
-			'observ_estvalto' => 'Observ Estvalto',
-			'val_act_to' => 'Val Act To',
+			'fecha_modifvalteo' => 'Fecha de modificación de la valoración',
+			'val_hab_to' => 'Valoración habilitada?',
+			'observ_estvalto' => 'Observaciones del estado de la valoración',
+			'val_act_to' => 'Valoración actual?',
 		);
 	}
 

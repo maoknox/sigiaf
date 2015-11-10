@@ -68,12 +68,12 @@ class Menu extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_menu' => 'Id Menu',
-			'id_modulo' => 'Id Modulo',
-			'men_id_menu' => 'Men Id Menu',
+			'id_menu' => 'Menu',
+			'id_modulo' => 'Módulo',
+			'men_id_menu' => 'Menú',
 			'nivel_menu' => 'Nivel Menu',
-			'titulo_menu' => 'Titulo Menu',
-			'accion' => 'Accion',
+			'titulo_menu' => 'Título Menu',
+			'accion' => 'Acción',
 			'orden' => 'Orden',
 			'target' => 'Target',
 		);

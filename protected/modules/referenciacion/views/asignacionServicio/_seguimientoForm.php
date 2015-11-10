@@ -280,7 +280,7 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
 </div>
 </fieldset>
 <fieldset>
-<div class="panel-heading color-sdis">Histório de seguimientos</div> 
+<div class="panel-heading color-sdis">Histórico de seguimientos</div> 
 <table style="border:0px; width:100%;">
     <tr>
         <td style="width:80%">

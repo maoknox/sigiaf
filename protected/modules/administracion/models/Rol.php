@@ -65,9 +65,9 @@ class Rol extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_rol' => 'Id Rol',
-			'nombre_rol' => 'Nombre Rol',
-			'descripcion_rol' => 'Descripcion Rol',
+			'id_rol' => 'Rol',
+			'nombre_rol' => 'Nombre del Rol',
+			'descripcion_rol' => 'Descripcion del Rol',
 		);
 	}
 

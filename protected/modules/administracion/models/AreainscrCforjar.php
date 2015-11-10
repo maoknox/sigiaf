@@ -54,7 +54,7 @@ class AreainscrCforjar extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_areainteres' => 'Id Areainteres',
+			'id_areainteres' => 'Areainteres',
 			'id_forjar' => 'Centro Forjar',
 			'areacforjar_activa' => 'Estado área interés',
 		);
