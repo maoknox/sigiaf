@@ -127,6 +127,9 @@ class ComponenteSancion extends CActiveRecord
 		return parent::model($className);
 	}
 	
+	/**
+	 * 	Método que consulta el registro del componente en sanción de PAI.
+	 */	
 	public function consultaInfJudComponenteSanc(){
 		$conect= Yii::app()->db;
 		$sqlConsPaiSancAdol="select * from componente_sancion as a 
@@ -141,6 +144,9 @@ class ComponenteSancion extends CActiveRecord
 		return $resConsPaiSancAdol;
 	}
 	
+	/**
+	 * 	Método que consulta la información judicial asociada al pai actual.
+	 */	
 	public function consultaPaiSanc($id_inf_judicial){
 		$conect= Yii::app()->db;
 		$sqlConsPaiSancAdol="select * from componente_sancion as a 
@@ -156,6 +162,10 @@ class ComponenteSancion extends CActiveRecord
 		$readConsPaiSancAdol->close();
 		return $resConsPaiSancAdol;
 	}
+	
+	/**
+	 * 	Método que consulta las sanciones que se han registrado del adolescente y que no están asignadas a un pai.
+	 */	
 	public function consultaSancSinPai(){
 		$conect= Yii::app()->db;
 		$sqlConsPaiSancAdol="select * from 	componente_sancion where id_inf_judicial=:id_inf_judicial and id_pai<>:id_pai";
@@ -168,6 +178,9 @@ class ComponenteSancion extends CActiveRecord
 		return $resConsPaiSancAdol;
 	}
 
+	/**
+	 * 	Método que consulta las sanciones que se han registrado del adolescente que están asignadas al pai actual.
+	 */	
 	public function consultaPaiSancAdol(){
 		$conect= Yii::app()->db;
 		$sqlConsPaiSancAdol="select * from componente_sancion where id_pai=:id_pai and id_inf_judicial=:id_inf_judicial and num_doc=:num_doc order by fecha_establec_compsanc desc";
@@ -180,7 +193,11 @@ class ComponenteSancion extends CActiveRecord
 		$readConsPaiSancAdol->close();
 		return $resConsPaiSancAdol;
 	}
-		public function creaSancionPai(){
+	
+	/**
+	 * 	Registra el componente de sanción según el pai actual, se registran los datos de objetivos, actividades, indicadores y responsable.
+	 */	
+	public function creaSancionPai(){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();
 		try{
@@ -227,6 +244,10 @@ class ComponenteSancion extends CActiveRecord
 			return $e;
 		}
 	}
+	
+	/**
+	 * 	Registra la modificación del registro de sanción vs pai.
+	 */	
 	public function modificaRegPaiSanc($nombreCampo,$contenido){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -248,8 +269,11 @@ class ComponenteSancion extends CActiveRecord
 			return $e;
 		}
 	}
+	
+	/**
+	 * 	Consulta inicialmente si existe un componente de sanción con la información judicial suministrada.
+	 */	
 	public function creaCompSancion(){
-		//Consulta inicialmente si existe un componente de sanción con la información judicial suministrada
 		$conect= Yii::app()->db;
 		$sqlConsInJud="select * from componente_sancion where id_inf_judicial=:id_inf_judicial and num_doc=:num_doc";
 		$consInfJud=$conect->createCommand($sqlConsInJud);
@@ -261,8 +285,8 @@ class ComponenteSancion extends CActiveRecord
 		//Si no existe crea el componente de información judicial	
 		if(empty($resConsInfJud)){
 			//fecha_establec_compsanc timestamp without time zone NOT NULL,
- // id_inf_judicial integer NOT NULL,
-  //id_pai integer NOT NULL,
+			 // id_inf_judicial integer NOT NULL,
+			  //id_pai integer NOT NULL,
   			$transaction=$conect->beginTransaction();
 			try{
 				$sqlCreaCompSanc="insert into componente_sancion (

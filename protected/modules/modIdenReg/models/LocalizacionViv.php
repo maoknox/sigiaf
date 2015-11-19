@@ -25,8 +25,8 @@ class LocalizacionViv extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
-	public $mensajeErrorLoc;
-	public $mensajeErrorLocAcud;
+	public $mensajeErrorLoc;		/**< mensaje de error de la transacción. */
+	public $mensajeErrorLocAcud;	/**< mensaje de error de la transacción. */
 	public function tableName()
 	{
 		return 'localizacion_viv';
@@ -127,6 +127,16 @@ class LocalizacionViv extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	/**
+	 * Crea registro de localización del adolescente.
+	 * @param string $this->num_doc
+	 * @param int $this->id_estrato
+	 * @param int $municipio
+	 * @param int $this->id_localidad
+	 * @param string $this->barrio
+	 * @param string $this->direccion
+	 * @return $return resultado de transacción
+	 */
 	public function registraLocAdol(){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -170,6 +180,16 @@ class LocalizacionViv extends CActiveRecord
 			return false;
 		}
 	}
+	/**
+	 * Crea registro de localización del acudiente.
+	 * @param int $id_doc_familiar
+	 * @param int $this->id_estrato
+	 * @param int $municipio
+	 * @param int $this->id_localidad
+	 * @param string $this->barrio
+	 * @param string $this->direccion
+	 * @return $return resultado de transacción
+	 */
 	public function registraLocAcudiente(){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -211,6 +231,11 @@ class LocalizacionViv extends CActiveRecord
 			$this->mensajeErrorLocAcud=$e;
 		}
 	}
+	/**
+	 *	Consulta la información de localización del adolescente.
+	 *	@param string $this->num_doc
+	 *	@return $resConsultaLocVivAdol documentos remitidos 
+	 */		
 	public function consultaLocVivadol($numDocAdol){
 		$conect= Yii::app()->db;
 		$sqlConsultaLocVivAdol="select * from localizacion_viv where num_doc=:numDoc";
@@ -222,6 +247,11 @@ class LocalizacionViv extends CActiveRecord
 		return $resConsultaLocVivAdol;	
 	}
 	
+	/**
+	 *	Consulta la información de localización de acudiente.
+	 *	@param int $idDocFam
+	 *	@return $resConsultaLocVivAdol documentos remitidos 
+	 */		
 	public function consultaLocVivFam($idDocFam){
 		$conect= Yii::app()->db;
 		$sqlConsultaLocVivAcud="select * from localizacion_viv where id_doc_familiar=:idDocFam";
@@ -232,6 +262,16 @@ class LocalizacionViv extends CActiveRecord
 		$readConsultaLocVivAcud->close();			
 		return $resConsultaLocVivAcud;	
 	}	
+	/**
+	 * Modifica registro de localización del adolescente.
+	 * @param string $this->num_doc
+	 * @param int $this->id_estrato
+	 * @param int $municipio
+	 * @param int $this->id_localidad
+	 * @param string $this->barrio
+	 * @param string $this->direccion
+	 * @return $return resultado de transacción
+	 */
 	public function modificaDatosLocAdol($nombreCampo,$nombreTabla,$datoAntiguo,$datoActual,$numDocAdol,$tipoDato){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -254,6 +294,16 @@ class LocalizacionViv extends CActiveRecord
 			$this->mensajeErrorLocAcud.=$e;
 		}
 	}
+	/**
+	 * Crea registro de localización del acudiente.
+	 * @param int $id_doc_familiar
+	 * @param int $this->id_estrato
+	 * @param int $municipio
+	 * @param int $this->id_localidad
+	 * @param string $this->barrio
+	 * @param string $this->direccion
+	 * @return $return resultado de transacción
+	 */
 	public function modificaDatosLocAcud($nombreCampo,$nombreTabla,$datoAntiguo,$datoActual,$idDocFam,$tipoDato){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();

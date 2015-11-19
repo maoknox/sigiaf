@@ -15,9 +15,9 @@ class HistPersonalAdol extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
-	public $psicologosHist;
-	public $trabSocialsHist;
-	public $mensajeErrorProf;
+	public $psicologosHist;		/**< psicologo responsable del adolescente */
+	public $trabSocialsHist;	/**< trabajador social responsable del dolescente. */
+	public $mensajeErrorProf;	/**< mensaje de error de la transacción. */
 
 	public function tableName()
 	{
@@ -109,6 +109,14 @@ class HistPersonalAdol extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	/**
+	 *	Modifica el registro de responsable de psicólogo o trabajador social cuando reasignan bina.
+	 *	@param int $profesional.
+	 *	@param string $this->num_doc.
+	 *	@param bool $asignacion.
+	 *	@param bool $responsable.
+	 *	@return resultado de la transacción
+	 */		
 	public function modificaPersAdol($profesional,$responsable,$asignacion){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -131,6 +139,16 @@ class HistPersonalAdol extends CActiveRecord
 			return $e;
 		}
 	}
+	/**
+	 *	Registra psicologo o trabajador social asignados al adolescente.
+	 *	Si la modificación del estado se da a 1 entonces actualiza las actuaciones que estan actuales a false.
+	 *	@param int $profesional
+	 *	@param string $this->num_doc
+	 *	@param string $fechaRegProf
+	 *	@param bool $asignadoActualmente.
+	 *	@param bool $responsable.
+	 *	@return resultado de la transacción
+	 */		
 	public function registraEquipoPsic($profesional,$responsable){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();

@@ -144,6 +144,18 @@ class SeguimientoPsc extends CActiveRecord
 		$consFechaAsist=$readConsFechaAsist->close();
 		return $resConsFechaAsist;		
 	}
+	/**
+	 *	Crea registro de seguimiento psc.
+	 *	@param int id_seguimiento_ind.
+	 *	@param int id_psc.
+	 *	@param string num_doc.
+	 *	@param int id_cedula.
+	 *	@param string desarrollo_act_psc.
+	 *	@param string reporte_nov_psc.
+	 *	@param string cump_acu_psc.
+	 *	@param string fecha_seg_ind.
+	 *	@return resultado de la transacción
+	 */		
 	public function registraSeguimientoPsc(){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -205,6 +217,12 @@ class SeguimientoPsc extends CActiveRecord
 			return $e;
 		}				
 	}
+	/**
+	 *	Retorna las horas de cumplimiento de una prestación de servicios a la comunidad.
+	 *	@param string $this->num_doc.
+	 *	@param int $this->id_psc.
+	 *	@return $resHorasPsc horas de cumplimiento 
+	 */		
 	public function consHorasCumpPsc(){
 		$conect=Yii::app()->db;
 		$sqlConsHorasPsc="select num_hora from seguimiento_psc as a left join asistencia_psc as b on b.id_seguimiento_ind=a.id_seguimiento_ind 
@@ -217,6 +235,12 @@ class SeguimientoPsc extends CActiveRecord
 		$readHorasPsc->close();
 		return $resHorasPsc;
 	}
+	/**
+	 *	Retorna los seguimientos de una prestación de servicios a la comunidad.
+	 *	@param string $this->num_doc.
+	 *	@param int $this->id_psc.
+	 *	@return $resSegPsc array con los seguimientos a la psc por parte del equipo psicoterapeutico
+	 */		
 	public function consSeguimientosPsc(){
 		$conect=Yii::app()->db;
 		$sqlConsSegPsc="select a.desarrollo_act_psc,a.reporte_nov_psc,a.cump_acu_psc, 

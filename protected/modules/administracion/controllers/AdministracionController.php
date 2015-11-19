@@ -1,18 +1,45 @@
 <?php	
+///!  Clase controlador del módulo administración.  
+/**
+ *## Sigiaf-modulo clase administración.
+ * cada una de las acciones verifica si el usuario tiene o no acceso a ésta según la configuración de rol de usuario en base de datos.
+ * @author Félix Mauricio Vargas Hincapié <femauro@gmail.com>
+ * @copyright Copyright &copy; Félix Mauricio Vargas Hincapié 2015
+ */
+
+
 Yii::import('application.models.Usuario');	
 Yii::import('application.models.Persona');	
 Yii::import('application.modules.modIdenReg.models.ForjarAdol');	
+
 class AdministracionController extends Controller{
-	public function filterEnforcelogin($filterChain){
+	
+	/**
+	 * Acción que se ejecuta en segunda instancia para verificar si el usuario tiene sesión activa.
+	 * En caso contrario no podrá acceder a los módulos del aplicativo y generará error de acceso.
+	 */
+	 public function filterEnforcelogin($filterChain){
 		if(Yii::app()->user->isGuest){
 			throw new CHttpException(302,"Debe loguearse primero");
 		}
 		$filterChain->run();
 	}
-	
+	/**
+	 * Acción que se ejecuta en primera instancia que llama a verificar la sesión de usuario y llama a los filtros secundarios
+	 * Los filtros no se ejecutan cuando se llaman a las acciones que van seguidas del guión.
+	 */
 	public function filters(){
 		return array('enforcelogin -restablecerClaveForm restablecerClave',array('application.filters.ActionLogFilter - buscaAdolGen restablecerClaveForm restablecerClave','modulo'=>$this->module->id,'controlador'=>$this->id,'parametros'=>Yii::app()->input->post()));
 	}
+
+	/**
+	 *	Acción que carga la vista cambiar clave. \n
+	 * Vista a renderizar:
+	 *	- cambiarClaveForm\n
+	 *
+	 * Modelos instanciados
+	 *	- Usuario.
+	 */	
 	public function actionCambiarClaveForm(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="cambiarClaveForm";
@@ -26,6 +53,13 @@ class AdministracionController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	
+	/**
+	 *	Acción que captura los datos de clave a ser modificado. \n
+	 *	Modelos instanciados.
+	 *	- Usuario.
+	 * @params array $datosInput, $modeloUsuario->attributes
+	 */		
 	public function actionCambiarClave(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="cambiarClaveForm";
@@ -48,6 +82,18 @@ class AdministracionController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Acción que renderiza el formulario para registrar una nueva sede
+	 *
+	 *	Vista a renderizar:
+	 *		- _consCreaSedeTab.
+	 *
+	 *	Modelos instanciados:
+	 *		- CentroForjar
+	 * 		- TelefonoForjar.
+	 *
+	 *	@param array $sedes. objeto $modeloTelForjar, $modeloCForjar.
+	 */		
 	public function actionConsCreaSede(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="consCreaSede";
@@ -64,19 +110,29 @@ class AdministracionController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Acción que captura los datos de la sede a registrar.
+	 *	Modelos instanciados
+	 *	- CentroForjar.
+	 *	- TelefonoForjar.
+	 *  @params array $sedes, $datosInput, $modeloCForjar->attributes, $modeloTelForjar->attributes.  String $modeloCForjar->numTelForjar
+	 */		
 	public function actionCreaSedeForjar(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="consCreaSede";
 		$permiso=$controlAcceso->controlAccesoAcciones();
 		if($permiso["acceso_rolmenu"]==1){
 			$modeloCForjar=new CentroForjar();
-			$sedes=$modeloCForjar->consultaSedes();
+			$sedes=$modeloCForjar->consultaSedesCreadas();
+			$modeloCForjar->numeroSedes=$sedes;
 			$modeloTelForjar=new TelefonoForjar();
 			$datosInput=Yii::app()->input->post();
 			$modeloCForjar->attributes=$datosInput["CentroForjar"];
 			$modeloTelForjar->attributes=$datosInput["TelefonoForjar"];
 			if($modeloCForjar->validate() && $modeloTelForjar->validate()){
-				
+				$modeloCForjar->numTelForjar=$modeloTelForjar->num_tel_forjar;
+				$resultado=$modeloCForjar->registraSedeForjar();				
+				echo CJSON::encode(array("estadoComu"=>"exito",'resultado'=>"exito"));
 			}
 			else{
 				echo CActiveForm::validate(array($modeloCForjar,$modeloTelForjar));
@@ -88,6 +144,18 @@ class AdministracionController extends Controller{
 	}
 	
 	
+	/**
+	 *	Acción que renderiza el formulario para solicitar cambio de sede del adolescente\n
+	 *  Vista a renderizar:\n
+	 *	. _cambioSedeForm\n
+	 *	Modelos instanciados:\n
+	 * 	. CentroForjar.\n
+	 * 	. CambioSede.\n
+	 *	. DocumentoSoporte.\n
+	 * 	. OperacionesGenerales.\n
+	 * 	. ConsultasGenerales.
+	 *  @param int $edad. string numDocAdol. array $datosAdol,$datosInput,$sedes,$infoSolicitud. objeto $modeloCambioSede, $modeloDocSoporte
+	 */		
 	public function actionCambioSedeAdol(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="cambioSedeAdol";
@@ -103,7 +171,6 @@ class AdministracionController extends Controller{
 			}
 			if(!empty($numDocAdol)){	
 				$modeloCForjar=new CentroForjar();
-				
 				$modeloCambioSede=new CambioSede();
 				$modeloDocSoporte=new DocumentoSoporte();
 				$operaciones=new OperacionesGenerales();
@@ -133,6 +200,13 @@ class AdministracionController extends Controller{
 	}
 	
 	
+	/**
+	 *	Acción que captura los datos de solicitud de cambio de sede.
+	 *	Modelos instanciados
+	 *	- CambioSede.
+	 *	- DocumentoSoporte.
+	 *  @params array $datosInput["CambioSede"],$datosInput["DocumentoSoporte"], $modeloCambioSede->attributes, $modeloDocSoporte->attributes.  String $modeloDocSoporte->nombre_doc_ds,$modeloDocSoporte->ruta_acceso_ds,$file
+	 */		
 	public function actionSolicitarCambioSede(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="cambioSedeAdol";
@@ -171,6 +245,18 @@ class AdministracionController extends Controller{
 
 	  }
 	  
+	/**
+	 *	Acción que renderiza el formulario para aceptar o declinar el cambio de adolescente de sede.
+	 *  Vista a renderizar:
+	 *	- _resolverSolCambioSede
+	 *	Modelos instanciados:
+	 * 	- CentroForjar.
+	 * 	- CambioSede.
+	 *	- DocumentoSoporte.
+	 * 	- OperacionesGenerales.
+	 * 	- ConsultasGenerales.
+	 * @param int edad. string numDocAdol,sedeActual. array $datosAdol,$datosInput,$sedes,$infoSolicitud. objeto $modeloCambioSede, $modeloDocSoporte
+	 */		
 	public function actionResolverSolicitudCambioSede(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="resolverSolicitudCambioSede";
@@ -185,8 +271,7 @@ class AdministracionController extends Controller{
 				$numDocAdol=Yii::app()->getSession()->get('numDocAdol');
 			}
 			if(!empty($numDocAdol)){	
-				$modeloCForjar=new CentroForjar();
-				
+				$modeloCForjar=new CentroForjar();				
 				$modeloCambioSede=new CambioSede();
 				$modeloCambioSede->num_doc=$numDocAdol;
 				$modeloDocSoporte=new DocumentoSoporte();
@@ -219,6 +304,13 @@ class AdministracionController extends Controller{
 		}
 	}
 	
+	/**
+	 *	Acción que captura los datos de resolución de cambio de sede del adolescente.
+	 *	Modelos instanciados
+	 *	- CambioSede.
+	 *	- DocumentoSoporte.
+	 *  @params array $datosInput["CambioSede"],$datosInput["DocumentoSoporte"], $modeloCambioSede->attributes, $modeloDocSoporte->attributes.  String $modeloDocSoporte->nombre_doc_ds,$modeloDocSoporte->ruta_acceso_ds,$file
+	 */		
 	public function actionProcedeCambioSede(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="resolverSolicitudCambioSede";
@@ -253,6 +345,17 @@ class AdministracionController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+		
+	/**
+	 *	Acción que renderiza el formulario que muestra las valoraciones y profesionales que realizan las valoraciones para activar.
+	 *  Vista a renderizar:
+	 *	- _habilitaValoracion
+	 *	Modelos instanciados:
+	 * 	- JustificacionHabVal.
+	 * 	- OperacionesGenerales.
+	 * 	- ConsultasGenerales.
+	 * @param int edad. string numDocAdol. array $valoraciones,$datosAdol. objeto $modeloJustHabVal
+	 */		
 	public function actionHabilitarValoracionForm(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="habilitarValoracionForm";
@@ -296,6 +399,12 @@ class AdministracionController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');			
 		}
 	}
+	/**
+	 *	Acción que captura los datos de la valoración a hablitar.
+	 *	Modelos instanciados
+	 *	- JustificacionHabVal.
+	 *  @params array $datosInput["JustificacionHabVal"],$modeloJustHabVal->attributes.
+	 */		
 	public function actionHabilitarValoracion(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="habilitarValoracionForm";
@@ -319,6 +428,13 @@ class AdministracionController extends Controller{
 		}		
 	}
 	
+	/**
+	 *	Acción que consulta los datos del profesional por tipo de valoración.
+	 *	Modelos instanciados
+	 *	- JustificacionHabVal.
+	 *  @param array $datosInput["valoracion"],$datosValoracion,$compruebaHab
+	 *  @return json array listado de profesionales por valoración
+	 */		
 	public function actionCargaCedulas(){
 		$datosInput=Yii::app()->input->post();
 		$consultaGeneral=new ConsultasGenerales();
@@ -344,9 +460,18 @@ class AdministracionController extends Controller{
 		else{
 			$resultado="";
 		}
-		echo CJSON::encode(array("estadoVal"=>CJavaScript::encode(CJavaScript::quote($resultado)),'cedulas'=>$consultaProfesionales,'resultado'=>CJavaScript::encode(CJavaScript::quote($operaciones->quitar_tildes($datosValoracion[0]))),'idvaloracion'=>CJavaScript::encode(CJavaScript::quote($compruebaHab[$datosValoracion[4]]))));		
-		
+		echo CJSON::encode(array("estadoVal"=>CJavaScript::encode(CJavaScript::quote($resultado)),'cedulas'=>$consultaProfesionales,'resultado'=>CJavaScript::encode(CJavaScript::quote($operaciones->quitar_tildes($datosValoracion[0]))),'idvaloracion'=>CJavaScript::encode(CJavaScript::quote($compruebaHab[$datosValoracion[4]]))));
 	}
+	/**
+	 *	Acción que renderiza el formulario para realizar traslado de funcionario .
+	 *  Vista a renderizar:
+	 *	- _trasladoFuncionarioForm
+	 *	Modelos instanciados:
+	 * 	- Persona.
+	 * 	- CentroForjar.
+	 * 	- CforjarPersonal.
+	 * @param  array $sedes,$funcionarios. objeto $modeloAsistencia, $modeloCforjarPersonal,$modeloCentroForjar
+	 */			
 	public function actionTrasladarFuncionarioForm(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="trasladarFuncionarioForm";
@@ -381,6 +506,13 @@ class AdministracionController extends Controller{
 		return true;	
 	}
 */	
+	/**
+	 *	Acción que captura los datos de la persona a cambiar de sede y la nueva sede, se registra el cambio de sede.
+	 *	Modelos instanciados
+	 *	- CforjarPersonal.
+	 *  @param array $datosInput["CforjarPersonal"]
+	 *  @return json array listado de profesionales por valoración. String $resultado
+	 */		
 	public function actionTrasladoFuncionario(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="trasladarFuncionarioForm";
@@ -407,6 +539,22 @@ class AdministracionController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');						
 		}
 	}
+	
+	/**
+	 *	Acción para renderizar el formulario de creación de usuario 
+	 *  Vista a renderizar:
+	 *	- _crearUsuarioForm
+	 *	Modelos instanciados:
+	 * 	- ConsultasGenerales.
+	 * 	- Usuario.
+	 * 	- Persona.
+	 * @param 	 
+	 * Objetos:
+	 * - $modeloUsuario,
+	 * - $modeloPersona,
+	 * Arrays:
+	 * - $rol
+	 */			
 	public function actionCrearUsuarioForm(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="crearUsuarioForm";
@@ -428,6 +576,15 @@ class AdministracionController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');						
 		}
 	}
+	/**
+	 *	Acción que captura los datos de usuario y registra en base de datos y si es satisfactoria la trasnacción envía correo con la clave de acceso aleatoria generada por el sistema
+	 *	Modelos instanciados
+	 *	- Usuario.
+	 *	- Persona.
+	 *	- OperacionesGenerales.
+	 *  @param array $modeloUsuario->attributes,$modeloPersona->attributes,$clave
+	 *  @return String $resultado, resultado de la transacción
+	 */		
 	public function actionCrearUsuario(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="crearUsuarioForm";
@@ -472,6 +629,14 @@ class AdministracionController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');						
 		}
 	}
+	/**
+	 *	Acción que renderiza el formulario para cambiar el estado del profesional de permiso de acceso al sistema.
+	 *  Vista a renderizar:
+	 *	- _cambiarEstadoUsuarioForm
+	 *	Modelos instanciados
+	 *	- Usuario.
+	 *  @param array $modeloUsuario,$funcionarios
+	 */		
 	public function actionCambiarEstadoFuncionarioForm(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="cambiarEstadoFuncionarioForm";
@@ -491,6 +656,13 @@ class AdministracionController extends Controller{
 		}
 		
 	}
+	/**
+	 *	Acción que captura los datos de usuario y el estado del usuario para registrar el cambio de permiso de acceso del usuario al sistema.
+	 *	Modelos instanciados
+	 *	- Usuario.
+	 *  @param int $modeloUsuario->id_rol,String $modeloUsuario->nombre_usuario, $modeloUsuario->clave,resultado de la transacción, array $datosInput["Usuario"]
+	 *  @return resultado de la transacción
+	 */		
 	public function actionCambiarEstadoFuncionario(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="cambiarEstadoFuncionarioForm";
@@ -515,6 +687,13 @@ class AdministracionController extends Controller{
 		}
 		
 	}
+	
+	/**
+	 *	Acción que consulta el estado de permiso actual del usuario para acceder al sistema.
+	 *	Modelos instanciados
+	 *	- Usuario.
+	 *  @param array $estadoUsuario. int $modeloUsuario->id_cedula. String $estado
+	 */		
 	public function actionConsultaEstadoUsuario(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="cambiarEstadoFuncionarioForm";
@@ -540,16 +719,31 @@ class AdministracionController extends Controller{
 		}
 		
 	}
+	/**
+	 *	Acción que genera una cadena aleatoria.
+	 *  @param array $estadoUsuario. int $numerodeletra. String $caracteres,$cadena
+	 *  @return $cadena, que contiene la cadena aleatoria de 10 carácteres
+	 */			
 	public function generaCadenaAleatoria(){
-		$caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890$%_-/"; //posibles caracteres a usar
-		$numerodeletras=10; //numero de letras para generar el texto
-		$cadena = ""; //variable para almacenar la cadena generada
+		$caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890$%_-/"; /**< carácteres a usar en la generación de cadena aleatoria */
+		$numerodeletras=10; /**< número de letras para generar el texto */
+		$cadena = ""; /**< variable que almacena los 10 datos generados aleatoriamente */
 		for($i=0;$i<$numerodeletras;$i++){
 			$cadena .= substr($caracteres,rand(0,strlen($caracteres)),1); /*Extraemos 1 caracter de los caracteres 
 		entre el rango 0 a Numero de letras que tiene la cadena */
 		}
 		return $cadena;
 	}
+	/**
+	 *	Acción que renderiza el formulario para crear un rol de usuario.
+	 *  Vista a renderizar:
+	 *	- _creaRolForm
+	 *	Modelos instanciados
+	 *	- Rol.
+	 *	- Menu.
+	 *	- RolMenu.
+	 *  @param array $menu,$nivelMenu.  Objeto $modeloMenu, $modeloRol,$modeloRolMenu, 
+	 */		
 	public function actionCreaRolForm(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="creaRolForm";
@@ -566,6 +760,15 @@ class AdministracionController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');						
 		}
 	}
+	/**
+	 *	Acción que captura el nombre de nuevo rol y los módulos, menús y submenús alos cuales tendrá acceso.  
+	 *	Modelos instanciados
+	 *	- Rol.
+	 *	- Menu.
+	 *	- RolMenu.
+	 *  @param int $modeloRolMenu->id_rol,String $modeloUsuario->nombre_usuario,resultado de la transacción, array $dataInput["Menu"],$dataInput["Rol"]
+	 *  @return json resultado de la transacción
+	 */		
 	public function actionCreaRol(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="creaRolForm";
@@ -595,6 +798,14 @@ class AdministracionController extends Controller{
 		}
 	}
 	
+	/**
+	 *  Acción que renderiza el formulario para vincular o desvincular usuarios de una sede
+	 *  Vista a renderizar:
+	 *	- _asociaUsuarioASedeForm
+	 *	Modelos instanciados
+	 *	- Persona
+	 *  @param int . String . array $datosInput,$personas. Objeto $modeloPersona
+	 */			
 	public function actionAsociarUsuarioSedeForm(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="asociarUsuarioSedeForm";
@@ -621,6 +832,17 @@ class AdministracionController extends Controller{
 	}
 	
 	
+	
+	/**
+	 *  Acción que renderiza el formulario para vincular o desvincular sedes a una usuario
+	 *  Vista a renderizar:
+	 *	- _asociaSedeAUsuarioForm
+	 *	Modelos instanciados
+	 *	- Persona
+	 *	- modeloCForjarPersonal
+	 *	- modeloCForjarPersonal
+	 *  @param int $modeloPersona->id_cedula. String . array $datosInput,$persona,$sedesForjarUsuario,$sedesForjar. Objeto $modeloCForjarPersonal,$modeloPersona
+	 */			
 	public function actionAsociarSedeUsuarioForm(){
 		$controlAcceso=new ControlAcceso();		
 		$controlAcceso->accion="asociarSedeUsuarioForm";
@@ -660,6 +882,14 @@ class AdministracionController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');						
 		}
 	}
+
+	/**
+	 *	Acción que captura los datos de las sedes y usuario que van a ser vinculados.  
+	 *	Modelos instanciados
+	 *	- CforjarPersonal
+	 *  @param int $modeloCForjarPersonal->id_cedula. String $modeloCForjarPersonal->id_forjar. array $datosInput. Objeto
+	 *  @return json resultado de la transacción
+	 */	
 	public function actionAsociarSedeUsuario(){
 		$controlAcceso=new ControlAcceso();		
 		$controlAcceso->accion="asociarSedeUsuarioForm";
@@ -685,6 +915,17 @@ class AdministracionController extends Controller{
 		}		
 	}
 	
+	/**
+	 *	Acción que renderiza el formulario para crear áreas de interés\n
+	 *  Vista a renderizar:\n
+	 *	. _creaAreaInteresForm\n
+	 *	Modelos instanciados:\n
+	 * 	. AreaInscripcion.\n
+	 * 	. AreainscrCforjar.\n
+	 *	. CentroForjar.\n
+	 * 	. OperacionesGenerales.\n
+	 *  @param int . string . array $sedesForjar. objeto .
+	 */			
 	public function actionCreaAreaInteresForm(){
 		$controlAcceso=new ControlAcceso();		
 		$controlAcceso->accion="creaAreaInteresForm";
@@ -708,6 +949,17 @@ class AdministracionController extends Controller{
 		}
 	}
 	
+	/**
+	 *	Acción que renderiza el formulario para crear deportes\n
+	 *  Vista a renderizar:\n
+	 *	. creaDeporteForm\n
+	 *	Modelos instanciados:\n
+	 * 	. AreaInscripcion.\n
+	 * 	. AreainscrCforjar.\n
+	 *	. CentroForjar.\n
+	 * 	. OperacionesGenerales.\n
+	 *  @param int . string . array $sedesForjar. objeto .
+	 */			
 	public function actionCreaDeporteForm(){
 		$controlAcceso=new ControlAcceso();		
 		$controlAcceso->accion="creaDeporteForm";
@@ -732,6 +984,14 @@ class AdministracionController extends Controller{
 	}
 	
 	
+	/**
+	 *	Acción que recibe los datos de área de interés o deportes y llama a módelo AreaInscripcion para registrar en base de datos\n
+	 *  Modelos instanciados:\n
+	 * 	. AreaInscripcion .\n
+	 * 	. AreainscrCforjar .\n
+	 *  @param int . String . array $datosInput,$modeloAreaInscripcion->attributes,$modeloAreainscrCforjar->attributes.
+	 *  @return $resultado json resultado de la transacción	 .
+	 */			
 	public function actionCreaAreaInteresDeportes(){
 		$controlAcceso=new ControlAcceso();		
 		$controlAcceso->accion="creaAreaInteresForm";
@@ -763,6 +1023,14 @@ class AdministracionController extends Controller{
 		}
 	}
 
+	/**
+	 *	Acción que renderiza el formulario para crear delitos en caso que no se encuentren en la lista\n
+	 *  Vista a renderizar:\n
+	 *	. _creaDelitoForm\n
+	 *  Modelos instanciados:\n
+	 * 	. DelitoRemCespa .\n
+	 *  @param int . string . array . objeto $modeloDelitoRemCespa.
+	 */			
 	public function actionCreaDelitoForm(){
 		$controlAcceso=new ControlAcceso();		
 		$controlAcceso->accion="creaDelitoForm";
@@ -780,6 +1048,13 @@ class AdministracionController extends Controller{
 	}
 
 
+	/**
+	 *	Acción que recibe los datos de delito y llama a modelo para registrar delito en base de datos\n
+	 *  Modelos instanciados:\n
+	 * 	. DelitoRemCespa .\n
+	 *  @param int . String $resultado. array . Objeto
+	 *  @return $resultado json resultado de la transacción	 
+	 */			
 	public function actionCreaDelito(){
 		$controlAcceso=new ControlAcceso();		
 		$controlAcceso->accion="creaDelitoForm";
@@ -800,8 +1075,19 @@ class AdministracionController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');						
 		}
 	}
+
 	//activar caso adolescente
 	
+	/**
+	 *	Acción que renderiza el formulario para activar el adolescente en el sistema en caso que haya egresado\n
+	 *  Vista a renderizar:\n
+	 *	. _activarCasoAdolForm\n
+	 *  Modelos instanciados:\n
+	 * 	. ForjarAdol .\n
+	 * 	. ConsultasGenerales .\n
+	 *	. OperacionesGenerales .\n
+	 *  @param int $edad. string $numDocAdol. array $datosAdol,$datosForjarAdol	. objeto $modeloForjarAdol.
+	 */			
 	public function actionActivarCasoAdolForm(){
 		$controlAcceso=new ControlAcceso();		
 		$controlAcceso->accion="activarCasoAdolForm";
@@ -837,6 +1123,13 @@ class AdministracionController extends Controller{
 		}
 	}
 	
+	/**
+	 *	Acción que recibe los datos del adolescente que se va a activar y llama a modelo para realizar la modificación en base de datos.\n
+	 *  Modelos instanciados:\n
+	 * 	. ForjarAdol .\n
+	 *  @param int . String . array $datosInput,$modeloForjarAdol->attributes. Objeto
+	 *  @return json resultado de la transacción	 
+	 */			
 	public function actionActivarCasoAdol(){
 		$controlAcceso=new ControlAcceso();		
 		$controlAcceso->accion="activarCasoAdolForm";
@@ -858,6 +1151,15 @@ class AdministracionController extends Controller{
 		}
 	}
 	//asociación de contrato
+	/**
+	 *	Acción que renderiza el formulario para asociar un contrato al usuario\n
+	 *  Vista a renderizar:\n
+	 *	. _asociarContratoForm\n
+	 *  Modelos instanciados:\n
+	 * 	. DatosContrato .\n
+	 * 	. Persona .\n
+	 *  @param int . string . array $funcionarios. objeto $modeloPersona,$modeloDatosContrato.
+	 */			
 	public function actionAsociarContratoForm(){
 		$controlAcceso=new ControlAcceso();		
 		$controlAcceso->accion="asociarContratoForm";
@@ -877,6 +1179,14 @@ class AdministracionController extends Controller{
 		}
 	}
 	
+
+	/**
+	 *	Acción que recibe los datos del usuario y contrato y llama a modelo para realizar la asociación\n
+	 *  Modelos instanciados:\n
+	 * 	. DatosContrato .\n
+	 *  @param int . String . array $modeloDatosContrato->attributes. Objeto
+	 *  @return json resultado de la transacción	 
+	 */			
 	public function actionAsociarContratoFuncionario(){
 		$controlAcceso=new ControlAcceso();		
 		$controlAcceso->accion="asociarContratoForm";
@@ -898,6 +1208,15 @@ class AdministracionController extends Controller{
 		}
 	}
 	
+	/**
+	 *	Acción que renderiza el formulario para modificar los datos de contrato del usuario\n
+	 *  Vista a renderizar:\n
+	 *	. _modificarContratoForm\n
+	 *  Modelos instanciados:\n
+	 * 	. Persona .\n
+	 * 	. DatosContrato .\n
+	 *  @param int . string . array $funcionarios. objeto $modeloPersona,$modeloDatosContrato.
+	 */			
 	public function actionModificarContratoForm(){
 		$controlAcceso=new ControlAcceso();		
 		$controlAcceso->accion="modificarContratoForm";
@@ -917,6 +1236,13 @@ class AdministracionController extends Controller{
 		}
 	}
 	
+	/**
+	 *	Acción consulta el contrato asociado del usuario\n
+	 *  Modelos instanciados:\n
+	 * 	. DatosContrato .\n
+	 *  @param int . String . array $datosInput. Objeto
+	 *  @return json estado de contrato, si no tiene, si está vencido y si posee el número de contrato actual	 
+	 */			
 	public function actionConsultaContrato(){
 		$controlAcceso=new ControlAcceso();		
 		$controlAcceso->accion="modificarContratoForm";
@@ -946,6 +1272,13 @@ class AdministracionController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');						
 		}
 	}
+	/**
+	 *	Acción que captura los datos de modificación de contrat, instancia a modelo para realizar modificación de contrato\n
+	 *  Modelos instanciados:\n
+	 * 	. DatosContrato .\n
+	 *  @param int . String . array $datosInput. Objeto
+	 *  @return json estado de contrato, si no tiene, si está vencido y si posee el número de contrato actual	 
+	 */			
 	public function actionModificarContratoFuncionario(){
 		$controlAcceso=new ControlAcceso();		
 		$controlAcceso->accion="modificarContratoForm";
@@ -966,8 +1299,6 @@ class AdministracionController extends Controller{
 					$resultado=$modeloDatosContrato->modificaContratoAct();
 					echo CJSON::encode(array("estadoComu"=>"exito","resultado"=>$resultado));				
 				}
-
-				//$resultado=$modeloDatosContrato->registraContratoFuncionario();
 			}
 			else{
 				echo CActiveForm::validate($modeloDatosContrato);
@@ -978,6 +1309,15 @@ class AdministracionController extends Controller{
 		}
 	}
 
+	/**
+	 *	Acción que renderiza el formulario para realizar extensión de contrato\n
+	 *  Vista a renderizar:\n
+	 *	. _crearExtContratoForm\n
+	 *  Modelos instanciados:\n
+	 * 	. Persona.\n
+	 * 	. DatosContrato .\n
+	 *  @param int . string . array $funcionarios. objeto $modeloPersona,$modeloDatosContrato.
+	 */			
 	public function actionCrearExtContratoForm(){
 		$controlAcceso=new ControlAcceso();		
 		$controlAcceso->accion="crearExtContratoForm";
@@ -996,6 +1336,13 @@ class AdministracionController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');						
 		}
 	}
+	/**
+	 *	Acción consulta el contrato asociado del usuario\n
+	 *  Modelos instanciados:\n
+	 * 	. DatosContrato .\n
+	 *  @param int . String . array $datosInput. Objeto
+	 *  @return json estado de contrato, si no tiene, si está vencido y si posee el número de contrato actual	 
+	 */			
 	public function actionConsultaContratoExt(){
 		$controlAcceso=new ControlAcceso();		
 		$controlAcceso->accion="crearExtContratoForm";
@@ -1029,6 +1376,13 @@ class AdministracionController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');						
 		}
 	}
+	/**
+	 *	Acción que captura los datos de modificación de contrat, instancia a modelo para realizar la modificación de extensión contrato\n
+	 *  Modelos instanciados:\n
+	 * 	. DatosContrato .\n
+	 *  @param int . String . array $datosInput. Objeto
+	 *  @return json estado de contrato, si no tiene, si está vencido y si posee el número de contrato actual	 
+	 */			
 	public function actionRealizaExtContratoFuncionario(){
 		$controlAcceso=new ControlAcceso();		
 		$controlAcceso->accion="crearExtContratoForm";
@@ -1052,12 +1406,28 @@ class AdministracionController extends Controller{
 		}
 	}
 	
+	/**
+	 *	Acción que renderiza el formulario para que el usuario pueda restablecer la clave en caso que la haya extraviado\n
+	 *  Vista a renderizar:\n
+	 *	. _restablecerClaveForm\n
+	 *  Modelos instanciados:\n
+	 * 	. Usuario .\n
+	 *  @param int . string . array $datosUsuario. objeto $modeloUsuario.
+	 */			
 	public function actionRestablecerClaveForm(){
 			$modeloUsuario=new Usuario();
 			$datosUsuario=$modeloUsuario->consultaUsuarioCedula();
 			$this->render('_restablecerClaveForm',array('modeloUsuario'=>$modeloUsuario,'datosUsuario'=>$datosUsuario));		
 	}
 	
+	/**
+	 *	Acción que recibe los datos del usuario que restablecerá su clave, genera nueva clave aleatoria cifrada con sha1 y salt, envía un mensaje al correo registrado al usuario con la nueva clave\n
+	 *  Modelos instanciados:\n
+	 * 	. Usuario .\n
+	 * 	. Persona .\n
+	 *  @param int . String $modeloPersona->correo_electronico,$cadenaAleatoria,$modeloUsuario->clave. array $datosInput,$modeloUsuario->attributes. Objeto
+	 *  @return json resultado de la transacción	 
+	 */			
 	public function actionRestablecerClave(){
 		$datosInput=Yii::app()->input->post();
 		$modeloUsuario=new Usuario();
@@ -1109,17 +1479,6 @@ class AdministracionController extends Controller{
 	//
 	// Uncomment the following methods and override them if needed
 	/*
-	public function filters()
-	{
-		// return the filter configuration for this controller, e.g.:
-		return array(
-			'inlineFilterName',
-			array(
-				'class'=>'path.to.FilterClass',
-				'propertyName'=>'propertyValue',
-			),
-		);
-	}
 
 	public function actions()
 	{
@@ -1132,21 +1491,6 @@ class AdministracionController extends Controller{
 			),
 		);
 	}
-	
-	$contenidoArchivo=array();
-		$chunksize = 5 * (1024 * 1024);
-		$filename=Yii::app()->params["subirArchivos"]."bla.txt";
-		$handle = fopen($filename, 'rb'); 
-
-        while (!feof($handle))
-        { 
-          $contenidoArchivo[]=@fread($handle,$chunksize);
-
-          ob_flush();
-          flush();
-        } 
-
-        fclose($handle);
 	*/
 }
 ?>

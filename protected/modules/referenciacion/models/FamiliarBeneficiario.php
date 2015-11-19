@@ -106,6 +106,15 @@ class FamiliarBeneficiario extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	/**
+	 *	Crea registro de asistencia con los adolescentes , áreas de interés y deportes seleccionados.
+	 *	@param int id_asistencia.
+	 *	@param int id_areapresencial.
+	 *	@param int id_areainteres.
+	 *	@param string num_doc.
+	 *	@param string fecha_asistencia.
+	 *	@return resultado de la transacción
+	 */		
 	public function creaRegFamBen(){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -140,6 +149,11 @@ class FamiliarBeneficiario extends CActiveRecord
 			return $e;
 		}
 	}
+	/**
+	 *	Retorna el beneficiario que ha sido relacionado con una referenciación
+	 *	@param int $this->id_referenciacion.
+	 *	@return $resConsRef array con datos de beneficiario
+	 */		
 	public function consultaRefFamBenef(){
 		$conect=Yii::app()->db;
 		$sqlConsRef="select * from familiar_beneficiario where id_referenciacion=:id_referenciacion";

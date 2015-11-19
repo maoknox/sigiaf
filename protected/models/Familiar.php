@@ -27,15 +27,15 @@ class Familiar extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
-	public $num_docAdolFam;
-	public $mensajeErrorAcud;
-	public $numDocAdol;
-	public $telefonoPrincipal;
-	public $convive_adol;
-	public $nombreCampo;
-	public $datosCampo;
-	public $tipoDato;
-	public $datos_compl_fam;
+	public $num_docAdolFam;		/**< número de documento del adolescente  */
+	public $mensajeErrorAcud;	/**< mensaje de error de las transacciones  */
+	public $numDocAdol;			/**< número de documento del adolescente  */
+	public $telefonoPrincipal;	/**< teléfono del familiar */
+	public $convive_adol;		/**< booleano si vive con el adolescente */
+	public $nombreCampo;		/**< nombre del campo a modificar-actualizar */
+	public $datosCampo;			/**< datos del campo a modificar-actualizar */
+	public $tipoDato;			/**< tipo de dato del campo */
+	public $datos_compl_fam;	/**< datos complementarios del familiar */
 	public function tableName()
 	{
 		return 'familiar';
@@ -141,6 +141,16 @@ class Familiar extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	
+	
+	/**
+	 * registra los datos básicos del acudiente y lo relaciona con el adolescente
+	 * tipo de documento
+	 * documento
+	 * número de documento
+	 * nombres del acudiente
+	 * apellidos del acudiente.
+	 */	
 	public function registraAcudiente(){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -197,6 +207,11 @@ class Familiar extends CActiveRecord
 			return false;
 		}
 	}
+	
+	
+	/**
+	 * consulta los datos del acudiente.	
+	 */		
 	public function consultaAcudiente($numDocAdol){
 		$conect= Yii::app()->db;
 		$sqlConsFamiliar="select * from familiar_adolescente as a 
@@ -209,6 +224,10 @@ class Familiar extends CActiveRecord
 		$readConsFamiliar->close();
 		return $resConsFamiliar;
 	}
+	
+	/**
+	 * consulta los datos del familiar registrado ya sea en identificación y registro o en componente familiar en trabajo social.	
+	 */		
 	public function consultaFamiliar($idDocfam){
 		$conect= Yii::app()->db;
 		$sqlConsFamiliar="select * from familiar where id_doc_familiar=:idDocFam";
@@ -219,15 +238,17 @@ class Familiar extends CActiveRecord
 		$readConsFamiliar->close();
 		return $resConsFamiliar;
 	}
+	
+	/**
+	 * método que modifica los datos de acudiente en base de datos.
+	 */		
 	public function modificaDatosAcudiente($nombreCampo,$nombreTabla,$datoAntiguo,$datoActual,$idDocFam,$tipoDato){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();
 		try{
 			$nombreCampo=htmlspecialchars(strip_tags(trim($nombreCampo)));
 			$nombreTabla=htmlspecialchars(strip_tags(trim($nombreTabla)));
-			$datoAntiguo=htmlspecialchars(strip_tags(trim($datoAntiguo)));
-			//$datoActual=htmlspecialchars(strip_tags(trim($datoActual)));
-			
+			$datoAntiguo=htmlspecialchars(strip_tags(trim($datoAntiguo)));			
 			$sqlModDatos="update ".$nombreTabla." set ".$nombreCampo."=:datoActual where id_doc_familiar=:idDocFam";
 			$modDatos=$conect->createCommand($sqlModDatos);
 			$modDatos->bindParam(':datoActual',$datoActual,$tipoDato);
@@ -240,6 +261,10 @@ class Familiar extends CActiveRecord
 			$this->mensajeError.=$e;
 		}
 	}
+	
+	/**
+	 * método que consulta el grupo familiar del adolescente.
+	 */		
 	public function consultaFamiliarAdol(){
 		$conect= Yii::app()->db;
 		$sqlConsFamiliar="select * from familiar_adolescente as a 
@@ -252,6 +277,10 @@ class Familiar extends CActiveRecord
 		$readConsFamiliar->close();
 		return $resConsFamiliar;
 	}
+		
+	/**
+	 * consulta los datos del familiar registrados en la valoración de trabajo social en componente familiar.	
+	 */		
 	public function consultaFamiliarAdolInd(){
 		$conect= Yii::app()->db;
 		$sqlConsFamiliar="select * from familiar_adolescente as a 
@@ -265,6 +294,10 @@ class Familiar extends CActiveRecord
 		$readConsFamiliar->close();
 		return $resConsFamiliar;
 	}
+	
+	/**
+	 * consulta los datos de otro referente registrado en la valoración de trabajo social.	
+	 */		
 	public function consultaOtrRef(){
 		$conect= Yii::app()->db;
 		$sqlConsOtrRef="select * from familiar_adolescente as a 
@@ -277,6 +310,9 @@ class Familiar extends CActiveRecord
 		$readConsOtrRef->close();
 		return $resConsOtrRef;
 	}
+	/**
+	 * Crea registro del familiar ya sea el acudiente en identificación y registro o en familiares en trabajo social.	
+	 */		
 	public function creaRegFamiliarAdol(){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -354,6 +390,9 @@ class Familiar extends CActiveRecord
 			return $e;
 		}
 	}
+	/**
+	 * Modifica según campo alterado del familiar en trabajo social.	
+	 */		
 	public function modificaRegFam(){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -373,7 +412,10 @@ class Familiar extends CActiveRecord
 			return $e;
 		}
 	}
-		public function modificaRegFamAdol(){
+	/**
+	 * Modifica segun campo alterado la relación de familiar adolescente .	
+	 */		
+	public function modificaRegFamAdol(){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();
 		try{
@@ -392,7 +434,9 @@ class Familiar extends CActiveRecord
 			return $e;
 		}
 	}
-
+	/**
+	 * Registra los datos de otro referente	
+	 */		
 	public function creaOtrRef(){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -448,6 +492,9 @@ class Familiar extends CActiveRecord
 			return $e;
 		}
 	}
+	/**
+	 * Modifica el teléfono del familiar registrado en trabajo social
+	 */		
 	public function modificaTelFam(){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();

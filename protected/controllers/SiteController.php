@@ -1,12 +1,15 @@
 <?php
+///!  SiteController.  
+/**
+	Clase que se ejecuta inicialmente al lanzar la aplicación.  Se generan las acciones de login y las validaciones.
+*/
 
 class SiteController extends Controller 
 {
 	/**
 	 * Declares class-based actions.
-	 */
-	 
-	 public function actionPrincipal(){
+	 */ 
+	public function actionPrincipal(){
 		 
 	}
 	 
@@ -54,32 +57,10 @@ class SiteController extends Controller
 		}
 	}
 
-	/**
-	 * Displays the contact page
-	 */
-	public function actionContact()
-	{
-		$model=new ContactForm;
-		if(isset($_POST['ContactForm']))
-		{
-			$model->attributes=$_POST['ContactForm'];
-			if($model->validate())
-			{
-				$name='=?UTF-8?B?'.base64_encode($model->name).'?=';
-				$subject='=?UTF-8?B?'.base64_encode($model->subject).'?=';
-				$headers="From: $name <{$model->email}>\r\n".
-					"Reply-To: {$model->email}\r\n".
-					"MIME-Version: 1.0\r\n".
-					"Content-Type: text/plain; charset=UTF-8";
 
-				mail(Yii::app()->params['adminEmail'],$subject,$model->body,$headers);
-				Yii::app()->user->setFlash('contact','Thank you for contacting us. We will respond to you as soon as possible.');
-				$this->refresh();
-			}
-		}
-		$this->render('contact',array('model'=>$model));
-	}
-	
+	/** Método actionLoginExt.       
+	*  Acción que se ejecuta si se ingresa por la página de la secretaría de integración instanciando el sistema de información de los centros forjar..  
+	*/		
 	public function actionLoginExt(){
 /*		define('SDIS_WS_LOGIN', 'http://aplicativos.sdis.gov.co/login_sdis');
 		try {
@@ -124,9 +105,10 @@ class SiteController extends Controller
 	}
 
 
-	/**
-	 * Displays the login page
-	 */
+	/** Método actionLogin.       
+	*  Muestar la página de logueo.  Si hay datos realiza la validación de datos de usuario y su estado frente al sistema.  En el caso que el usuario no tenga inconvenientes
+	*  al ingreso por causa de alguna invalidez, el sistema registra el acceso en un log de acceso.
+	*/		
 	public function actionLogin(){
 		//print_r(Yii::app()->input->post());
 		$model=new LoginForm;
@@ -177,15 +159,15 @@ class SiteController extends Controller
 		}
 		// display the login form
 		$this->render('login',array('model'=>$model));
-	}
-	/**
-	 * Logs out the current user and redirect to homepage.
-	 */
-	 
+	}	 
 	public function actionSalir(){
 		
 		$this->render('salida'); 
 	}
+		
+	/** Método actionLogout.       
+	*  Acción que se ejecuta cuando el usuario sale del aplicativo, en este método también se realiza registro en el log de acceso.  se registra la hora en que terminó sesión.
+	*/			 
 	public function actionLogout()
 	{
 		if (isset($_SERVER)) {
@@ -209,15 +191,7 @@ class SiteController extends Controller
 		$modeloLogAcceso->id_cedula=Yii::app()->user->getState('cedula');								
 		$modeloLogAcceso->registraAcceso();	
 		Yii::app()->user->logout();
-		//$this->redirect(Yii::app()->homeUrl);
 		$this->redirect(array("site/salir"));
-	}
-	
-	public function actionSearch(){
-		//$criterio=$_POST[" echo $_POST["search_term"];"];
-		 echo "blaa</br>";
-		 echo "blaa</br>";
-		 echo "blaa</br>";
 	}
 	public function actionConfirmaAlertas(){
 		echo CJSON::encode(array("alertaMenu"=>"glyphicon glyphicon-ok",'resultado'=>CJavaScript::encode(CJavaScript::quote($modeloValPsicol->msnValPsicol)),'idcasodelito'=>CHtml::encode($modeloValPsicol->idCasoDelito)));

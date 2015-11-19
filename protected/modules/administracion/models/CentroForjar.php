@@ -21,6 +21,8 @@ class CentroForjar extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
+	public $numeroSedes;
+	public $numTelForjar;
 	public function tableName()
 	{
 		return 'centro_forjar';
@@ -78,9 +80,9 @@ class CentroForjar extends CActiveRecord
 	 * Retrieves a list of models based on the current search/filter conditions.
 	 *
 	 * Typical usecase:
-	 * - Initialize the model fields with values from filter form.
+	 * - Initialize the model fields with values from filter form
 	 * - Execute this method to get CActiveDataProvider instance which will filter
-	 * models according to data in model fields.
+	 * models according to data in model fields
 	 * - Pass data provider to CGridView, CListView or any similar widget.
 	 *
 	 * @return CActiveDataProvider the data provider that can return the models
@@ -113,6 +115,9 @@ class CentroForjar extends CActiveRecord
 		return parent::model($className);
 	}
 	
+	/**
+	 *	@return retorna array consulta de sedes
+	 */		
 	public function consultaSedesCreadas(){
 		$conect=Yii::app()->db;
 		$sqlConsSedes="select * from centro_forjar order by id_forjar asc";
@@ -124,6 +129,10 @@ class CentroForjar extends CActiveRecord
 		return $resSedes;		
 	}
 	
+	/**
+	 *	@param string $idSedeActual sede actual.
+	 *	@return consulta sedes de forjar exepto el que se pasa por parátmetro
+	 */		
 	public function consultaSedes($idSedeActual=null){
 		$conect=Yii::app()->db;
 		$sqlConsSedes="select * from centro_forjar where id_forjar<>:id_forjar";
@@ -135,6 +144,10 @@ class CentroForjar extends CActiveRecord
 		$readSedes->close();
 		return $resSedes;
 	}
+	/**
+	 *	@param string $this->id_forjar variable de referencia a sede de forjar seleccionada.
+	 *	@return consulta teléfonos o teléfono de las sedes.
+	 */		
 	public function consultaTelefonoSede(){
 		$conect=Yii::app()->db;
 		$sqlConsTelSede="select * from telefono_forjar where id_forjar=:id_forjar";
@@ -145,5 +158,65 @@ class CentroForjar extends CActiveRecord
 		$resTelSede=$readTelSede->readAll();
 		$readTelSede->close();
 		return $resTelSede;
+	}
+	/**
+	 *	registra sede y teléfono de forjar que se diligencia en vista _consCreaSedeTab.
+	 *	@param string id_forjar identificador del centro en bd.
+	 *	@param int id_tiempoact tiempo de habilitación de las valoraciones.
+	 *	@param string nombre_sede nombre de la sede.
+	 *	@param string direccion_forjar dirección de la sede.
+	 *	@return consulta teléfonos o teléfono de las sedes.
+	 */		
+	public function registraSedeForjar(){
+		$conect=Yii::app()->db;
+		$transaction=$conect->beginTransaction();
+		
+		$sqlRegistraSede="insert into centro_forjar 
+		(
+		  id_forjar,
+		  id_tiempoact,
+		  nombre_sede,
+		  direccion_forjar
+		) values (
+		  :id_forjar,
+		  1,
+		  :nombre_sede,
+		  :direccion_forjar
+		)";
+		$sqlRegistraTelefono="insert into telefono_forjar 
+		(
+		  id_telefono_forjar,
+		  id_tipo_telefono,
+		  id_forjar,
+		  num_tel_forjar
+		) values (
+		  default,
+		  1,
+		  :id_forjar,
+		  :num_tel_forjar
+		)";
+		$numActual=count($this->numeroSedes)+1;
+		$this->id_forjar="cforjar_".$numActual;
+		try{
+			$registraSede=$conect->createCommand($sqlRegistraSede);
+			$registraSede->bindParam(":id_forjar",$this->id_forjar,PDO::PARAM_STR);
+			$registraSede->bindParam(":nombre_sede",$this->nombre_sede,PDO::PARAM_STR);
+			$registraSede->bindParam(":direccion_forjar",$this->direccion_forjar,PDO::PARAM_STR);
+			$registraSede->execute();
+			
+			$registraTelefonoForjar=$conect->createCommand($sqlRegistraTelefono);
+			$registraTelefonoForjar->bindParam(":id_forjar",$this->id_forjar,PDO::PARAM_STR);
+			$registraTelefonoForjar->bindParam(":num_tel_forjar",$this->numTelForjar,PDO::PARAM_STR);
+			$registraTelefonoForjar->execute();
+			$transaction->commit();
+			return "exito";
+			
+			$transaction->commit();
+			return "exito";
+		}
+		catch(CDbCommand $e){
+			$transaction->rollBack();
+			return $e;
+		}		
 	}
 }

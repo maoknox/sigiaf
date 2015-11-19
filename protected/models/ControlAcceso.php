@@ -1,6 +1,18 @@
 <?php
+/**
+ * Classe modelo controlAcceso
+ *
+ * Clase que consulta si el usuario tiene acceso o no a la acción solicitada. 
+ * 
+ * 
+ */
+
 	class ControlAcceso {
-		public $accion;
+		public $accion;		/**< acción que ejecuta el usuario. */
+		
+		/**
+		* Método que consulta, según la acción que ejecute el usuario, el permiso de acceso a ésta. 
+		*/		
 		public function controlAccesoAcciones(){
 			if(!empty($this->accion)){	
 				$conect=Yii::app()->db;

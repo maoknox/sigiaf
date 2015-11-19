@@ -110,6 +110,13 @@ class JustificacionHabVal extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	
+	/**
+	 *	@param string $numDoc.
+	 *	@param string $valoracion.
+	 *	@param bool $campoHab.
+	 *	@return $resConsVal estado de la valoración asignada por parámetro según adolescente
+	 */		
 	public function compruebaValHab($numDoc,$valoracion,$campoHab){	
 		$conect=Yii::app()->db;
 		$sqlConsVal="select * from ".pg_escape_string($valoracion)." where num_doc=:num_doc and ".pg_escape_string($campoHab)."='true'";
@@ -121,6 +128,11 @@ class JustificacionHabVal extends CActiveRecord
 		return $resConsVal;
 	}
 	
+	/**
+	 *	@param string $numDoc.
+	 *	@param string $valoracion.
+	 *	@return $profesionales consulta el profesional según rol y valoración que se está encargando de realziarla.
+	 */		
 	public function consultaProfesionales($numDoc, $valoracion){
 		$roll="";
 		switch($valoracion){
@@ -184,6 +196,14 @@ class JustificacionHabVal extends CActiveRecord
 			}			
 		}
 	}
+	/**
+	 *	Habilita la valoración de un adolescente en específico.  
+	 *	@param string $numDoc.
+	 *	@param string $valoracion valoración que es seleccionada de una lista desplegable. (psicología, trabajo social, terapia ocupacional, enfermería, psiquiatría o nutrición)
+	 *	@param bool $campoHab.
+	 *	@param int $campoIdVal
+	 *	@return $resConsVal estado de la valoración asignada por parámetro según adolescente
+	 */		
 	public function habilitaValoracion($numDoc,$valoracion,$campoHab,$campoIdVal){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();

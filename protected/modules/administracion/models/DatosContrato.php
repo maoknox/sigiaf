@@ -62,6 +62,10 @@ class DatosContrato extends CActiveRecord
 			}
 		}				
 	}
+
+	/**
+	 *	Valida que la fecha de inicio del contrato no sea mayor a la fecha fin del contrato.
+	 */		
 	public function  compruebaFechaFin($attribute,$params){
 		if(!$this->hasErrors()){
 			$datosInput=Yii::app()->input->post();
@@ -73,6 +77,9 @@ class DatosContrato extends CActiveRecord
 			}
 		}				
 	}
+	/**
+	 *	Valida si el usuario tiene un contrato vigente.
+	 */		
 	public function compruebaContrato($attribute,$params){
 		if(!$this->hasErrors()){
 			if(Yii::app()->controller->action->id=="asociarContratoFuncionario"){
@@ -85,6 +92,9 @@ class DatosContrato extends CActiveRecord
 			}
 		}				
 	}
+	/**
+	 *	Valida que el campo fecha de extensión .
+	 */		
 	public function compruebaFechaExt($attribute,$params){
 		if(!$this->hasErrors()){
 			if(Yii::app()->controller->action->id=="realizaExtContratoFuncionario"){
@@ -165,6 +175,13 @@ class DatosContrato extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	/**
+	 *	Consulta la información del contrato actual del usuario, si la fecha de finalización es igual a la fecha actual, se inactiva el usuario automáticamente.
+	 *	si la fecha es igual a la fecha de extensión se inactiva el usuario para ingreso al sistema.
+	 *	@param string $resContrato['fecha_fin'].
+	 *	@param string $resContrato['fecha_extension'].
+	 *	@return $resContrato datos del contrato.
+	 */		
 	public function consultaContratoAct(){
 		$conect= Yii::app()->db;
 		$sqlConsContrato="select * from datos_contrato where id_cedula=:id_cedula and contrato_actual='true'";
@@ -191,6 +208,10 @@ class DatosContrato extends CActiveRecord
 		}
 		return $resContrato;
 	}
+	/**
+	 *	@param int $this->id_cedula.
+	 *	@return $resContrato consulta el último contrato registrado del usuario.
+	 */		
 	public function consUltimoContrato(){
 		$conect= Yii::app()->db;
 		$sqlConsContrato="select * from datos_contrato where id_cedula=:id_cedula order by fecha_fin desc limit 1";
@@ -202,6 +223,15 @@ class DatosContrato extends CActiveRecord
 		return $resContrato;
 	}
 	
+	/**
+	 *	Registra la extensión de contrato en caso que se haya requerido, se diligencia en la vista _crearExtContratoForm.
+	 *	si la fecha es igual a la fecha de extensión se inactiva el usuario para ingreso al sistema.
+	 *	@param int $this->id_cedula.
+	 *	@param int $this->fecha_extension.
+	 *	@param string $this->fecha_extension.
+	 *	@param int $this->fecha_extension.
+	 *	@return resultado de la transacción.
+	 */		
 	public function registraExtContrato(){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -211,7 +241,7 @@ class DatosContrato extends CActiveRecord
 			$regExtContrato->bindParam(":id_cedula",$this->id_cedula,PDO::PARAM_INT);
 			$regExtContrato->bindParam(":numero_contrato",$this->numero_contrato,PDO::PARAM_STR);
 			$regExtContrato->bindParam(":fecha_extension",$this->fecha_extension,PDO::PARAM_STR);
-			$regExtContrato->bindParam(":contrato_actual",$this->contrato_actual,PDO::PARAM_STR);
+			$regExtContrato->bindParam(":contrato_actual",$this->contrato_actual,PDO::PARAM_BOOL);
 			$regExtContrato->execute();
 			$transaction->commit();
 			return "exito";
@@ -221,6 +251,15 @@ class DatosContrato extends CActiveRecord
 			return $e;			
 		}		
 	}
+	/**
+	 *	Registra la extensión de contrato en caso que se haya requerido, se diligencia en la vista _crearExtContratoForm.
+	 *	si la fecha es igual a la fecha de extensión se inactiva el usuario para ingreso al sistema.
+	 *	@param int $this->id_cedula.
+	 *	@param int $this->fecha_extension.
+	 *	@param string $this->fecha_extension.
+	 *	@param int $this->fecha_extension.
+	 *	@return resultado de la transacción.
+	 */		
 	public function modificaContratoAct(){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -247,6 +286,13 @@ class DatosContrato extends CActiveRecord
 			return $e;			
 		}		
 	}
+	/**
+	 *	Modifica el estado del contrato ya sea true para actual o false para antiguo.
+	 *	si la fecha es igual a la fecha de extensión se inactiva el usuario para ingreso al sistema.
+	 *	@param bool $this->contrato_actual.
+	 *	@param int $this->id_cedula.
+	 *	@return resultado de la transacción.
+	 */		
 	public function cambiaEstadoContrato(){
 		$conect= Yii::app()->db;
 		$sqlActEstado="update datos_contrato set contrato_actual=:contrato_actual where id_cedula=:id_cedula";
@@ -255,7 +301,13 @@ class DatosContrato extends CActiveRecord
 		$actEstado->bindParam(":id_cedula",$this->id_cedula,PDO::PARAM_INT);
 		$actEstado->execute();		
 	}
-	
+	/**
+	 *	Crea registro de contrato de funcionario los datos se diligencian en la vista _asociarContratoForm 
+	 *	si la fecha es igual a la fecha de extensión se inactiva el usuario para ingreso al sistema.
+	 *	@param bool $this->contrato_actual.
+	 *	@param int $this->id_cedula.
+	 *	@return resultado de la transacción.
+	 */		
 	public function registraContratoFuncionario(){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();

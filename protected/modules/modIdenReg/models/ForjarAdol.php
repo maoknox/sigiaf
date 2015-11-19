@@ -112,6 +112,10 @@ class ForjarAdol extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	/**
+	 *	Consulta la información de ingreso del adolescente y a cuál sede está asignado.
+	 *	@return $resDocsAdol documentos remitidos 
+	 */		
 	public function consultaDatosForjarAdol(){
 		$conect=Yii::app()->db;
 		$sqlConsForjarAdol="select * from forjar_adol where num_doc=:num_doc";
@@ -122,6 +126,13 @@ class ForjarAdol extends CActiveRecord
 		$readForjarAdol->close();
 		return $resForjarAdol;
 	}
+	/**
+	 *	Modifica el estado del adolescente respecto al servicios, es decir si está activo o egresado.
+	 *	Si la modificación del estado se da a 1 entonces actualiza las actuaciones que estan actuales a false.
+	 *	@param int ,$this->id_estado_adol.
+	 *	@param string $this->num_doc.
+	 *	@return resultado de la transacción
+	 */		
 	public function cambiaEstadoAdol(){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -190,6 +201,15 @@ class ForjarAdol extends CActiveRecord
 			return $e->getMessage();
 		}
 	}
+	/**
+	 *	Modifica los datos del adolescente respeco a ingreso y fechas de vinculación.
+	 *	Si la modificación del estado se da a 1 entonces actualiza las actuaciones que estan actuales a false.
+	 *	@param string $this->num_doc. 
+	 *	@param string $this->fecha_primer_ingreso. 
+	 *	@param string $this->fecha_vinc_forjar. 
+	 *	@param int $this->num_ingresos.
+	 *	@return resultado de la transacción
+	 */		
 	public function actualizaDatosForjarAdol(){
 		if(empty($this->fecha_primer_ingreso)){$this->fecha_primer_ingreso=null;}
 		if(empty($this->fecha_vinc_forjar)){$this->fecha_vinc_forjar=null;}

@@ -120,7 +120,18 @@ class SeguimientoCompsancion extends CActiveRecord
 	{
 		return parent::model($className);
 	}
-		public function regSegSancionPai(){
+	/**
+	 *	Crea registro del seguimiento de un componente de sanción en específico..
+	 *	@param strint fecha_seguim_compsancion.
+	 *	@param int id_pai.
+	 *	@param string num_doc.
+	 *	@param int id_inf_judicial.
+	 *	@param int id_cedula.
+	 *	@param string fecha_establec_compsanc.
+	 *	@param text seguim_compsancion.
+	 *	@return resultado de la transacción
+	 */		
+	public function regSegSancionPai(){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();
 		try{
@@ -163,6 +174,13 @@ class SeguimientoCompsancion extends CActiveRecord
 		}
 		
 	}
+	/**
+	 *	Retorna los seguimientos por componente de sanción
+	 *	@param int $this->id_pai.
+	 *	@param int $this->id_inf_judicial.
+	 *	@param string $this->num_doc.
+	 *	@return $resConsSegPaiDer 
+	 */		
 	public function consultaSeguimientos(){
 		$conect= Yii::app()->db;
 		$sqlConsSegPaiDer="select fecha_seguim_compsancion,seguim_compsancion from seguimiento_compsancion 

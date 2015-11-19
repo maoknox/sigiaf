@@ -38,10 +38,10 @@ class InformacionJudicial extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
-	public $id_inf_actual;
-	public $id_inf_nueva;
-	public $mensajeErrorInfJud="";
-	public $idPai;
+	public $id_inf_actual;			/**< identificador de la información judicial actual  */
+	public $id_inf_nueva;			/**< identificador de la información judicial nueva  */
+	public $mensajeErrorInfJud="";	/**< mensaje de error de la transacción */
+	public $idPai;					/**< identificador de la tupla de pai */
 	public function tableName()
 	{
 		return 'informacion_judicial';
@@ -188,6 +188,9 @@ class InformacionJudicial extends CActiveRecord
 	}
 	
 	
+	/**
+	 *	Registra la información judicial administrativa, si es novedad registra la novedad y la define como actual.  
+	 */
 	public function registraInfJudAdminAdol(){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -302,7 +305,7 @@ class InformacionJudicial extends CActiveRecord
 				$regNovedad->execute();
 			}
 			else{
-				// actualiza la fecha de inicio de la valoración a la fecha del registro de la información judicial
+				//si no es un registro de una novedad, actualiza la fecha de inicio de la valoración a la fecha del registro de la información judicial
 				$sqlActFechaIni="update valoracion_psicologia set fecha_iniciovalpsicol=:fecha_inicio where num_doc=:num_doc";
 				$actFechaIni=$conect->createCommand($sqlActFechaIni);
 				$actFechaIni->bindParam(':fecha_inicio',$fechaRegistro,PDO::PARAM_STR);
@@ -333,6 +336,8 @@ class InformacionJudicial extends CActiveRecord
 				$actFechaIni->bindParam(':num_doc',$this->num_doc,PDO::PARAM_STR);
 				$actFechaIni->execute();
 				
+				//si ya tenia un pai culminado y hay una nueva información judicial registrada, confirma que exista un pai actual.  De ser así actualiza el campo pai_actual a false
+				//para empezar con uno nuevo.
 				$sqlConsPai="select * from pai where num_doc=:num_doc and pai_actual is true and culminacion_pai='true'";
 				$consPai=$conect->createCommand($sqlConsPai);
 				$consPai->bindParam(":num_doc",$this->num_doc,PDO::PARAM_STR);
@@ -370,6 +375,7 @@ class InformacionJudicial extends CActiveRecord
 					$readCreaPai->close();
 				}
 				else{
+					//si no hay un pai culminado y registra una nueva información judicial entonces actualiza la fecha de creación del pai a la actual.
 					$sqlModEstadoPaiActual="update pai set fecha_creacion_pai=:fecha_pai where num_doc=:num_doc and pai_actual is true";
 					$modEstadoPaiActual=$conect->createCommand($sqlModEstadoPaiActual);
 					$fecha=date("Y-m-d");
@@ -388,6 +394,9 @@ class InformacionJudicial extends CActiveRecord
 			
 		}		
 	}
+	/**
+	 * Consulta información judicial del adolescente
+	 */	
 	public function consultaInfJudModNov(){
 		$conect=Yii::app()->db;
 		$sqlConsInfJud="select * from informacion_judicial where num_doc=:num_doc and id_inf_judicial=:id_inf_judicial";
@@ -400,6 +409,9 @@ class InformacionJudicial extends CActiveRecord
 		$readInfJud->close();
 		return $resInfJud;
 	}
+	/**
+	 * Si el adolescente tiene varios registros de información judicial las consulta por grupos de a 5
+	 */	
 	public function consultaInfJudOffset($offset){
 		$conect=Yii::app()->db;
 		$sqlConsInfJud="select * from informacion_judicial as a 
@@ -415,6 +427,9 @@ class InformacionJudicial extends CActiveRecord
 		$readInfJud->close();
 		return $resInfJud;
 	}
+	/**
+	 * Consulta información judicial del adolescente primaria, es decir que no sea una novedad.
+	 */	
 	public function consultaInfJud(){
 		$conect=Yii::app()->db;
 		$sqlConsInfJud="select * from informacion_judicial as a left join forjar_adol as b on a.num_doc=b.num_doc where a.num_doc=:num_doc and novedad_infjud=:novedad_infjud";
@@ -427,6 +442,9 @@ class InformacionJudicial extends CActiveRecord
 		$readInfJud->close();
 		return $resInfJud;
 	}
+	/**
+	 * Las sanciones del adolescente relacionadas con el pai
+	 */	
 	public function consultaInfJudPai(){
 		$conect=Yii::app()->db;
 		$sqlConsInfJud="select * from informacion_judicial where num_doc=:num_doc";		
@@ -452,6 +470,9 @@ class InformacionJudicial extends CActiveRecord
 		return $infJudSinPai;
 	}
 
+	/**
+	 * Consulta datos completos de la información judicial según el id de la información judicial.
+	 */	
 	public function consultaInfJudInd(){
 		$conect=Yii::app()->db;
 		$sqlConsInfJud="select * from informacion_judicial where id_inf_judicial=:id_inf_judicial";
@@ -463,6 +484,9 @@ class InformacionJudicial extends CActiveRecord
 		$readInfJud->close();
 		return $resInfJud;
 	}
+	/**
+	 * Consulta las novedades de la información judicial original.
+	 */	
 	public function consultaInfJudNov($idInfJud){
 		$conect=Yii::app()->db;
 		$sqlConsInfJud="select a.id_inf_judicial as id_inf_judicial_princ,* from novedad_inf_judicial as a 
@@ -477,6 +501,9 @@ class InformacionJudicial extends CActiveRecord
 		return $resInfJud;
 	}
 	
+	/**
+	 * Consulta el o los delitos asociados a la información judicial.
+	 */	
 	public function consultaDelito(){
 		$conect=Yii::app()->db;
 		$sqlConsDel="select * from infjud_del_remcesp as a left join delito_rem_cespa as b on a.id_del_rc=b.id_del_rc where a.id_inf_judicial=:id_inf_judicial";
@@ -487,14 +514,20 @@ class InformacionJudicial extends CActiveRecord
 		$readDel->close();
 		return $resDel;
 	}
+	/**
+	 * Modifica por campo la información judicial.
+	 */	
 	public function modifInfJudicial($campo,$contenido,$parametro){
 		$conect=Yii::app()->db;
-		$sqlModInfJud="update informacion_judicial set ".$campo."=:contenido where id_inf_judicial=:id_inf_judicial";
+		$sqlModInfJud="update informacion_judicial set ".pg_escape_string($campo)."=:contenido where id_inf_judicial=:id_inf_judicial";
 		$modInfJud=$conect->createCommand($sqlModInfJud);	
 		$modInfJud->bindParam(":contenido",$contenido,$parametro);
 		$modInfJud->bindParam(":id_inf_judicial",$this->id_inf_judicial,PDO::PARAM_INT);
 		$modInfJud->execute();		
 	}
+	/**
+	 * Asocia el componente sanción del pai con la o las informaciones judiciales registradas del adolescente.
+	 */	
 	public function actualizaCompSancionInfJud(){
 		$conect=Yii::app()->db;
 		$sqlCompSancInfJud="update componente_sancion set id_inf_judicial=:id_inf_judNueva where id_inf_judicial=:inf_judicial_act";
@@ -503,6 +536,10 @@ class InformacionJudicial extends CActiveRecord
 		$compSancInfJud->bindParam(":inf_judicial_act",$this->id_inf_actual,PDO::PARAM_INT);
 		$compSancInfJud->execute();
 	}
+	
+	/**
+	 * Consulta la información judicial del adolescente para ser mostrada en las vistas.
+	 */	
 	public function consultaInfJudCabezote(){
 		$conect=Yii::app()->db;
 		$sqlConsInfJud="select * from informacion_judicial as a left join tipo_sancion as b on b.id_tipo_sancion=a.id_tipo_sancion left join instancia_remisora as c on c.id_instancia_rem=a.id_instancia_rem where num_doc=:num_doc and novedad_infjud='false'";
@@ -513,6 +550,9 @@ class InformacionJudicial extends CActiveRecord
 		$readInfJud->close();
 		return $resInfJud;
 	}
+	/**
+	 * Consulta la novedad de la información judicial del adolescente para ser mostrada en las vistas.
+	 */	
 	public function consultaNovInfJudCabezote($idInfJud){
 		$conect=Yii::app()->db;
 		$sqlConsInfJud="select a.id_inf_judicial as id_inf_judicial_princ,* from novedad_inf_judicial as a 

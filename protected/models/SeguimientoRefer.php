@@ -106,7 +106,10 @@ class SeguimientoRefer extends CActiveRecord
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
-	}
+	}	
+	/**
+	 * 	Consulta los seguimientos de acuerdo a la referenciación seleccionada.
+	 */
 	public function consSegReferAdol(){
 		$conect=Yii::app()->db;
 		$sqlConsSegRefAdol="select a.fecha_seg,a.seg_refer, (nombre_personal||' '||apellidos_personal) as nombrespersonal,d.nombre_rol  from seguimiento_refer as a 
@@ -123,6 +126,9 @@ class SeguimientoRefer extends CActiveRecord
 		return $resSegRefAdol;
 		
 	}
+	/**
+	 * 	registra seguimientos de referenciación.
+	 */
 	public function registraSegimiento(){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();

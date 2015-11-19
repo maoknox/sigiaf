@@ -1,8 +1,18 @@
 <?php
+///!  Clase controlador del módulo Identificación y registro.  
+/**
+ * @author Félix Mauricio Vargas Hincapié <femauro@gmail.com>
+ * @copyright Copyright &copy; Félix Mauricio Vargas Hincapié 2015
+ */
 
 class IdentificacionRegistroController extends Controller
 {
-	public $_formAdol;
+	public $_formAdol; /**< ## */
+	
+	/**
+	 * Acción que se ejecuta en segunda instancia para verificar si el usuario tiene sesión activa.
+	 * En caso contrario no podrá acceder a los módulos del aplicativo y generará error de acceso.
+	 */
 	public function filterEnforcelogin($filterChain){
 		if(Yii::app()->user->isGuest){
 			throw new CHttpException(403,"Debe loguearse primero");
@@ -10,12 +20,62 @@ class IdentificacionRegistroController extends Controller
 		$filterChain->run();
 	}
 	
+	/**
+	 * Acción que se ejecuta en primera instancia que llama a verificar la sesión de usuario y llama a los filtros secundarios
+	 * Los filtros no se ejecutan cuando se llaman a las acciones que van seguidas del guión.
+	 */
 	public function filters(){
 		return array('enforcelogin',array('application.filters.ActionLogFilter - buscaAdolGen','modulo'=>$this->module->id,'controlador'=>$this->id,'parametros'=>Yii::app()->input->post()));
 	}
+	
+	/**
+	 * renderiza vista index
+	 */
 	public function actionIndex(){
 		$this->render('index');
 	}
+	/**
+	 *	Acción que renderiza la vista que contiene los formularios para registrar los datos básicos del adolescente.
+	 *
+	 *	Vista a renderizar:
+	 *		- registrarDatos.
+	 *
+	 *	Formularios contenidos:
+	 *		- _formAdolescente				formulario de datos básicos del adolescente
+	 *		- _formLocalizacion				formulario par diligenciar datos de localización
+	 *		- _formVerificacionDerCespa 	formulario para diligenciar la verificación de derechos enviada por el defensor de familia
+	 *		- _formAdolDocsCespa			formulario para hacer check de los documentos enviados por el cespa
+	 *		- _formAcudiente				formulario para diligenciar datos básicos del acudiente.
+	 *
+	 *	Modelos instanciados:
+	 *		- Adolescente
+	 * 		- LocalizacionViv
+	 * 		- DerechoAdol
+	 * 		- Telefono
+	 * 		- DocumentoCespa
+	 * 		- Familiar
+	 * 		- ConsultasGenerales.
+	 *
+	 *	@param object $modeloInfJudAdmon,
+	 *	@param int $tipoDocBd,
+	 *	@param array $departamento,
+	 *	@param array $sexo,
+	 *	@param array $etnia,
+	 *	@param array $psicologo,
+	 *	@param array $trabSocial,
+	 *	@param array $modeloLocalizacion,
+	 *	@param array $localidad,
+	 *	@param array $estrato,
+	 *	@param object $modeloTelefono,
+	 *	@param object array $modeloDocCespa,
+	 *	@param object $docsCespa,
+	 *	@param object $modeloAcudiente,
+	 *	@param array $parentesco,
+	 *	@param object $modeloVerifDerechos,
+	 *	@param array $derechos,
+	 *	@param array $participacion,
+	 *	@param array $proteccion,					
+	 */		
 	public function actionCreaRegAdolForm(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="creaRegAdolForm";
@@ -86,11 +146,25 @@ class IdentificacionRegistroController extends Controller
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}	
+
+	/**
+	 *	Recibe datos del formulario de registro del adolescente e instancia a modelo para registrar en base de datos
+	 *
+	 *	Modelos instanciados:
+	 *		- Adolescente
+	 *
+	 *	@param array $_POST["Adolescente"] array de datos del formulario de datos básicos del adolescente
+	 *	@param int $formPr->numeroCarpeta número de carpeta asignada por el sistema
+	 *	@param string $formPr->mensajeErrorProf mensaje de error si hay inconvenientes en el registro del equipo piscosocial asignado al adolescente.
+	 *	@param string $formPr->mensajeError mensaje de error si hay algún problema en el registro de datos básicos del adolescente.
+	 *	@return json resultado de la transacción.
+	 */		
 	public function actionCreaRegAdol(){		
 		$formPr=new Adolescente();             
 		//$this->performAjaxValidation($formPr);  
 		$formPr->mensajeErrorProf="";
 		if(isset($_POST["Adolescente"])){
+			$datosInput=Yii::app()->input->post();
 			$formPr->attributes=$_POST["Adolescente"];
 			//$valido=$formPr->validate();   
 			if($formPr->validate()){
@@ -114,6 +188,17 @@ class IdentificacionRegistroController extends Controller
 			}
 		}
 	}
+	/**
+	 *	Recibe datos del formulario de localización del adolescente e instancia a modelo para registrar en base de datos
+	 *
+	 *	Modelos instanciados:
+	 *		- LocalizacionViv
+	 *		- Telefono.
+	 *
+	 *	@param string $modeloLocAdol->mensajeErrorLoc mensaje de error si hay inconveniente en el registro localización del adolescente.
+	 *	@param string $modeloTelAdol->mensajeErrorTel mensaje de error si hay inconveniente en el registro de teléfonos del adolescente. 
+	 *	@return json resultado de la transacción.
+	 */		
 	public function actionCreaLocAdol(){
 		$resultado='';
 		$modeloLocAdol=new LocalizacionViv();
@@ -145,6 +230,19 @@ class IdentificacionRegistroController extends Controller
 			echo CJSON::encode(array("estadoComu"=>"exito",'resultado'=>'error','msnError'=>'Ha habido un error en el envío del formulario, comuníquese con el área encargada del Sistema de información'));
 		}
 	}
+	/**
+	 *	Recibe datos del formulario de datos básicos del acudiente e instancia a modelo para registrar en base de datos
+	 *
+	 *	Modelos instanciados:
+	 *		- Familiar
+	 *		- LocalizacionViv.
+	 *		- Telefono.
+	 *
+	 *	@param string $modeloAcudiente->mensajeErrorAcud mensaje de error si hay inconveniente en el registro datos del acudiente.
+	 *	@param string $modeloTelefono->mensajeErrorTel mensaje de error si hay inconveniente en el registro de teléfonos del acudiente. 
+	 *	@param string $modeloLocalizacion->mensajeErrorLocAcud mensaje de error si hay inconveniente en el localización datos del acudiente. 
+	 *	@return json resultado de la transacción.
+	 */		
 	public function actionCreaRegAcudiente(){
 		$resultado='';
 		$modeloAcudiente=new Familiar();
@@ -176,6 +274,15 @@ class IdentificacionRegistroController extends Controller
 			echo CJSON::encode(array("estadoComu"=>"exito",'resultado'=>'error','msnError'=>'Ha habido un error en el envío del formulario, comuníquese con el área encargada del Sistema de información'));
 		}
 	}
+	/**
+	 *	Recibe datos del formulario de verificación de derechos remitidos por el defensor de familia e instancia a modelo para registrar en base de datos
+	 *
+	 *	Modelos instanciados:
+	 *		- DerechoAdol
+	 *
+	 *	@param string $modeloVerifDerechos->msnErrorDerecho.
+	 *	@return json resultado de la transacción.
+	 */		
 	public function actionCreaVerifDerAdol(){
 		$modeloVerifDerechos=new DerechoAdol();
 		$this->performAjaxValidation('formularioVerifDer',$modeloVerifDerechos);
@@ -193,6 +300,15 @@ class IdentificacionRegistroController extends Controller
 		}
 		
 	}
+	/**
+	 *	Recibe datos del formulario de documentos remitidos por el CESPA e instancia a modelo para registrar en base de datos
+	 *
+	 *	Modelos instanciados:
+	 *		- DocumentoCespa
+	 *
+	 *	@param string $modeloVerifDerechos->msnErrorDerecho.
+	 *	@return json resultado de la transacción.
+	 */		
 	public function actionCreaRegDocCespa(){
 		$modeloDocCespa=new DocumentoCespa();
 		//$this->performAjaxValidationDocs($modeloDocCespa);  
@@ -229,6 +345,14 @@ class IdentificacionRegistroController extends Controller
 	}
 	
 	
+	/**
+	 *	llamada de ajax, consulta listado de departamentos
+	 *
+	 *	Modelos instanciados:
+	 *		- ConsultasGenerales
+	 *
+	 *	@return CHtml::tag listado de municipios.
+	 */		
 	public function actionConsDepto(){
 		if(isset($_POST["id_deptoNacimiento"]) && !empty($_POST["id_deptoNacimiento"])){
 			$consGen=new ConsultasGenerales();
@@ -240,6 +364,29 @@ class IdentificacionRegistroController extends Controller
 		}
 	}
 	
+	/**
+	 *	Acción que renderiza la vista que contiene el formulario para diligenciar la información judicial administrativa.
+	 *
+	 *	Vista a renderizar:
+	 *		- _formRegInfJudicialAdmtva.
+	 *
+	 *	Modelos instanciados:
+	 *		- InformacionJudicial
+	 * 		- ForjarAdol
+	 * 		- Telefono
+	 * 		- ConsultasGenerales
+	 * 		- OperacionesGenerales
+	 *
+	 *	@param object $modeloInfJudAdmon,
+	 *	@param object $modeloDatosForjarAdol,
+	 *	@param string $numDocAdol,
+	 *	@param array $instanciaRem,
+	 *	@param array $delito,
+	 *	@param array $estadoProceso,
+	 *	@param array $datosAdol,
+	 *	@param int $edad,
+	 *	@param array $telefono,
+	 */		
 	public function actionCreaRegInfJudicialAdmtvaForm(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="creaRegInfJudicialAdmtvaForm";
@@ -295,6 +442,17 @@ class IdentificacionRegistroController extends Controller
 		}
 		
 	}	
+	/**
+	 *	Recibe datos del formulario de información judicial administrativa e instancia a modelo para registrar en base de datos.
+	 *
+	 *	Modelos instanciados:
+	 *		- InformacionJudicial
+	 *		- ForjarAdol
+	 *
+	 *	@param arrya $dataClean $_POST	de datos del formulario de información judicial administrativa.
+	 *	@param string $modeloInfJudAdmon->mensajeErrorInfJud.
+	 *	@return json resultado de la transacción.
+	 */		
 	public function actionCreaRegInfJudAdmon(){	
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="creaRegInfJudicialAdmtvaForm";
@@ -324,6 +482,29 @@ class IdentificacionRegistroController extends Controller
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Acción que renderiza la vista que contiene realiza consulta y listado de las o la información judicial impuesta al adolescente para seleccionar y realizar modificaciones.
+	 *
+	 *	Vista a renderizar:
+	 *		- _consultaInfJudAdmon.
+	 *
+	 *	Modelos instanciados:
+	 *		- InformacionJudicial
+	 * 		- ForjarAdol
+	 * 		- Telefono
+	 * 		- ConsultasGenerales
+	 * 		- OperacionesGenerales
+	 *
+	 *	@param object $modeloInfJudAdmon,
+	 *	@param object $modeloDatosForjarAdol,
+	 *	@param string $numDocAdol,
+	 *	@param array $infJudicial, listado de informaciones judiciales registradas en el proceso actual del adolescente, es decir respecto al pai actual.
+	 *	@param array $delito,
+	 *	@param array $estadoProceso,
+	 *	@param array $datosAdol,
+	 *	@param int $edad,
+	 *	@param array $telefono,
+	 */		
 	public function actionModRegInfJudicialAdmtvaForm(){
 		$modeloInfJudAdmon=new InformacionJudicial();
 		$modeloDatosForjarAdol=new ForjarAdol();
@@ -388,6 +569,29 @@ class IdentificacionRegistroController extends Controller
 			)
 		);		
 	}
+	/**
+	 *	Acción que renderiza la vista que contiene realiza consulta y listado de las o la información judicial impuesta al adolescente para seleccionar y registrar novedades.
+	 *
+	 *	Vista a renderizar:
+	 *		- _consultaInfJudAdmon.
+	 *
+	 *	Modelos instanciados:
+	 *		- InformacionJudicial
+	 * 		- ForjarAdol
+	 * 		- Telefono
+	 * 		- ConsultasGenerales
+	 * 		- OperacionesGenerales
+	 *
+	 *	@param object $modeloInfJudAdmon,
+	 *	@param object $modeloDatosForjarAdol,
+	 *	@param string $numDocAdol,
+	 *	@param array $infJudicial, listado de informaciones judiciales registradas en el proceso actual del adolescente, es decir respecto al pai actual.
+	 *	@param array $delito,
+	 *	@param array $estadoProceso,
+	 *	@param array $datosAdol,
+	 *	@param int $edad,
+	 *	@param array $telefono,
+	 */		
 	public function actionNovRegInfJudicialAdmtvaForm(){
 		$modeloInfJudAdmon=new InformacionJudicial();
 		$modeloDatosForjarAdol=new ForjarAdol();
@@ -466,6 +670,55 @@ class IdentificacionRegistroController extends Controller
 		 echo CJSON::encode($res);
 	}	//Consulta Municipio segun departamento
 	
+	/**
+	 *	Acción que renderiza la vista que contiene los formularios para modificar los datos básicos del adolescente.
+	 *	En el caso que haya un formulario que no tenga un registro principal realiza un rendePartial del formulario de creación de registro, en caso contrato renderiza.
+	 *	el formulario para modificar datos de formulario correspondiente.
+	 *
+	 *	Vista a renderizar:
+	 *		- modificarDatosForm.
+	 *
+	 *	Formularios contenidos:
+	 *		- _formAdolescente				formulario de datos básicos del adolescente
+	 *		- _formLocalizacion				formulario par diligenciar datos de localización
+	 *		- _formVerificacionDerCespa 	formulario para diligenciar la verificación de derechos enviada por el defensor de familia
+	 *		- _formAdolDocsCespa			formulario para hacer check de los documentos enviados por el cespa
+	 *		- _formAcudiente				formulario para diligenciar datos básicos del acudiente.
+	 *		- _formAdolescenteMod			formulario de datos básicos del adolescente a modificar
+	 *		- _formLocalizacionMod			formulario par diligenciar datos de localización a modificar
+	 *		- _formVerificacionDerCespaMod 	formulario para diligenciar la verificación de derechos enviada por el defensor de familia a modificar
+	 *		- _formAdolDocsCespaMod			formulario para hacer check de los documentos enviados por el cespa a modificar
+	 *		- _formAcudienteMod				formulario para diligenciar datos básicos del acudiente a modificar. 
+	 *
+	 *	Modelos instanciados:
+	 *		- Adolescente
+	 * 		- LocalizacionViv
+	 * 		- DerechoAdol
+	 * 		- Telefono
+	 * 		- DocumentoCespa
+	 * 		- Familiar
+	 * 		- ConsultasGenerales.
+	 *
+	 *	@param object $modeloInfJudAdmon,
+	 *	@param int $tipoDocBd,
+	 *	@param array $departamento,
+	 *	@param array $sexo,
+	 *	@param array $etnia,
+	 *	@param array $psicologo,
+	 *	@param array $trabSocial,
+	 *	@param array $modeloLocalizacion,
+	 *	@param array $localidad,
+	 *	@param array $estrato,
+	 *	@param object $modeloTelefono,
+	 *	@param object array $modeloDocCespa,
+	 *	@param object $docsCespa,
+	 *	@param object $modeloAcudiente,
+	 *	@param array $parentesco,
+	 *	@param object $modeloVerifDerechos,
+	 *	@param array $derechos,
+	 *	@param array $participacion,
+	 *	@param array $proteccion,					
+	 */		
 	public function actionModificarDatosForm(){
 		$datosInput=Yii::app()->input->post();
 		if(isset($datosInput["numDocAdol"]) && !empty($datosInput["numDocAdol"])){
@@ -615,6 +868,21 @@ class IdentificacionRegistroController extends Controller
 			'acudiente'=>$acudiente
 		));		
 	}
+	/**
+	 *	Recibe datos del formulario de datos básicos del acudiente e instancia a modelo para modificar en base de datos
+	 *	Consulta en primera instancia si el valor recibido es diferente del valor registrado, si es así procede a la modificación en caso contratio pasa al siguiente dato
+	 *	para continuar con la verificación
+	 *
+	 *	Modelos instanciados:
+	 *		- Familiar
+	 *		- LocalizacionViv.
+	 *		- Telefono.
+	 *
+	 *	@param string $modeloAcudiente->mensajeErrorAcud mensaje de error si hay inconveniente en el registro datos del acudiente.
+	 *	@param string $modeloTelefono->mensajeErrorTel mensaje de error si hay inconveniente en el registro de teléfonos del acudiente. 
+	 *	@param string $modeloLocalizacion->mensajeErrorLocAcud mensaje de error si hay inconveniente en el localización datos del acudiente. 
+	 *	@return json resultado de la transacción.
+	 */		
 	public function actionModAcudiente(){
 		$resultado="exito";
 		$datosAcudiente=Yii::app()->input->post();		
@@ -723,6 +991,20 @@ class IdentificacionRegistroController extends Controller
 		
 	}
 	
+	/**
+	 *	Recibe datos del formulario de registro del adolescente e instancia a modelo para modificar en base de datos
+	 *	Consulta en primera instancia si el valor recibido es diferente del valor registrado, si es así procede a la modificación en caso contratio pasa al siguiente dato
+	 *	para continuar con la verificación
+	 *
+	 *	Modelos instanciados:
+	 *		- Adolescente
+	 *
+	 *	@param array $datosInput=$_POST array de datos del formulario de datos básicos del adolescente
+	 *	@param int $formPr->numeroCarpeta número de carpeta asignada por el sistema
+	 *	@param string $formPr->mensajeErrorProf mensaje de error si hay inconvenientes en el registro del equipo piscosocial asignado al adolescente.
+	 *	@param string $formPr->mensajeError mensaje de error si hay algún problema en el registro de datos básicos del adolescente.
+	 *	@return json resultado de la transacción.
+	 */		
 	public function actionModifRegAdol(){
 		$datosInput=Yii::app()->input->post();
 		$formPr=new Adolescente();          
@@ -802,6 +1084,19 @@ class IdentificacionRegistroController extends Controller
 			}
 		}
 	}
+	/**
+	 *	Recibe datos del formulario de localización del adolescente e instancia a modelo para modificar en base de datos
+	 *	Consulta en primera instancia si el valor recibido es diferente del valor registrado, si es así procede a la modificación en caso contratio pasa al siguiente dato
+	 *	para continuar con la verificación
+	 *
+	 *	Modelos instanciados:
+	 *		- LocalizacionViv
+	 *		- Telefono.
+	 *
+	 *	@param string $modeloLocAdol->mensajeErrorLoc mensaje de error si hay inconveniente en el registro localización del adolescente.
+	 *	@param string $modeloTelAdol->mensajeErrorTel mensaje de error si hay inconveniente en el registro de teléfonos del adolescente. 
+	 *	@return json resultado de la transacción.
+	 */		
 	public function actionModificaLocAdol(){
 		$datosInput=Yii::app()->input->post();
 		$modeloLocalizacion=new LocalizacionViv();
@@ -892,6 +1187,15 @@ class IdentificacionRegistroController extends Controller
 		}
 	}
 	
+	/**
+	 *	Recibe datos del formulario de verificación de derechos remitidos por el defensor de familia e instancia a modelo para modificar en base de datos
+	 *
+	 *	Modelos instanciados:
+	 *		- DerechoAdol
+	 *
+	 *	@param string $modeloVerifDerechos->msnErrorDerecho.
+	 *	@return json resultado de la transacción.
+	 */		
 	public function actionModVerifDerAdol(){
 		$modeloVerifDerechos=new DerechoAdol();
 		$derechosAdol=Yii::app()->input->post();
@@ -908,6 +1212,15 @@ class IdentificacionRegistroController extends Controller
 		}
 	}
 	
+	/**
+	 *	Recibe datos del formulario de documentos remitidos por el CESPA e instancia a modelo para modificar en base de datos
+	 *
+	 *	Modelos instanciados:
+	 *		- DocumentoCespa
+	 *
+	 *	@param string $modeloVerifDerechos->msnErrorDerecho.
+	 *	@return json resultado de la transacción.
+	 */		
 	public function actionModDocCespa(){
 		$modeloDocCespa=new DocumentoCespa();
 		$docCespaAdol=Yii::app()->input->post();
@@ -927,6 +1240,27 @@ class IdentificacionRegistroController extends Controller
 			echo CJSON::encode(array("estadoComu"=>"exito",'resultado'=>CJavaScript::encode(CJavaScript::quote($resultado)),'msnError'=>$modeloDocCespa->mensajeErrorDocAdol));
 		}
 	}
+
+	/**
+	 *	Acción que renderiza la vista que contiene el formulario para asignar o reasignar equipo psicosocial y responsable del adolescente.
+	 *
+	 *	Vista a renderizar:
+	 *		- _formAsignarBina.
+	 *
+	 *	Modelos instanciados:
+	 *		- HistPersonalAdol
+	 * 		- Telefono
+	 * 		- ConsultasGenerales
+	 * 		- OperacionesGenerales
+	 *
+	 *	@param object $modeloHistPersAdol,
+	 *	@param string $numDocAdol,
+	 *	@param array $datosAdol,
+	 *	@param int $edad,
+	 *	@param array $psicologo,
+	 *	@param array $trabSocial,
+	 *	@param array $equipoPsicoSoc,
+	 */		
 	public function actionAsignarBina(){	
 		if(isset($_POST["numDocAdol"]) && !empty($_POST["numDocAdol"])){
 			$numDocAdol=htmlspecialchars(strip_tags(trim($_POST["numDocAdol"])));
@@ -959,6 +1293,17 @@ class IdentificacionRegistroController extends Controller
 		));
 	}
 	
+	/**
+	 *	Recibe datos del formulario de asignación de bina e instancia a modelo para modificar en base de datos
+	 *	En el caso que sea reasignar bina, se verifica que si no cambia uno de los integrantes del equipo psicosocial no realice una inserción.
+	 *
+	 *	Modelos instanciados:
+	 *		- HistPersonalAdol
+	 *		- ConsultasGenerales.
+	 *
+	 *	@param string $modeloVerifDerechos->msnErrorDerecho.
+	 *	@return json resultado de la transacción.
+	 */		
 	public function actionRegistraEquipoPsic(){
 		$dataInput=Yii::app()->input->post();
 		$modeloHistPersAdol= new HistPersonalAdol();
@@ -1023,6 +1368,29 @@ class IdentificacionRegistroController extends Controller
 		}
 	}
 	
+	/**
+	 *	Acción que renderiza la vista que contiene realiza consulta y listado de las o la información judicial impuesta al adolescente para seleccionar y registrar modificaiones.
+	 *
+	 *	Vista a renderizar:
+	 *		- _consultaInfJudAdmon.
+	 *
+	 *	Modelos instanciados:
+	 *		- InformacionJudicial
+	 * 		- ForjarAdol
+	 * 		- Telefono
+	 * 		- ConsultasGenerales
+	 * 		- OperacionesGenerales
+	 *
+	 *	@param object $modeloInfJudAdmon,
+	 *	@param object $modeloDatosForjarAdol,
+	 *	@param string $numDocAdol,
+	 *	@param array $infJudicial, listado de informaciones judiciales registradas en el proceso actual del adolescente, es decir respecto al pai actual.
+	 *	@param array $delito,
+	 *	@param array $estadoProceso,
+	 *	@param array $datosAdol,
+	 *	@param int $edad,
+	 *	@param array $telefono,
+	 */		
 	public function actionConsInfJudMod(){
 		$modeloInfJudAdmon=new InformacionJudicial();
 		$modeloDatosForjarAdol=new ForjarAdol();
@@ -1065,6 +1433,29 @@ class IdentificacionRegistroController extends Controller
 			)
 		);
 	}
+	/**
+	 *	Acción que renderiza la vista que contiene realiza consulta y listado de las o la información judicial impuesta al adolescente para seleccionar y registrar novedades.
+	 *
+	 *	Vista a renderizar:
+	 *		- _consultaInfJudAdmon.
+	 *
+	 *	Modelos instanciados:
+	 *		- InformacionJudicial
+	 * 		- ForjarAdol
+	 * 		- Telefono
+	 * 		- ConsultasGenerales
+	 * 		- OperacionesGenerales
+	 *
+	 *	@param object $modeloInfJudAdmon,
+	 *	@param object $modeloDatosForjarAdol,
+	 *	@param string $numDocAdol,
+	 *	@param array $infJudicial, listado de informaciones judiciales registradas en el proceso actual del adolescente, es decir respecto al pai actual.
+	 *	@param array $delito,
+	 *	@param array $estadoProceso,
+	 *	@param array $datosAdol,
+	 *	@param int $edad,
+	 *	@param array $telefono,
+	 */		
 	public function actionConsInfJudRegNov(){
 		$modeloInfJudAdmon=new InformacionJudicial();
 		$modeloDatosForjarAdol=new ForjarAdol();
@@ -1110,6 +1501,17 @@ class IdentificacionRegistroController extends Controller
 	}
 	
 	
+	/**
+	 *	Recibe datos del formulario de información judicial administrativa e instancia a modelo para registrar en base de datos.
+	 *
+	 *	Modelos instanciados:
+	 *		- InformacionJudicial
+	 *		- ForjarAdol
+	 *
+	 *	@param arrya $dataClean $_POST	de datos del formulario de información judicial administrativa.
+	 *	@param string $modeloInfJudAdmon->mensajeErrorInfJud.
+	 *	@return json resultado de la transacción.
+	 */		
 	public function actionRegistraModifInfJud(){
 		$modeloInfJudAdmon=new InformacionJudicial(); 
 		$modeloDatosForjarAdol=new ForjarAdol();
@@ -1270,6 +1672,17 @@ class IdentificacionRegistroController extends Controller
 			}
 		}		
 	}
+	/**
+	 *	Recibe datos del formulario de información judicial administrativa e instancia a modelo para registrar en base de datos.
+	 *
+	 *	Modelos instanciados:
+	 *		- InformacionJudicial
+	 *		- ForjarAdol
+	 *
+	 *	@param arrya $dataClean $_POST	de datos del formulario de información judicial administrativa.
+	 *	@param string $modeloInfJudAdmon->mensajeErrorInfJud.
+	 *	@return json resultado de la transacción.
+	 */		
 	public function actionRegistraNovInfJud(){
 		$datosInput=Yii::app()->input->post();
 		$modeloInfJudAdmon=new InformacionJudicial(); 
@@ -1296,6 +1709,48 @@ class IdentificacionRegistroController extends Controller
 		}		
 	}
 	
+	/**
+	 *	Acción que renderiza la vista que contiene los datos básicos del adolescente.
+	 *
+	 *	Vista a renderizar:
+	 *		- consultarDatos.
+	 *
+	 *	Formularios contenidos:
+	 *		- _formAdolescenteCons			formulario de datos básicos del adolescente a modificar
+	 *		- _formLocalizacionCons			formulario par diligenciar datos de localización a modificar
+	 *		- _formVerificacionDerCespaCons formulario para diligenciar la verificación de derechos enviada por el defensor de familia a modificar
+	 *		- _formAdolDocsCespaCons		formulario para hacer check de los documentos enviados por el cespa a modificar
+	 *		- _formAcudienteCons			formulario para diligenciar datos básicos del acudiente a modificar. 
+	 *
+	 *	Modelos instanciados:
+	 *		- Adolescente
+	 * 		- LocalizacionViv
+	 * 		- DerechoAdol
+	 * 		- Telefono
+	 * 		- DocumentoCespa
+	 * 		- Familiar
+	 * 		- ConsultasGenerales.
+	 *
+	 *	@param object $modeloInfJudAdmon,
+	 *	@param int $tipoDocBd,
+	 *	@param array $departamento,
+	 *	@param array $sexo,
+	 *	@param array $etnia,
+	 *	@param array $psicologo,
+	 *	@param array $trabSocial,
+	 *	@param array $modeloLocalizacion,
+	 *	@param array $localidad,
+	 *	@param array $estrato,
+	 *	@param object $modeloTelefono,
+	 *	@param object array $modeloDocCespa,
+	 *	@param object $docsCespa,
+	 *	@param object $modeloAcudiente,
+	 *	@param array $parentesco,
+	 *	@param object $modeloVerifDerechos,
+	 *	@param array $derechos,
+	 *	@param array $participacion,
+	 *	@param array $proteccion,					
+	 */		
 	public function actionConsultarDatos(){
 		$datosInput=Yii::app()->input->post();
 		if(isset($datosInput["numDocAdol"]) && !empty($datosInput["numDocAdol"])){
@@ -1443,6 +1898,30 @@ class IdentificacionRegistroController extends Controller
 			'acudiente'=>$acudiente
 		));	
 	}
+	
+	/**
+	 *	Acción que renderiza la vista que consulta el listado de las o la información judicial impuesta al adolescente para seleccionar y registrar novedades.
+	 *
+	 *	Vista a renderizar:
+	 *		- _consultaInfJudTab.
+	 *
+	 *	Modelos instanciados:
+	 *		- InformacionJudicial
+	 * 		- ForjarAdol
+	 * 		- Telefono
+	 * 		- ConsultasGenerales
+	 * 		- OperacionesGenerales
+	 *
+	 *	@param object $modeloInfJudAdmon,
+	 *	@param object $modeloDatosForjarAdol,
+	 *	@param string $numDocAdol,
+	 *	@param array $infJudicial, listado de informaciones judiciales registradas en el proceso actual del adolescente, es decir respecto al pai actual.
+	 *	@param array $delito,
+	 *	@param array $estadoProceso,
+	 *	@param array $datosAdol,
+	 *	@param int $edad,
+	 *	@param array $telefono,
+	 */		
 	public function actionConsultarInfJudAdmon(){
 		$datosInput=Yii::app()->input->post();
 		if(isset($datosInput["numDocAdol"]) && !empty($datosInput["numDocAdol"])){
@@ -1486,21 +1965,9 @@ class IdentificacionRegistroController extends Controller
 			'infJudicial'=>$infJudicial,
 			'tipoSancion'=>$tipoSancion,
 		));
-
 	}
 	// Uncomment the following methods and override them if needed
 	/*
-	public function filters()
-	{
-		// return the filter configuration for this controller, e.g.:
-		return array(
-			'inlineFilterName',
-			array(
-				'class'=>'path.to.FilterClass',
-				'propertyName'=>'propertyValue',
-			),
-		);
-	}
 
 	public function actions()
 	{

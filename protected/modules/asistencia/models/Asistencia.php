@@ -21,9 +21,9 @@ class Asistencia extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
-	public $mes;
-	public $anio;
-	public $areaAsistencia;
+	public $mes;				/**< mes seleccionado para registrar asistencia. */
+	public $anio;				/**< año seleccionado para registrar asistencia. */
+	public $areaAsistencia;		/**< array con las áreas de asistencia. */
 	public function tableName()
 	{
 		return 'asistencia';
@@ -47,6 +47,9 @@ class Asistencia extends CActiveRecord
 			array('areaAsistencia','validaAreaAsist')
 		);
 	}
+	/**
+	 *	Valida si no se ha seleccionado algún adolescente y si no se ha seleccionado algún área de interés.
+	 */		
 	public function validaAreaAsist($attribute=NULL,$params=NULL){
 		//if(isset($_POST["numFechas"]) && $_POST["numFechas"]==0){
 			//if($_POST["numFechas"]==0){
@@ -154,6 +157,15 @@ class Asistencia extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	/**
+	 *	Crea registro de asistencia con los adolescentes , áreas de interés y deportes seleccionados.
+	 *	@param int id_asistencia.
+	 *	@param int id_areapresencial.
+	 *	@param int id_areainteres.
+	 *	@param string num_doc.
+	 *	@param string fecha_asistencia.
+	 *	@return resultado de la transacción
+	 */		
 	public function registraAsistencia(){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -191,6 +203,9 @@ class Asistencia extends CActiveRecord
 			
 		}
 	}
+	/**
+	 *	Genera excel con el reporte de asistencia según la sede y según mes y año seleccionado..
+	 */		
 	public function reporteAsistencia(){
 		$conect=Yii::app()->db;
 		
@@ -382,6 +397,15 @@ class Asistencia extends CActiveRecord
 		$tabla.=$totTabla."</table>";
 		echo utf8_decode($tabla);
 	}
+	/**
+	 *	Retorna las áreas de interés a las cuales un adolescente ha asistido en un mes dado.
+	 *	@param string numDocAdol.
+	 *	@param string linkBd.
+	 *	@param int idAreaPres.
+	 *	@param string fechaIni.
+	 *	@param string fechaFin.
+	 *	@return $tabArPr 
+	 */		
 	public function consultaAreaPresencial($numDocAdol,$linkBd,$idAreaPres,$fechaIni,$fechaFin){
 		$conect=Yii::app()->db;
 		foreach($idAreaPres as $areaPres){
@@ -403,6 +427,15 @@ class Asistencia extends CActiveRecord
 		}
 		return $tabArPr;		
 	}
+	/**
+	 *	Retorna los deportes a los cuales un adolescente ha asistido en un mes dado.
+	 *	@param string numDocAdol.
+	 *	@param string linkBd.
+	 *	@param int idAreaPres.
+	 *	@param string fechaIni.
+	 *	@param string fechaFin.
+	 *	@return $tabArPr 
+	 */		
 	public function consultaAreaInscr($numDocAdol,$linkBd,$idAreaInsc,$fechaIni,$fechaFin){
 		$conect=Yii::app()->db;
 		$sqlConsAdAsist = "select * from asistencia as a left join area_inscripcion as b on b.id_areainteres=a.id_areainteres where a.num_doc=:num_doc and a.id_areainteres is not null and fecha_asistencia>=:fecha_ini and fecha_asistencia<=:fecha_fin order by id_areainscr,area_interes asc";

@@ -1,4 +1,8 @@
 <?php
+///!  PersonaController.  
+/**
+	Clase.
+*/
 
 class PersonaController extends Controller
 {

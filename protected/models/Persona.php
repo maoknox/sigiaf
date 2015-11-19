@@ -37,16 +37,16 @@ class Persona extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
-	public $_nombreusuario;
-	public $_clave;
-	public $_id_rol;
-	public $_nombre_profes;
-	public $_apellido_prof;
-	public $_cedula;
-	public $_resConsulta;
-	public $_idSedeForjar;
-	public $_nombreSede;
-	public $confirmaCorreo;
+	public $_nombreusuario;		/**< nombre de usuario en el sistema */
+	public $_clave;				/**< clave del usuario */
+	public $_id_rol;			/**< identificador del rol de usuario en el sistema */
+	public $_nombre_profes;		/**< nombre del profesional */
+	public $_apellido_prof;		/**< apellido del profesional*/
+	public $_cedula;			/**< cedula del profesional */
+	public $_resConsulta;		/**< resultado de la consulta de  */
+	public $_idSedeForjar;		/**< identificador de la sede de forjar del usuario  */
+	public $_nombreSede;		/**< nombre de la sede de forjar del usuario  */
+	public $confirmaCorreo;		/**< campo de confirmación de correo  */
 	public function tableName()
 	{
 		return 'persona';
@@ -74,6 +74,9 @@ class Persona extends CActiveRecord
 		);
 	}
 
+	/**
+	 * 	método que valida al estar registrando un usuario si la cédula del usuario ya está registrada o no, 
+	 */
 	public function validaCedula($attribute,$params){
 		if(!$this->hasErrors()){
 			$persona=$this->consultaPersona();
@@ -83,6 +86,9 @@ class Persona extends CActiveRecord
 		}
 	}
 	
+	/**
+	 * 	método que valida al estar registrando un usuario si el correo ya está registrado, 
+	 */
 	public function validaCorreo($attribute,$params){
 		//if(!$this->hasErrors()){
 			$correo=$this->consultaCorreo();
@@ -91,6 +97,10 @@ class Persona extends CActiveRecord
 			}
 		//}
 	}
+	
+	/**
+	 * 	método que valida si el correo diligenciado corresponde con el correo diligenciado en el campo confirmación de correo, 
+	 */
 	public function confirmarCorreoUsr($attribute,$params){
 		$datos=Yii::app()->input->post();
 		$confirmaCorreo=$datos["Persona"]["confirmaCorreo"];	
@@ -185,6 +195,10 @@ class Persona extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	
+	/**
+	 * 	Consulta el usuario que está accediendo al sistema. 
+	 */
 	public function consultaUsuario(){
 		$conect= Yii::app()->db;
 		//$consPersonal="select * from usuario as a left join persona as b on b.id_cedula=a.id_cedula left join cforjar_personal as c on c.id_cedula=b.id_cedula ";
@@ -209,6 +223,11 @@ class Persona extends CActiveRecord
 		$dataReader->close();
 		return $resCons;
 	}
+	
+	/**
+	 * 	Consulta las o la sede en las cuales el usuario labora.  
+	 *	Si el usuario es rotativo puede estar en los tres centros forjar, por tanto el lider administrativo debe asociar los centros a los cuales asiste.
+	 */
 	public function consultaSedeForjar(){
 		$conect= Yii::app()->db;
 		$sqlConsSedeForjar="select a.id_forjar,b.nombre_sede from cforjar_personal as a left join centro_forjar as b on a.id_forjar=b.id_forjar where id_cedula=:id_cedula";
@@ -220,6 +239,9 @@ class Persona extends CActiveRecord
 		return $resSedeForjar;		
 	}
 	
+	/**
+	 * 	Consulta los datos del usuario, datos de la persona, datos del usuario, datos de las sedes asociadas.
+	 */
 	public function consultaFuncionario(){
 		$conect= Yii::app()->db;
 		$sqlConsFuncionarios="select (nombre_personal ||' '||apellidos_personal)as nombres,* from persona as a 
@@ -235,6 +257,9 @@ class Persona extends CActiveRecord
 		return $resFuncionarios;
 		
 	}
+	/**
+	 * 	Consulta los usuarios que tiene acceso a valoración.
+	 */
 	public function consultaFuncionarioValoracion(){
 		$conect= Yii::app()->db;
 		$sqlConsFuncionarios="select (nombre_personal ||' '||apellidos_personal)as nombres,* from persona as a 
@@ -252,6 +277,9 @@ class Persona extends CActiveRecord
 	}
 
 	
+	/**
+	 *  consulta los datos de persona
+	 */
 	public function consultaPersona(){
 		$conect= Yii::app()->db;
 		$sqlConsPersona="select * from persona where id_cedula=:id_cedula";
@@ -262,6 +290,10 @@ class Persona extends CActiveRecord
 		$readPersona->close();
 		return $resPersona;
 	}
+	
+	/**
+	 *  consulta todas las personas registradas en el sistema
+	 */
 	public function consultaPersonas(){
 		$conect= Yii::app()->db;
 		$sqlConsPersona="select (nombre_personal ||' '||apellidos_personal)as nombres,* from persona";
@@ -271,6 +303,9 @@ class Persona extends CActiveRecord
 		$readPersona->close();
 		return $resPersona;
 	}
+	/**
+	 *  consulta persona según correo electrónico
+	 */
 	private function consultaCorreo(){
 		$conect= Yii::app()->db;
 		$sqlConsCorreo="select * from persona where correo_electronico=:correo_electronico";
@@ -281,6 +316,9 @@ class Persona extends CActiveRecord
 		$readCorreo->close();
 		return $resCorreo;
 	}
+	/**
+	 *  registra los datos de la persona a su vez datos de usuario del sistema del a persona y la sede a la cual asiste.
+	 */
 	public function creaPersona($modeloUsuario){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -350,8 +388,8 @@ class Persona extends CActiveRecord
 			return $e->getMessage();
 		}
 	}
-	public function consultaContrato(){
+/*	public function consultaContrato(){
 		
 		
 	}
-}
+*/}

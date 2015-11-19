@@ -54,6 +54,9 @@ class GestionSociojuridica extends CActiveRecord
 		);
 	}
 
+	/**
+	 *	Verifica si los datos son diligenciados en el formulario dependencia, tipo de gestión, nombre de contacto, y teléfono de contacto.
+	 */		
 	public function validaDependencia($attribute=null,$params=null){
 		//if(!$this->hasErrors()){		
 			$datosInput=Yii::app()->input->post();
@@ -155,6 +158,20 @@ class GestionSociojuridica extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	/**
+	 *	Crea registro de la gestión socio jurídica realizada por el abogado.
+	 *	@param int id_gestionsj.
+	 *	@param int id_motivoasesoriasj.
+	 *	@param int id_tipogestionsj.
+	 *	@param string num_doc.
+	 *	@param int id_remisionsj.
+	 *	@param string fecha_regsitrogestionsj.
+	 *	@param string fecha_gestionsj.
+	 *	@param string dependencia_entidadsj.
+	 *	@param string nombre_contactosj.
+	 *	@param string telefono_contactosj.
+	 *	@return resultado de la transacción
+	 */		
 	public function registraGestionSJ(){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -208,6 +225,11 @@ class GestionSociojuridica extends CActiveRecord
 			
 		}	
 	}
+	/**
+	 *	Retorna consulta de las gestiones realizadas a un adolescente en específico 
+	 *	@param string $this->num_doc id de documento del adolescente.
+	 *	@return $resGestionSJ 
+	 */		
 	public function consultaGestionesSJAdol(){
 		$conect=Yii::app()->db;
 		$sqlConsGestionSJ="select * from gestion_sociojuridica as a 
@@ -223,6 +245,11 @@ class GestionSociojuridica extends CActiveRecord
 		$readGestionSJ->close();
 		return $resGestionSJ;
 	}
+	/**
+	 *	Retorna consulta de la información de una gestión sociojurídica en específico
+	 *	@param string $this->num_doc id de documento del adolescente.
+	 *	@return $resGestionSJ 
+	 */		
 	public function consultaGestionSJAdol(){
 		$conect=Yii::app()->db;
 		$sqlConsGestionSJ="select * from gestion_sociojuridica as a 
@@ -238,6 +265,11 @@ class GestionSociojuridica extends CActiveRecord
 		$readGestionSJ->close();
 		return $resGestionSJ;
 	}
+	/**
+	 *	Retorna consulta de las gestiones sociojurídicas que requirieron de remisión a otra entidad.
+	 *	@param string $this->num_doc id de documento del adolescente.
+	 *	@return $resGestionSJ 
+	 */		
 	public function consultaGestionesSJAdolMod(){
 		$conect=Yii::app()->db;
 		$sqlConsGestionSJ="select * from gestion_sociojuridica as a 
@@ -253,6 +285,11 @@ class GestionSociojuridica extends CActiveRecord
 		return $resGestionSJ;
 		
 	}
+	/**
+	 *	Retorna consulta de las gestiones sociojurídicas que requirieron de remisión a otra entidad.
+	 *	@param string $this->num_doc id de documento del adolescente.
+	 *	@return $resGestionSJ 
+	 */		
 	public function consultaHistoricoSegGSJAdol(){
 		$conect=Yii::app()->db;
 		$sqlConsSegGSJAdol="select * from seguimiento_asesoriasj as a 
@@ -267,6 +304,14 @@ class GestionSociojuridica extends CActiveRecord
 		$readSegGSJAdol->close();
 		return $resSegGSJAdol;
 	}
+	/**
+	 *	Modifica los datos de una gestión sociojurídica en específico.
+	 *	@param string $this->nombre_contactosj 
+	 *	@param string $this->telefono_contactosj 
+	 *	@param string $this->num_doc 
+	 *	@param int $this->id_gestionsj 
+	 *	@return $resGestionSJ 
+	 */		
 	public function registraModGestionSJ(){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -286,7 +331,6 @@ class GestionSociojuridica extends CActiveRecord
 		catch(CDbCommand $e){
 			$transaction->rollBack();
 			return $e;
-			
 		}
 	}
 }

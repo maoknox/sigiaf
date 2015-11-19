@@ -34,9 +34,9 @@ class Psc extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
-	public $diasPrestacion;
-	public $nueva_institucionpsc;	
-	public $id_sector_psc;
+	public $diasPrestacion;			/**< array que almacena los días en los cuales el adolescente asistirá a realizar la prestación de servicios a la comunidad.  */
+	public $nueva_institucionpsc;	/**< En el caso que no exista una institución en el listado al momento de crear una psc, el usuario diligenciará una, este campo la almacena  */
+	public $id_sector_psc;			/**< Campo que almacena el sector de la prestación de servicios */
 	public function tableName()
 	{
 		return 'psc';
@@ -62,6 +62,10 @@ class Psc extends CActiveRecord
 			array('nueva_institucionpsc','validaNuevaInstitucion')
 		);
 	}
+	
+	/**
+	 * 	Verifica y valida si el adolescente está realizando actualmente una psc en la institución seleccionada al momento de crear una nueva psc, 
+	 */
 	public function validaInstitucion($attribute=NULL,$params=NULL){
 		if(isset($_POST["Psc"]["id_institucionpsc"]) && !empty($_POST["Psc"]["id_institucionpsc"])){
 			
@@ -75,6 +79,9 @@ class Psc extends CActiveRecord
 			}
 		}		
 	}
+	/**
+	 * 	verifica y valida si el campo nueva institución no está vacía en el caso que se haya seleccionado crear nueva institución.
+	 */
 	public function validaNuevaInstitucion($attribute=NULL,$params=NULL){
 		if(isset($_POST["Psc"]["id_institucionpsc"]) && $_POST["Psc"]["id_institucionpsc"]==0){
 			
@@ -178,6 +185,10 @@ class Psc extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	
+	/**
+	 * 	consulta las o la prestación de servicio que no ha culminado el adolescente.
+	 */
 	public function consultaPscSinCulm(){
 		$conect=Yii::app()->db;
 		$sqlConsPsc="select * from psc where num_doc=:num_doc and id_estadopsc is null or num_doc=:num_doc and id_estadopsc>=3";
@@ -188,6 +199,10 @@ class Psc extends CActiveRecord
 		$readConsPsc->close();
 		return $resConsPsc;	
 	}
+	
+	/**
+	 * 	consulta la psc, según el instituto, que no ha culminado. 
+	 */
 	public function consultaPscSinCulmInstituto(){
 		$conect=Yii::app()->db;
 		
@@ -202,6 +217,9 @@ class Psc extends CActiveRecord
 		return $resConsPsc;	
 	}
 
+	/**
+	 * 	registra una psc si pasa todas las validaciones 
+	 */
 	public function creaPsc(){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -248,7 +266,7 @@ class Psc extends CActiveRecord
 			$creaPsc->bindParam(":telefono_resp",$this->telefono_resp,PDO::PARAM_STR);
 			$creaPsc->bindParam(":num_dias_psc",$this->num_dias_psc,PDO::PARAM_INT);
 			$creaPsc->execute();
-			
+			// registra el día, la hora de inicio y la hora de finalización, el meridiano y el número de horas
 			foreach($this->diasPrestacion as $pk=>$diaPrestacion){
 				$sqlCreaDias="insert into dia_hora (
 					id_hora_dia,
@@ -292,6 +310,10 @@ class Psc extends CActiveRecord
 			return $e;
 		}
 	}
+	
+	/**
+	 * 	registra una psc si pasa todas las validaciones 
+	 */
 	public function consultaDiaHorario($fechaRegistro){
 		$conect=Yii::app()->db;
 		$sqlConsHorario="select * from dia_hora as a left join dia as b on a.id_dia=b.id_dia where num_doc=:num_doc and id_psc=:id_psc order by a.id_dia asc";
@@ -303,6 +325,10 @@ class Psc extends CActiveRecord
 		$readConsHorario->close();
 		return $resConsHorario;
 	}
+	
+	/**
+	 * 	registra institución en caso de ser requerido al momento de crear la prestación de servicios
+	 */
 	public function registraOrganizacion(){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -333,6 +359,10 @@ class Psc extends CActiveRecord
 			return $e;
 		}		
 	}
+	
+	/**
+	 * 	consulta información psc con un limit de 5 registros
+	 */
 	public function consultaPscOff($offset){
 		$conect=Yii::app()->db;
 		$sqlConsPscDes="select * from psc as a 
@@ -347,6 +377,9 @@ class Psc extends CActiveRecord
 		$readPscDes->close();
 		return $resPscDes;			
 	}
+	/**
+	 * 	Consulta la información según psc.
+	 */
 	public function consultaPsc(){
 		$conect=Yii::app()->db;
 		$sqlConsPscDes="select a.id_estadopsc as idestado,* from psc as a 
@@ -362,6 +395,9 @@ class Psc extends CActiveRecord
 		$readPscDes->close();
 		return $resPscDes;			
 	}
+	/**
+	 * 	Consulta el seguimiento de la prestación de servicios.
+	 */
 	public function consultaPscSeg($offset){
 		$conect=Yii::app()->db;
 		$sqlConsPscDes="select * from psc as a 
@@ -375,6 +411,9 @@ class Psc extends CActiveRecord
 		$readPscDes->close();
 		return $resPscDes;			
 	}
+	/**
+	 * 	Consulta el seguimiento de la prestación de servicios para el informe de seguimientos generales.
+	 */
 	public function consultaPscInformeSeg(){
 		$conect=Yii::app()->db;
 		$sqlConsPscDes="select * from psc as a 
@@ -389,6 +428,9 @@ class Psc extends CActiveRecord
 		return $resPscDes;			
 	}
 
+	/**
+	 * 	Consulta información de psc para mostrar como referencia en el formularo de seguimiento de psc
+	 */
 	public function consultaPscSegForm(){
 		$conect=Yii::app()->db;
 		$sqlConsPscDes="select a.id_estadopsc as idestado,* from psc as a 

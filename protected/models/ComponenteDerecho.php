@@ -127,6 +127,10 @@ class ComponenteDerecho extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+		
+	/**
+	 * 	Método que consulta los derechos registrados en el pai del adolescente.
+	 */	
 	public function consultaPaiDerechoAdol(){
 		$conect= Yii::app()->db;
 		$sqlConsPaiDerAdol="select * from componente_derecho where id_pai=:id_pai and id_derechocespa=:id_derechocespa and num_doc=:num_doc order by fecha_estab_compderecho desc";
@@ -139,6 +143,10 @@ class ComponenteDerecho extends CActiveRecord
 		$readConsPaiDerAdol->close();
 		return $resConsPaiDerAdol;
 	}
+	
+	/**
+	 * 	Registra cada componente de derechos con objetivos, actividades, indicadores y responsable.
+	 */	
 	public function creaDerechoPai(){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -190,6 +198,10 @@ class ComponenteDerecho extends CActiveRecord
 			return $e;
 		}
 	}
+	
+	/**
+	 * 	Registra la modificación de cada componente de derechos con objetivos, actividades, indicadores y responsable.
+	 */		
 	public function modificaRegPai($nombreCampo,$contenido){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();

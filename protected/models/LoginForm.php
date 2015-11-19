@@ -8,14 +8,13 @@ Yii::import('application.modules.administracion.models.DatosContrato');
  
 class LoginForm extends CFormModel
 {
-	public $nombreusuario;
-	public $claveusr;
-	//public $rememberMe;
-	public $cedulaUsr;
-	private $_identity;
-	public $id_forjar;
-	public $pers_habilitado;
-	public $contrato;
+	public $nombreusuario;		/**< nombre de usuario del sistema  */
+	public $claveusr;			/**< clave del usuario  */
+	public $cedulaUsr;			/**< cédula del usuario  */
+	private $_identity;			/**< variable de confirmación de logueo */
+	public $id_forjar;			/**< identificador del centro forjar  */
+	public $pers_habilitado;	/**< define si el usuario está habilitado para acceder al sistema  */
+	public $contrato;			/**< define si el usuario tiene asociado un contrato  */
 
 	/**
 	 * Declares the validation rules.
@@ -44,12 +43,18 @@ class LoginForm extends CFormModel
 	}
 */	
 	
+	/**
+	 *	Verifica y valida si el usuario no tiene una sede asociada no puede acceder al sistema, el lider administrativo debe asociar primero una sede al usuario.  
+	 */
 	public function consultaSedeForjar($attribute,$params){
 		if(!$this->hasErrors()){		
 			if(empty($this->_identity->_sedeForjar))
 				$this->addError('id_forjar','En el sistema SIGIAF, el profesional no se encuentra relacionado en una sede de Forjar');
 		}
 	}
+	/**
+	 *	Verifica y valida si el usuario tiene un contrato asociado y si no esta fuera de vigencia.  
+	 */
 	public function confirmaContrato($attribute,$params){
 		if(!$this->hasErrors()){		
 			if(empty($this->_identity->_datosContrato)){
@@ -73,9 +78,6 @@ class LoginForm extends CFormModel
 			}
 		}
 	}
-
-	
-	
 	/**
 	 * Declares attribute labels.
 	 */

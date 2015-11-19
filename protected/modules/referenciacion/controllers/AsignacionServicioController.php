@@ -1,12 +1,20 @@
 <?php
 
 class AsignacionServicioController extends Controller{
+	/**
+	 * Acción que se ejecuta en segunda instancia para verificar si el usuario tiene sesión activa.
+	 * En caso contrario no podrá acceder a los módulos del aplicativo y generará error de acceso.
+	 */
 	public function filterEnforcelogin($filterChain){
 		if(Yii::app()->user->isGuest){
 			throw new CHttpException(403,"Debe loguearse primero");
 		}
 		$filterChain->run();
 	}
+	/**
+	 * Acción que se ejecuta en primera instancia que llama a verificar la sesión de usuario y llama a los filtros secundarios
+	 * Los filtros no se ejecutan cuando se llaman a las acciones que van seguidas del guión.
+	 */
 	public function filters(){
 		return array('enforcelogin',array('application.filters.ActionLogFilter - buscaAdolGen','modulo'=>$this->module->id,'controlador'=>$this->id,'parametros'=>Yii::app()->input->post()));
 	}
@@ -14,6 +22,27 @@ class AsignacionServicioController extends Controller{
 	{
 		$this->render('index');
 	}
+	/**
+	 *	Acción que renderiza la vista que contiene el formulario para realizar solicitu de una referenciación para el adolescente.
+	 *
+	 *	Vista a renderizar:
+	 *		- _asignacionServicioForm.
+	 *
+	 *	Modelos instanciados:/    
+	 *		- ReferenciacionAdol
+	 * 		- FamiliarBeneficiario
+	 * 		- OperacionesGenerales
+	 * 		- ConsultasGenerales
+	 *
+	 *	@param object	$modeloRef      
+	 *	@param string	numDocAdol
+	 *	@param array	$datosAdol
+	 *	@param int	 	$edad
+	 *	@param array 	$tipoRef
+	 *	@param array 	$espNi
+	 *	@param array 	$beneficiario
+	 *	@param object 	$modeloFamBenef
+	 */		
 	public function actionAsignacionServicioForm(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="asignacionServicioForm";
@@ -61,6 +90,12 @@ class AsignacionServicioController extends Controller{
 		$res=$consAdol->buscaAdolGen();
 		echo CJSON::encode($res);
 	}	//Consulta Municipio segun departamento
+	
+	/**
+	 *	Llamado mediante ajax que consulta los datos de una tabla segün su nombre, el id del campo y el nombre del campo.
+	 *	@param array datosInput.
+	 *	@return jsaon con información de la tabla según parámetros. 
+	 */		
 	public function actionConsultaDatosForm(){
 		$datosInput=Yii::app()->input->post();
 		$consGen=new ConsultasGenerales();
@@ -74,6 +109,11 @@ class AsignacionServicioController extends Controller{
 			}
 		}
 	}
+	/**
+	 *	Llamado mediante ajax que consulta la especificación de nivel 1 según la línea de acción seleccionada.
+	 *	@param array datosInput.
+	 *	@return jsaon con los datos de los items de la especificación de nivel 1
+	 */		
 	public function actionConsEspNiv(){
 		if(isset($_POST["id_tiporef"])){
 			$datosInput=Yii::app()->input->post();
@@ -87,6 +127,11 @@ class AsignacionServicioController extends Controller{
 			echo json_encode($consEsp);			
 		}
 	}
+	/**
+	 *	Llamado mediante ajax que consulta la especificación de nivel 2 según el item seleccionado en la especificación de nivel 1.
+	 *	@param array datosInput.
+	 *	@return jsaon con los datos de los items de la especificación de nivel 2
+	 */		
 	public function actionConsEspNivii(){
 		//print_r($_POST["id_esp_sol"];
 		if(isset($_POST["ReferenciacionAdol"]["id_esp_sol"]) && !empty($_POST["ReferenciacionAdol"]["id_esp_sol"])){
@@ -104,6 +149,11 @@ class AsignacionServicioController extends Controller{
 			}
 		}
 	}
+	/**
+	 *	Llamado mediante ajax que consulta la especificación de nivel 3 según el item seleccionado en la especificación de nivel 2.
+	 *	@param array datosInput.
+	 *	@return jsaon con los datos de los items de la especificación de nivel 3
+	 */		
 	public function actionConsEspNiviii(){
 		//print_r($_POST["id_esp_sol"];
 		if(isset($_POST["ReferenciacionAdol"]["id_esp_solii"]) && !empty($_POST["ReferenciacionAdol"]["id_esp_solii"])){
@@ -122,6 +172,17 @@ class AsignacionServicioController extends Controller{
 		}
 	}
 
+	/**
+	 *	Recibe datos del formulario de creación de referenciación e instancia a modelo para registrar en base de datos.
+	 *	Realiza la validación del formulario de tipo de campo y que no estén vacíos los campos obligatorios.
+	 *
+	 *	Modelos instanciados:
+	 *		- ReferenciacionAdol
+	 *		- FamiliarBeneficiario
+	 *
+	 *	@param array datosInput array de datos del formulario de referenciación
+	 *	@return json resultado de la transacción.
+	 */		
 	public function actionCreaRegRef(){
 		$datosInput=Yii::app()->input->post();
 		$modeloRef=new ReferenciacionAdol();
@@ -167,6 +228,29 @@ class AsignacionServicioController extends Controller{
 	}
 	
 	
+	/**
+	 *	Acción que renderiza la vista que muestra las referenciaciones asignadas al adolescente 
+	 *
+	 *	Vista a renderizar:
+	 *		- _consultaServicioModForm.
+	 *
+	 *	Modelos instanciados:/    
+	 *		- ReferenciacionAdol
+	 * 		- FamiliarBeneficiario
+	 * 		- OperacionesGenerales
+	 * 		- ConsultasGenerales.
+	 *
+	 *	@param object	$modeloRef  
+	 *	@param string	$numDocAdol
+	 *	@param array	$datosAdol
+	 *	@param int	 	$edad
+	 *	@param array 	$tipoRef
+	 *	@param array 	$espNi
+	 *	@param array 	$beneficiario
+	 *	@param object 	$modeloFamBenef
+	 *	@param array 	$datosRef
+	 *	@param int	 	$offset
+	 */		
 	public function actionConsultaServicioModForm(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="consultaServicioModForm";
@@ -216,6 +300,27 @@ class AsignacionServicioController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Acción que renderiza la vista que contiene el formulario para realizar solicitu de una referenciación para el adolescente.
+	 *
+	 *	Vista a renderizar:
+	 *		- _asignacionServicioForm.
+	 *
+	 *	Modelos instanciados:/    
+	 *		- ReferenciacionAdol
+	 * 		- FamiliarBeneficiario
+	 * 		- OperacionesGenerales
+	 * 		- ConsultasGenerales
+	 *
+	 *	@param object	$modeloRef      
+	 *	@param string	numDocAdol
+	 *	@param array	$datosAdol
+	 *	@param int	 	$edad
+	 *	@param array 	$tipoRef
+	 *	@param array 	$espNi
+	 *	@param array 	$beneficiario
+	 *	@param object 	$modeloFamBenef
+	 */		
 	public function actionServicioModForm(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="consultaServicioModForm";
@@ -271,6 +376,16 @@ class AsignacionServicioController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Recibe datos del formulario de consulta de referenciación e instancia a modelo para modificar el estado de la referenciación actualizado por el usuario.
+	 *	Realiza la validación del formulario de tipo de campo y que no estén vacíos los campos obligatorios.
+	 *
+	 *	Modelos instanciados:
+	 *		- ReferenciacionAdol
+	 *
+	 *	@param array datosInput array de datos del formulario de referenciación
+	 *	@return json resultado de la transacción.
+	 */		
 	public function actionModificaEstadoRef(){
 		$datosInput=Yii::app()->input->post();
 		$modeloRef=new ReferenciacionAdol();
@@ -280,6 +395,29 @@ class AsignacionServicioController extends Controller{
 		$resultado=$modeloRef->modificaEstadoRef();
 		echo CJSON::encode(array("estadoComu"=>"exito","resultado"=>CJavaScript::encode($resultado)));
 	}
+	/**
+	 *	Acción que renderiza la vista que muestra las referenciaciones asignadas al adolescente que están en solicitud o en trámite para realizar el correspondiente seguimiento.
+	 *
+	 *	Vista a renderizar:
+	 *		- _consultaSegServicioForm.
+	 *
+	 *	Modelos instanciados:/    
+	 *		- ReferenciacionAdol
+	 * 		- FamiliarBeneficiario
+	 * 		- OperacionesGenerales
+	 * 		- ConsultasGenerales.
+	 *
+	 *	@param object	$modeloRef  
+	 *	@param string	$numDocAdol
+	 *	@param array	$datosAdol
+	 *	@param int	 	$edad
+	 *	@param array 	$tipoRef
+	 *	@param array 	$espNi
+	 *	@param array 	$beneficiario
+	 *	@param object 	$modeloFamBenef
+	 *	@param array 	$datosRef
+	 *	@param int	 	$offset
+	 */		
 	public function actionConsultaSegServicioForm(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="consultaSegServicioForm";
@@ -329,7 +467,36 @@ class AsignacionServicioController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
-public function actionSegServicioForm(){
+	/**
+	 *	Acción que renderiza la vista que contiene el formulario de seguimiento.  Éste se realizará de acuerdo a la referenciación seleccionada en el formulario de listado de referenciación del adolescente
+	 *
+	 *	Vista a renderizar:
+	 *		- _seguimientoForm.
+	 *
+	 *	Modelos instanciados:  
+	 *		- ReferenciacionAdol
+	 * 		- FamiliarBeneficiario
+	 * 		- SeguimientoRefer
+	 * 		- OperacionesGenerales.
+	 * 		- ConsultasGenerales.
+	 *
+	 *	@param object	$modeloRef               
+	 *	@param string	$numDocAdol
+	 *	@param array	$datosFamBenef
+	 *	@param array 	$tipoRef
+	 *	@param array 	$espNi
+	 *	@param array 	$espNii
+	 *	@param array 	$espNiii
+	 *	@param array 	$beneficiario
+	 *	@param int	 	$estadoRef
+	 *	@param array 	$datosAdol
+	 *	@param int	 	$edad
+	 *	@param array 	$profesional
+	 *	@param int	 	$rol
+	 *	@param object 	$modeloSegRefer
+	 *	@param array 	$seguimientos
+	 */		
+	public function actionSegServicioForm(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="consultaSegServicioForm";
 		$permiso=$controlAcceso->controlAccesoAcciones();
@@ -389,6 +556,29 @@ public function actionSegServicioForm(){
 		}
 	}
 	//Consulta los servicios a los cuales fue referenciado el adolescente
+	/**
+	 *	Acción que renderiza la vista que muestra las referenciaciones asignadas al adolescente.
+	 *
+	 *	Vista a renderizar:
+	 *		- _consultaSegServicioForm.
+	 *
+	 *	Modelos instanciados:/    
+	 *		- ReferenciacionAdol
+	 * 		- FamiliarBeneficiario
+	 * 		- OperacionesGenerales
+	 * 		- ConsultasGenerales.
+	 *
+	 *	@param object	$modeloRef  
+	 *	@param string	$numDocAdol
+	 *	@param array	$datosAdol
+	 *	@param int	 	$edad
+	 *	@param array 	$tipoRef
+	 *	@param array 	$espNi
+	 *	@param array 	$beneficiario
+	 *	@param object 	$modeloFamBenef
+	 *	@param array 	$datosRef
+	 *	@param int	 	$offset
+	 */		
 	public function actionConsultaServicioForm(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="consultaServicioForm";
@@ -438,6 +628,35 @@ public function actionSegServicioForm(){
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Acción que renderiza la vista que muestra toda la información de la referenciacón seleccionada del listado de referenciaciones asignadas al adolescente.
+	 *
+	 *	Vista a renderizar:
+	 *		- _muestraServicio.
+	 *
+	 *	Modelos instanciados: 
+	 *		- ReferenciacionAdol
+	 * 		- FamiliarBeneficiario
+	 * 		- SeguimientoRefer
+	 * 		- OperacionesGenerales
+	 * 		- ConsultasGenerales.
+	 *
+	 *	@param object	$modeloRef               
+	 *	@param string	$numDocAdol
+	 *	@param array	$datosFamBenef
+	 *	@param array 	$tipoRef
+	 *	@param array 	$espNi
+	 *	@param array 	$espNii
+	 *	@param array 	$espNiii
+	 *	@param array 	$beneficiario
+	 *	@param int	 	$estadoRef
+	 *	@param array 	$datosAdol
+	 *	@param int	 	$edad
+	 *	@param array 	$profesional
+	 *	@param int	 	$rol
+	 *	@param object 	$modeloSegRefer
+	 *	@param array 	$seguimientos
+	 */		
 	public function actionMuestraServicio(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="consultaServicioForm";
@@ -498,6 +717,15 @@ public function actionSegServicioForm(){
 		}
 	}
 	
+	/**
+	 *	Recibe datos del formulario de seguimiento de la referenciación del adolescente e instancia a modelo para registrar el seguimiento.
+	 *
+	 *	Modelos instanciados:
+	 *		- SeguimientoRefer
+	 *
+	 *	@param array datosInput array de datos del formulario de seguimientos
+	 *	@return json resultado de la transacción.
+	 */		
 	public function actionRegistraSegimiento(){
 		if(isset($_POST["SeguimientoRefer"])&& !empty($_POST["SeguimientoRefer"])){
 			$datosInput=Yii::app()->input->post();
@@ -513,6 +741,18 @@ public function actionSegServicioForm(){
 		}
 		
 	}
+	/**
+	 *	Acción que renderiza la vista que muestra todas las referenciaciones en solicitud.
+	 *
+	 *	Vista a renderizar:
+	 *		- _consultaSolicitudesForm.
+	 *
+	 *	Modelos instanciados:/    
+	 *		- ReferenciacionAdol
+	 *
+	 *	@param object	$modeloReferenciacion  
+	 *	@param string	$consultaSol
+	 */		
 	public function actionConsultaSolicitudesForm(){
 		$modeloReferenciacion=new ReferenciacionAdol();
 		$consultaSol=$modeloReferenciacion->consultaSolicitudes();

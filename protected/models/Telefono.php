@@ -20,9 +20,9 @@ class Telefono extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
-	public $tel_sec;//Teléfono secundario
-	public $celular;//Número de celular del adolescente
-	public $mensajeErrorTel;
+	public $tel_sec;			/**< Teléfono secundario  */
+	public $celular;			/**< número celular  */
+	public $mensajeErrorTel;	/**< mensaje de resultado de transacciones  */
 	public function tableName()
 	{
 		return 'telefono';
@@ -114,6 +114,10 @@ class Telefono extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	
+	/**
+	 * 	crea registro de teléfono del adolescente diligenciado en el módulo de identificación y registro.
+	 */
 	public function registraTelefono($tipoTelefono,$numeroTelefono){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -142,6 +146,9 @@ class Telefono extends CActiveRecord
 			$this->mensajeErrorTel=$e;
 		}
 	}
+	/**
+	 * 	crea registro de teléfono del acudiente diligenciado en el módulo de identificación y registro.
+	 */
 	public function registraTelefonoAcud($tipoTelefono,$numeroTelefono){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -171,6 +178,9 @@ class Telefono extends CActiveRecord
 		}
 	}
 	
+	/**
+	 * 	Consulta el o los teléfonos registrados del adolescente.
+	 */
 	public function consultaTelefono($numDocAdol){
 		$conect= Yii::app()->db;
 		$sqlConsultaTelefono="select * from telefono as a left join tipo_telefono as b on a.id_tipo_telefono=b.id_tipo_telefono where num_doc=:numDoc";
@@ -181,6 +191,9 @@ class Telefono extends CActiveRecord
 		$readConsultaTelefono->close();			
 		return $resConsultaTelefono;
 	}
+	/**
+	 * 	Consulta el o los teléfonos registrados del acudiente.
+	 */
 	public function consultaTelefonosAcud($idDocFam){
 		$conect= Yii::app()->db;
 		$sqlConsultaTelefono="select * from telefono as a left join tipo_telefono as b on a.id_tipo_telefono=b.id_tipo_telefono where id_doc_familiar=:idDocFam";
@@ -191,6 +204,9 @@ class Telefono extends CActiveRecord
 		$readConsultaTelefono->close();			
 		return $resConsultaTelefono;
 	}
+	/**
+	 * 	Consulta teléfono adolescente.
+	 */
 	public function consultaTelefonoAdol($numDocAdol,$tipoTelefono){
 		$conect= Yii::app()->db;
 		$sqlConsultaTelefono="select * from telefono as a 
@@ -204,6 +220,9 @@ class Telefono extends CActiveRecord
 		$readConsultaTelefono->close();			
 		return $resConsultaTelefono;
 	}
+	/**
+	 * 	Consulta teléfono acudiente.
+	 */
 	public function consultaTelefonoAcud($idAcud,$tipoTelefono){
 		$conect= Yii::app()->db;
 		$sqlConsultaTelefono="select * from telefono as a 
@@ -217,6 +236,9 @@ class Telefono extends CActiveRecord
 		$readConsultaTelefono->close();			
 		return $resConsultaTelefono;
 	}
+	/**
+	 * 	Consulta teléfono acudiente.
+	 */
 	public function modificaDatosTelAdolMany($nombreCampo,$nombreTabla,$datoAntiguo,$datoActual,$camposComp,$tipoDato){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -229,16 +251,16 @@ class Telefono extends CActiveRecord
 			foreach($camposComp as $pk=>$campoComp){
 				
 				if($pk==0){
-					$sqlModDatos.= $campoComp["id_campo"]."=:".$campoComp["id_campo"]." ";
+					$sqlModDatos.= pg_escape_string($campoComp["id_campo"])."=:".pg_escape_string($campoComp["id_campo"])." ";
 				}
 				else{
-					$sqlModDatos.= "and ".$campoComp["id_campo"]."=:".$campoComp["id_campo"]." ";
+					$sqlModDatos.= "and ".pg_escape_string($campoComp["id_campo"])."=:".pg_escape_string($campoComp["id_campo"])." ";
 				}
 			}
 			$modDatos=$conect->createCommand($sqlModDatos);
 			$modDatos->bindParam(':datoActual',$datoActual,$tipoDato);
 			foreach($camposComp as $campoComp){
-				$modDatos->bindParam(':'.$campoComp["id_campo"].'',$campoComp["contenido"],$campoComp["tipoDato"]);
+				$modDatos->bindParam(':'.pg_escape_string($campoComp["id_campo"]).'',pg_escape_string($campoComp["contenido"]),$campoComp["tipoDato"]);
 			}		
 			$modDatos->execute();
 			$transaction->commit();

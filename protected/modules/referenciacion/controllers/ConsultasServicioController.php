@@ -13,6 +13,12 @@ class ConsultasServicioController extends Controller{
 	{
 		$this->render('index');
 	}
+	/**
+	 *	Acción que renderiza parcialmente la vista que genera un listado en excel de todas las referenciaciones que han sido asignadas en una sede de forjar.
+	 *
+	 *	Vista a renderizar:
+	 *		- _reporteServicio.
+	 */		
 	public function actionReporteServicio(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="reporteServicio";
@@ -26,6 +32,12 @@ class ConsultasServicioController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Acción que renderiza parcialmente la vista que genera un listado en excel de todas las referenciaciones de un adolescente.
+	 *
+	 *	Vista a renderizar:
+	 *		- _reporteServicio.
+	 */		
 	public function actionMuestraReporteExcel(){
 		
 		$controlAcceso=new ControlAcceso();
@@ -46,17 +58,6 @@ class ConsultasServicioController extends Controller{
 	}
 	// Uncomment the following methods and override them if needed
 	/*
-	public function filters()
-	{
-		// return the filter configuration for this controller, e.g.:
-		return array(
-			'inlineFilterName',
-			array(
-				'class'=>'path.to.FilterClass',
-				'propertyName'=>'propertyValue',
-			),
-		);
-	}
 
 	public function actions()
 	{

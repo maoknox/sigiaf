@@ -14,7 +14,7 @@ class RolMenu extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
-	public $menu;
+	public $menu;	/**< array que captura menu. */
 	public function tableName()
 	{
 		return 'rol_menu';

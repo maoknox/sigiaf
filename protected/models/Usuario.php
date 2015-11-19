@@ -15,7 +15,7 @@ class Usuario extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
-	public $verificaClave;
+	public $verificaClave;		/**< verifica la clave de usuario digitada en el formulario de logueo.  */
 	public function tableName()
 	{
 		return 'usuario';
@@ -41,6 +41,9 @@ class Usuario extends CActiveRecord
 		);
 	}
 
+	/**
+	 * 	Al momento de registrar el usuario en el sistema, éste verifica si el nombre de usuario ya está registrado.
+	 */
 	public function validaNombreUsr($attribute,$params){
 		if(Yii::app()->controller->action->id!="restablecerClave"){
 			$usuario=$this->consultaUsuario();		
@@ -49,6 +52,9 @@ class Usuario extends CActiveRecord
 			}
 		}
 	}
+	/**
+	 * 	al momento de registrar el usuario en el sistema, éste verifica si la clave digitada coincide con el campo de verificación de clave.
+	 */
 	public function verificaClave(){
 		if(Yii::app()->controller->action->id!="restablecerClave"){
 			if(isset($_POST["Usuario"]["verificaClave"])){
@@ -125,6 +131,9 @@ class Usuario extends CActiveRecord
 		return parent::model($className);
 	}
 	
+	/**
+	 * 	consulta la cédula del usuario que ingresa al sistema.
+	 */
 	public function consultaUsuarioCedula(){
 		$conect=Yii::app()->db;
 		$slqConsUsr="select * from usuario where id_cedula=:id_cedula";
@@ -135,6 +144,9 @@ class Usuario extends CActiveRecord
 		$readUsr->close();
 		return $resUsr;
 	}
+	/**
+	 * 	consulta el rol del usuario que ingresa al sistema.
+	 */
 	public function consultaUsuarioVal(){
 		$conect=Yii::app()->db;
 		$slqConsUsr="select id_rol from usuario where id_cedula=:id_cedula";
@@ -146,6 +158,9 @@ class Usuario extends CActiveRecord
 		return $resUsr;
 	}
 	
+	/**
+	 * 	consulta datos de usuario
+	 */
 	public function consultaUsuario(){
 		$conect=Yii::app()->db;
 		$slqConsUsr="select * from usuario where nombre_usuario=:nombre_usuario";
@@ -156,6 +171,9 @@ class Usuario extends CActiveRecord
 		$readUsr->close();
 		return $resUsr;
 	}
+	/**
+	 * 	consulta datos, de usuario, de persona y sedes asociadas al usuario de la persona que ingresa al sistema.
+	 */
 	public function consultaFuncionario(){
 		$conecta=Yii::app()->db;
 		$sqlConsFuncionario="select (nombre_personal ||' ' ||apellidos_personal) as nombres,* from usuario as a 
@@ -171,6 +189,9 @@ class Usuario extends CActiveRecord
 		return $resFuncionario;		
 		//Yii::app()->user->getState('sedeForjar')		
 	}
+	/**
+	 * 	consulta el estado del usuario en el sistema según cédula, es decir si está habilitado o no para ingresar al sistema.
+	 */
 	public function consultaEstadoUsuario(){
 		$consultasGenerales=new ConsultasGenerales();
 		$linkBd=$consultasGenerales->conectaBDSinPdo();
@@ -182,6 +203,9 @@ class Usuario extends CActiveRecord
 		pg_close($linkBd);	
 		return $consEstUsr;		
 	}
+	/**
+	 * 	consulta el estado del usuario en el sistema según nombre de usuario, es decir si está habilitado o no para ingresar al sistema.
+	 */
 	public function consultaEstadoUsuarioNombUsr(){
 		$consultasGenerales=new ConsultasGenerales();
 		$linkBd=$consultasGenerales->conectaBDSinPdo();
@@ -193,6 +217,9 @@ class Usuario extends CActiveRecord
 		pg_close($linkBd);	
 		return $consEstUsr;		
 	}
+	/**
+	 * 	modifica el estado del usuario respecto al ingreso al sistema.
+	 */
 	public function cambiarEstadoFuncionario(){
 		$conecta=Yii::app()->db;
 		$transaction=$conecta->beginTransaction();
@@ -210,6 +237,9 @@ class Usuario extends CActiveRecord
 			return $e->getMessage();			
 		}
 	}
+	/**
+	 * 	modifica la clave de usuario según cédula.
+	 */
 	public function cambiaClave(){
 		$conecta=Yii::app()->db;
 		$transaction=$conecta->beginTransaction();
@@ -227,6 +257,9 @@ class Usuario extends CActiveRecord
 			return $e->getMessage();			
 		}
 	}
+	/**
+	 * 	modifica clave según nombre de usuario
+	 */
 	public function restablecerClave(){
 		$conecta=Yii::app()->db;
 		$transaction=$conecta->beginTransaction();
@@ -245,6 +278,9 @@ class Usuario extends CActiveRecord
 		}
 	}
 
+	/**
+	 * 	consulta correo del usuario según nombre de usuario.
+	 */
 	public function consultaCorreoFuncionario(){
 		$conect=Yii::app()->db;
 		$slqConsUsr="select correo_electronico from usuario as a left join persona as b on a.id_cedula=b.id_cedula where nombre_usuario=:nombre_usuario";

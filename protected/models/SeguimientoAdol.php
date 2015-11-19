@@ -27,12 +27,12 @@ class SeguimientoAdol extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
-	public $idCedula;
-	public $fechaSegPE;
-	public $fecha_inicial;
-	public $fecha_fin;
-	public $seg_posegreso;
-	public $seg_extraordinario;
+	public $idCedula;				/**< cédula del usuario registrado y quien va a realizar una acción en el módulo de referenciación  */
+	public $fechaSegPE;				/**< fecha de seguimiento  del plan post egreso*/
+	public $fecha_inicial;			/**< fecha inicial de informa de seguimiento  */
+	public $fecha_fin;				/**< fecha final de informe de seguimiento  */
+	public $seg_posegreso;			/**< el texto de seguimiento del post egreso  */
+	public $seg_extraordinario;		/**< texto de seguimiento de seguimiento extraordinario */
 	public function tableName()
 	{
 		return 'seguimiento_adol';
@@ -147,6 +147,10 @@ class SeguimientoAdol extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	
+	/**
+	 * 	registra el seguimiento general del adolescente, este seguimiento lo realizan todos los profesionales que tienen acceso al aplicativo exepto coordinación y administrativos. 
+	 */
 	public function registraSeguimiento(){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -228,6 +232,9 @@ class SeguimientoAdol extends CActiveRecord
 			return $e;
 		}
 	}
+	/**
+	 * 	consulta de seguimientos del proceso del adolescente que no son extraordinarios y no son de post egreso. 
+	 */
 	public function consSegAdol(){
 		$conect=Yii::app()->db;
 		$sqlConsSegAdol="select * from seguimiento_adol where num_doc=:num_doc and seg_posegreso='false' and seg_extraordinario='false'";
@@ -238,6 +245,9 @@ class SeguimientoAdol extends CActiveRecord
 		$readSegAdol->close();
 		return $resSegAdol;		
 	}
+	/**
+	 * 	consulta de seguimientos de post egreso del adolescente
+	 */
 	public function consSegAdolPosEgreso(){
 		$conect=Yii::app()->db;
 		$sqlConsSegAdol="select * from seguimiento_adol where num_doc=:num_doc and seg_posegreso='true'";
@@ -248,6 +258,9 @@ class SeguimientoAdol extends CActiveRecord
 		$readSegAdol->close();
 		return $resSegAdol;		
 	}
+	/**
+	 * 	consulta el profesional autor del seguimiento del adolescente.
+	 */
 	public function consultaProfSeg($autorReg,$fechaReg,$idRegSeg){
 		$autorReg=CHtml::encode($autorReg);
 		$fechaReg=CHtml::encode($fechaReg);
@@ -267,6 +280,9 @@ class SeguimientoAdol extends CActiveRecord
 		$readConsProfReg->close();
 		return $resConsProfReg;
 	}
+	/**
+	 * consulta el profesional autor del seguimiento post egreso del adolescente.
+	 */
 	public function consultaProfSegPE($autorReg,$fechaReg,$idRegSeg){
 		$autorReg=CHtml::encode($autorReg);
 		$fechaReg=CHtml::encode($fechaReg);
@@ -286,6 +302,9 @@ class SeguimientoAdol extends CActiveRecord
 		$readConsProfReg->close();
 		return $resConsProfReg;
 	}
+	/**
+	 * registra seguimiento post egreso.
+	 */
 	public function registraSeguimientoPe(){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -351,9 +370,11 @@ class SeguimientoAdol extends CActiveRecord
 			return $e;
 		}
 	}	
+	
+	/**
+	 * consulta seguimientos del adolescente según rangos de fecha.
+	 */
 	public function consultaSeguimiento(){
-//select * from seguimiento_adol as a left join tipo_seguimiento as b on b.id_tipo_seguim=a.id_tipo_seguim 
-//where num_doc=:num_doc and fecha_seguimiento>:fecha_inicio and fecha_seguimiento<:fecha_fin
 		$sqlConsSeg="select * from seguimiento_adol as a 
 			left join tipo_seguimiento as b on b.id_tipo_seguim=a.id_tipo_seguim 
 			where num_doc=:num_doc and fecha_seguimiento>:fecha_inicio and fecha_seguimiento<=:fecha_fin 
@@ -370,22 +391,4 @@ class SeguimientoAdol extends CActiveRecord
 		$readConsSeg->close();
 		return $resConsSeg;		
 	}
-/*	public function consultaProfSeg($profAutor){
-		$conect=Yii::app()->db;
-		$sqlConsProfSeg="select (nombre_personal ||' ' ||apellidos_personal) as nombre,* from persl_seg_adol as a left join persona as b on b.id_cedula=a.id_cedula 
-			left join usuario as c on c.id_cedula=a.id_cedula 
-			left join rol as d on d.id_rol=c.id_rol where id_seguimientoadol=:id_seguimientoadol and autor_registro=:autor_registro";
-		$consProfSeg=$conect->createCommand($sqlConsProfSeg);
-		$consProfSeg->bindParam(":id_seguimientoadol",$this->id_seguimientoadol,PDO::PARAM_INT);
-		$consProfSeg->bindParam(":autor_registro",$profAutor,PDO::PARAM_BOOL);
-		$readProfSeg=$consProfSeg->query();
-		$resProfSeg=$readProfSeg->readAll();
-		$readProfSeg->close();
-		return $resProfSeg;
-	}
-*//*
-//select * from seguimiento_adol as a left join tipo_seguimiento as b on b.id_tipo_seguim=a.id_tipo_seguim where num_doc='80760767' and fecha_seguimiento>'2014-08-02' and fecha_seguimiento<'2014-08-30'
-
-
-select * from persl_seg_adol as a left join persona as b on b.id_cedula=a.id_cedula left join usuario as c on c.id_cedula=a.id_cedula left join rol as d on d.id_rol=c.id_rol where id_seguimientoadol=12	
-*/}
+}

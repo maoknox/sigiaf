@@ -29,8 +29,8 @@ class PlanPostegreso extends CActiveRecord
 	/**
 	 * @return array validation rules for model attributes.
 	 */
-	public $nombreCampo;
-	public $datoCampo; 
+	public $nombreCampo;	/**< nombre de campo a modificar. */
+	public $datoCampo; 		/**< información contenida en campo. */
 	public function rules()
 	{
 		// NOTE: you should only define rules for those attributes that
@@ -114,6 +114,11 @@ class PlanPostegreso extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	/**
+	 *	Retorna consulta del plan postegreso actual según adolescente
+	 *	@param int $this->num_doc número de documento del adolescente.
+	 *	@return $resPlanPe contiene la información de las acciones al postegreso
+	 */		
 	public function consultaPlanPe(){
 		$conect=Yii::app()->db;
 		$sqlConsPlanPe="select * from plan_postegreso where num_doc=:num_doc and plan_peactual='true'";
@@ -124,6 +129,18 @@ class PlanPostegreso extends CActiveRecord
 		$readPlanPe->close();
 		return $resPlanPe;				
 	}
+	/**
+	 *	Crea registro del plan postegreso.
+	 *	@param string id_planpostegreso.
+	 *	@param int	  id_pai.
+	 *	@param string num_doc.
+	 *	@param string fecha_registroplan.
+	 *	@param string concepto_egreso.
+	 *	@param string proyeccion_pegreso.
+	 *	@param string planpe_hab.
+	 *	@param string plan_peactual.
+	 *	@return resultado de la transacción
+	 */		
 	public function creaPlanPe(){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -176,6 +193,18 @@ class PlanPostegreso extends CActiveRecord
 			return $e;
 		}
 	}
+	/**
+	 *	Modifica campo especificado del plan postegreso
+	 *	@param string id_planpostegreso.
+	 *	@param int	  id_pai.
+	 *	@param string num_doc.
+	 *	@param string fecha_registroplan.
+	 *	@param string concepto_egreso.
+	 *	@param string proyeccion_pegreso.
+	 *	@param string planpe_hab.
+	 *	@param string plan_peactual.
+	 *	@return resultado de la transacción
+	 */		
 	public function modifPlanPeg(){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();

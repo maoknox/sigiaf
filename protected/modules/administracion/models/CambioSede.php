@@ -48,6 +48,9 @@ class CambioSede extends CActiveRecord
 			array('id_cambio_sede, id_doc_soporte, num_doc, sede_nueva, sede_anterior, vbno_coord, doc_coord, fecha_cambio_sede', 'safe', 'on'=>'search'),
 		);
 	}
+	/**
+	 *	@return error si no ha seleccionado una opción de aprobación.
+	 */		
 	public function validaVoBno($attribute=NULL,$params=NULL){			
 		if(Yii::app()->controller->action->id=='procedeCambioSede'){
 			$controlAcceso=new ControlAcceso();
@@ -55,8 +58,7 @@ class CambioSede extends CActiveRecord
 			$permiso=$controlAcceso->controlAccesoAcciones();
 			if($permiso["acceso_rolmenu"]==1){
 				if(isset($_POST["CambioSede"]["vbno_coord"])&&empty($_POST["CambioSede"]["vbno_coord"])){
-						//print_r($_POST["Adolescente"]);
-						$this->addError($attribute,"Debe seleccionar una opción en aprobación");					
+					$this->addError($attribute,"Debe seleccionar una opción en aprobación");					
 				}
 			}
 		}
@@ -134,6 +136,10 @@ class CambioSede extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	
+	/**
+	 *	@return consulta si el adolescente tiene un cambio de sede solicitado
+	 */		
 	public function consultaSolCambioSede($numDocAdol){
 		$consultasGenerales=new ConsultasGenerales();
 		$linkBd=$consultasGenerales->conectaBDSinPdo();
@@ -146,6 +152,9 @@ class CambioSede extends CActiveRecord
 		pg_close($linkBd);	
 		return $consSolCS;
 	}
+	/**
+	 *	@return consulta si el adolescente tiene un cambio de sede solicitado y cuya aprobación por parte del coordinador este pendiente
+	 */		
 	public function consultaCambioSede($numDocAdol){
 		$consultasGenerales=new ConsultasGenerales();
 		$linkBd=$consultasGenerales->conectaBDSinPdo();
@@ -159,8 +168,13 @@ class CambioSede extends CActiveRecord
 		return $consSolCS;
 	}
 	
-	
-	
+	/**
+	 *	Registra el documento soporte en la solicitud de traslado de sede del adolescente.
+	 *	@param string $modeloDocSoporte->nombre_doc_ds
+	 *	@param string $modeloDocSoporte->ruta_acceso_ds
+	 *	@param string $modeloDocSoporte->fecha_reg_ds	
+	 *	@return resultado de transacción
+	 */		
 	public function registraSolCambioSede($modeloDocSoporte){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -214,6 +228,17 @@ class CambioSede extends CActiveRecord
 			return $e;			
 		}				
 	}
+	/**
+	 *	Actualiza la solicitud realizada de cambio de sede de adolescente con la decisión de traslado o no
+	 *	Si es afirmativa la decisión del coordinador se cambia la relación adolescente - centro forjar con la nueva sede
+	 *	El sistema genera un nuevo número de carpeta para el adolescente en la nueva sede
+	 *	@param bool $this->vbno_coord
+	 *	@param string $this->num_doc
+	 *	@param int $infoSol["id_cambio_sede"]
+	 *	@param string Yii::app()->user->getState('cedula')
+	 *	@param string $infoSol["sede_nueva"]
+	 *	@return resultado de transacción
+	 */		
 	public function registraDecCambioSede(){		
 		$infoSol=$this->consultaCambioSede($this->num_doc);
 		$conect=Yii::app()->db;

@@ -142,6 +142,11 @@ class Pai extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	
+	
+	/**
+	 * Dado que el adolescente puede haber reincidido, es posible que tenga uno o varios pai,entonces se consulta el pai actual.
+	 */	
 	public function consultaPAIActual(){
 		$conect= Yii::app()->db;
 		$sqlConsPai="select * from pai where num_doc=:num_doc and pai_actual='true'";
@@ -153,6 +158,9 @@ class Pai extends CActiveRecord
 		$this->id_pai=$resConsPai["id_pai"];
 		return $resConsPai;
 	}
+	/**
+	 * Consulta pai
+	 */	
 	public function consultaPAI(){
 		$conect= Yii::app()->db;
 		$sqlConsPai="select * from pai where num_doc=:num_doc order by id_pai desc limit 1";
@@ -164,6 +172,9 @@ class Pai extends CActiveRecord
 		$this->id_pai=$resConsPai["id_pai"];
 		return $resConsPai;
 	}
+	/**
+	 * Consulta pai para ser mostrado como insumo para realizar el plan post egreso
+	 */	
 	public function consultaPAIPlanPE(){
 		$conect= Yii::app()->db;
 		$sqlConsPai="select * from pai where num_doc=:num_doc and id_pai=:id_pai order by id_pai desc limit 1";
@@ -176,6 +187,9 @@ class Pai extends CActiveRecord
 		$this->id_pai=$resConsPai["id_pai"];
 		return $resConsPai;
 	}
+	/**
+	 * Consulta pai para ser mostrado como insumo para realizar el plan post egreso
+	 */	
 	public function creaPAI(){
 		$conect=Yii::app()->db;
 		$sqlConsPai="insert into pai (
@@ -201,6 +215,10 @@ class Pai extends CActiveRecord
 		$readCreaPai->close();
 		$this->id_pai=$resCreaPai["id_pai"];
 	}
+	
+	/**
+	 * método para registrar la culminación del pai
+	 */	
 	public function regCulmPai(){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -220,6 +238,9 @@ class Pai extends CActiveRecord
 			return $e;	
 		}
 	}
+	/**
+	 * Modifica el estado del pai que permite modificarlo o no.
+	 */	
 	public function actualizaEstadoPai(){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -236,6 +257,9 @@ class Pai extends CActiveRecord
 			$transaction->rollBack();			
 		}		
 	}
+	/**
+	 * Modifica el campo a 'false' que identifica al pai como actual o no.
+	 */	
 	public function estadoPaiActual(){
 		$conect= Yii::app()->db;
 		$sqlActPaiActual="update pai set pai_actual='false' where num_doc=:num_doc";

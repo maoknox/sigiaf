@@ -1,14 +1,27 @@
 <?php
+///!  Clase controlador del módulo gestión y seguimiento del ámbito socio jurídico.  
+/**
+ * @author Félix Mauricio Vargas Hincapié <femauro@gmail.com>
+ * @copyright Copyright &copy; Félix Mauricio Vargas Hincapié 2015
+ */
 
 class GestionSeguimSJController extends Controller
 {
 	
+	/**
+	 * Acción que se ejecuta en segunda instancia para verificar si el usuario tiene sesión activa.
+	 * En caso contrario no podrá acceder a los módulos del aplicativo y generará error de acceso.
+	 */
 	public function filterEnforcelogin($filterChain){		
 		if(Yii::app()->user->isGuest){
 			throw new CHttpException(403,"Debe loguearse primero");
 		}
 		$filterChain->run();
 	}			
+	/**
+	 * Acción que se ejecuta en primera instancia que llama a verificar la sesión de usuario y llama a los filtros secundarios
+	 * Los filtros no se ejecutan cuando se llaman a las acciones que van seguidas del guión.
+	 */
 	public function filters(){
 		$datosInput=Yii::app()->input->post();
 		if(isset($datosInput["numDocAdol"]) && !empty($datosInput["numDocAdol"])){
@@ -38,6 +51,25 @@ class GestionSeguimSJController extends Controller
 		}
 
 	}
+	/**
+	 *	Acción que renderiza el formulario para registrar el tipo de asesoría jurídica al cual el adolescente es remitido.
+	 *
+	 *	Vista a renderizar:
+	 *		- _registrarAsesoriaSJForm.
+	 *
+	 *	Modelos instanciados:
+	 *		- OperacionesGenerales
+	 * 		- ConsultasGenerales
+	 * 		- GestionSociojuridica.
+	 * 
+	 *	@param string $numDocAdol número de documento del adolescnete
+	 *	@param array $datosAdol datos básicos del adolescente
+	 *	@param int $edad edad del adolescente
+	 *	@param array $motivoAsesoria 
+	 *	@param array $remisionA 
+	 *	@param array $tipoGestion 
+	 *	@param object $modeloGestionSJ 
+	 */		
 	public function actionRegistrarAsesoriaSJForm(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="registrarAsesoriaSJForm";
@@ -79,6 +111,14 @@ class GestionSeguimSJController extends Controller
 
 	}
 	
+	/**
+	 *	Registra la asesoría que se diligencia en la vista _registrarAsesoriaSJForm e instancia a modelo
+	 *
+	 *	Modelos instanciados:
+	 * 		- GestionSociojuridica.
+	 *
+	 *	@param array $sedes. objeto $modeloTelForjar, $modeloCForjar.
+	 */		
 	public function actionRegistrarAsesoriaSJ(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="registrarAsesoriaSJForm";
@@ -87,13 +127,6 @@ class GestionSeguimSJController extends Controller
 			$datosInput=Yii::app()->input->post();
 			$modeloGestionSJ=new GestionSociojuridica();
 			$modeloGestionSJ->attributes=$datosInput["GestionSociojuridica"];
-			/*if(isset($_POST['ajax']) && $_POST['ajax']=='formularioRegGestionSJ')
-			{
-				if(Yii::app()->request->isAjaxRequest){
-					echo CActiveForm::validate($modeloGestionSJ);
-					Yii::app()->end();
-				}				
-			}*/
 			
 			if($modeloGestionSJ->validate()){
 				$resultado=$modeloGestionSJ->registraGestionSJ();
@@ -108,6 +141,22 @@ class GestionSeguimSJController extends Controller
 		}
 	}
 	
+	/**
+	 *	Acción que renderiza el formulario para mostrar el listado de las asesorías sociojurídicas que se realizan al adolescente.
+	 *
+	 *	Vista a renderizar:
+	 *		- _consultarAsesoriasSJForm.
+	 *
+	 *	Modelos instanciados:
+	 *		- OperacionesGenerales
+	 * 		- ConsultasGenerales
+	 * 		- GestionSociojuridica.
+	 *
+	 *	@param string $numDocAdol número de documento del adolescnete
+	 *	@param array $consultaGestionesAdol gestiones realizdas al adolescente
+	 *	@param array $datosAdol 
+	 *	@param int $edad 
+	 */		
 	public function actionConsultarAsesoriasSJ()
 	{
 		$controlAcceso=new ControlAcceso();
@@ -144,8 +193,24 @@ class GestionSeguimSJController extends Controller
 		}
 
 	}
-		public function actionMuestraAsesoriasSJ()
-	{
+	/**
+	 *	Acción que renderiza el formulario donde muestra la información de una gestión sociojurídica en específco.
+	 *
+	 *	Vista a renderizar:
+	 *		- _muestraAsesoriasSJ.
+	 *
+	 *	Modelos instanciados:
+	 *		- OperacionesGenerales
+	 * 		- ConsultasGenerales
+	 * 		- GestionSociojuridica.
+	 *
+	 *	@param string $numDocAdol número de documento del adolescnete
+	 *	@param array $consultaGestionesAdol gestiones realizdas al adolescente
+	 *	@param array $datosAdol 
+	 *	@param int $edad 
+	 *	@param object $modeloGestionSJ 
+	 */		
+	public function actionMuestraAsesoriasSJ(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="muestraAsesoriasSJ";
 		$permiso=$controlAcceso->controlAccesoAcciones();
@@ -180,6 +245,27 @@ class GestionSeguimSJController extends Controller
 		}
 	}
 	
+	/**
+	 *	Acción que renderiza el formulario donde muestra la información de una gestión sociojurídica en específco.
+	 *
+	 *	Vista a renderizar:
+	 *		- _segGSJForm.
+	 *
+	 *	Modelos instanciados:
+	 *		- OperacionesGenerales
+	 * 		- ConsultasGenerales
+	 * 		- GestionSociojuridica.
+	 * 		- SeguimientoAsesoriasj.
+	 *
+	 *	@param	object	$modeloGestionSJ
+	 *	@param	object	$modeloSegAsesoriasSJ
+	 *	@param	array	$consultaGestionesAdol
+	 *	@param	string	$numDocAdol
+	 *	@param	array	$datosAdol				
+	 *	@param	int		$edad
+	 *	@param	array	$consultaGestionAdol
+	 *	@param	array	$consultaHistSeg												 
+	 */		
 	public function actionMuestraFormSegGSJ(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="muestraAsesoriasSJ";
@@ -225,8 +311,16 @@ class GestionSeguimSJController extends Controller
 		}
 	}
 
-	public function actionRealizarSeguimientoSJ()
-	{
+	/**
+	 *	Recibe datos diligenciados en formulario de seguimiento en vista _segGSJForm e instancia a modelo para registrarlo en base de datos.
+	 *
+	 *	Modelos instanciados:
+	 *		- SeguimientoAsesoriasj.
+	 *
+	 *	@param array $datosInput.
+	 *	@param array $modeloSegAsesoriasSJ->attributes.
+	 */		
+	public function actionRealizarSeguimientoSJ(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="muestraAsesoriasSJ";
 		$permiso=$controlAcceso->controlAccesoAcciones();
@@ -247,6 +341,23 @@ class GestionSeguimSJController extends Controller
 		}
 
 	}
+	/**
+	 *	Acción que renderiza el formulario para modificar los datos de contacto registrados en el formulario de gestión sociojurídica.
+	 *
+	 *	Vista a renderizar:
+	 *		- _muestraAsesoriasSJMod.
+	 *
+	 *	Modelos instanciados:
+	 *		- OperacionesGenerales
+	 * 		- ConsultasGenerales
+	 * 		- GestionSociojuridica.
+	 *
+	 *	@param	object	$modeloGestionSJ
+	 *	@param	array	$consultaGestionesAdolMod
+	 *	@param	string	$numDocAdol
+	 *	@param	array	$datosAdol				
+	 *	@param	int		$edad
+	 */		
 	public function actionModificarDatosContactoSJForm(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="modificarDatosContactoSJForm";
@@ -282,6 +393,27 @@ class GestionSeguimSJController extends Controller
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}	
 	}
+	/**
+	 *	Acción que renderiza el formulario para modificar los datos de contacto registrados en el formulario de gestión sociojurídica.
+	 *
+	 *	Vista a renderizar:
+	 *		- _muestraAsesoriasSJMod.
+	 *
+	 *	Modelos instanciados:
+	 *		- OperacionesGenerales
+	 * 		- ConsultasGenerales
+	 * 		- SeguimientoAsesoriasj
+	 * 		- GestionSociojuridica.
+	 *
+	 *	@param	object	$modeloGestionSJ
+	 *	@param	object	$modeloSegAsesoriasSJ
+	 *	@param	string	$numDocAdol
+	 *	@param	array	$datosAdol				
+	 *	@param	int		$edad
+	 *	@param	array	$consultaGestionAdol
+	 *	@param	array	$consultaGestionesAdol
+	 *	@param	array	$consultaHistSeg
+	 */		
 	public function actionMuestraFormModGSJ(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="modificarDatosContactoSJForm";
@@ -327,6 +459,15 @@ class GestionSeguimSJController extends Controller
 		}
 	}
 
+	/**
+	 *	Recibe datos diligenciados en formulario de gestión sociojurídica en vista _modGSJForm e instancia a modelo para registrarlo en base de datos.
+	 *
+	 *	Modelos instanciados:
+	 *		- GestionSociojuridica.
+	 *
+	 *	@param array $datosInput.
+	 *	@param array $modeloGestionSJ->attributes.
+	 */		
 	public function actionModificaRegistroSJ(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="modificarDatosContactoSJForm";
@@ -335,13 +476,6 @@ class GestionSeguimSJController extends Controller
 			$datosInput=Yii::app()->input->post();
 			$modeloGestionSJ=new GestionSociojuridica();
 			$modeloGestionSJ->attributes=$datosInput["GestionSociojuridica"];
-			/*if(isset($_POST['ajax']) && $_POST['ajax']=='formularioRegGestionSJ')
-			{
-				if(Yii::app()->request->isAjaxRequest){
-					echo CActiveForm::validate($modeloGestionSJ);
-					Yii::app()->end();
-				}				
-			}*/
 			
 			if($modeloGestionSJ->validate()){
 				$modeloGestionSJ->id_gestionsj=$datosInput["GestionSociojuridica"]["id_gestionsj"];
@@ -371,18 +505,6 @@ class GestionSeguimSJController extends Controller
 
 	// Uncomment the following methods and override them if needed
 	/*
-	public function filters()
-	{
-		// return the filter configuration for this controller, e.g.:
-		return array(
-			'inlineFilterName',
-			array(
-				'class'=>'path.to.FilterClass',
-				'propertyName'=>'propertyValue',
-			),
-		);
-	}
-
 	public function actions()
 	{
 		// return external action classes, e.g.:

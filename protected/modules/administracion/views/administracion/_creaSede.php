@@ -42,14 +42,11 @@
     	</div>
      </div>
      <div class="form-group">
-	   	<?php echo $formCreaSede->labelEx($modeloTelForjar,'numCelular',array('class'=>'col-md-4 control-label','for'=>'searchinput'));?>
         <div class="col-md-4">
         	<?php $modeloTelForjar->id_tipo_telefono=2;?>
             <?php $modeloTelForjar->id_forjar=Yii::app()->user->getState('sedeForjar');?>
-            <?php echo $formCreaSede->textField($modeloTelForjar,'numCelular',array('class'=>'form-control input-md'));?>
             <?php echo $formCreaSede->hiddenField($modeloTelForjar,'id_tipo_telefono');?>
             <?php echo $formCreaSede->hiddenField($modeloTelForjar,'id_forjar');?>
-            <?php echo $formCreaSede->error($modeloTelForjar,'numCelular',array('style' => 'color:#F00'));?>     
     	</div>
      </div>
      <!-- Button (Double) -->
@@ -68,10 +65,16 @@
 							'success' => 'function(datos) {	
 								Loading.hide();
 								if(datos.estadoComu=="exito"){
-									if(datos.resultado=="\'exito\'"){
-										
+									if(datos.resultado=="exito"){
+										$("#formularioRegSede").removeClass("unsavedForm");
+										$(".errorMessage").text("");
+										$(".errorMessage").hide("");
+										$("#formularioRegSede_es_").text("");
+										$("#formularioRegSede_es_").hide("");	
+										jAlert("Sede registrada","Mensaje");																			
 									}
 									else{
+										jAlert("Ha habido un problema en el registro de sede, error: "+datos.resultado,"Mensaje");
 									}
 								}
 								else{						

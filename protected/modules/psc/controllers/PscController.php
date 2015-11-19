@@ -1,12 +1,20 @@
 <?php
 
 class PscController extends Controller{
+	/**
+	 * Acción que se ejecuta en segunda instancia para verificar si el usuario tiene sesión activa.
+	 * En caso contrario no podrá acceder a los módulos del aplicativo y generará error de acceso.
+	 */
 	public function filterEnforcelogin($filterChain){
 		if(Yii::app()->user->isGuest){
 			throw new CHttpException(403,"Debe loguearse primero");
 		}
 		$filterChain->run();
 	}
+	/**
+	 * Acción que se ejecuta en primera instancia que llama a verificar la sesión de usuario y llama a los filtros secundarios
+	 * Los filtros no se ejecutan cuando se llaman a las acciones que van seguidas del guión.
+	 */
 	public function filters(){
 		$datosInput=Yii::app()->input->post();
 		if(isset($datosInput["numDocAdol"]) && !empty($datosInput["numDocAdol"])){
@@ -26,6 +34,29 @@ class PscController extends Controller{
 	{
 		$this->render('index');
 	}
+	/**
+	 *	Acción que renderiza la vista que contiene el formulario para crear un registro de prestación de servicios a la comunidad.
+	 *
+	 *	Vista a renderizar:
+	 *		- _pscForm.
+	 *
+	 *	Modelos instanciados:     
+	 *		- Psc
+	 * 		- InformacionJudicial
+	 * 		- OperacionesGenerales
+	 * 		- DiaHora
+	 * 		- ConsultasGenerales.
+	 *
+	 *	@param object $modeloPsc,
+	 *	@param object $modeloDiaHora,
+	 *	@param string $numDocAdol,
+	 *	@param array $datosAdol,
+	 *	@param int	 $edad,
+	 *	@param array $sectorPsc,
+	 *	@param array $infJudicial,
+	 *	@param object $modeloInfJud,
+	 *	@param array $pscSinCulm,
+	 */		
 	public function actionCreaPsc(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="creaPsc";
@@ -40,7 +71,7 @@ class PscController extends Controller{
 				$numDocAdol=Yii::app()->getSession()->get('numDocAdol');
 			}		
 			if(!empty($numDocAdol)){
-				$modeloPsc= new Psc();
+				$modeloPsc= new Psc(); 
 				$modeloInfJud=new InformacionJudicial();
 				$modeloDiaHora=new DiaHora();
 				$operaciones=new OperacionesGenerales();
@@ -78,6 +109,11 @@ class PscController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Consulta los institutos psc según sector seleccionado
+	 *	@param int	 $datosInput["Psc"]["id_sector_psc"] sector seleccionado
+	 *	@return json 
+	 */		
 	public function actionConsInstitutoPsc(){
 		$datosInput=Yii::app()->input->post();
 		if(isset($datosInput["Psc"]["id_sector_psc"]) && !empty($datosInput["Psc"]["id_sector_psc"])){
@@ -100,6 +136,14 @@ class PscController extends Controller{
 			
 		}
 	}
+	/**
+	 *	Recibe datos del formulario de prestación de servicios a la comunidad, crea array de dias de prestación e instancia modelo para registrar en base de datos.
+	 *
+	 *	Modelos instanciados:
+	 *		- DiaHora
+	 *
+	 *	@param array $datosInput["Psc"] 
+	 */		
 	public function actionRegPsc(){
 		$datosInput=Yii::app()->input->post();	
 		//print_r($datosInput);
@@ -144,6 +188,26 @@ class PscController extends Controller{
 		}
 	}
 	
+	/**
+	 *	Acción que renderiza la vista que muestra las prestaciones de servicio a la comunidad asignadas al adolescente
+	 *
+	 *	Vista a renderizar:
+	 *		- _consultaPSC.
+	 *
+	 *	Modelos instanciados:     
+	 *		- Psc
+	 * 		- Telefono
+	 * 		- OperacionesGenerales
+	 * 		- ConsultasGenerales.
+	 *
+	 *	@param object $modeloPsc,
+	 *	@param array  $pscDes,
+	 *	@param string $numDocAdol,
+	 *	@param array  $datosAdol,
+	 *	@param int	  $edad,
+	 *	@param array  $telefono,
+	 *	@param int	  $offset,
+	 */		
 	public function actionConsultarPsc(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="consultarPsc";
@@ -195,6 +259,26 @@ class PscController extends Controller{
 		}
 	}
 
+	/**
+	 *	Acción que renderiza la vista que muestra las prestaciones de servicio a la comunidad asignadas al adolescente
+	 *
+	 *	Vista a renderizar:
+	 *		- _consultaPSCCoord.
+	 *
+	 *	Modelos instanciados:     
+	 *		- Psc
+	 * 		- Telefono
+	 * 		- OperacionesGenerales
+	 * 		- ConsultasGenerales.
+	 *
+	 *	@param object $modeloPsc,
+	 *	@param array  $pscDes,
+	 *	@param string $numDocAdol,
+	 *	@param array  $datosAdol,
+	 *	@param int	  $edad,
+	 *	@param array  $telefono,
+	 *	@param int	  $offset,
+	 */		
 	public function actionConsultarPscCoord(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="consultarPscCoord";
@@ -245,6 +329,26 @@ class PscController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Acción que renderiza la vista que muestra la información para consulta de la prestación de servicios a la comunidad seleccionada del listado de psc del adolescente.
+	 *
+	 *	Vista a renderizar:
+	 *		- _consultaPscForm.
+	 *
+	 *	Modelos instanciados:     
+	 *		- Psc
+	 * 		- DiaHora
+	 * 		- OperacionesGenerales
+	 * 		- ConsultasGenerales.
+	 *
+	 *	@param object $modeloPsc,
+	 *	@param object $modeloDiaHora,
+	 *	@param string $numDocAdol,
+	 *	@param array $datosAdol,
+	 *	@param int	 $edad,
+	 *	@param array $infPsc,
+	 *	@param array $estadopsc,
+	 */		
 	public function actionConsultaPscForm(){
 		$datosInput=Yii::app()->input->post();
 		if(isset($datosInput["Psc"]["num_doc"]) && !empty($datosInput["Psc"]["num_doc"])&&($datosInput["Psc"]["id_psc"]) && !empty($datosInput["Psc"]["id_psc"])){
@@ -278,6 +382,26 @@ class PscController extends Controller{
 		));
 	}
 
+	/**
+	 *	Acción que renderiza la vista que modificación de la información para consulta de la prestación de servicios a la comunidad seleccionada del listado de psc del adolescente.
+	 *
+	 *	Vista a renderizar:
+	 *		- _actEstpscForm.
+	 *
+	 *	Modelos instanciados:     
+	 *		- Psc
+	 * 		- DiaHora
+	 * 		- OperacionesGenerales
+	 * 		- ConsultasGenerales.
+	 *
+	 *	@param object $modeloPsc,
+	 *	@param object $modeloDiaHora,
+	 *	@param string $numDocAdol,
+	 *	@param array $datosAdol,
+	 *	@param int	 $edad,
+	 *	@param array $infPsc,
+	 *	@param array $estadopsc,
+	 */		
 	public function actionActEstadoPscForm(){
 		$datosInput=Yii::app()->input->post();
 		if(isset($datosInput["Psc"]["num_doc"]) && !empty($datosInput["Psc"]["num_doc"])&&($datosInput["Psc"]["id_psc"]) && !empty($datosInput["Psc"]["id_psc"])){
@@ -312,18 +436,6 @@ class PscController extends Controller{
 	}
 	// Uncomment the following methods and override them if needed
 	/*
-	public function filters()
-	{
-		// return the filter configuration for this controller, e.g.:
-		return array(
-			'inlineFilterName',
-			array(
-				'class'=>'path.to.FilterClass',
-				'propertyName'=>'propertyValue',
-			),
-		);
-	}
-
 	public function actions()
 	{
 		// return external action classes, e.g.:

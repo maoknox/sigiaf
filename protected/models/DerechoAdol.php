@@ -26,8 +26,8 @@ class DerechoAdol extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
-	public $atributos;
-	public $msnErrorDerecho="";
+	public $atributos;			/**< array de propiedades de cada uno de los 5 derechos  */
+	public $msnErrorDerecho="";	/**< almacena mensaje de error. */
 
 	public function tableName()
 	{
@@ -71,6 +71,10 @@ class DerechoAdol extends CActiveRecord
 			'idMomentoVerif' => array(self::BELONGS_TO, 'MomentoVerificacion', 'id_momento_verif'),
 		);
 	}
+	
+	/**
+	 * 	Valida si selecciona que tiene relacionado una situación de riesgos, debe relacionar a qué tipo de riesgos esta expuesto.
+	 */	
 	public function validaSitRiesgo($attribute=null,$params=null){
 		if(isset($_POST["DerechoAdol"]["id_derechocespa"]) && !empty($_POST["DerechoAdol"]["id_derechocespa"])){
 			$derechoCesp=$this->model()->findBySql("select * from derechocespa where derechocespa like '%Protecc%'");
@@ -83,6 +87,9 @@ class DerechoAdol extends CActiveRecord
 		}
 	}
 	
+	/**
+	 * Valida si selecciona que realiza participaciones en la comunidad, debe relacionar qué tipo de participaciones.
+	 */	
 	public function validaParticipacion($attribute=null,$params=null){
 		if(isset($_POST["DerechoAdol"]["id_derechocespa"]) && !empty($_POST["DerechoAdol"]["id_derechocespa"])){
 			$participCesp=$this->model()->findBySql("select * from derechocespa where derechocespa like '%Particip%'");
@@ -153,9 +160,18 @@ class DerechoAdol extends CActiveRecord
 	{
 		return parent::model($className);
 	}
-		public function registraDerechos(){
-		//$consGen=new ConstultasGenerales();
-		//$derechoCespa=$consGen->consultaDerechos();
+	
+	
+	/**
+	*	registra la verificación de derechos del adolescente 
+	*	es relacionado un array con 5 derechos, 
+	*	cada uno de ellos tiene asociado el tipo de derecho, 
+	*	número de documento del adolescente
+	*	momento en que se realza la verificación de derechos
+	*	si tiene relacionado ese derecho
+	*	observaciones del derecho
+	*/	
+	public function registraDerechos(){
 		$derechoProt=$this->model()->findBySql("select * from derechocespa where derechocespa like '%Protecc%'");
 		$derechoPart=$this->model()->findBySql("select * from derechocespa where derechocespa like '%Particip%'");
 		$derechoCespa=$this->model()->findAllBySql("select * from derechocespa order by id_derechocespa asc");
@@ -247,6 +263,9 @@ class DerechoAdol extends CActiveRecord
 		return "exito";
 	}
 	
+	/**
+	 * consulta la verificación de derechos del adolescente.
+	 */	
 	public function consultaDerechos(){
 		$conect= Yii::app()->db;
 		$sqlConsDerecho="select * from derecho_adol as a 
@@ -262,6 +281,9 @@ class DerechoAdol extends CActiveRecord
 		return $resDerecho;
 	}
 	
+	/**
+	 * consulta los riesgos a los que se enfrenta el adolescente según la verifiación de derechos.
+	 */	
 	public function consultaProteccion($idDerecho){
 		$conect= Yii::app()->db;
 		$sqlConsRiesgo="select * from situaciones_riesg_derecho 
@@ -273,6 +295,10 @@ class DerechoAdol extends CActiveRecord
 		$readConsRiesgo->close();
 		return $resConsRiesgo;		
 	}
+	
+	/**
+	 * consulta los tipos de participación del adolescente en su entorno.
+	 */	
 	public function consultaParticipacion($idDerecho){
 		$conect= Yii::app()->db;
 		$sqlConsPart="select * from alternativa_derecho 
@@ -284,9 +310,17 @@ class DerechoAdol extends CActiveRecord
 		$readPart->close();
 		return $resPart;	
 	}
+
+	/**
+	*	modifica la verificación de derechos del adolescente 
+	*	es relacionado un array con 5 derechos, 
+	*	cada uno de ellos tiene asociado el tipo de derecho, 
+	*	número de documento del adolescente
+	*	momento en que se realza la verificación de derechos
+	*	si tiene relacionado ese derecho
+	*	observaciones del derecho
+	*/	
 	public function modVerifDerAdol(){
-//$consGen=new ConstultasGenerales();
-		//$derechoCespa=$consGen->consultaDerechos();
 		$derechoProt=$this->model()->findBySql("select * from derechocespa where derechocespa like '%Protecc%'");
 		$derechoPart=$this->model()->findBySql("select * from derechocespa where derechocespa like '%Particip%'");
 		$derechoCespa=$this->model()->findAllBySql("select * from derechocespa order by id_derechocespa asc");

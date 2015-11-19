@@ -3,17 +3,41 @@ Yii::import('application.modules.administracion.models.AreainscrCforjar');
 
 class AsistenciaController extends Controller{
 	
+	/**
+	 * Acción que se ejecuta en segunda instancia para verificar si el usuario tiene sesión activa.
+	 * En caso contrario no podrá acceder a los módulos del aplicativo y generará error de acceso.
+	 */
 	public function filterEnforcelogin($filterChain){
 		if(Yii::app()->user->isGuest){
 			throw new CHttpException(403,"Debe loguearse primero");
 		}
 		$filterChain->run();
 	}
-	
+		
+	/**
+	 * Acción que se ejecuta en primera instancia que llama a verificar la sesión de usuario y llama a los filtros secundarios
+	 * Los filtros no se ejecutan cuando se llaman a las acciones que van seguidas del guión.
+	 */
 	public function filters(){
 		return array('enforcelogin',array('application.filters.ActionLogFilter - buscaAdolGen','modulo'=>$this->module->id,'controlador'=>$this->id,'parametros'=>Yii::app()->input->post()));
 	}
 
+
+	/**
+	 *	Acción que renderiza el formulario para registrar la asistencia de los adolescentes
+	 *
+	 *	Vista a renderizar:
+	 *		- _regAsistenciaForm.
+	 *
+	 *	Modelos instanciados:
+	 *		- Asistencia
+	 * 		- OperacionesGenerales.
+	 * 		- ConsultasGenerales.
+	 *	@param array $areaPresc listado de áreas presenciales
+	 *	@param array $areaInscripcion listado de áreas de inscripción
+	 *	@param array $tipoAreaInscripcion tipos de áreas de inscripción
+	 *	@param object $modeloAsistencia instancia del modelo asistencia.
+	 */		
 	public function actionRegAsistenciaForm(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="regAsistenciaForm";
@@ -41,6 +65,16 @@ class AsistenciaController extends Controller{
 		
 	}
 	
+	/**
+	 *	Registra asistencia de los adolescentes seleccionados, llama a modelo para registrar la asistencia.
+	 *
+	 *	Modelos instanciados:
+	 *		- Asistencia
+	 *	@param array $dataInputi datos recibidos por la acción despues de la sanitizing Yii::app()->input->post() 
+	 *	@param string $modeloAsistencia->num_doc 
+	 *	@param array $tipoAreaInscripcion tipos de áreas de inscripción
+	 *	@param object $modeloAsistencia instancia del modelo asistencia.
+	 */		
 	public function actionRegAsistencia(){
 		
 		if(isset($_POST["Asistencia"]) && !empty($_POST["Asistencia"])){
@@ -90,6 +124,15 @@ class AsistenciaController extends Controller{
 		}
 	}
 	
+	/**
+	 *	Renderiza el formulario para 
+	 *
+	 *	Vista a renderizar:
+	 *		- _reporteAsistencia.
+	 *
+	 *	Modelos instanciados:
+	 *		- modeloRepAsistencia
+	 */		
 	public function actionReporteAsistencia(){
 		$modeloRepAsistencia=new ReporteAsistencia();
 		$this->render("_reporteAsistencia",array('modeloRepAsistencia'=>$modeloRepAsistencia));
@@ -97,6 +140,16 @@ class AsistenciaController extends Controller{
 	}
 	
 	
+	/**
+	 *	Acción que genera el reporte de asistencia en excel según mes y año seleccionados en la vista _reporteAsistencia
+	 *
+	 *	Modelos instanciados:
+	 *		- ReporteAsistencia
+	 *	@param array $areaPresc listado de áreas presenciales
+	 *	@param array $areaInscripcion listado de áreas de inscripción
+	 *	@param array $tipoAreaInscripcion tipos de áreas de inscripción
+	 *	@param object $modeloAsistencia instancia del modelo asistencia.
+	 */		
 	public function actionReporteAsistenciaExcel(){
 		$dataInput=Yii::app()->input->post();
 		$modeloRepAsistencia=new ReporteAsistencia();
@@ -113,6 +166,17 @@ class AsistenciaController extends Controller{
 		}
 	}
 	
+	/**
+	 *	Acción que renderiza el formulario para vincular áreas de interés a una sede
+	 *
+	 *	Vista a renderizar:
+	 *		- _vinculaAreaInteresForm.
+	 *
+	 *	Modelos instanciados:
+	 *		- AreainscrCforjar
+	 *	@param array $areaIntSinVinc listado de áreas presenciales
+	 *	@param object $modeloAreainscrCforjar instancia del modelo asistencia.
+	 */		
 	public function actionVinculaAreaIntDeporteForm(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="vinculaAreaIntDeporteForm";
@@ -126,6 +190,16 @@ class AsistenciaController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Acción que genera llama a modelo y asocia por base de datos las áreas de interés con la sede seleccionada.
+	 *
+	 *	Modelos instanciados:
+	 *		- AreainscrCforjar
+	 *	@param array $areaPresc listado de áreas presenciales
+	 *	@param array $areaInscripcion listado de áreas de inscripción
+	 *	@param array $tipoAreaInscripcion tipos de áreas de inscripción
+	 *	@param object $modeloAsistencia instancia del modelo asistencia.
+	 */		
 	public function actionVinculaArIntDep(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="vinculaAreaIntDeporteForm";
@@ -153,6 +227,18 @@ class AsistenciaController extends Controller{
 	}
 	
 	
+	/**
+	 *	Acción que renderiza el formulario para deshabilitar áreas de interés
+	 *
+	 *	Vista a renderizar:
+	 *		- _deshabilitaAreaInteresDeporteForm.
+	 *
+	 *	Modelos instanciados:
+	 *		- AreainscrCforjar
+	 *	@param array $deportes listado deportes
+	 *	@param array $areaInt listado áreas de interés
+	 *	@param object $modeloAreainscrCforjar .
+	 */		
 	public function actionDeshabilitaAreaIntDeporteForm(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="deshabilitaAreaIntDeporteForm";
@@ -176,6 +262,18 @@ class AsistenciaController extends Controller{
 	}
 	
 	
+	/**
+	 *	Acción que renderiza el formulario para deshabilitar áreas de interés
+	 *
+	 *	Vista a renderizar:
+	 *		- _deshabilitaAreaInteresDeporteForm.
+	 *
+	 *	Modelos instanciados:
+	 *		- AreainscrCforjar
+	 *	@param array $deportes listado deportes
+	 *	@param array $areaInt listado áreas de interés
+	 *	@param object $modeloAreainscrCforjar .
+	 */		
 	public function actionHabilitaAreaIntDeporteForm(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="habilitaAreaIntDeporteForm";
@@ -197,6 +295,16 @@ class AsistenciaController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Acción que genera llama a modelo cambia estado de área de interés a habilitado o deshabilitado en base de datos.
+	 *
+	 *	Modelos instanciados:
+	 *		- AreainscrCforjar
+	 *	@param array $areaPresc listado de áreas presenciales
+	 *	@param array $areaInscripcion listado de áreas de inscripción
+	 *	@param array $tipoAreaInscripcion tipos de áreas de inscripción
+	 *	@param object $modeloAsistencia instancia del modelo asistencia.
+	 */		
 	public function actionDesHabilitaAreaIntDeporte(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="deshabilitaAreaIntDeporteForm";
@@ -224,18 +332,6 @@ class AsistenciaController extends Controller{
 	}
 	// Uncomment the following methods and override them if needed
 	/*
-	public function filters()
-	{
-		// return the filter configuration for this controller, e.g.:
-		return array(
-			'inlineFilterName',
-			array(
-				'class'=>'path.to.FilterClass',
-				'propertyName'=>'propertyValue',
-			),
-		);
-	}
-
 	public function actions()
 	{
 		// return external action classes, e.g.:

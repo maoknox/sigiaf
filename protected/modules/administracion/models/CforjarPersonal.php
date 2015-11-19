@@ -91,6 +91,10 @@ class CforjarPersonal extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	/**
+	 *	@param int $this->id_cedula.	
+	 *	@return $resSedeFuncionario sedes que el usuario tiene asociadas.
+	 */		
 	public function consultarSedeFuncionario(){
 		$conect=Yii::app()->db;		
 		$sqlConsSedeFuncionario="select id_cedula,a.id_forjar,nombre_sede from cforjar_personal as a left join centro_forjar as b on b.id_forjar=a.id_forjar where id_cedula=:id_cedula";
@@ -102,6 +106,10 @@ class CforjarPersonal extends CActiveRecord
 		return $resSedeFuncionario;	
 	}
 	
+	/**
+	 *	@param bool $this->areacforjar_activa.
+	 *	@return retorna consulta si tiene asignado un adolescente actualmente, aplica solo para equipo psicosocial.
+	 */		
 	public function validarAsocAdol(){
 		$conect=Yii::app()->db;
 		$sqlVerifAsocAdol="select * from persona as a 
@@ -116,6 +124,11 @@ class CforjarPersonal extends CActiveRecord
 		return $resAsocAdol;	
 	}
 	
+	/**
+	 *	@param string $this->id_cedula.
+	 *	@param string $this->id_forjar.
+	 *	@return $resAsocAdol consulta si tiene asignado un adolescente actualmente en una respectiva sede, aplica solo para equipo psicosocial.
+	 */		
 	public function validarAsocAdolForjar(){
 		$conect=Yii::app()->db;
 		$sqlVerifAsocAdol="select * from persona as a 
@@ -131,6 +144,10 @@ class CforjarPersonal extends CActiveRecord
 		return $resAsocAdol;	
 	}
 	
+	/**
+	 *	@param int $this->id_cedula.
+	 *	@return retorna consulta de las valoraciones que un psicólogo tiene incompletas, no realizadas o con un estado sin definir.
+	 */		
 	public function validarEstadoVal(){
 		$conect=Yii::app()->db;
 		$sqlValidaEstVal="select distinct(num_doc) from profesional_valpsicol as a 
@@ -145,6 +162,12 @@ class CforjarPersonal extends CActiveRecord
 	}
 
 	
+	/**
+	 *	Se realiza el cambio de relación personal - forjar, cuando el profesional es trasladado de sede, es asociado nueva sede a la persona.
+	 *	@param int $this->areacforjar_activa.
+	 *	@param bool $this->areacforjar_activa.
+	 *	@return retorna consulta si tiene asignado un adolescente actualmente en una respectiva sede, aplica solo para equipo psicosocial.
+	 */		
 	public function trasladarFuncionario(){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -162,6 +185,13 @@ class CforjarPersonal extends CActiveRecord
 			return $e->message();
 		}
 	}
+	
+	/**
+	 *	Se realiza el cambio de relación personal - forjar, cuando el profesional es trasladado de sede..
+	 *	@param int $this->areacforjar_activa.
+	 *	@param bool $this->areacforjar_activa.
+	 *	@return retorna consulta si tiene asignado un adolescente actualmente en una respectiva sede, aplica solo para equipo psicosocial.
+	 */		
 	public function asociarSedeAUsuario(){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();

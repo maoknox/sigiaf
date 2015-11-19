@@ -8,12 +8,20 @@ Yii::import('application.modules.valoracionIntegral.models.GrupocomidaNutradol')
 Yii::import('application.modules.valoracionIntegral.models.ValoracionNutricional');	
 
 class SeguimientoAdolController extends Controller{
+	/**
+	 * Acción que se ejecuta en segunda instancia para verificar si el usuario tiene sesión activa.
+	 * En caso contrario no podrá acceder a los módulos del aplicativo y generará error de acceso.
+	 */
 	public function filterEnforcelogin($filterChain){
 		if(Yii::app()->user->isGuest){
 			throw new CHttpException(403,"Debe loguearse primero");
 		}
 		$filterChain->run();
 	}
+	/**
+	 * Acción que se ejecuta en primera instancia que llama a verificar la sesión de usuario y llama a los filtros secundarios
+	 * Los filtros no se ejecutan cuando se llaman a las acciones que van seguidas del guión.
+	 */
 	public function filters(){
 		$datosInput=Yii::app()->input->post();
 		if(isset($datosInput["numDocAdol"]) && !empty($datosInput["numDocAdol"])){
@@ -29,6 +37,41 @@ class SeguimientoAdolController extends Controller{
 			array('application.filters.ActionVerifEstadoFilter + consPscSeg seguimientoNutrForm','num_doc'=>Yii::app()->getSession()->get('numDocAdol'))
 		);
 	}
+	/**
+	 *	Acción que renderiza la vista que contiene el formulario para el diligenciamiento del seguimiento del adolescente ya sea del proceso o seguimiento al post egreso.
+	 *
+	 *	Vista a renderizar:
+	 *		- _registrarSegForm.
+	 *
+	 *	Modelos instanciados:          
+	 *		- PlanPostegreso
+	 * 		- SeguimientoAdol
+	 * 		- Psc
+	 * 		- AsistenciaPsc
+	 * 		- SeguimientoPsc
+	 * 		- InformacionJudicial
+	 * 		- Pai.
+	 * 		- OperacionesGenerales.
+	 * 		- ConsultasGenerales.
+	 *
+	 *	@param object 	$modeloInfJudAdmon                
+	 *	@param string	$numDocAdol
+	 *	@param array 	$datosAdol
+	 *	@param int	 	$edad
+	 *	@param object 	$modeloInfJud
+	 *	@param int	 	$tipoSeguimiento
+	 *	@param array 	$areaDisc
+	 *	@param array 	$seguimientos
+	 *	@param array 	$seguimientoPosEgreso
+	 *	@param object 	$modeloPsc
+	 *	@param array 	$pscSinCulm
+	 *	@param object 	$modeloSeguimientoPsc
+	 *	@param object 	$modeloAsistenciaPsc
+	 *	@param object 	$modeloAcudiente
+	 *	@param array 	$pscDes
+	 *	@param object 	$offset
+	 *	@param array 	$paiAdol
+	 */		
 	public function actionRegistrarSeg(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="registrarSeg";
@@ -51,7 +94,7 @@ class SeguimientoAdolController extends Controller{
 				$modeloInfJud=new InformacionJudicial();
 				$modeloPai= new Pai();
 				$modeloPai->num_doc=$numDocAdol;				
-				$paiAdol=$modeloPai->consultaPAIActual();													
+				$paiAdol=$modeloPai->consultaPAIActual(); //llama al pai actual del adolescente													
 				if(empty($paiAdol)){					
 					$modeloPlanPostegreso->num_doc=$numDocAdol;
 					$planPEgreso=$modeloPlanPostegreso->consultaPlanPe();	
@@ -102,7 +145,7 @@ class SeguimientoAdolController extends Controller{
 				'pscSinCulm'=>$pscSinCulm,
 				'modeloSeguimientoPsc'=>$modeloSeguimientoPsc,
 				'modeloAsistenciaPsc'=>$modeloAsistenciaPsc,
-				'pscDes'=>$pscDes,
+				'pscDes'=>$pscDes, 
 				'offset'=>$offset,
 				'paiAdol'=>$paiAdol
 					
@@ -112,6 +155,14 @@ class SeguimientoAdolController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	llamada de ajax, consulta el profesional que realizó un seguimiento determinado, y si fue en conjunción consulta quien apoyó el seguimiento.
+	 *
+	 *	Modelos instanciados:
+	 *		- ConsultasGenerales
+	 *
+	 *	@return json con el listado de profesionales que realizaron un seguimiento en específico.
+	 */		
 	public function actionConsProf(){
 		$dataInput=Yii::app()->input->post();
 		if(isset($_POST["idSegConj"]) && !empty($_POST["idSegConj"])){
@@ -132,6 +183,16 @@ class SeguimientoAdolController extends Controller{
 		}
 	}
 	
+	/**
+	 *	Recibe datos del formulario de seguimiento e instancia a modelo para registrar el seguimiento al proceso.
+	 *
+	 *	Modelos instanciados:
+	 *		- SeguimientoAdol
+	 *
+	 *	@param arrya $dataClean $_POST	de datos del formulario de seguimiento ya sea al proceso o post egreso.
+	 *	@param string $modeloInfJudAdmon->mensajeErrorInfJud.
+	 *	@return json resultado de la transacción.
+	 */		
 	public function actionRegistraSegimiento(){
 		$dataInput=Yii::app()->input->post();
 		if(isset($_POST["SeguimientoAdol"]) && !empty($_POST["SeguimientoAdol"])){
@@ -147,7 +208,17 @@ class SeguimientoAdolController extends Controller{
 			}
 		}
 	}
-		public function actionRegistraSegimientoPe(){
+	/**
+	 *	Recibe datos del formulario de seguimiento e instancia a modelo para registrar el seguimiento post egreso.
+	 *
+	 *	Modelos instanciados:
+	 *		- SeguimientoAdol
+	 *
+	 *	@param arrya $dataClean $_POST	de datos del formulario de seguimiento ya sea al proceso o post egreso.
+	 *	@param string $modeloInfJudAdmon->mensajeErrorInfJud.
+	 *	@return json resultado de la transacción.
+	 */		
+	public function actionRegistraSegimientoPe(){
 		$dataInput=Yii::app()->input->post();
 		if(isset($_POST["SeguimientoAdol"]) && !empty($_POST["SeguimientoAdol"])){
 			$modeloSeguimiento=new SeguimientoAdol();
@@ -162,6 +233,14 @@ class SeguimientoAdolController extends Controller{
 			}
 		}
 	}
+	/**
+	 *	llamada de ajax, consulta seguimiento según adolescente y según fecha
+	 *
+	 *	Modelos instanciados:
+	 *		- SeguimientoPsc
+	 *
+	 *	@return json retorna true si tiene seguimiento en esa fecha de lo contrario retorna false.
+	 */		
 	public function actionCompFechaAsistencia(){
 		$dataInput=Yii::app()->input->post();
 		if(!empty($_POST["date"]) && !empty($_POST["id_psc"])&& !empty($_POST["num_doc"])){
@@ -178,6 +257,17 @@ class SeguimientoAdolController extends Controller{
 			}	
 		}
 	}
+	/**
+	 *	Recibe datos del formulario de seguimiento e instancia a modelo para registrar el seguimiento post egreso.
+	 *
+	 *	Modelos instanciados:
+	 *		- SeguimientoPsc
+	 *		- AsistenciaPsc
+	 *		- ConsultasGenerales
+	 *
+	 *	@param array $dataInput array de datos de formulario de seguimiento de psc.
+	 *	@return json resultado de la transacción.
+	 */		
 	public function actionRegistraSegimientoPSC(){
 		$dataInput=Yii::app()->input->post();
 		if(isset($_POST["SeguimientoPsc"]) && !empty($_POST["SeguimientoPsc"]) && isset($_POST["AsistenciaPsc"]) && !empty($_POST["AsistenciaPsc"])){
@@ -208,6 +298,25 @@ class SeguimientoAdolController extends Controller{
 			}
 		}
 	}
+	/**
+	 *	Acción que renderiza la vista para mostrar todos los servicios a la comunidad que el adolescente ha realizado y que se han registrado en el sistema
+	 *
+	 *	Vista a renderizar:
+	 *		- _consultaPSC.
+	 *
+	 *	Modelos instanciados:          
+	 *		- Psc
+	 * 		- Telefono
+	 *		- OperacionesGenerales.
+	 * 		- ConsultasGenerales.
+	 *
+	 *	@param object 	$modeloPsc 
+	 *	@param string	$numDocAdol
+	 *	@param array 	$datosAdol
+	 *	@param int	 	$edad
+	 *	@param array 	$telefono
+	 *	@param object 	$offset
+	 */		
 	public function actionConsultarPsc(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="consultarPsc";
@@ -243,7 +352,7 @@ class SeguimientoAdolController extends Controller{
 			}
 			//consulta Instancia remisora
 			$this->render('_consultaPSC',
-				array(
+				array( 
 					'modeloPsc'=>$modeloPsc,
 					'pscDes'=>$pscDes,
 					'numDocAdol'=>$numDocAdol,
@@ -259,6 +368,28 @@ class SeguimientoAdolController extends Controller{
 		}
 	}
 	
+	/**
+	 *	Acción que renderiza la vista para mostrar el histórico de seguimientos de prestación de servicios a la comunidad
+	 *
+	 *	Vista a renderizar:
+	 *		- _consultaPSC.
+	 *
+	 *	Modelos instanciados:          
+	 *		- Psc
+	 *		- InformacionJudicial
+	 * 		- Telefono
+	 *		- OperacionesGenerales.
+	 * 		- ConsultasGenerales.
+	 *
+	 *	@param object 	$modeloPsc  
+	 *	@param array	$pscDes
+	 *	@param string	$numDocAdol
+	 *	@param array 	$datosAdol
+	 *	@param int	 	$edad
+	 *	@param array 	$telefono
+	 *	@param int 		$offset
+	 *	@param array 	$infJudicial
+	 */		
 	public function actionConsPscSeg(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="consPscSeg";
@@ -322,6 +453,36 @@ class SeguimientoAdolController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Acción que renderiza la vista para mostrar el formulario de prestación de servicios a la comunidad y para mostrar el histórico de seguimientos 
+	 *
+	 *	Vista a renderizar:
+	 *		- _consultaPSC.
+	 *
+	 *	Modelos instanciados:          
+	 *		- Psc
+	 *		- InformacionJudicial
+	 * 		- Telefono
+	 * 		- AsistenciaPsc
+	 * 		- SeguimientoPsc
+	 *		- OperacionesGenerales.
+	 * 		- ConsultasGenerales.
+	 *
+	 *	@param string 	$numDocAdol  
+	 *	@param object	$modeloInfJud
+	 *	@param array	$infJudicial
+	 *	@param object 	$modeloSeguimiento
+	 *	@param object 	$modeloPsc
+	 *	@param array 	$pscSinCulm
+	 *	@param object	$modeloSeguimientoPsc
+	 *	@param object 	$modeloPsc
+	 *	@param object	$modeloAsistenciaPsc
+	 *	@param array 	$pscDes
+	 *	@param array 	$datosAdol
+	 *	@param int	 	$edad
+	 *	@param array 	$telefono
+	 *	@param int 		$offset
+	 */		
 	public function actionCargaFormSegPsc(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="consPscSeg";
@@ -398,8 +559,43 @@ class SeguimientoAdolController extends Controller{
 		}
 	}
 	
-/*************************************************** SEGUIMIENTO PLA DIETARIO ****************************************************************/
+/*************************************************** SEGUIMIENTO PLAN DIETARIO ****************************************************************/
 
+	/**
+	 *	Acción que renderiza la vista para mostrar el formulario de seguimiento a la valoración en nutrición
+	 *
+	 *	Vista a renderizar:
+	 *		- _segNutrForm.
+	 *
+	 *	Modelos instanciados:          
+	 *		- Antropometria
+	 *		- NutricionAdol
+	 * 		- PorcionesComida
+	 * 		- ForjarAdol
+	 * 		- GrupocomidaNutradol
+	 *		- OperacionesGenerales.
+	 * 		- ConsultasGenerales.
+	 *	
+	 *	@param string	$numDocAdol
+	 *	@param array	$datosAdol
+	 *	@param object	$modeloValNutr
+	 *	@param array	$valNutr
+	 *	@param int		$idValNutr
+	 *	@param int		$edad
+	 *	@param int		$estadoAdol
+	 *	@param array	$grupoComida
+	 *	@param object	$modeloGrupocomidaValnutr
+	 *	@param object	$modeloAntropometria
+	 *	@param array	$antropometriaAdol
+	 *	@param object	$modeloNutricionAdol
+	 *	@param array	$tiempoAlimento
+	 *	@param array	$seguimPlanDietario
+	 *	@param object	$modeloGrupocomidaNutradol
+	 *	@param object	$modeloPorcionesComida
+	 *	@param int		$estadoCompVal
+	 *	@param array	$seguimientosNutr
+	 *	@param array	$seguimPlanDietario	
+	 */		
 	public function actionSeguimientoNutrForm(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="seguimientoNutrForm";
@@ -474,6 +670,17 @@ class SeguimientoAdolController extends Controller{
 		}	
 	}
 	
+	/**
+	 *	Recibe datos del formulario de seguimiento nutricional
+	 *
+	 *	Modelos instanciados:
+	 *		- Antropometria
+	 *		- NutricionAdol
+	 *		- ConsultasGenerales
+	 *
+	 *	@param array $dataInput array de datos de formulario de seguimiento de psc.
+	 *	@return json resultado de la transacción.
+	 */		
 	public function actionRegistraSeguimientoNutr(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="seguimientoNutrForm";
@@ -520,6 +727,41 @@ class SeguimientoAdolController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}	
 	}
+	/**
+	 *	Acción que renderiza la vista para mostrar la consulta del seguimiento nutricional
+	 *
+	 *	Vista a renderizar:
+	 *		- _consSegForm.
+	 *
+	 *	Modelos instanciados:          
+	 *		- Antropometria
+	 *		- NutricionAdol
+	 * 		- PorcionesComida
+	 * 		- ForjarAdol
+	 * 		- GrupocomidaNutradol
+	 *		- OperacionesGenerales.
+	 * 		- ConsultasGenerales.
+	 *	
+	 *	@param string	$numDocAdol
+	 *	@param array	$datosAdol
+	 *	@param object	$modeloValNutr
+	 *	@param array	$valNutr
+	 *	@param int		$idValNutr
+	 *	@param int		$edad
+	 *	@param int		$estadoAdol
+	 *	@param array	$grupoComida
+	 *	@param object	$modeloGrupocomidaValnutr
+	 *	@param object	$modeloAntropometria
+	 *	@param array	$antropometriaAdol
+	 *	@param object	$modeloNutricionAdol
+	 *	@param array	$tiempoAlimento
+	 *	@param array	$seguimPlanDietario
+	 *	@param object	$modeloGrupocomidaNutradol
+	 *	@param object	$modeloPorcionesComida
+	 *	@param int		$estadoCompVal
+	 *	@param array	$seguimientosNutr
+	 *	@param array	$seguimPlanDietario	
+	 */		
 	public function actionConsSegAdol(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="consSegAdol";
@@ -605,18 +847,6 @@ class SeguimientoAdolController extends Controller{
 	}
 	// Uncomment the following methods and override them if needed
 	/*
-	public function filters()
-	{
-		// return the filter configuration for this controller, e.g.:
-		return array(
-			'inlineFilterName',
-			array(
-				'class'=>'path.to.FilterClass',
-				'propertyName'=>'propertyValue',
-			),
-		);
-	}
-
 	public function actions()
 	{
 		// return external action classes, e.g.:

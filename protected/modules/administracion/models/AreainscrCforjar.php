@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This is the model class for table "areainscr_cforjar".
+ * This is the model class for table "areainscr_cforjar".  Asocia las áreas de inscripción con las o la sede centro forjar.
  *
  * The followings are the available columns in table 'areainscr_cforjar':
  * @property integer $id_areainteres
@@ -97,6 +97,14 @@ class AreainscrCforjar extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+		
+	/**
+	 *	Relaciona la nueva área de inscripción con las o la sede de forjar
+	 *	@param int $this->id_forjar.
+	 *	@param int $this->id_areainteres.
+	 *	@param bool $this->areacforjar_activa.	
+	 *	@return resultado de transacción
+	 */		
 	public function asociaAIntForjar(){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -108,8 +116,7 @@ class AreainscrCforjar extends CActiveRecord
 			:id_areainteres,
 			:id_forjar,
 			:areacforjar_activa
-		)";
-						
+		)";						
 		try{
 			foreach($this->id_forjar as $forjar){
 				$asAIForjar=$conect->createCommand($sqlAsAIForjar);
@@ -127,6 +134,9 @@ class AreainscrCforjar extends CActiveRecord
 			
 		}
 	}
+	/**
+	 *	@return áreas de inscripción según centro forjar seleccionado.
+	 */		
 	public function consultaAreaInscrSinVinc(){
 		$conect=Yii::app()->db;//
 		$sqlConsAreaInsSinVinc="select * from (select id_areainteres from area_inscripcion except select id_areainteres from areainscr_cforjar where id_forjar=:id_forjar) as a 
@@ -138,6 +148,13 @@ class AreainscrCforjar extends CActiveRecord
 		$readAreaInsSinVinc->close();
 		return 	$resAreaInsSinVinc;	
 	}
+	/**
+	 *	Relaciona la nueva área de inscripción con las o la sede de forjar
+	 *	@param int $areaIntDep.
+	 *	@param int Yii::app()->user->getState('sedeForjar').
+	 *	@param bool $this->areacforjar_activa.	
+	 *	@return resultado de transacción
+	 */		
 	public function vinculaAIntDepForjar(){
 		if(!empty($this->areasInteresDeportes) && is_array($this->areasInteresDeportes)){	
 			$conect=Yii::app()->db;
@@ -172,6 +189,9 @@ class AreainscrCforjar extends CActiveRecord
 			
 		}
 	}
+	/**
+	 *	@return deportes asociados a una sede en específico de centro forjar.
+	 */		
 	public function consultaAreaInteresDeportes(){
 		$conect=Yii::app()->db;
 		$sqlConsAIntDep="select * from area_inscripcion as a 
@@ -187,6 +207,13 @@ class AreainscrCforjar extends CActiveRecord
 		return $resAintDep;
 		
 	}
+	/**
+	 *	Deshabilita o habilita el área de interés o deporte seleccionado.  Según el estado el deporte o área de interés se mostrará o no en la lista.
+	 *	@param int $areaIntDep.
+	 *	@param int Yii::app()->user->getState('sedeForjar').
+	 *	@param bool $this->areacforjar_activa.	
+	 *	@return resultado de transacción
+	 */		
 	public function deshabHabAIntDepForjar(){
 		if(!empty($this->areasInteresDeportes) && is_array($this->areasInteresDeportes)){	
 			$conect=Yii::app()->db;
@@ -213,5 +240,4 @@ class AreainscrCforjar extends CActiveRecord
 			
 		}		
 	}
-	
 }

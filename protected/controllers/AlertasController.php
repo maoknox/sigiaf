@@ -1,21 +1,28 @@
 <?php
+/** @addtogroup Principal */
+/*@{*/
+
 
 class AlertasController extends Controller{
-	public $sedeForjar;
-	public $numCasos=0;
-	public $numCasosIdReg=0;
-	public $numCasosAsist=0;
-	public $numCasosSeguim=0;
-	public $numCasosValPsicol=0;
-	public $numCasosConcInt=0;
-	public $numCasosPAI=0;
-	public $numCasosValTrSoc=0;
-	public $numCasosValTO=0;
-	public $numCasosValPsiq=0;
-	public $numCasosValEnf=0;
-	public $numCasosSeguimMD=0;
-	public $numCasosRef=0;
-	public $icono;
+	public $sedeForjar;			/**< sede o unidad operativa al cual accede el usuario al aplicativo */
+	public $numCasos=0;			/**< Número de casos de alerta */
+	public $numCasosIdReg=0;	/**< Número de casos de identificación y registro */
+	public $numCasosAsist=0;	/**< Número de casos de asistencia*/
+	public $numCasosSeguim=0;	/**< Número de casos de seguimiento*/
+	public $numCasosValPsicol=0;/**< Número de casos de valoración en psicología*/
+	public $numCasosConcInt=0;	/**< Número de casos de concepto integral*/
+	public $numCasosPAI=0;		/**< Número de casos de concepto plan de atención integral*/
+	public $numCasosValTrSoc=0;	/**< Número de casos de trabajo social*/
+	public $numCasosValTO=0;	/**< Número de casos de terapia ocupacional*/
+	public $numCasosValPsiq=0;	/**< Número de casos de psiquiatría*/
+	public $numCasosValEnf=0;	/**< Número de casos de enfermería*/
+	public $numCasosSeguimMD=0;	/**< Número de casos de segjimiento no psicosocial*/
+	public $numCasosRef=0;		/**< Número de casos de segjimiento de referenciación*/
+	public $icono;				/**< nombre icono de alerta*/
+	
+	/** Método de filtro.       
+	*  Se ejecuta en segunda instancia para comprobar si el usuario está logueado o no.  
+	*/		
 	public function filterEnforcelogin($filterChain){
 		if(Yii::app()->user->isGuest){
 			throw new CHttpException(403,"Debe loguearse primero");
@@ -23,9 +30,17 @@ class AlertasController extends Controller{
 		$filterChain->run();
 	}
 	
+	/** Método de filtros, .       
+	*  Se ejecuta primero esta acción para  
+	*/		
 	public function filters(){
 		return array('enforcelogin',array('application.filters.ActionLogFilter - buscaAdolGen','modulo'=>$this->module->id,'controlador'=>$this->id,'parametros'=>Yii::app()->input->post()));
 	}
+	
+	
+	/** Acción AsociaAlertas, .       
+	*  Ejecuta funciones de búsqueda de alertas según el rol de usuario.
+	*/		
 	public function actionAsociaAlertas(){		
 		$rolUsuario=Yii::app()->user->getState('rol');
 		$this->sedeForjar=Yii::app()->user->getState('sedeForjar');
@@ -207,8 +222,6 @@ class AlertasController extends Controller{
 			break;
 		}		
 		echo CJSON::encode($alertas);	
-
-		//\echo 'aaaaaaaaaaaaaaaa';
 	}
 	public function actionMuestraFaltantes(){
 		$datos=Yii::app()->input->post();
@@ -219,6 +232,10 @@ class AlertasController extends Controller{
 		//$infFaltante=array();		
 		
 	}
+	
+	/** Método de actionAlertasIdRegistro.       
+	*  Acción que crea un array con los adolescentes a los cuales les falta el diligenciamiento de datos básicos y nombra los datos que hacen falta diligencia.  
+	*/			
 	public function actionAlertasIdRegistro(){
 		$this->sedeForjar=Yii::app()->user->getState('sedeForjar');
 		$sedeForjar=$this->sedeForjar;
@@ -272,6 +289,9 @@ class AlertasController extends Controller{
 		}		
 		echo CJSON::encode($infFaltante);	
 	}
+	/** Método de actionAlertasAsistencia.       
+	*  Acción que crea un array con los adolesccentes cuya asistencia no se ha registrado.  
+	*/				
 	public function actionAlertasAsistencia(){
 		$this->sedeForjar=Yii::app()->user->getState('sedeForjar');
 		$sedeForjar=$this->sedeForjar;
@@ -311,6 +331,10 @@ class AlertasController extends Controller{
 		}
 		echo CJSON::encode($infFaltante);	
 	}
+	
+	/** Método de actionAlertasSeguimiento.       
+	*  Acción que crea un array con los adolesccentes a los cuales no se les ha realizado un seguimiento según un rango de días.  
+	*/					
 	public function actionAlertasSeguimiento(){
 		$infFaltante=array("cabezote"=>array(
 			"c1"=>CHtml::encode("Nombre Adolescente"),
@@ -336,6 +360,10 @@ class AlertasController extends Controller{
 		}
 		echo CJSON::encode($infFaltante);	
 	}
+
+	/** Método de actionAlertasSeguimientoMD.       
+	*  Acción que crea un array con los adolesccentes a los cuales no se les ha realizado un seguimiento por parte de los equipos multidisciplinarios según un rango de días.  
+	*/						
 	public function actionAlertasSeguimientoMD(){
 		$this->sedeForjar=Yii::app()->user->getState('sedeForjar');
 		$sedeForjar=$this->sedeForjar;
@@ -363,6 +391,10 @@ class AlertasController extends Controller{
 		}
 		echo CJSON::encode($infFaltante);	
 	}
+	
+	/** Método de actionAlertasValPsicol.       
+	*  Acción que muestra los adolescentes que no tienen una valoración en psicología o que no tienen un estado de valoración.
+	*/						
 	public function actionAlertasValPsicol(){
 		$infFaltante=array("cabezote"=>array(
 			"c1"=>CHtml::encode("Nombre Adolescente"),
@@ -397,6 +429,11 @@ class AlertasController extends Controller{
 		}
 		echo CJSON::encode($infFaltante);	
 	}
+	
+	
+	/** Método de actionAlertasValPsicol.       
+	*  Acción que muestra los adolescentes que no tienen una valoración en trabajo social o que no tienen un estado de valoración.
+	*/						
 	public function actionAlertasValTrSoc(){
 		$infFaltante=array("cabezote"=>array(
 			"c1"=>CHtml::encode("Nombre Adolescente"),
@@ -432,6 +469,9 @@ class AlertasController extends Controller{
 		echo CJSON::encode($infFaltante);	
 	}
 	
+	/** Método de actionAlertaValTO.       
+	*  Acción que muestra los adolescentes que no tienen una valoración en Terapia ocupacional o que no tienen un estado de valoración.
+	*/						
 	public function actionAlertaValTO(){
 		$this->sedeForjar=Yii::app()->user->getState('sedeForjar');
 		$infFaltante=array("cabezote"=>array(
@@ -467,6 +507,10 @@ class AlertasController extends Controller{
 		}
 		echo CJSON::encode($infFaltante);	
 	}
+
+	/** Método de actionAlertaValPsiq.       
+	*  Acción que muestra los adolescentes que no tienen una valoración en Psiquiatría o que no tienen un estado de valoración.
+	*/							
 	public function actionAlertaValPsiq(){
 		$this->sedeForjar=Yii::app()->user->getState('sedeForjar');
 		$infFaltante=array("cabezote"=>array(
@@ -502,6 +546,10 @@ class AlertasController extends Controller{
 		}
 		echo CJSON::encode($infFaltante);	
 	}
+	
+	/** Método de actionAlertaValEnf.       
+	*  Acción que muestra los adolescentes que no tienen una valoración en Valoración en enfermería o que no tienen un estado de valoración.
+	*/							
 	public function actionAlertaValEnf(){
 		$this->sedeForjar=Yii::app()->user->getState('sedeForjar');
 		$infFaltante=array("cabezote"=>array(
@@ -537,6 +585,11 @@ class AlertasController extends Controller{
 		}
 		echo CJSON::encode($infFaltante);	
 	}
+	
+	
+	/** Método de actionAlertaValEnf.       
+	*  Acción que muestra los adolescentes que no tienen una concepto integral definido.
+	*/							
 	public function actionAlertasConcInt(){
 		$infFaltante=array("cabezote"=>array(
 			"c1"=>CHtml::encode("Nombre Adolescente"),
@@ -575,6 +628,10 @@ class AlertasController extends Controller{
 		}	
 		echo CJSON::encode($infFaltante);	
 	}
+	
+	/** Método de actionAlertaValEnf.       
+	*  Acción que muestra los adolescentes que no tienen una Plan de atención integral definido.
+	*/							
 	public function actionAlertasPAI(){
 		$infFaltante=array("cabezote"=>array(
 			"c1"=>CHtml::encode("Nombre Adolescente"),
@@ -603,6 +660,9 @@ class AlertasController extends Controller{
 		echo CJSON::encode($infFaltante);	
 	}
 	
+	/** Método de actionAlertaValEnf.       
+	*  Acción que muestra los adolescentes con referenciaciones cuya gestión esta en solicitud y en trámite luego de un periodo de tiempo.
+	*/							
 	public function actionAlertasRef(){
 		$this->sedeForjar=Yii::app()->user->getState('sedeForjar');
 		$infFaltante=array("cabezote"=>array(
@@ -647,7 +707,10 @@ class AlertasController extends Controller{
 		}		
 		echo CJSON::encode($infFaltante);	
 	}
-/*******************************/
+	
+	/** Método de actionAlertaValEnf.       
+	*  Acción prepara los datos a ser mostrados de alerta de datos basicos en la consulta ajax, se define el icono de alerta.
+	*/							
 	public function generaAlertaDatosBasicos(){
 		$sedeForjar=$this->sedeForjar;
 		$adols=$this->consultaAdol();
@@ -690,6 +753,9 @@ class AlertasController extends Controller{
 		return $arrayAdDB;
 	}
 	
+	/** Método de actionAlertaValEnf.       
+	*  Acción prepara los datos a ser mostrados de alerta de Asistencia en la consulta ajax, se define el icono de alerta.
+	*/							
 	public function generaAlertaAsistencia(){
 		$sedeForjar=$this->sedeForjar;
 		$adols=$this->consultaAdol();
@@ -724,7 +790,9 @@ class AlertasController extends Controller{
 		return 	$arrayAsist;		
 	}
 	
-	//alertas de seguimiento
+	/** Método de actionAlertaValEnf.       
+	*  Acción prepara los datos a ser mostrados de alerta de seguimiento psicosocial en la consulta ajax, se define el icono de alerta.
+	*/							
 	public function generaAlertaSeguimiento(){		
 		$sedeForjar=$this->sedeForjar;
 		$adols=$this->consultaAdolProf();
@@ -757,6 +825,11 @@ class AlertasController extends Controller{
 		);
 		return 	$arraySeguim;	
 	}
+	
+	
+	/** Método de actionAlertaValEnf.       
+	*  Acción prepara los datos a ser mostrados de alerta de seguimiento no psicosocial en la consulta ajax, se define el icono de alerta.
+	*/							
 	public function generaAlertaSeguimientoMD(){		
 		$sedeForjar=$this->sedeForjar;
 		$adols=$this->consultaAdol();
@@ -790,6 +863,9 @@ class AlertasController extends Controller{
 		return 	$arraySeguimMD;	
 	}
 	
+	/** Método de generaAlertaValPsicol.       
+	*  Acción prepara los datos a ser mostrados de alerta de valoración en psicología en la consulta ajax, se define el icono de alerta.
+	*/								
 	public function generaAlertaValPsicol(){
 		$sedeForjar=$this->sedeForjar;
 		$adols=$this->consultaAdolProf();
@@ -822,6 +898,10 @@ class AlertasController extends Controller{
 		);
 		return $arrayValPsicol;
 	}
+	
+	/** Método de generaAlertaValTrSoc.       
+	*  Acción prepara los datos a ser mostrados de alerta de valoración en trabajo social en la consulta ajax, se define el icono de alerta.
+	*/								
 	public function generaAlertaValTrSoc(){
 		$adols=$this->consultaAdolProf();
 		if(!empty($adols)){
@@ -853,7 +933,10 @@ class AlertasController extends Controller{
 		);
 		return $arrayValTrSoc;
 	}
-	
+
+	/** Método de generaAlertaValTrSoc.       
+	*  Acción prepara los datos a ser mostrados de alerta de valoración en terapia ocupacional en la consulta ajax, se define el icono de alerta.
+	*/								
 	public function generaAlertaValTo(){
 		$adols=$this->consultaAdol();
 		if(!empty($adols)){
@@ -885,6 +968,11 @@ class AlertasController extends Controller{
 		);
 		return $arrayValTO;
 	}
+	
+	
+	/** Método de generaAlertaValTrSoc.       
+	*  Acción prepara los datos a ser mostrados de alerta de valoración en psiquiatría en la consulta ajax, se define el icono de alerta.
+	*/								
 	public function generaAlertaValPsiq(){
 		$adols=$this->consultaAdol();
 		if(!empty($adols)){
@@ -916,6 +1004,10 @@ class AlertasController extends Controller{
 		);
 		return $arrayValPsiq;
 	}
+	
+	/** Método de generaAlertaValTrSoc.       
+	*  Acción prepara los datos a ser mostrados de alerta de valoración en enfermería en la consulta ajax, se define el icono de alerta.
+	*/								
 	public function generaAlertaEnfermeria(){
 		$adols=$this->consultaAdol();
 		if(!empty($adols)){
@@ -946,9 +1038,11 @@ class AlertasController extends Controller{
 			'numCasos'=>CHtml::encode($this->numCasosValEnf)
 		);
 		return $arrayValEnf;
-		
-		
 	}
+	
+	/** Método de generaAlertaConcInt.       
+	*  Acción prepara los datos a ser mostrados de alerta de valoración en concepto integral en la consulta ajax, se define el icono de alerta.
+	*/								
 	public function generaAlertaConcInt(){
 		$adols=$this->consultaAdolProf();
 		if(!empty($adols)){
@@ -984,7 +1078,11 @@ class AlertasController extends Controller{
 		);
 		return $arrayConcInt;
 	}
+
 	
+	/** Método de generaAlertaPAI.       
+	*  Acción prepara los datos a ser mostrados de alerta de valoración en plan de atención integral en la consulta ajax, se define el icono de alerta.
+	*/								
 	public function generaAlertaPAI(){
 		$adols=$this->consultaAdolProf();
 		if(!empty($adols)){
@@ -1015,6 +1113,11 @@ class AlertasController extends Controller{
 		);
 		return $arrayPAI;
 	}
+	
+	
+	/** Método de generaAlertaReferenciacion.       
+	*  Acción prepara los datos a ser mostrados de alerta de valoración en referenciación en la consulta ajax, se define el icono de alerta.
+	*/								
 	private function generaAlertaReferenciacion(){
 		$adols=$this->consultaAdol();
 		if(!empty($adols)){
@@ -1053,6 +1156,9 @@ class AlertasController extends Controller{
 		return $arrayConcInt;	
 	}
 	
+	/** Método de consultaAdol.       
+	*  Acción para consultar los adolescetes que estan activos y cuya sede de forjar es la del usuario logueado del momento.
+	*/								
 	public function consultaAdol(){
 		$conect= Yii::app()->db;
 		$sqlConsAdol="select * from adolescente as a left join forjar_adol as b on b.num_doc=a.num_doc and id_estado_adol=1 where id_forjar=:id_forjar";
@@ -1063,6 +1169,10 @@ class AlertasController extends Controller{
 		$readAdols->close();
 		return $resAdols;		
 	}
+	
+	/** Método de consultaAdolProf.       
+	*  Acción para consultar el equipo psicosocial responsable de cada adolescente.
+	*/								
 	public function consultaAdolProf(){
 		$conect= Yii::app()->db;
 		$sqlConsAdol="
@@ -1077,6 +1187,10 @@ class AlertasController extends Controller{
 		$readAdols->close();
 		return "";		
 	}
+	
+	/** Método de consultaAdolPai.       
+	*  Acción para consultar si los adolescentes tienen pai no culminado.
+	*/									
 	public function consultaAdolPai(){
 		$conect= Yii::app()->db;
 		$sqlConsAdol="select * from adolescente as a 
@@ -1090,6 +1204,11 @@ class AlertasController extends Controller{
 		$readAdols->close();
 		return $resAdols;		
 	}	
+	
+	
+	/** Método de consultaLocAdol.       
+	*  Acción para consultar los datos de localización del adolescente.
+	*/									
 	public function consultaLocAdol($numDoc){
 		$conect= Yii::app()->db;
 		$sqlConsLocAdol="select * from localizacion_viv where num_doc=:num_doc";		
@@ -1105,6 +1224,10 @@ class AlertasController extends Controller{
 						
 	}
 	
+	
+	/** Método de consultaDocumentoAdol.       
+	*  Acción para consultar el registro de documentos remitidos por el cespa.
+	*/									
 	public function consultaDocumentoAdol($numDoc){
 		$conect= Yii::app()->db;
 		$sqlConsDocsAdol="select * from adol_doccespa where num_doc=:num_doc";		
@@ -1115,7 +1238,10 @@ class AlertasController extends Controller{
 		$readDocsAdols->close();
 		return $resDocsAdols;			
 	}
-	
+
+	/** Método de consultaAcudienteAdol.       
+	*  Acción para consultar el acudiente del adolescente.
+	*/										
 	public function consultaAcudienteAdol($numDoc){
 		$conect= Yii::app()->db;
 		$sqlConsAcudAdol="select * from familiar_adolescente where acudiente is true and num_doc=:num_doc";		
@@ -1126,7 +1252,10 @@ class AlertasController extends Controller{
 		$readAcudAdols->close();
 		return $resAcudAdols;			
 	}
-	
+
+	/** Método de consultaPai.       
+	*  Acción para consultar pai de adolescente.
+	*/											
 	public function consultaPai($numDoc){
 		$conect= Yii::app()->db;
 		$sqlConsPai="select * from pai where num_doc=:num_doc";
@@ -1137,6 +1266,11 @@ class AlertasController extends Controller{
 		$readPai->close();
 		return $resPai;			
 	}
+	
+	
+	/** Método de consultaAsistencia.       
+	*  Acción para consultar la asistencia del adolescente.
+	*/											
 	public function consultaAsistencia($numDoc){
 		$conect= Yii::app()->db;
 		$sqlConsAsist="select * from asistencia where num_doc=:num_doc order by fecha_asistencia desc limit 1";
@@ -1147,6 +1281,11 @@ class AlertasController extends Controller{
 		$readAsist->close();
 		return $resAsist;			
 	}
+	
+	
+	/** Método de consultaSeguimiento.       
+	*  Acción para consultar los seguimientos del adolescente.
+	*/											
 	public function consultaSeguimiento($numDoc){
 		$conect= Yii::app()->db;
 		$sqlConsSeg="select * from seguimiento_adol where num_doc=:num_doc order by fecha_seguimiento desc limit 1";
@@ -1157,7 +1296,10 @@ class AlertasController extends Controller{
 		$readSegAdol->close();
 		return $resSegAdol;			
 	}
-	
+		
+	/** Método de consultaValPsicol.       
+	*  Acción para consultar la valoración en psicología del adolescente.
+	*/											
 	public function consultaValPsicol($numDoc){
 		$conect= Yii::app()->db;
 		$sqlConsValPsicol="select * from valoracion_psicologia where num_doc=:num_doc";
@@ -1169,6 +1311,10 @@ class AlertasController extends Controller{
 		$readValPsicol->close();
 		return $resValPsicol;
 	}
+	
+	/** Método de consultaValTrSoc.       
+	*  Acción para consultar la valoración en trabajo social del adolescente.
+	*/											
 	public function consultaValTrSoc($numDoc){
 		$conect= Yii::app()->db;
 		$sqlConsValTrSoc="select * from valoracion_trabajo_social where num_doc=:num_doc";
@@ -1180,6 +1326,10 @@ class AlertasController extends Controller{
 		$readValTrSoc->close();
 		return $resValTrSoc;
 	}
+	
+	/** Método de consultaValTO.       
+	*  Acción para consultar la valoración en terapia ocupacional del adolescente.
+	*/											
 	public function consultaValTO($numDoc){
 		$conect= Yii::app()->db;
 		$sqlConsValTO="select * from valoracion_teo where num_doc=:num_doc";
@@ -1191,6 +1341,10 @@ class AlertasController extends Controller{
 		$readValTO->close();
 		return $resValTO;
 	}
+	
+	/** Método de consultaValPsiq.       
+	*  Acción para consultar la valoración en psiquiatría del adolescente.
+	*/											
 	public function consultaValPsiq($numDoc){
 		$conect= Yii::app()->db;
 		$sqlConsValPsiq="select * from valoracion_psiquiatria where num_doc=:num_doc";
@@ -1202,6 +1356,10 @@ class AlertasController extends Controller{
 		$readValPsiq->close();
 		return $resValPsiq;
 	}
+		
+	/** Método de consultaValEnf.       
+	*  Acción para consultar la valoración enfermería del adolescente.
+	*/											
 	public function consultaValEnf($numDoc){
 		$conect= Yii::app()->db;
 		$sqlConsValEnf="select * from valoracion_enfermeria where num_doc=:num_doc";
@@ -1213,6 +1371,10 @@ class AlertasController extends Controller{
 		$readValEnf->close();
 		return $resValEnf;
 	}
+	
+	/** Método de consultaPAIAdol.       
+	*  Acción para consultar el plan de atención integral actual del adolescente.
+	*/											
 	public function consultaPAIAdol($numDoc){
 		$conect= Yii::app()->db;
 		$sqlConsPAI="select * from pai where num_doc=:num_doc and pai_actual is true";
@@ -1224,6 +1386,10 @@ class AlertasController extends Controller{
 		$readPAI->close();
 		return $resPAI;		
 	}
+	
+	/** Método de consultaReferenciacion.       
+	*  Acción para consultar las referenciaciones del adolescente que están en trámite o que están en solicitud..
+	*/												
 	public function consultaReferenciacion($numDoc){
 		$conect= Yii::app()->db;
 		$sqlConsRef="select * from referenciacion_adol where num_doc=:num_doc and id_estadoref=1 or num_doc=:num_doc and id_estadoref=2";
@@ -1235,30 +1401,4 @@ class AlertasController extends Controller{
 		$readRef->close();
 		return $resRef;		
 	}
-	// Uncomment the following methods and override them if needed
-	/*
-	public function filters()
-	{
-		// return the filter configuration for this controller, e.g.:
-		return array(
-			'inlineFilterName',
-			array(
-				'class'=>'path.to.FilterClass',
-				'propertyName'=>'propertyValue',
-			),
-		);
-	}
-
-	public function actions()
-	{
-		// return external action classes, e.g.:
-		return array(
-			'action1'=>'path.to.ActionClass',
-			'action2'=>array(
-				'class'=>'path.to.AnotherActionClass',
-				'propertyName'=>'propertyValue',
-			),
-		);
-	}
-	*/
 }

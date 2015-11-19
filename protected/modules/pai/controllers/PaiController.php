@@ -1,7 +1,17 @@
 <?php
+///!  Clase controlador del módulo Pai (Plan de atención integral).  
+/**
+ * @author Félix Mauricio Vargas Hincapié <femauro@gmail.com>
+ * @copyright Copyright &copy; Félix Mauricio Vargas Hincapié 2015
+ */
+
 Yii::import('application.modules.modIdenReg.models.ForjarAdol');	
 
 class PaiController extends Controller{
+	/**
+	 * Acción que se ejecuta en segunda instancia para verificar si el usuario tiene sesión activa.
+	 * En caso contrario no podrá acceder a los módulos del aplicativo y generará error de acceso.
+	 */
 	public function filterEnforcelogin($filterChain){
 		if(Yii::app()->user->isGuest){
 			throw new CHttpException(403,"Debe loguearse primero");
@@ -9,6 +19,10 @@ class PaiController extends Controller{
 		$filterChain->run();
 	}
 	
+	/**
+	 * Acción que se ejecuta en primera instancia que llama a verificar la sesión de usuario y llama a los filtros secundarios
+	 * Los filtros no se ejecutan cuando se llaman a las acciones que van seguidas del guión.
+	 */
 	public function filters(){
 		$datosInput=Yii::app()->input->post();
 		if(isset($datosInput["numDocAdol"]) && !empty($datosInput["numDocAdol"])){
@@ -25,11 +39,61 @@ class PaiController extends Controller{
 		);
 	}
 	
+	/**
+	 * renderiza vista index
+	 */
 	public function actionIndex()
 	{
 		$this->render('index');
 	}
 	
+	/**
+	 *	Acción que renderiza la vista que contiene los formularios para registrar el plan de atención integral del adolescente.
+	 *
+	 *	Vista a renderizar:
+	 *		- _creaModifPai.
+	 *
+	 *	Formularios contenidos:
+	 *		- _consInfJudAdmonAc				formulario consulta de la información judicial del adolescente
+	 *		- _formVerificacionDerForjarCons	formulario de verificación de derechos realizada en la valoración psicosocial.
+	 *		- _paiCreaModForm/_paiConsForm 		formulario de diligenciamiento del plan de atención integral por componentes de derecho y sanción
+	 *		- _paiSeguimiento					formulario para hacer seguimiento de cada uno de los componentes del pai
+	 *		- _culminacionPai					formulario para diligenciar la culminación del PAI.
+	 *
+	 *	Modelos instanciados:
+	 *		- ForjarAdol
+	 * 		- DerechoAdol
+	 * 		- ComponenteDerecho
+	 * 		- InformacionJudicial
+	 * 		- ComponenteSancion
+	 * 		- OperacionesGenerales
+	 * 		- SeguimientoCompderecho.
+	 * 		- SeguimientoCompsancion.
+	 *
+	 *	@param object	$modeloPAI
+	 *	@param object	$modeloCompDer
+	 *	@param object	$modeloCompSanc
+	 *	@param object	$modeloVerifDerechos
+	 *	@param string	$numDocAdol
+	 *	@param array	$datosAdol
+	 *	@param int		$edad
+	 *	@param string	$conceptoInt
+	 *	@param array	$derechos
+	 *	@param array	$participacion
+	 *	@param array	$proteccion
+	 *	@param string	$instanciaRem
+	 *	@param int 		$espProcJud estado del proceso judicial
+	 *	@param array	$delitoRem
+	 *	@param object	$modeloInfJud
+	 *	@param array	$infJudicial
+	 *	@param array	$compSancInfJud
+	 *	@param int		$tipoSancion'=>$tipoSancion,
+	 *	@param array	$infJudicialPai
+	 *	@param object	$modeloSegComDer
+	 *	@param object	$modeloSegComSanc
+	 *	@param array	$consultaDerechoAdol
+	 *	@param array	$consultaGeneral
+	 */		
 	public function actionCrearModificarPAI(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="crearModificarPAI";
@@ -57,7 +121,7 @@ class PaiController extends Controller{
 					Yii::app()->user->setFlash('verifEstadoAdolForjar', "El adolescente está en este momento egresado del servicio.");									
 				}
 				else{
-					$modeloPAI=new Pai();
+					$modeloPAI=new Pai(); 
 					$modeloVerifDerechos=new DerechoAdol();			
 					$modeloCompDer=new ComponenteDerecho();
 					$modeloCompSanc=new ComponenteSancion();
@@ -163,6 +227,52 @@ class PaiController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Acción que renderiza la vista que contiene la información del plan de atención integral para consulta.
+	 *
+	 *	Vista a renderizar:
+	 *		- _consultaPAITabs.
+	 *
+	 *	Formularios contenidos:
+	 *		- _consInfJudAdmonAc				formulario consulta de la información judicial del adolescente
+	 *		- _formVerificacionDerForjarCons	formulario de verificación de derechos realizada en la valoración psicosocial.
+	 *		- _paiConsForm				 		formulario de diligenciamiento del plan de atención integral por componentes de derecho y sanción
+	 *		- _paiSeguientoCons					formulario para hacer seguimiento de cada uno de los componentes del pai
+	 *
+	 *	Modelos instanciados:
+	 *		- ForjarAdol
+	 * 		- DerechoAdol
+	 * 		- ComponenteDerecho
+	 * 		- InformacionJudicial
+	 * 		- ComponenteSancion
+	 * 		- OperacionesGenerales
+	 * 		- SeguimientoCompderecho.
+	 * 		- SeguimientoCompsancion.
+	 *
+	 *	@param object	$modeloPAI
+	 *	@param object	$modeloCompDer
+	 *	@param object	$modeloCompSanc
+	 *	@param object	$modeloVerifDerechos
+	 *	@param string	$numDocAdol
+	 *	@param array	$datosAdol
+	 *	@param int		$edad
+	 *	@param string	$conceptoInt
+	 *	@param array	$derechos
+	 *	@param array	$participacion
+	 *	@param array	$proteccion
+	 *	@param string	$instanciaRem
+	 *	@param int 		$espProcJud estado del proceso judicial
+	 *	@param array	$delitoRem
+	 *	@param object	$modeloInfJud
+	 *	@param array	$infJudicial
+	 *	@param array	$compSancInfJud
+	 *	@param int		$tipoSancion'=>$tipoSancion,
+	 *	@param array	$infJudicialPai
+	 *	@param object	$modeloSegComDer
+	 *	@param object	$modeloSegComSanc
+	 *	@param array	$consultaDerechoAdol
+	 *	@param array	$consultaGeneral
+	 */		
 	public function actionConsultarPAITabs(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="consultarPAITabs";
@@ -290,6 +400,15 @@ class PaiController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Recibe datos del formulario de registro de un componente de derecho del plan de atención integral, instancia a modelo para registrar en base de datos.
+	 *
+	 *	Modelos instanciados:
+	 *		- ComponenteDerecho
+	 *
+	 *	@param array $dataInput array de datos del formulario por componente derecho de pai
+	 *	@return json resultado de la transacción.
+	 */		
 	public function actionCreaDerPai(){
 		$dataInput=Yii::app()->input->post();
 		if(!isset($dataInput["ComponenteDerecho"]["id_pai"])&&empty($dataInput["ComponenteDerecho"]["id_pai"])||!isset($dataInput["ComponenteDerecho"]["id_derechocespa"])&&empty($dataInput["ComponenteDerecho"]["id_derechocespa"])){
@@ -308,6 +427,16 @@ class PaiController extends Controller{
 			//echo $dataInput["ComponenteDerecho"]["id_pai"]." ".$dataInput["ComponenteDerecho"]["id_derechocespa"];
 		}
 	}
+	/**
+	 *	Recibe datos del formulario de registro del plan de atención integral e instancia a modelo para registrar-modificar en base de datos
+	 *	si la información del campo en específico no ha cambiado no realiza registro de actualización. 
+	 *
+	 *	Modelos instanciados:
+	 *		- ComponenteDerecho
+	 *
+	 *	@param array $_POST["ComponenteSancion"] array de datos del formulario pai haciendo referencia a un componente derecho del adolescente
+	 *	@return json resultado de la transacción.
+	 */		
 	public function actionModificaRegPai(){
 		$dataInput=Yii::app()->input->post();
 		if(!isset($dataInput["ComponenteDerecho"]["id_pai"])&&empty($dataInput["ComponenteDerecho"]["id_pai"])||!isset($dataInput["ComponenteDerecho"]["id_derechocespa"])&&empty($dataInput["ComponenteDerecho"]["id_derechocespa"])||!isset($dataInput["ComponenteDerecho"]["fecha_estab_compderecho"])&&empty($dataInput["ComponenteDerecho"]["fecha_estab_compderecho"])){
@@ -356,6 +485,15 @@ class PaiController extends Controller{
 		}
 		
 	}
+	/**
+	 *	Recibe datos del formulario de registro del plan de atención integral e instancia a modelo para modificar en base de datos, recibe los datos de componente de sanción
+	 *
+	 *	Modelos instanciados:
+	 *		- ComponenteSancion
+	 *
+	 *	@param array $_POST["ComponenteSancion"] array de datos del formulario pai haciendo referencia a un componente sanción del pai
+	 *	@return json resultado de la transacción.
+	 */		
 	public function actionCreaRegPaiSanc(){
 		$dataInput=Yii::app()->input->post();
 		if(!isset($dataInput["ComponenteSancion"]["id_pai"])&&empty($dataInput["ComponenteSancion"]["id_pai"])||!isset($dataInput["ComponenteSancion"]["id_inf_judicial"])&&empty($dataInput["ComponenteSancion"]["id_inf_judicial"])){
@@ -374,6 +512,16 @@ class PaiController extends Controller{
 			//echo $dataInput["ComponenteDerecho"]["id_pai"]." ".$dataInput["ComponenteDerecho"]["id_derechocespa"];
 		}
 	}
+	/**
+	 *	Recibe datos del formulario de registro del plan de atención integral e instancia a modelo para registrar-modificar en base de datos, recibe los datos de componente de sanción
+	 *	si la información del campo en específico no ha cambiado no realiza registro de actualización. 
+	 *
+	 *	Modelos instanciados:
+	 *		- ComponenteSancion
+	 *
+	 *	@param array $_POST["ComponenteSancion"] array de datos del formulario pai haciendo referencia a un componente sanción del pai
+	 *	@return json resultado de la transacción.
+	 */		
 	public function actionModificaRegPaiSanc(){
 		$dataInput=Yii::app()->input->post();
 		//print_r($dataInput);
@@ -418,7 +566,16 @@ class PaiController extends Controller{
 		}
 		
 	}
-public function actionRegSegPaiDer(){
+	/**
+	 *	Recibe datos del formulario de registro del seguimiento del componente derecho al cual se le realiza el seguimiento e instancia a modelo para modificar en base de datos
+	 *
+	 *	Modelos instanciados:
+	 *		- SeguimientoCompderecho
+	 *
+	 *	@param array $dataInput["SeguimientoCompderecho"] array de datos del formulario pai array de datos proveniente de Yii::app()->input->post()
+	 *	@return json resultado de la transacción.
+	 */		
+	public function actionRegSegPaiDer(){
 		$dataInput=Yii::app()->input->post();
 			if(!isset($dataInput["SeguimientoCompderecho"]["id_pai"])&&empty($dataInput["SeguimientoCompderecho"]["id_pai"])||!isset($dataInput["SeguimientoCompderecho"]["id_derechocespa"])&&empty($dataInput["SeguimientoCompderecho"]["id_derechocespa"])||!isset($dataInput["SeguimientoCompderecho"]["fecha_estab_compderecho"])&&empty($dataInput["SeguimientoCompderecho"]["fecha_estab_compderecho"])){
 			echo CJSON::encode(array("estadoComu"=>"exito",'resultado'=>CJavaScript::encode(CJavaScript::quote("Datos inválidos para la creación del registro"))));
@@ -439,6 +596,15 @@ public function actionRegSegPaiDer(){
 			//echo $dataInput["ComponenteDerecho"]["id_pai"]." ".$dataInput["ComponenteDerecho"]["id_derechocespa"];
 		}
 	}
+	/**
+	 *	Recibe datos del formulario de registro del seguimiento del componente sanción al cual se le realiza el seguimiento e instancia a modelo para modificar en base de datos
+	 *
+	 *	Modelos instanciados:
+	 *		- SeguimientoCompsancion
+	 *
+	 *	@param array $dataInput["SeguimientoCompsancion"] array de datos del formulario pai array de datos proveniente de Yii::app()->input->post()
+	 *	@return json resultado de la transacción.
+	 */		
 	public function actionRegSegPaiSanc(){
 		$dataInput=Yii::app()->input->post();
 			if(!isset($dataInput["SeguimientoCompsancion"]["id_pai"])&&empty($dataInput["SeguimientoCompsancion"]["id_pai"])||!isset($dataInput["SeguimientoCompsancion"]["id_inf_judicial"])&&empty($dataInput["SeguimientoCompsancion"]["id_inf_judicial"])||!isset($dataInput["SeguimientoCompsancion"]["fecha_establec_compsanc"])&&empty($dataInput["SeguimientoCompsancion"]["fecha_establec_compsanc"])){
@@ -461,6 +627,16 @@ public function actionRegSegPaiDer(){
 		}
 	}
 	
+	/**
+	 *	Recibe datos del formulario de culminación de pai y llama a modelo para registrar la culminación
+	 *
+	 *	Modelos instanciados:
+	 *		- SeguimientoCompsancion
+	 *
+	 *	@param array $dataInput["Pai"] 
+	 *	@param array $dataInput["num_doc"] 
+	 *	@return json resultado de la transacción.
+	 */		
 	public function actionRegCulmPai(){
 		$dataInput=Yii::app()->input->post();
 		if(isset($dataInput["Pai"]["num_doc"])&&!empty($dataInput["Pai"]["num_doc"]) ||isset($dataInput["Pai"]["id_pai"])&&!empty($dataInput["Pai"]["id_pai"]) ||isset($dataInput["Pai"]["recomend_posegreso"])&&!empty($dataInput["Pai"]["recomend_posegreso"])){
@@ -476,6 +652,53 @@ public function actionRegSegPaiDer(){
 			}
 		}
 	}
+	/**
+	 *	Acción que renderiza la vista que contiene los formularios para registrar el plan de atención integral del adolescente.
+	 *
+	 *	Vista a renderizar:
+	 *		- _actualizaPai.
+	 *
+	 *	Formularios contenidos:
+	 *		- _consInfJudAdmonAc				formulario consulta de la información judicial del adolescente
+	 *		- _formVerificacionDerForjarCons	formulario de verificación de derechos realizada en la valoración psicosocial.
+	 *		- _paiCreaModForm/_paiConsForm 		formulario de diligenciamiento del plan de atención integral por componentes de derecho y sanción
+	 *		- _paiSeguimiento					formulario para hacer seguimiento de cada uno de los componentes del pai
+	 *		- _culminacionPai					formulario para diligenciar la culminación del PAI.
+	 *
+	 *	Modelos instanciados:
+	 *		- ForjarAdol
+	 * 		- DerechoAdol
+	 * 		- ComponenteDerecho
+	 * 		- InformacionJudicial
+	 * 		- ComponenteSancion
+	 * 		- OperacionesGenerales
+	 * 		- SeguimientoCompderecho.
+	 * 		- SeguimientoCompsancion.
+	 *
+	 *	@param object	$modeloPAI
+	 *	@param object	$modeloCompDer
+	 *	@param object	$modeloCompSanc
+	 *	@param object	$modeloVerifDerechos
+	 *	@param string	$numDocAdol
+	 *	@param array	$datosAdol
+	 *	@param int		$edad
+	 *	@param string	$conceptoInt
+	 *	@param array	$derechos
+	 *	@param array	$participacion
+	 *	@param array	$proteccion
+	 *	@param string	$instanciaRem
+	 *	@param int 		$espProcJud estado del proceso judicial
+	 *	@param array	$delitoRem
+	 *	@param object	$modeloInfJud
+	 *	@param array	$infJudicial
+	 *	@param array	$compSancInfJud
+	 *	@param int		$tipoSancion'=>$tipoSancion,
+	 *	@param array	$infJudicialPai
+	 *	@param object	$modeloSegComDer
+	 *	@param object	$modeloSegComSanc
+	 *	@param array	$consultaDerechoAdol
+	 *	@param array	$consultaGeneral
+	 */		
 	public function actionActualizarPAI(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="actualizarPAI";
@@ -574,18 +797,6 @@ public function actionRegSegPaiDer(){
 	}
 	// Uncomment the following methods and override them if needed
 	/*
-	public function filters()
-	{
-		// return the filter configuration for this controller, e.g.:
-		return array(
-			'inlineFilterName',
-			array(
-				'class'=>'path.to.FilterClass',
-				'propertyName'=>'propertyValue',
-			),
-		);
-	}
-
 	public function actions()
 	{
 		// return external action classes, e.g.:

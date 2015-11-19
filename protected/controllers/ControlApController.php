@@ -1,7 +1,16 @@
 <?php
+///!  ControlApController.  
+/**
+	Clase que se instancia principalmente para cargar la interfaz dependiendo del rol, también se carga el menú 
+	principal y submenúes dependiendo del rol.  Así mismo esta clase asocia la o las sedes que estan asociadas al usuario 
+*/
 class ControlApController extends Controller
 {
-	private $_muestraMenu;
+	private $_muestraMenu;/**< para instanciar el objeto del modelo clase Menu */
+	
+	/** Método de filtro.       
+	*  Se ejecuta en segunda instancia para comprobar si el usuario está logueado o no.  
+	*/	
 	public function filterEnforcelogin($filterChain){
 		if(Yii::app()->user->isGuest){
 			throw new CHttpException(403,"Debe loguearse primero");
@@ -9,9 +18,17 @@ class ControlApController extends Controller
 		$filterChain->run();
 	}
 	
+	/** Método de filtros, .       
+	*  Se ejecuta primero esta acción para  
+	*/		
 	public function filters(){
 		return array('enforcelogin',array('application.filters.ActionLogFilter - buscaAdolGen','modulo'=>$this->module->id,'controlador'=>$this->id,'parametros'=>Yii::app()->input->post()));
 	}
+	
+	/** Acción index.       
+	*  Método inicial que carga la interfaz de usuario según el rol.  
+	*  Consulta las sedes asociadas. Si tiene más de una sede asociada no muestra los módulos inicialmente y muestra la lista de sedes para seleccionar una. luego carga de nuevo la acción index para mostrar los módulos  
+	*/	
 	public function actionIndex(){
 		Yii::app()->getSession()->add('id_modulo',"");
 		$sedesForjar=Yii::app()->user->getState('sedesForjar');//nombreSedeForjar
@@ -47,6 +64,10 @@ class ControlApController extends Controller
 			$this->render($vista);
 		}
 	}
+
+	/** Acción SeleccionSede, .       
+	*  Acción que muestra la vista donde se muestran las sedes asociadas en caso de tener dos o más.  
+	*/			
 	public function actionSeleccionSede(){
 		if(Yii::app()->user->hasState('sedeForjar')){
 			if(Yii::app()->user->getState('numSedes')==2){
@@ -86,6 +107,9 @@ class ControlApController extends Controller
 			}			
 		}
 	}
+	/** Acción Modulos, .       
+	*  Acción que muestra los modulos del aplicativo asociados al rol.  
+	*/				
 	public function actionModulos(){
 		$idSedeForjar=Yii::app()->user->getState('sedeForjar');
 		if(!empty($idSedeForjar)){
@@ -116,6 +140,9 @@ class ControlApController extends Controller
 		);
 	}
 	
+	/** Acción Menu, .       
+	*  Esta acción consulta tanto los módulos, menus primarios, secundarios y terciarios vinculados al rol del usuario. . 
+	*/					
 	public function actionMenu(){		
 			$id_modulo=CHtml::encode(($_POST['id_modulo']));
 			$this->_muestraMenu=new ControlApp();
@@ -123,6 +150,10 @@ class ControlApController extends Controller
 			Yii::app()->getSession()->add('id_modulo',$id_modulo);
 		 	$this->widget('zii.widgets.CMenu', $menuPr);
 	}
+	
+	/** Acción llamaMenu, .       
+	*  Esta acción inicializa el menú principal cuando no se ha seleccionado un módulo.. 
+	*/						
 	public function llamaMenu(){
 		//$id_modulo=CHtml::encode($id_modulo);
 		Yii::app()->getSession()->add('menuPr',"");
@@ -143,6 +174,9 @@ class ControlApController extends Controller
 		}
 		Yii::app()->getSession()->add('menuPr',$menuPr);			
 	}
+	/** Acción creaMenu, .       
+	*  Esta acción consulta tanto los módulos, menus primarios, secundarios y terciarios vinculados al rol del usuario.  Según el resultado de la consulta construye el menú. 
+	*/						
 	public function creaMenu($menuPrin){
 		$menuPr['items'][0]=array('label'=>'Ingreso', 'url'=>Yii::app()->request->baseUrl.'/site/login', 'visible'=>Yii::app()->user->isGuest);
 		$menuPr['items'][1]=array('label'=>'Inicio', 'url'=>Yii::app()->request->baseUrl.'/controlAp/index', 'visible'=>!Yii::app()->user->isGuest);
@@ -166,7 +200,6 @@ class ControlApController extends Controller
 					}
 					if($consSubMenuNi[$i]['accion']=='#'){
 						$menuPr['items'][$pk+4]['items'][$k]=array('label'=>$consSubMenuNi[$i]['titulo_menu'], 'url'=>$consSubMenuNi[$i]['accion'],'linkOptions'=>array('target'=>$target), 'items'=>array());
-						//array_push($menuPr['items'][$pk]['items'],array('label'=>$menu['titulo_menu'], 'url'=>$menu['accion'], 'items'=>array()));
 						$j=$i;
 						while($consSubMenuNi[$j+1]['men_id_menu']==$consSubMenuNi[$i]['id_menu']){								
 							array_push($menuPr['items'][$pk+4]['items'][$k]['items'],array('label'=>$consSubMenuNi[$j+1]['titulo_menu'], 'url'=>Yii::app()->request->baseUrl.'/'.$consSubMenuNi[$j+1]['accion'],'linkOptions'=>array('target'=>$target), 'visible'=>true));	
@@ -182,7 +215,6 @@ class ControlApController extends Controller
 						}						
 						$menuPr['items'][$pk+4]['items'][$k]=array('label'=>$consSubMenuNi[$i]['titulo_menu'], 'url'=>Yii::app()->request->baseUrl.'/'.$consSubMenuNi[$i]['accion'],'linkOptions'=>array('target'=>$target), 'visible'=>true);
 						$k++;
-						//array_push($menuPr['items'][$pk]['items'],array('label'=>$menu['titulo_menu'], 'url'=>$menu['accion'], 'visible'=>true));
 					}
 				}
 			}
@@ -195,6 +227,10 @@ class ControlApController extends Controller
 		$menuPr['submenuHtmlOptions']=array('class' => 'dropdown-menu');
 		return $menuPr;
 	}
+	
+	/** Acción cambiarSede, .       
+	*  Si el usuario tiene más de una sede asociada, llama esta función para mostrar el listado de sede. 
+	*/						
 	public function actionCambiarSede(){
 		$modeloPersona=new Persona();
 		$modeloPersona->_cedula=Yii::app()->user->getState('cedula');
@@ -204,35 +240,4 @@ class ControlApController extends Controller
 		Yii::app()->user->setState('sedesForjar',$sedesForjar);
 		$this->render('sedesForjar');	
 	}
-
-	// Uncomment the following methods and override them if needed
-	/*
-			$res['bla1']=$id_modulo;
-			$res['bla2']=$id_rol;
-			header("Content-type: application/json");
-       		echo CJSON::encode($res);
-	public function filters()
-	{
-		// return the filter configuration for this controller, e.g.:
-		return array(
-			'inlineFilterName',
-			array(
-				'class'=>'path.to.FilterClass',
-				'propertyName'=>'propertyValue',
-			),
-		);
-	}
-
-	public function actions()
-	{
-		// return external action classes, e.g.:
-		return array(
-			'action1'=>'path.to.ActionClass',
-			'action2'=>array(
-				'class'=>'path.to.AnotherActionClass',
-				'propertyName'=>'propertyValue',
-			),
-		);
-	}
-	*/
 }

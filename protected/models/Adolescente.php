@@ -38,18 +38,17 @@
  */
 class Adolescente extends CActiveRecord
 {
+	public $psicologos;			/**< lista de psicólogos según la sede a la cual se accede en el sistema */
+	public $trabSocials;		/**< lista de trabajadores sociales según la sede a la cual se accede en el sistema */
+	public $responsableAdol;	/**< variable que define si el responsable es el psicólogo o el trabajador social */
+	public $sedeForjar;			/**< variable que define el id de la sede a la cual se accede en el sistema */
+	public $mensajeError;		/**< variable que almacena los mensajes de error realizar transacciones en bases de datos */
+	public $numeroCarpeta;		/**< Número de carpeta del adolescente */
+	public $mensajeErrorProf;	/**< variable que almacena los mensajes de error realizar transacciones en bases de datos según el registro de equipo psicosocial*/
+
 	/**
 	 * @return string the associated database table name
 	 */
-	public $psicologos;
-	public $trabSocials;
-	public $responsableAdol;
-	public $sedeForjar;
-	public $mensajeError;
-	public $numeroCarpeta;
-	public $mensajeErrorProf;
-
-
 	public function tableName()
 	{
 		return 'adolescente';
@@ -80,7 +79,11 @@ class Adolescente extends CActiveRecord
 			array('responsableAdol','validaResp')
 		);
 	}
-public function validaAdol($attribute=NULL,$params=NULL){
+	
+	/**
+	 * 	método que valida al momento de crear el registro del adolescente si ya está registrado con el número del documento, 
+	 */
+	public function validaAdol($attribute=NULL,$params=NULL){
 		
 		$consultaAdol=$this->find('num_doc=:numDoc',
 		array(
@@ -99,6 +102,10 @@ public function validaAdol($attribute=NULL,$params=NULL){
 			}
 		}			
 	}
+	
+	/**
+	 * 	método que valida si no se ha seleccionado un trabajador social si se ha seleccionado un psicólogo, 
+	 */
 	public function validaPsic($attribute=NULL,$params=NULL){
 		if(isset($_POST["Adolescente"]["psicologos"])&&!empty($_POST["Adolescente"]["psicologos"])){
 			if(empty($_POST["Adolescente"]["trabSocials"])){
@@ -107,6 +114,10 @@ public function validaAdol($attribute=NULL,$params=NULL){
 			}
 		}
 	}
+	
+	/**
+	 * 	método que valida si no se ha seleccionado un psicólogo si se ha seleccionado un trabajador social, 
+	 */
 	public function validaTr($attribute=NULL,$params=NULL){
 		if(isset($_POST["Adolescente"]["trabSocials"])&&!empty($_POST["Adolescente"]["trabSocials"])){
 			if(empty($_POST["Adolescente"]["psicologos"])){
@@ -114,6 +125,10 @@ public function validaAdol($attribute=NULL,$params=NULL){
 			}
 		}
 	}
+	
+	/**
+	 * 	método que valida si no se ha seleccionado un responsable si se selecciona un trabajador social y un psicólogo, 
+	 */
 	public function validaResp($attribute=NULL,$params=NULL){
 		if(isset($_POST["Adolescente"])){
 			if(!empty($_POST["Adolescente"]["trabSocials"]) || !empty($_POST["Adolescente"]["psicologos"])){
@@ -122,6 +137,10 @@ public function validaAdol($attribute=NULL,$params=NULL){
 			}
 		}
 	}
+	
+	/**
+	 * 	método que valida que la fecha de nacimiento no sea mayor a la actual, 
+	 */
 	public function validaFechasMod($attribute=NULL,$params=NULL){
 		$fecha=new OperacionesGenerales();
 		if(!empty($this->attributes['fecha_nacimiento'])){
@@ -231,7 +250,10 @@ public function validaAdol($attribute=NULL,$params=NULL){
 	{
 		return parent::model($className);
 	}
-	
+
+	/**
+	 * 	Metodo que crea el registro del adolescente, asigna número de carpeta e inicializa la entidad forjar_adolescente con datos primarios.
+	 */	
 	public function creaRegistroAdol(){
 		$operGen=new OperacionesGenerales();
 		$consGen=new ConsultasGenerales();
@@ -373,12 +395,11 @@ public function validaAdol($attribute=NULL,$params=NULL){
 						:numDoc,
 						:estadoEscol
 					)
-				";//escIngEgrs
+				";
 				$registraEscol=$conect->createCommand($sqlRegistraEscol);
 				$registraEscol->bindParam(':numDoc',$this->num_doc,PDO::PARAM_STR);				
 				$registraEscol->bindParam(':estadoEscol',$this->escIngEgrs,PDO::PARAM_STR);
 				$registraEscol->execute();
-    		//$connection->createCommand($sql2)->execute();
         	$transaction->commit();
 			$mensaje='exito';
 			$this->mensajeError="";
@@ -391,6 +412,10 @@ public function validaAdol($attribute=NULL,$params=NULL){
 		
 		return $mensaje;
 	}
+	
+	/**
+	 * 	Método que registra el equipo psicosocial del adolescente.
+	 */	
 	public function registraEquipoPsic($profesional,$responsable){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -425,6 +450,10 @@ public function validaAdol($attribute=NULL,$params=NULL){
 			$this->mensajeErrorProf.='<br/>Aunque no se pudo registrar satisfactoriamente el equipo psicosocial. El código del error es el siguiente <br/>'.$e;
 		}
 	}
+	
+	/**
+	 * 	Método que se instancia cuando se va a modificar los datos del adolescente según la entidad que sea.
+	 */	
 	public function modificaDatosAdol($nombreCampo,$nombreTabla,$datoAntiguo,$datoActual,$numDocAdol,$tipoDato){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -434,7 +463,7 @@ public function validaAdol($attribute=NULL,$params=NULL){
 			$datoAntiguo=htmlspecialchars(strip_tags(trim($datoAntiguo)));
 			//$datoActual=htmlspecialchars(strip_tags(trim($datoActual)));
 			
-			$sqlModDatos="update ".$nombreTabla." set ".$nombreCampo."=:datoActual where num_doc=:numDocAdol";
+			$sqlModDatos="update ".pg_escape_string($nombreTabla)." set ".pg_escape_string($nombreCampo)."=:datoActual where num_doc=:numDocAdol";
 			$modDatos=$conect->createCommand($sqlModDatos);
 			$modDatos->bindParam(':datoActual',$datoActual,$tipoDato);
 			$modDatos->bindParam(':numDocAdol',$numDocAdol,PDO::PARAM_STR);
@@ -446,6 +475,10 @@ public function validaAdol($attribute=NULL,$params=NULL){
 			$this->mensajeError.=$e;
 		}
 	}
+	
+	/**
+	 * 	Método que se instancia cuando se va a modificar los datos del adolescente según entidades.
+	 */	
 	public function modificaDatosAdolMany($nombreCampo,$nombreTabla,$datoAntiguo,$datoActual,$camposComp,$tipoDato){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -458,10 +491,10 @@ public function validaAdol($attribute=NULL,$params=NULL){
 			foreach($camposComp as $pk=>$campoComp){
 				
 				if($pk==0){
-					$sqlModDatos.= $campoComp["id_campo"]."=:".$campoComp["id_campo"]." ";
+					$sqlModDatos.= pg_escape_string($campoComp["id_campo"])."=:".pg_escape_string($campoComp["id_campo"])." ";
 				}
 				else{
-					$sqlModDatos.= "and ".$campoComp["id_campo"]."=:".$campoComp["id_campo"]." ";
+					$sqlModDatos.= "and ".pg_escape_string($campoComp["id_campo"])."=:".pg_escape_string($campoComp["id_campo"])." ";
 				}
 			}
 			$modDatos=$conect->createCommand($sqlModDatos);
@@ -477,6 +510,10 @@ public function validaAdol($attribute=NULL,$params=NULL){
 			$this->mensajeError.=$e;
 		}
 	}
+	
+	/**
+	 * 	Método que consulta los datos del adolescente.
+	 */	
 	public function consultaDatosAdol($numDocAdol){
 		$conect= Yii::app()->db;
 		$sqlConsultaAdol="select *,(apellido_1 || ' ' || apellido_2) as apellidos from adolescente as a left join forjar_adol as b on a.num_doc=b.num_doc 
@@ -494,6 +531,10 @@ public function validaAdol($attribute=NULL,$params=NULL){
 		$readConsultaAdol->close();			
 		return $resConsultaAdol;
 	}
+	
+	/**
+	 * 	Método que consulta los datos del adolescente.
+	 */	
 	public function consultaDatosAdolValTrSoc(){
 		$conect= Yii::app()->db;
 		$sqlConsultaAdol="select * from adolescente as a 
@@ -507,6 +548,10 @@ public function validaAdol($attribute=NULL,$params=NULL){
 		$readConsultaAdol->close();			
 		return $resConsultaAdol;
 	}
+	
+	/**
+	 * 	Método que consulta los datos de familia del adolescente.
+	 */	
 	public function consAntFamiliares(){
 		$conect= Yii::app()->db;
 		$sqlConsultaAdol="select * from adolescente as a 

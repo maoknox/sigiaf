@@ -18,7 +18,7 @@ class TelefonoForjar extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
-	public $numCelular;
+	public $numCelular;	/**< número de celular. */
 	public function tableName()
 	{
 		return 'telefono_forjar';
@@ -107,4 +107,44 @@ class TelefonoForjar extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	
+	/**
+	 *	Crea registro de telefono diligenciado la vista _consCreaSedeTab
+	 *	@param int id_telefono_forjar.
+	 *	@param int id_tipo_telefono.
+	 *	@param int id_forjar.
+	 *	@param string num_tel_forjar.
+	 *	@return resultado de la transacción
+	 */		
+	public function registraTelefonoForjar(){
+		$conect=Yii::app()->db;
+		$transaction=$conect->beginTransaction();
+		
+		$sqlRegistraTelefono="insert into telefono_forjar 
+		(
+		  id_telefono_forjar,
+		  id_tipo_telefono,
+		  id_forjar,
+		  num_tel_forjar
+		) values (
+		  default,
+		  1,
+		  :id_forjar,
+		  :num_tel_forjar
+		)";
+		try{
+			$registraTelefonoForjar=$conect->createCommand($sqlRegistraTelefono);
+			$registraTelefonoForjar->bindParam(":id_forjar",$this->id_forjar,PDO::PARAM_STR);
+			$registraTelefonoForjar->bindParam(":num_tel_forjar",$this->num_tel_forjar,PDO::PARAM_STR);
+			$registraTelefonoForjar->execute();
+			$transaction->commit();
+			return "exito";
+		}
+		catch(CDbCommand $e){
+			$transaction->rollBack();
+			return $e;
+			
+		}
+	}
+	
 }

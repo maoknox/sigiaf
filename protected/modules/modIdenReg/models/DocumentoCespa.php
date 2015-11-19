@@ -15,8 +15,8 @@ class DocumentoCespa extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
-	public $numDocAdol;
-	public $mensajeErrorDocAdol;
+	public $numDocAdol; /**< número de documento del adolescente. */
+	public $mensajeErrorDocAdol; /**< mensaje de error de la transacción. */
 	public function tableName()
 	{
 		return 'documento_cespa';
@@ -100,7 +100,14 @@ class DocumentoCespa extends CActiveRecord
 		return parent::model($className);
 	}
 	
-	public function registraDocAdol($presentado,$documentoRevision){//$modeloDocCespa
+	/**
+	 *	Crea registro de documentos del adolescente.
+	 *	@param int id_doccespa.
+	 *	@param string num_doc.
+	 *	@param booleano doc_presentado.
+	 *	@return resultado de la transacción
+	 */		
+	public function registraDocAdol($presentado,$documentoRevision){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();
 		try{
@@ -129,6 +136,10 @@ class DocumentoCespa extends CActiveRecord
 		}
 	}
 	
+	/**
+	 *	Consulta los documentos remitidos por el cespa del adolescente.
+	 *	@return $resDocsAdol documentos remitidos 
+	 */		
 	public function consDocAdolCespa($numDocAdol){
 		$conect= Yii::app()->db;
 		$sqlConsDocsAdol="select * from adol_doccespa as a left join documento_cespa as b on b.id_doccespa=a.id_doccespa where num_doc=:numdoc";
@@ -140,6 +151,13 @@ class DocumentoCespa extends CActiveRecord
 		return $resDocsAdol;
 	}
 	
+	/**
+	 *	Modifica registro de documentos remitidos del cespa respecto a un adolescente.
+	 *	@param int id_doccespa.
+	 *	@param string num_doc.
+	 *	@param booleano doc_presentado.
+	 *	@return resultado de la transacción
+	 */		
 	public function modDocCespa($presentado,$documentoRevision){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();

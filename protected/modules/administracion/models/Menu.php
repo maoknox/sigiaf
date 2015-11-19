@@ -122,6 +122,9 @@ class Menu extends CActiveRecord
 		return parent::model($className);
 	}
 	
+	/**
+	 *	@return $resMenu nivel máximo de menú
+	 */		
 	public function consultaNivelMenu(){
 		$conect=Yii::app()->db;
 		$sqlConsMenu="select max(nivel_menu) from menu";
@@ -133,6 +136,9 @@ class Menu extends CActiveRecord
 	}
 
 	
+	/**
+	 *	@return $resMenu array con el menú completo
+	 */		
 	public function consultaMenu(){
 		$conect=Yii::app()->db;
 		$sqlConsMenu="select * from menu";
@@ -142,6 +148,10 @@ class Menu extends CActiveRecord
 		$readMenu->close();
 		return $resMenu;
 	}
+	
+	/**
+	 *	@return $resMenu array con menus de nivel 
+	 */		
 	public function consultaMenuPorNivel(){
 		$conect=Yii::app()->db;
 		$sqlConsMenu="select * from menu where nivel_menu=1";
@@ -152,6 +162,9 @@ class Menu extends CActiveRecord
 		$readMenu->close();
 		return $resMenu;
 	}
+	/**
+	 *	@return $resMenu consulta de menú padre 
+	 */		
 	public function consultaMenuPorIdPadre(){
 		$conect=Yii::app()->db;
 		$sqlConsMenu="select * from menu where men_id_menu=:id_menu";
@@ -162,8 +175,7 @@ class Menu extends CActiveRecord
 		$readMenu->close();
 		return $resMenu;
 	}
-	public function recursividad($a)
-	{
+	public function recursividad($a){
 		if ($a < 20) {
 			echo "$a\n";
 			$this->recursividad($a + 1);

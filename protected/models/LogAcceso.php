@@ -108,6 +108,9 @@ class LogAcceso extends CActiveRecord
 		return parent::model($className);
 	}
 	
+	/**
+	 * Registra la hora de inicio de sesión y terminación de sesión del usuario junto con el número del documento, fecha y hora.
+	 */		
 	public function registraAcceso(){
 		if(!Yii::app()->user->isGuest){
 			$conect=Yii::app()->db;

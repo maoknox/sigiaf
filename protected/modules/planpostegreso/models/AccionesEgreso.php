@@ -19,8 +19,8 @@ class AccionesEgreso extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
-	public $nombreCampo;
-	public $datoCampo;
+	public $nombreCampo;	/**< nombre de campo a modificar. */
+	public $datoCampo;		/**< información contenida en campo. */
 	public function tableName()
 	{
 		return 'acciones_egreso';
@@ -110,6 +110,11 @@ class AccionesEgreso extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	/**
+	 *	Retorna consulta de las acciones según plan postegreso del adolescente.
+	 *	@param string $this->id_planpostegreso identificador del plan postegreso del adolescente
+	 *	@return $resAccPlanPe contiene la información de las acciones al postegreso
+	 */		
 	public function consultaAccPlanPe(){
 		$conect=Yii::app()->db;
 		$sqlConsAccPlanPe="select * from acciones_egreso where id_planpostegreso=:id_planpostegreso";
@@ -120,6 +125,14 @@ class AccionesEgreso extends CActiveRecord
 		$readAccPlanPe->close();
 		return $resAccPlanPe;				
 	}
+	/**
+	 *	Retorna consulta de la información de una acción del plan postegreso
+	 *	@param string $this->id_acceg 
+	 *	@param string $this->id_planpostegreso
+	 *	@param string $this->id_pai
+	 *	@param string $this->num_doc
+	 *	@return $resAccPlanPe contiene la información de una acción en específico del plan postegreso
+	 */		
 	public function consultaAccPlanPeComp(){
 		$conect=Yii::app()->db;
 		$sqlConsAccPlanPe="select * from acciones_egreso where id_acceg=:id_acceg and id_planpostegreso=:id_planpostegreso and id_pai=:id_pai and num_doc=:num_doc";
@@ -133,6 +146,19 @@ class AccionesEgreso extends CActiveRecord
 		$readAccPlanPe->close();
 		return $resAccPlanPe;				
 	}
+	/**
+	 *	Crea registro del acciones del plan postegreso.
+	 *	@param string id_acceg.
+	 *	@param string id_planpostegreso.
+	 *	@param int	  id_pai.
+	 *	@param string num_doc.
+	 *	@param string objetivo_acceg.
+	 *	@param string actividaes_acceg.
+	 *	@param string fuente_verif_acceg.
+	 *	@param string responsable_acceg.
+	 *	@param string tiempo_acceg.
+	 *	@return resultado de la transacción
+	 */		
 	public function creaActPPEg(){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -182,6 +208,19 @@ class AccionesEgreso extends CActiveRecord
 			return $e;
 		}
 	}
+	/**
+	 *	Modifica campo especificado de acciones del plan postegresos
+	 *	@param string id_acceg.
+	 *	@param string id_planpostegreso.
+	 *	@param int	  id_pai.
+	 *	@param string num_doc.
+	 *	@param string objetivo_acceg.
+	 *	@param string actividaes_acceg.
+	 *	@param string fuente_verif_acceg.
+	 *	@param string responsable_acceg.
+	 *	@param string tiempo_acceg.
+	 *	@return resultado de la transacción
+	 */		
 	public function modifAccPPeg(){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();

@@ -120,6 +120,17 @@ class SeguimientoCompderecho extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	/**
+	 *	Crea registro del seguimiento de un componente de derecho en específico..
+	 *	@param strint fecha_seguim_compderecho.
+	 *	@param int id_pai.
+	 *	@param string num_doc.
+	 *	@param int id_derechocespa.
+	 *	@param int id_cedula.
+	 *	@param string fecha_estab_compderecho.
+	 *	@param text seguim_compderecho.
+	 *	@return resultado de la transacción
+	 */		
 	public function regSegSancionPai(){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -163,6 +174,13 @@ class SeguimientoCompderecho extends CActiveRecord
 		}
 		
 	}
+	/**
+	 *	Retorna los seguimientos por componente de derecho
+	 *	@param int $this->id_pai.
+	 *	@param int $this->id_derechocespa.
+	 *	@param string $this->num_doc.
+	 *	@return $resConsSegPaiDer 
+	 */		
 	public function consultaSeguimientos(){
 		$conect= Yii::app()->db;
 		$sqlConsSegPaiDer="select fecha_seguim_compderecho,seguim_compderecho from seguimiento_compderecho 

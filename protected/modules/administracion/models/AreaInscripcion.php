@@ -106,6 +106,13 @@ class AreaInscripcion extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	/**
+	 *	Acción registra area de interés
+	 *	@param int $areaIntDep.
+	 *	@param int Yii::app()->user->getState('sedeForjar').
+	 *	@param bool $this->areacforjar_activa.	
+	 *	@return resultado de transacción
+	 */		
 	public function creaAreaInteres(){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();

@@ -41,9 +41,9 @@ class ReferenciacionAdol extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
-	public $mensajeRef="exito";
-	public $numDocRef;
-	public $idRef;
+	public $mensajeRef="exito";	/**< mensaje de resultado de transacción, por defecto exito  */
+	public $numDocRef;			/**< número de documento del adolescente  */
+	public $idRef;				/**< identificación de la referenciación  */
 	public function tableName()
 	{
 		return 'referenciacion_adol';
@@ -70,6 +70,9 @@ class ReferenciacionAdol extends CActiveRecord
 			
 		);
 	}
+	/**
+	 * 	valida si al momento de crear una solicitud de referenciación selecciona un nivel de especificación i.
+	 */
 	public function validaNEspii($attribute=null,$params=null){
 		$datosInput=Yii::app()->input->post();
 		$espNi=$datosInput["ReferenciacionAdol"]["id_esp_sol"];
@@ -81,6 +84,9 @@ class ReferenciacionAdol extends CActiveRecord
 			}
 		}
 	}
+	/**
+	 * 	valida si al momento de crear una solicitud de referenciación selecciona un nivel de especificación ii en el caso que haya un listado dependiente de especificación de nivel i.
+	 */
 	public function validaNEspiii($attribute=null,$params=null){
 		$datosInput=Yii::app()->input->post();
 		if(isset($datosInput["ReferenciacionAdol"]["id_esp_solii"]) && !empty($datosInput["ReferenciacionAdol"]["id_esp_solii"])){
@@ -197,7 +203,10 @@ class ReferenciacionAdol extends CActiveRecord
 	{
 		return parent::model($className);
 	}
-		public function consultaSolRefNi(){
+	/**
+	 * 	consulta referenciación según especificación de nivel 1 y según si la referenciación esta en solicitud o en trámite.
+	 */
+	public function consultaSolRefNi(){
 		$conect= Yii::app()->db;
 		$sqlConsSolRef="select * from referenciacion_adol as a left join estado_referenciacion as b on b.id_estadoref=a.id_estadoref
 			where num_doc=:numDoc and id_esp_sol=:idEspN and a.id_estadoref=1 or num_doc=:numDoc and id_esp_sol=:idEspN and a.id_estadoref=2";
@@ -209,6 +218,9 @@ class ReferenciacionAdol extends CActiveRecord
 		$readSolRef->close();
 		return $resConsRef;
 	}
+	/**
+	 * 	consulta referenciación según especificación de nivel 2 y según si la referenciación esta en solicitud o en trámite.
+	 */
 	public function consultaSolRefNii(){
 		$conect= Yii::app()->db;
 		$sqlConsSolRef="select * from referenciacion_adol as a left join estado_referenciacion as b on b.id_estadoref=a.id_estadoref
@@ -221,6 +233,9 @@ class ReferenciacionAdol extends CActiveRecord
 		$readSolRef->close();
 		return $resConsRef;
 	}
+	/**
+	 * 	consulta referenciación según especificación de nivel 3 y según si la referenciación esta en solicitud o en trámite.
+	 */
 	public function consultaSolRefNiii(){
 		$conect= Yii::app()->db;
 		$sqlConsSolRef="select * from referenciacion_adol as a left join estado_referenciacion as b on b.id_estadoref=a.id_estadoref
@@ -233,6 +248,9 @@ class ReferenciacionAdol extends CActiveRecord
 		$readSolRef->close();
 		return $resConsRef;
 	}
+	/**
+	 * 	se crea el registro de referenciación 
+	 */
 	public function creaRegRef(){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -296,6 +314,9 @@ class ReferenciacionAdol extends CActiveRecord
 			return 0;
 		}		
 	}
+	/**
+	 * 	consulta las referenciaciones creadas de un adolesacente en específico.
+	 */
 	public function consultaRefMod($offset){
 		$conect=Yii::app()->db;
 		$sqlConsRefMod="select a.id_referenciacion,a.fecha_referenciacion,b.tipo_referenciacion,c.esp_sol,d.esp_solii,e.esp_soliii,h.beneficiario from referenciacion_adol as a 
@@ -315,6 +336,9 @@ class ReferenciacionAdol extends CActiveRecord
 		$readRefMod->close();
 		return $resRefMod;
 	}
+	/**
+	 * 	consulta la información de una referenciación en específico.
+	 */
 	public function consultaRefModAdol(){
 		$conect=Yii::app()->db;
 		$sqlConsRef="select * from referenciacion_adol where id_referenciacion=:id_referenciacion";
@@ -325,6 +349,9 @@ class ReferenciacionAdol extends CActiveRecord
 		$readConsRef->close();
 		return $resConsRef;
 	}
+	/**
+	 * 	consulta toda la información relacionada y registrada de una referenciación.
+	 */
 	public function consultaRefSeg($offset){
 		$conect=Yii::app()->db;
 		$sqlConsRefMod="select a.id_referenciacion,a.fecha_referenciacion,b.tipo_referenciacion,c.esp_sol,d.esp_solii,e.esp_soliii,h.beneficiario from referenciacion_adol as a 
@@ -344,6 +371,9 @@ class ReferenciacionAdol extends CActiveRecord
 		$readRefMod->close();
 		return $resRefMod;
 	}
+	/**
+	 * 	modifica el estado de la referenciación, si está en trámite, si es gestión efectiva o no efectiva.
+	 */
 	public function modificaEstadoRef(){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -361,6 +391,9 @@ class ReferenciacionAdol extends CActiveRecord
 			return $e;
 		}
 	}
+	/**
+	 * 	Consulta los adolescentes que tienen registros de referenciación.
+	 */
 	public function consultaReferenciados(){
 		$conect=Yii::app()->db;
 		$sqlConsRef="select distinct(a.num_doc),(apellido_1 || ' ' || apellido_2) as apellidos,nombres from referenciacion_adol as a 
@@ -374,6 +407,9 @@ class ReferenciacionAdol extends CActiveRecord
 		$readRef->close();
 		return $resRef;
 	}
+	/**
+	 * 	Consulta las referenciaciones que tiene asociado el adolescente.
+	 */
 	public function consultaReferenciacionAdol(){
 		$conect=Yii::app()->db;
 		$sqlConsRef="select * from referenciacion_adol where num_doc=:num_doc";
@@ -384,6 +420,9 @@ class ReferenciacionAdol extends CActiveRecord
 		$readRef->close();
 		return $resRef;
 	}
+	/**
+	 * 	consulta la información de la referenciación según el id de referenciación
+	 */
 	public function consultaReferenciacion(){
 		$conect=Yii::app()->db;
 		$sqlConsRef="select * from referenciacion_adol as a 
@@ -402,6 +441,9 @@ class ReferenciacionAdol extends CActiveRecord
 		$readRef->close();
 		return $resRef;
 	}
+	/**
+	 * 	consulta las solicitudes de referenciación realizadas.
+	 */
 	public function consultaSolicitudes(){
 		$conect=Yii::app()->db;
 		$sqlConsSol="select * from referenciacion_adol as a 
@@ -418,8 +460,5 @@ class ReferenciacionAdol extends CActiveRecord
 		$resSol=$readSol->readAll();
 		$readSol->close();
 		return $resSol;
-		
-		//select * from referenciacion_adol as a left join adolescente as b on b.num_doc=a.num_doc where estado_sol_refer=1	
-		
 	}
 }

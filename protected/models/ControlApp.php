@@ -1,47 +1,13 @@
 <?php
-
+///!  ControlApp.  
 /**
- * This is the model class for table "personal".
- *
- * The followings are the available columns in table 'personal':
- * @property string $id_cedula
- * @property integer $id_cargo
- * @property string $nombres_personal
- * @property string $apellidos_personal
- * @property string $nombreusuario
- * @property string $clave
- * @property boolean $pers_habilitado
- *
- * The followings are the available model relations:
- * @property ConceptoIntegral[] $conceptoIntegrals
- * @property CorreccionesValpsicol[] $correccionesValpsicols
- * @property EquipopsicosocPai[] $equipopsicosocPais
- * @property Adolescente[] $adolescentes
- * @property InformepersAdol[] $informepersAdols
- * @property LogModificaciones[] $logModificaciones
- * @property ObservacionValteo[] $observacionValteos
- * @property ObservEnfermeria[] $observEnfermerias
- * @property ObservPsiquiatria[] $observPsiquiatrias
- * @property ObservValtsocial[] $observValtsocials
- * @property PerslSegAdol[] $perslSegAdols
- * @property Psc[] $pscs
- * @property RegistroAdol[] $registroAdols
- * @property SeguimientoCompderecho[] $seguimientoCompderechoes
- * @property SeguimientoCompsancion[] $seguimientoCompsancions
- * @property SeguimientoPsc[] $seguimientoPscs
- * @property SeguimientoRefer[] $seguimientoRefers
- * @property ReferenciacionAdol[] $referenciacionAdols
- * @property ValoracionEnfermeria[] $valoracionEnfermerias
- * @property ValoracionPsicologia[] $valoracionPsicologias
- * @property ValoracionPsiquiatria[] $valoracionPsiquiatrias
- * @property ValoracionTeo[] $valoracionTeos
- * @property Cargo $idCargo
- * @property ValoracionTrabajoSocial[] $valoracionTrabajoSocials
- */
+*	Clase del ámbito modelo
+*/
+
 class ControlApp extends CFormModel
 {
 	/**
-	 * @return string the associated database table name
+	 * Consulta los modulos a los cuales puede acceder el rol del usuario.
 	 */	 
 	public function consultaModulo(){
 		$conect= Yii::app()->db;
@@ -51,11 +17,12 @@ class ControlApp extends CFormModel
 		$read_RolModulo=$query_RolModulo->query();
 		$res_RolModulo=$read_RolModulo->readAll();
 		$read_RolModulo->close();
-		//echo Yii::app()->user->getState('rol');
-		//exit;
 		return $res_RolModulo;
 	}
 	
+	/**
+	 * Consulta el menú al cual puede acceder el rol del usuario.
+	 */	 
 	public function consultaMenu($id_modulo=null,$id_rol=null){
 		$conect= Yii::app()->db;
 		$sql_RolMenu="select * from menu as a left join rol_menu as b on a.id_menu=b.id_menu 
@@ -69,7 +36,11 @@ class ControlApp extends CFormModel
 		$menuPr=$read_RolMenu->readAll();
 		$read_RolMenu->close();
 		return $menuPr;
-	}	
+	}
+		
+	/**
+	 * Consulta los submenú a los cuales puede acceder el rol del usuario.
+	 */	 
 	public function consultaSubMenu($id_menu){
 		$conect= Yii::app()->db;
 		$sql_RolMenu="select * from menu as a left join rol_menu as b on 
