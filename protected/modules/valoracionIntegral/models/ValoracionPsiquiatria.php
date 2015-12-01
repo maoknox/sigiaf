@@ -147,6 +147,12 @@ class ValoracionPsiquiatria extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	/**
+	 *	Consulta valoración actual en psiquiatría del adolescente.
+	 *
+	 *	@param string $this->num_doc
+	 *	@return $consIdValNutr
+	 */		
 	public function consultaIdValPsiq(){
 		$conect=Yii::app()->db;
 		$sqlConsIdValPsiq="select * from valoracion_psiquiatria where num_doc=:numDoc and val_act_psiq='true'" ;
@@ -157,6 +163,12 @@ class ValoracionPsiquiatria extends CActiveRecord
 		$readIdValPsiq->close();
 		return $resConsIdValPsiq;
 	}
+	/**
+	 *	Registra valoración empty de psiquiatría del adolescente.
+	 *
+	 *	@param string $this->num_doc
+	 *	@return resultado de la transacción 
+	 */		
 	public function creaRegValPsiq(){
 		$conect=Yii::app()->db;
 		$sqlCreaValPsiq="insert into valoracion_psiquiatria (id_val_psiquiatria,num_doc,val_act_psiq) values (default,:numDoc,'true') returning id_val_psiquiatria";
@@ -167,6 +179,16 @@ class ValoracionPsiquiatria extends CActiveRecord
 		$readValPsiq->close();
 		return $resValPsiq["id_val_psiquiatria"];
 	}
+	/**
+	 *	Modifica la valoración en psiquiatría del adolescente por campo específico
+	 *
+	 *	@param int $this->id_val_psiquiatria
+	 *	@param int Yii::app()->user->getState('cedula')
+	 *	@param string $this->contHist
+	 *	@param string $this->nombreCampoValoracion
+	 *	@param string $fecha
+	 *	@return resultado de la transacción 
+	 */		
 	public function regHistoricoValPsiq(){
 		if(!empty($this->nombreCampoValoracioni)){
 			$this->nombreCampoValoracion=$this->nombreCampoValoracioni;
@@ -206,6 +228,16 @@ class ValoracionPsiquiatria extends CActiveRecord
 		}
 	}
 	
+	/**
+	 *	Modifica la valoración en psiquiatría del adolescente por campo específico
+	 *
+	 *	@param string $this->nombreCampoValoracion
+	 *	@param string $this->campoFecha
+	 *	@param string $this->fecha
+	 *	@param string $this->contenidoValoracion
+	 *	@param int $this->id_val_psiquiatria
+	 *	@return resultado de la transacción 
+	 */		
 	public function modificaValoracionPsiq($accion){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -229,6 +261,19 @@ class ValoracionPsiquiatria extends CActiveRecord
 			return $e;
 		}
 	}
+	/**
+	 *	Modifica vinculación en psiquiatría por dos campo en específico
+	 *
+	 *	@param string 	$this->nombreCampoValoracion
+	 *	@param string 	$this->nombreCampoValoracioni
+	 *	@param string 	$this->campoFecha
+	 *	@param string   $this->fecha
+	 *	@param   	    $this->contenidoValoracion
+	 *	@param   	    $this->contenidoValoracioni
+	 *	@param int	    $this->id_val_psiquiatria
+	 *	@param string   $this->num_doc
+	 *	@return resultado de la transacción 
+	 */		
 	public function modificaValoracionPsiqOpt($accion){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -255,6 +300,12 @@ class ValoracionPsiquiatria extends CActiveRecord
 			return $e;
 		}
 	}
+	/**
+	 *	Consulta el estado de modificación de la valoración en psiquiatría
+	 *
+	 *	@param string Yii::app()->getSession()->get('numDocAdol')
+	 *	@return $resHabVal
+	 */		
 	public function consValHabPsiq(){
 		$conect=Yii::app()->db;
 		$sqlConsHabVal="select val_hab_psq from valoracion_psiquiatria where num_doc=:num_doc";
@@ -265,6 +316,12 @@ class ValoracionPsiquiatria extends CActiveRecord
 		$readHabVal->close();
 		return $resHabVal;
 	}
+	/**
+	 *	Modifica a false el estado de modificación de la valoración en psiquiatría
+	 *
+	 *	@param string Yii::app()->getSession()->get('numDocAdol')
+	 *	@return resultado de la transacción 
+	 */		
 	public function modValHabFalsePsiq(){
 		$conect=Yii::app()->db;
 		$sqlActHabVal="update valoracion_psiquiatria set val_hab_psq='false' where num_doc=:num_doc";
@@ -272,6 +329,15 @@ class ValoracionPsiquiatria extends CActiveRecord
 		$actHabVal->bindParam(":num_doc",Yii::app()->getSession()->get('numDocAdol'),PDO::PARAM_STR);
 		$actHabVal->execute();		
 	}
+	/**
+	 *	Registra cédula del prfesional que realiza o modifica la  valoración de psiquiatría
+	 *
+	 *	@param int 	   Yii::app()->user->getState('cedula')
+	 *	@param int 	   $idValoracion
+	 *	@param int 	   $accion
+	 *	@param string  $fechaRegistro
+	 *	@return resultado de la transacción 
+	 */		
 	public function creaRegProfVal($idValoracion,$accion){
 		$conect=Yii::app()->db;
 		$fechaRegistro=date("Y-m-d");
@@ -310,6 +376,12 @@ class ValoracionPsiquiatria extends CActiveRecord
 			$creaRegProfVal->execute();
 		}
 	}
+	/**
+	 *	Consulta la valoración en psuiquiatría del adolescente
+	 *
+	 *	@param int $this->id_val_psiquiatria
+	 *	@return $resValPsiq
+	 */		
 	public function consultaValPsiq(){
 		$conect=Yii::app()->db;
 		$sqlConsValPsiq="select * from valoracion_psiquiatria where id_val_psiquiatria=:id_val_psiquiatria";
@@ -320,5 +392,4 @@ class ValoracionPsiquiatria extends CActiveRecord
 		$readValPsiq->close();
 		return $resValPsiq;
 	}	
-
 }

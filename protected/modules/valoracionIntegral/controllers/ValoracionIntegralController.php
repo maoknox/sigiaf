@@ -2,12 +2,20 @@
 Yii::import('application.modules.modIdenReg.models.ForjarAdol');	
 
 class ValoracionIntegralController extends Controller{
+	/**
+	 * Acción que se ejecuta en segunda instancia para verificar si el usuario tiene sesión activa.
+	 * En caso contrario no podrá acceder a los módulos del aplicativo y generará error de acceso.
+	 */
 	public function filterEnforcelogin($filterChain){		
 		if(Yii::app()->user->isGuest){
 			throw new CHttpException(403,"Debe loguearse primero");
 		}
 		$filterChain->run();
 	}			
+	/**
+	 * Acción que se ejecuta en primera instancia que llama a verificar la sesión de usuario y llama a los filtros secundarios
+	 * Los filtros no se ejecutan cuando se llaman a las acciones que van seguidas del guión.
+	 */
 	public function filters(){
 		$datosInput=Yii::app()->input->post();
 		if(isset($datosInput["numDocAdol"]) && !empty($datosInput["numDocAdol"])){
@@ -29,6 +37,51 @@ class ValoracionIntegralController extends Controller{
 		$this->render('index');
 	}
 	
+	/**
+	 *	Acción que renderiza la vista que contiene el formulario para el diligenciamiento o consulta de la valoracion en psicología.
+	 *
+	 *	Vista a renderizar:
+	 *		- _valoracionPsicolForm 
+	 *		- _valoracionPsicolFormCons.
+	 *	 
+	 *	Vistas relacionadas
+	 *		- _valoracionPsicolTab
+	 *		- _valoracionSusPsicoActTab
+	 *		- _valoracionConcPlanIntPsicolTab
+	 *		- _valoracionEstadoValPsicolTab
+	 *		- _valoracionPsicolTabCons
+	 *		- _valoracionSusPsicoActCons
+	 *		- _valoracionConcPlanIntPsicolCons
+	 *		- _valoracionEstadoValPsicolCons.
+	 *	 
+	 *	Modelos instanciados: //             
+	 *		- ForjarAdol
+	 * 		- OperacionesGenerales
+	 * 		- ConsultasGenerales
+	 * 		- ValoracionPsicologia
+	 * 		- DerechoAdol.
+	 *
+	 *	@param string 	$numDocAdol,	
+	 *	@param array 	$datosAdol,
+	 *	@param string 	$formularioCargaDerechos,
+	 *	@param object 	$modeloVerifDerechos,
+	 *	@param array 	$derechos,
+	 *	@param array 	$participacion,
+	 *	@param array 	$proteccion,
+	 *	@param object 	$modeloValPsicol,
+	 *	@param id	 	$idValPsicol,
+	 *	@param array 	$consDelitoVinc,
+	 *	@param array 	$delitos,
+	 *	@param array 	$sancionImp,
+	 *	@param int	 	$edad,
+	 *	@param array 	$tipoSpa,
+	 *	@param array 	$viaAdmon,
+	 *	@param array 	$frecUso,
+	 *	@param array 	$consConsumoSPA,
+	 *	@param array 	$patronCons,
+	 *	@param boolean 	$estadoCompVal,
+	 *	@param int	 	$estadoAdol
+	 */		
 	public function actionValoracionPsicolForm(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionPsicolForm";
@@ -46,7 +99,7 @@ class ValoracionIntegralController extends Controller{
 				$numDocAdol=Yii::app()->getSession()->get('numDocAdol');
 			}
 			if(!empty($numDocAdol)){
-				$modeloForjarAdol=new ForjarAdol();
+				$modeloForjarAdol=new ForjarAdol(); // ForjarAdol OperacionesGenerales ConsultasGenerales ValoracionPsicologia DerechoAdol
 				$modeloForjarAdol->num_doc=$numDocAdol;
 				$estadoAdol=$modeloForjarAdol->consultaDatosForjarAdol();								
 				$operaciones=new OperacionesGenerales();
@@ -147,7 +200,40 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
-//funcion para consultar la valoración en psicología.
+	/**
+	 *	Acción que renderiza la vista que contiene el formulario de consulta de la valoracion en psicología.
+	 *
+	 *	Vista a renderizar:
+	 *		- _valoracionPsicolFormCons
+	 *
+	 *	Modelos instanciados: //             
+	 *		- ForjarAdol
+	 * 		- OperacionesGenerales
+	 * 		- ConsultasGenerales
+	 * 		- ValoracionPsicologia
+	 * 		- DerechoAdol
+	 *
+	 *	@param string 	$numDocAdol,	
+	 *	@param array 	$datosAdol,
+	 *	@param string 	$formularioCargaDerechos,
+	 *	@param object 	$modeloVerifDerechos,
+	 *	@param array 	$derechos,
+	 *	@param array 	$participacion,
+	 *	@param array 	$proteccion,
+	 *	@param object 	$modeloValPsicol,
+	 *	@param id	 	$idValPsicol,
+	 *	@param array 	$consDelitoVinc,
+	 *	@param array 	$delitos,
+	 *	@param array 	$sancionImp,
+	 *	@param int	 	$edad,
+	 *	@param array 	$tipoSpa,
+	 *	@param array 	$viaAdmon,
+	 *	@param array 	$frecUso,
+	 *	@param array 	$consConsumoSPA,
+	 *	@param array 	$patronCons,
+	 *	@param boolean 	$estadoCompVal,
+	 *	@param int	 	$estadoAdol
+	 */		
 	public function actionConsultaValPsic(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="consultaValPsic";
@@ -228,6 +314,16 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Recibe datos del formulario de vinculación previa al srpa e instancia a modelo para registrar la información de srpa.
+	 *
+	 *	Modelos instanciados:
+	 *		- ValoracionPsicologia
+	 *
+	 *	@param array $dataInput	de datos del formulario vinculaciónes previas al srpa.
+	 *	@param string $modeloValPsicol->msnValPsicol.
+	 *	@return json resultado de la transacción.
+	 */		
 	public function actionCreaVincPrevSrpa(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionPsicolForm";
@@ -270,6 +366,16 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}	
+	/**
+	 *	Recibe datos del formulario de vinculación previa al srpa e instancia a modelo para modificar la información de srpa.
+	 *
+	 *	Modelos instanciados:
+	 *		- ValoracionPsicologia
+	 *
+	 *	@param array $dataInput	de datos del formulario vinculaciónes previas al srpa.
+	 *	@param string $modeloValPsicol->msnValPsicol.
+	 *	@return json resultado de la transacción.
+	 */		
 	public function actionModificaVincPrevSrpa(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionPsicolForm";
@@ -311,6 +417,16 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Recibe datos del formulario de consumo de sustancias psicoactivas e instancia a modelo para modificar estado.
+	 *
+	 *	Modelos instanciados:
+	 *		- ValoracionPsicologia
+	 *
+	 *	@param array $dataInput	de datos del formulario de verificación de consumo de sustancias psicoactivas.
+	 *	@param string $modeloValPsicol->msnValPsicol.
+	 *	@return json $resultado de la transacción.
+	 */		
 	public function actionModConsSpa(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionPsicolForm";
@@ -348,6 +464,16 @@ class ValoracionIntegralController extends Controller{
 		}
 	}
 	
+	/**
+	 *	Recibe datos del formulario de consumo de sustancias psicoactivas e instancia a modelo para crear registro de consumo.
+	 *
+	 *	Modelos instanciados:
+	 *		- ValoracionPsicologia
+	 *
+	 *	@param array $dataInput	de datos del formulario de verificación de consumo de sustancias psicoactivas.
+	 *	@param string $modeloValPsicol->msnValPsicol.
+	 *	@return json $resultado de la transacción.
+	 */		
 	public function actionCreaConsSpa(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionPsicolForm";
@@ -397,6 +523,16 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Recibe datos del formulario de consumo de sustancias psicoactivas e instancia a modelo para modificar registro de consumo.
+	 *
+	 *	Modelos instanciados:
+	 *		- ValoracionPsicologia
+	 *
+	 *	@param array $dataInput	de datos del formulario de verificación de consumo de sustancias psicoactivas.
+	 *	@param string $modeloValPsicol->msnValPsicol.
+	 *	@return json $resultado de la transacción.
+	 */		
 	public function actionModificaConsSPA(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionPsicolForm";
@@ -446,6 +582,16 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Recibe datos de campo en específico de valoración e intancia a modelo para realizar registro y guardar backup de histórico de campo.
+	 *
+	 *	Modelos instanciados:
+	 *		- ValoracionPsicologia
+	 *
+	 *	@param array $dataInput	contiene datos de adolescente, id de valoración, nombre de campo, texto de campo y nombre de entdiad.
+	 *	@param string $modeloValPsicol->msnValPsicol.
+	 *	@return json $resultado de la transacción.
+	 */		
 	public function actionModificaValoracionPsicol(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionPsicolForm";
@@ -495,6 +641,16 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Recibe datos de campo en específico de valoración e intancia a modelo para realizar registro y guardar backup de histórico de campo.
+	 *
+	 *	Modelos instanciados:
+	 *		- ValoracionPsicologia
+	 *
+	 *	@param array $dataInput	contiene datos de adolescente, id de valoración, nombre de campo, texto de campo y nombre de entdiad.
+	 *	@param string $modeloValPsicol->msnValPsicol.
+	 *	@return json $resultado de la transacción.
+	 */		
 	public function actionModificaValoracionPsicolOpt(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionPsicolForm";
@@ -566,6 +722,77 @@ class ValoracionIntegralController extends Controller{
 		}
 	}
 
+	/**
+	 *	Acción que renderiza la vista que contiene el formulario para el diligenciamiento o consulta de la valoracion en trabajo social.
+	 *
+	 *	Vista a renderizar:
+	 *		- _valoracionTrSocForm 
+	 *		- _valoracionTrSocCons.
+	 *	 
+	 *	Vistas relacionadas
+	 *		- _valoracionTrSocTab
+	 *		- _valoracionEscolaridadTab
+	 *		- _valoracionConcPlanIntTrSocTab
+	 *		- _valoracionEstadoValTrSoc
+	 *		- _valoracionTrSocTabCons
+	 *		- _valoracionEscolaridadCons
+	 *		- _valoracionConcPlanIntTrSocCons
+	 *		- _valoracionEstadoValTrSocCons.
+	 *	 
+	 *	Modelos instanciados:              ConsultasGenerales          
+	 *		- ValoracionTrabajoSocial
+	 * 		- DerechoAdol
+	 * 		- Familiar
+	 * 		- Familia
+	 * 		- Telefono.
+	 * 		- AntFFamilia.
+	 * 		- ProblemaValtsocial.
+	 * 		- ServprotecValtsocial.
+	 * 		- EscolaridadAdolescente.
+	 * 		- Adolescente.
+	 * 		- OperacionesGenerales.
+	 * 		- ConsultasGenerales.
+	 *
+	 *	
+	 *	@param object 	$modelValTrSoc,
+	 *	@param int	 	$idValTrSoc,
+	 *	@param array 	$formularioCargaDerechos,
+	 *	@param object 	$modeloVerifDerechos,
+	 *	@param string 	$numDocAdol,
+	 *	@param int	 	$estadoCompVal,
+	 *	@param array 	$datosAdol,
+	 *	@param int	 	$edad,
+	 *	@param array 	$derechos,
+	 *	@param array 	$participacion,
+	 *	@param array 	$proteccion,
+	 *	@param object 	$modeloFamiliar,
+	 *	@param array 	$grupoFamiliar,
+	 *	@param array 	$otroRef,
+	 *	@param array 	$parentesco,
+	 *	@param array 	$nivelEduc,
+	 *	@param object 	$modeloTelefono,
+	 *	@param object 	$modeloEscAdol,
+	 *	@param array 	$escolaridadAdol,
+	 *	@param array 	$jornadaEduc,
+	 *	@param int	 	$estadoEsc,
+	 *	@param array 	$munCiudad,
+	 *	@param array 	$probAsoc,//problemas asociados al adolescente en la verificación de derechos
+	 *	@param array 	$servProt,//servicios de protección
+	 *	@param array 	$probAsocAdol,
+	 *	@param array 	$servProtAdol,
+	 *	@param array 	$antFam,
+	 *	@param array 	$antFamAdol,
+	 *	@param object 	$modeloFamilia,
+	 *	@param array 	$tipoFamilia,
+	 *	@param array 	$tipoFamiliaAdol,
+	 *	@param object 	$modeloAntFFamilia,
+	 *	@param object 	$modeloProblemaValtsocial,
+	 *	@param object 	$modeloServprotecValtsocial,
+	 *	@param object 	$modeloSgsss,				
+	 *	@param array 	$eps,
+	 *	@param array 	$regSalud,
+	 *	@param array 	$sgs,
+	 */		
 	public function actionValoracionTrSocForm(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionTrSocForm";
@@ -730,6 +957,77 @@ class ValoracionIntegralController extends Controller{
 	}
 	//consulta valoración en trabajo social.
 	
+	/**
+	 *	Acción que renderiza la vista que contiene el formulario para la consulta de la valoracion en trabajo social.
+	 *
+	 *	Vista a renderizar:
+	 *		- _valoracionTrSocForm 
+	 *		- _valoracionTrSocCons.
+	 *	 
+	 *	Vistas relacionadas
+	 *		- _valoracionTrSocTab
+	 *		- _valoracionEscolaridadTab
+	 *		- _valoracionConcPlanIntTrSocTab
+	 *		- _valoracionEstadoValTrSoc
+	 *		- _valoracionTrSocTabCons
+	 *		- _valoracionEscolaridadCons
+	 *		- _valoracionConcPlanIntTrSocCons
+	 *		- _valoracionEstadoValTrSocCons.
+	 *	 
+	 *	Modelos instanciados:              ConsultasGenerales          
+	 *		- ValoracionTrabajoSocial
+	 * 		- DerechoAdol
+	 * 		- Familiar
+	 * 		- Familia
+	 * 		- Telefono.
+	 * 		- AntFFamilia.
+	 * 		- ProblemaValtsocial.
+	 * 		- ServprotecValtsocial.
+	 * 		- EscolaridadAdolescente.
+	 * 		- Adolescente.
+	 * 		- OperacionesGenerales.
+	 * 		- ConsultasGenerales.
+	 *
+	 *	
+	 *	@param object 	$modelValTrSoc,
+	 *	@param int	 	$idValTrSoc,
+	 *	@param array 	$formularioCargaDerechos,
+	 *	@param object 	$modeloVerifDerechos,
+	 *	@param string 	$numDocAdol,
+	 *	@param int	 	$estadoCompVal,
+	 *	@param array 	$datosAdol,
+	 *	@param int	 	$edad,
+	 *	@param array 	$derechos,
+	 *	@param array 	$participacion,
+	 *	@param array 	$proteccion,
+	 *	@param object 	$modeloFamiliar,
+	 *	@param array 	$grupoFamiliar,
+	 *	@param array 	$otroRef,
+	 *	@param array 	$parentesco,
+	 *	@param array 	$nivelEduc,
+	 *	@param object 	$modeloTelefono,
+	 *	@param object 	$modeloEscAdol,
+	 *	@param array 	$escolaridadAdol,
+	 *	@param array 	$jornadaEduc,
+	 *	@param int	 	$estadoEsc,
+	 *	@param array 	$munCiudad,
+	 *	@param array 	$probAsoc,//problemas asociados al adolescente en la verificación de derechos
+	 *	@param array 	$servProt,//servicios de protección
+	 *	@param array 	$probAsocAdol,
+	 *	@param array 	$servProtAdol,
+	 *	@param array 	$antFam,
+	 *	@param array 	$antFamAdol,
+	 *	@param object 	$modeloFamilia,
+	 *	@param array 	$tipoFamilia,
+	 *	@param array 	$tipoFamiliaAdol,
+	 *	@param object 	$modeloAntFFamilia,
+	 *	@param object 	$modeloProblemaValtsocial,
+	 *	@param object 	$modeloServprotecValtsocial,
+	 *	@param object 	$modeloSgsss,				
+	 *	@param array 	$eps,
+	 *	@param array 	$regSalud,
+	 *	@param array 	$sgs,
+	 */		
 	public function actionConsultaValTrSoc(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="consultaValTrSoc";
@@ -861,6 +1159,16 @@ class ValoracionIntegralController extends Controller{
 		}
 	}
 
+	/**
+	 *	Recibe datos de campo en específico de valoración e intancia a modelo para realizar registro y guardar backup de histórico de campo.
+	 *
+	 *	Modelos instanciados:
+	 *		- ValoracionTrabajoSocial
+	 *
+	 *	@param array $dataInput	contiene datos de adolescente, id de valoración, nombre de campo, texto de campo y nombre de entdiad.
+	 *	@param string $modeloValTrSoc->msnValTrSoc.
+	 *	@return json $resultado de la transacción.
+	 */		
 	public function actionModificaValoracionTrSoc(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionTrSocForm";
@@ -916,6 +1224,16 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Recibe datos de campo en específico de valoración e intancia a modelo para realizar registro y guardar backup de histórico de campo.
+	 *
+	 *	Modelos instanciados:
+	 *		- ValoracionTrabajoSocial
+	 *
+	 *	@param array $dataInput	contiene datos de adolescente, id de valoración, nombre de campo, texto de campo y nombre de entdiad.
+	 *	@param string $modeloValTrSoc->msnValTrSoc.
+	 *	@return json $resultado de la transacción.
+	 */		
 	public function actionModificaValoracionTrSocOpt(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionTrSocForm";
@@ -987,6 +1305,15 @@ class ValoracionIntegralController extends Controller{
 		}
 	}
 
+	/**
+	 *	Recibe datos de formulario de antecedentes familiares y llama a modelo para registrar.
+	 *
+	 *	Modelos instanciados:
+	 *		- AntFFamilia
+	 *
+	 *	@param array $dataInput.
+	 *	@return json $resultado de la transacción.
+	 */		
 	public function actionRegistraAntFam(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionTrSocForm";
@@ -1028,6 +1355,15 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Recibe datos de formulario de problemas asociados y llama a modelo para registrar.
+	 *
+	 *	Modelos instanciados:
+	 *		- ProblemaValtsocial
+	 *
+	 *	@param array $dataInput.
+	 *	@return json $resultado de la transacción.
+	 */		
 	public function actionRegistraProbAsoc(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionTrSocForm";
@@ -1080,6 +1416,15 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Recibe datos de formulario de Servicios de protección y llama a modelo para registrar.
+	 *
+	 *	Modelos instanciados:
+	 *		- ServprotecValtsocial
+	 *
+	 *	@param array $dataInput.
+	 *	@return json $resultado de la transacción.
+	 */		
 	public function actionRegistraServProtec(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionTrSocForm";
@@ -1121,6 +1466,15 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Recibe datos de formulario de Tipos de familia y llama a modelo para registrar.
+	 *
+	 *	Modelos instanciados:
+	 *		- Familia
+	 *
+	 *	@param array $dataInput.
+	 *	@return json $resultado de la transacción.
+	 */		
 	public function actionCreaTipoFam(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionTrSocForm";
@@ -1145,6 +1499,15 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Recibe datos de formulario de Tipos de familia y llama a modelo para modificar.
+	 *
+	 *	Modelos instanciados:
+	 *		- Familia
+	 *
+	 *	@param array $dataInput.
+	 *	@return json $resultado de la transacción.
+	 */		
 	public function actionModTipoFam(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionTrSocForm";
@@ -1166,6 +1529,15 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Recibe datos de formulario de Registro de famiiliar y llama a modelo para registrar.
+	 *
+	 *	Modelos instanciados:
+	 *		- Familiar
+	 *
+	 *	@param array $dataInput.
+	 *	@return json $resultado de la transacción.
+	 */		
 	public function actionCreaRegFam(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionTrSocForm";
@@ -1190,6 +1562,16 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Recibe datos de formulario de Registro de famiiliar y llama a modelo para modificar.
+	 *	La modificación se realiza por campo del familiar.
+	 *
+	 *	Modelos instanciados:
+	 *		- Familiar
+	 *
+	 *	@param array $dataInput.
+	 *	@return json $resultado de la transacción.
+	 */		
 	public function actionModificaDatosFam(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionTrSocForm";
@@ -1268,6 +1650,15 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Recibe datos de formulario de Registro de otro referente y llama a modelo para registrar.
+	 *
+	 *	Modelos instanciados:
+	 *		- Familiar
+	 *
+	 *	@param array $dataInput.
+	 *	@return json $resultado de la transacción.
+	 */		
 	public function actionCreaOtrRef(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionTrSocForm";
@@ -1290,6 +1681,16 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Recibe datos de formulario de Registro de otro referente y llama a modelo para modificar.
+	 *	La modificación se realiza por campo de otro referente.
+	 *
+	 *	Modelos instanciados:
+	 *		- Familiar
+	 *
+	 *	@param array $dataInput.
+	 *	@return json $resultado de la transacción.
+	 */		
 	public function actionModifOtrRef(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionTrSocForm";
@@ -1339,6 +1740,15 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Recibe datos de formulario de Registro de otro referente y llama a modelo para registrar.
+	 *
+	 *	Modelos instanciados:
+	 *		- Familiar
+	 *
+	 *	@param array $dataInput.
+	 *	@return json $resultado de la transacción.
+	 */		
 	public function actionCreaRegEscAdol(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionTrSocForm";
@@ -1361,6 +1771,21 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Recibe datos de formulario de Registro de formulario de escolaridad adolescente llama a modelo para modificar.
+	 *	Se verifica cada campo si ha sido modificado y se procede a modificar.
+	 *
+	 *	Modelos instanciados:
+	 *		- EscolaridadAdolescente
+	 *
+	 *	@param array $dataInput.    
+	 *	@param int $id_nivel_educ
+	 *	@param string $anio_escolaridad
+	 *	@param string $instituto_escolaridad
+	 *	@param int $id_municipio
+	 *	@param int $id_jornada_educ
+	 *	@return json $resultado de la transacción.
+	 */		
 	public function actionModificaEscAdol(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionTrSocForm";
@@ -1380,7 +1805,7 @@ class ValoracionIntegralController extends Controller{
 			}
 			if($modeloEscAdol->anio_escolaridad!=$datosAnioEsc["anio_escolaridad"]){
 				$modeloEscAdol->tipoDato=PDO::PARAM_STR;
-				$modeloEscAdol->nombreCampo="anio_escolaridad";
+				$modeloEscAdol->nombreCampo="anio_escolaridad"; 
 				$modeloEscAdol->datosCampo=$modeloEscAdol->anio_escolaridad;
 				$resultado=$modeloEscAdol->modificaEscolAdol();
 			}
@@ -1408,6 +1833,28 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Acción que renderiza la vista que contiene el formulario para el diligenciamiento o consulta de la valoracion en psiquiatría.
+	 *
+	 *	Vista a renderizar:
+	 *		- _valoracionPsiqForm 
+	 *		- _valoracionPsiqCons.
+	 *	 
+	 *	Vistas relacionadas
+	 *		- _valoracionPsiqTab
+	 *		- _valoracionEstadoValPsiqTab.
+	 *	 
+	 *	Modelos instanciados:          
+	 *		- ValoracionPsiquiatria
+	 * 		- ConsultasGenerales
+	 * 		- OperacionesGenerales
+	 *	
+	 *	@param object 	$modeloValPsiq
+	 *	@param string 	$numDocAdol
+	 *	@param array 	$datosAdol
+	 *	@param int	 	$edad
+	 *	@param boolean 	$estadoCompVal
+	 */		
 	public function actionValoracionPsiqForm(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionPsiqForm";
@@ -1478,7 +1925,28 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
-	//consulta psiquiatria
+	/**
+	 *	Acción que renderiza la vista que contiene el formulario para la consulta de la valoracion en psiquiatría.
+	 *
+	 *	Vista a renderizar:
+	 *		- _valoracionPsiqForm 
+	 *		- _valoracionPsiqCons.
+	 *	 
+	 *	Vistas relacionadas
+	 *		- _valoracionPsiqTab
+	 *		- _valoracionEstadoValPsiqTab.
+	 *	 
+	 *	Modelos instanciados:          
+	 *		- ValoracionPsiquiatria
+	 * 		- ConsultasGenerales
+	 * 		- OperacionesGenerales
+	 *	
+	 *	@param object 	$modeloValPsiq
+	 *	@param string 	$numDocAdol
+	 *	@param array 	$datosAdol
+	 *	@param int	 	$edad
+	 *	@param boolean 	$estadoCompVal
+	 */		
 	public function actionConsultaValPsiq(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="consultaValPsiq";
@@ -1524,6 +1992,18 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Recibe datos por campo de valoración e instancia a modelo para realizar la modificación.
+	 *
+	 *	Modelos instanciados:
+	 *		- ValoracionPsiquiatria
+	 *
+	 *	@param array $dataInput	contiene datos de adolescente, id de valoración, nombre de campo, texto de campo y nombre de entdiad.
+	 *	@param array $variables contiene el nombre de las variables enviadas por post
+	 *	@param array $variablesii contiene un array del nombre de variables del subarray de variables.
+	 *	@param string $modeloValTrSoc->msnValTrSoc.
+	 *	@return json $resultado de la transacción.
+	 */
 	public function actionModificaValoracionPsiq(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionPsiqForm";
@@ -1578,6 +2058,17 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Recibe datos por campo de valoración e instancia a modelo para realizar la modificación.
+	 *
+	 *	Modelos instanciados:
+	 *		- ValoracionPsiquiatria
+	 *
+	 *	@param array $dataInput	contiene datos de adolescente, id de valoración, nombre de campo, texto de campo y nombre de entdiad.
+	 *	@param array $variables contiene el nombre de las variables enviadas por post
+	 *	@param array $variablesii contiene un array del nombre de variables del subarray de variables.
+	 *	@return json $resultado de la transacción.
+	 */
 	public function actionModificaValoracionPsiqOpt(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionPsiqForm";
@@ -1647,6 +2138,35 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Acción que renderiza la vista que contiene el formulario para el diligenciamiento o consulta de la valoración en terapia ocupacional.
+	 *
+	 *	Vista a renderizar:
+	 *		- _valoracionTOForm 
+	 *		- _valoracionTOCons.
+	 *	 
+	 *	Vistas relacionadas
+	 *		 _valoracionTOTab
+	 *		 _valoracionConcPlanIntTOTab
+	 *		 _valoracionEstadoValTO
+	 *		- _valoracionTOTabCons
+	 *		- _valoracionConcPlanIntTOCons
+	 *		- _valoracionEstadoValTOCons.
+	 *	 
+	 *	Modelos instanciados:          
+	 *		- ValoracionTeo
+	 * 		- ConsultasGenerales
+	 * 		- OperacionesGenerales
+	 *	
+	 *	@param string	$numDocAdol,
+	 *	@param object 	$modeloValTO,
+	 *	@param int	 	$idValTO,
+	 *	@param boolean 	$estadoCompVal,
+	 *	@param array 	$datosAdol,
+	 *	@param int	 	$edad,
+	 *	@param array 	$tipoTrabajador,
+	 *	@param array 	$sectorLaboral,
+	 */		
 	public function actionValoracionTOForm(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionTOForm";
@@ -1723,6 +2243,35 @@ class ValoracionIntegralController extends Controller{
 		}
 	}
 	//consulta valoracion en terapia ocupacional
+	/**
+	 *	Acción que renderiza la vista que contiene el formulario para la consulta de la valoración en terapia ocupacional.
+	 *
+	 *	Vista a renderizar:
+	 *		- _valoracionTOForm 
+	 *		- _valoracionTOCons.
+	 *	 
+	 *	Vistas relacionadas
+	 *		 _valoracionTOTab
+	 *		 _valoracionConcPlanIntTOTab
+	 *		 _valoracionEstadoValTO
+	 *		- _valoracionTOTabCons
+	 *		- _valoracionConcPlanIntTOCons
+	 *		- _valoracionEstadoValTOCons.
+	 *	 
+	 *	Modelos instanciados:          
+	 *		- ValoracionTeo
+	 * 		- ConsultasGenerales
+	 * 		- OperacionesGenerales
+	 *	
+	 *	@param string	$numDocAdol,
+	 *	@param object 	$modeloValTO,
+	 *	@param int	 	$idValTO,
+	 *	@param boolean 	$estadoCompVal,
+	 *	@param array 	$datosAdol,
+	 *	@param int	 	$edad,
+	 *	@param array 	$tipoTrabajador,
+	 *	@param array 	$sectorLaboral,
+	 */		
 	public function actionConsultaValTO(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="consultaValTO";
@@ -1775,6 +2324,17 @@ class ValoracionIntegralController extends Controller{
 		}
 	}
 	
+	/**
+	 *	Recibe datos por campo de valoración e instancia a modelo para realizar la modificación.
+	 *
+	 *	Modelos instanciados:
+	 *		- ValoracionTeo
+	 *
+	 *	@param array $dataInput	contiene datos de adolescente, id de valoración, nombre de campo, texto de campo y nombre de entdiad.
+	 *	@param array $variables contiene el nombre de las variables enviadas por post
+	 *	@param array $variablesii contiene un array del nombre de variables del subarray de variables.
+	 *	@return json $resultado de la transacción.
+	 */
 	public function actionModificaValoracionTO(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionTOForm";
@@ -1829,6 +2389,17 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Recibe datos por campo de valoración e instancia a modelo para realizar la modificación.
+	 *
+	 *	Modelos instanciados:
+	 *		- ValoracionTeo
+	 *
+	 *	@param array $dataInput	contiene datos de adolescente, id de valoración, nombre de campo, texto de campo y nombre de entdiad.
+	 *	@param array $variables contiene el nombre de las variables enviadas por post
+	 *	@param array $variablesii contiene un array del nombre de variables del subarray de variables.
+	 *	@return json $resultado de la transacción.
+	 */
 	public function actionModificaValoracionTOOpt(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionTOForm";
@@ -1899,6 +2470,36 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Acción que renderiza la vista que contiene el formulario para el diligenciamiento o consulta de la valoración en enfermería.
+	 *
+	 *	Vista a renderizar:
+	 *		- _valoracionEnfForm 
+	 *		- _valoracionEnfCons.
+	 *	 
+	 *	Vistas relacionadas
+	 *		- _valoracionEnfTab
+	 *		- _valoracionEstadoValEnf
+	 *		- _valoracionEnfTabCons
+	 *		- _valoracionEstadoValEnfCons.
+	 *	 
+	 *	Modelos instanciados:          
+	 *		- ValoracionEnfermeria
+	 *		- Sgsss
+	 * 		- ConsultasGenerales
+	 * 		- OperacionesGenerales.
+	 *	
+	 *	@param string	$numDocAdol,
+	 *	@param object	$modeloValEnf,
+	 *	@param object	$modeloSgsss,
+	 *	@param int		$idValEnf,
+	 *	@param boolean	$estadoCompVal,
+	 *	@param array	$datosAdol,
+	 *	@param int		$edad,
+	 *	@param array	$eps,
+	 *	@param array	$regSalud,
+	 *	@param array	$sgs,
+	 */		
 	public function actionValoracionEnfForm(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionEnfForm";
@@ -1980,6 +2581,36 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Acción que renderiza la vista que contiene el formulario la consulta de la valoración en enfermería.
+	 *
+	 *	Vista a renderizar:
+	 *		- _valoracionEnfForm 
+	 *		- _valoracionEnfCons.
+	 *	 
+	 *	Vistas relacionadas
+	 *		- _valoracionEnfTab
+	 *		- _valoracionEstadoValEnf
+	 *		- _valoracionEnfTabCons
+	 *		- _valoracionEstadoValEnfCons.
+	 *	 
+	 *	Modelos instanciados:          
+	 *		- ValoracionEnfermeria
+	 *		- Sgsss
+	 * 		- ConsultasGenerales
+	 * 		- OperacionesGenerales.
+	 *	
+	 *	@param string	$numDocAdol
+	 *	@param object	$modeloValEnf
+	 *	@param object	$modeloSgsss
+	 *	@param int		$idValEnf
+	 *	@param boolean	$estadoCompVal
+	 *	@param array	$datosAdol
+	 *	@param int		$edad
+	 *	@param array	$eps
+	 *	@param array	$regSalud
+	 *	@param array	$sgs
+	 */		
 	public function actionConsultaValEnf(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="consultaValEnf";
@@ -2036,6 +2667,16 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Recibe datos del formulario de afiliación a salud e instancia a modelo para registrar seguridad social del adolescente.
+	 *
+	 *	Modelos instanciados:
+	 *		- Sgsss
+	 *
+	 *	@param array $dataInput	contiene datos de adolescente, id de valoración, nombre de campo, texto de campo y nombre de entdiad.
+	 *	@param array $modeloSgsss->attributes contiene los datos de régimen de salud y eps
+	 *	@return json $resultado de la transacción.
+	 */
 	public function actionRegistraSgsss(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionTrSocForm";
@@ -2057,6 +2698,16 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Recibe datos del formulario de afiliación a salud e instancia a modelo para modificar seguridad social del adolescente.
+	 *
+	 *	Modelos instanciados:
+	 *		- Sgsss
+	 *
+	 *	@param array $dataInput	contiene datos de adolescente, id de valoración, nombre de campo, texto de campo y nombre de entdiad.
+	 *	@param array $modeloSgsss->attributes contiene los datos de régimen de salud y eps
+	 *	@return json $resultado de la transacción.
+	 */
 	public function actionModificaSgsss(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionTrSocForm";
@@ -2089,6 +2740,17 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Recibe datos por campo de valoración e instancia a modelo para realizar la modificación.
+	 *
+	 *	Modelos instanciados:
+	 *		- ValoracionEnfermeria
+	 *
+	 *	@param array $dataInput	contiene datos de adolescente, id de valoración, nombre de campo, texto de campo y nombre de entdiad.
+	 *	@param array $variables contiene el nombre de las variables enviadas por post
+	 *	@param array $variablesii contiene un array del nombre de variables del subarray de variables.
+	 *	@return json $resultado de la transacción.
+	 */
 	public function actionModificaValoracionEnf(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionEnfForm";
@@ -2143,6 +2805,17 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Recibe datos por campo de valoración e instancia a modelo para realizar la modificación.
+	 *
+	 *	Modelos instanciados:
+	 *		- ValoracionEnfermeria
+	 *
+	 *	@param array $dataInput	contiene datos de adolescente, id de valoración, nombre de campo, texto de campo y nombre de entdiad.
+	 *	@param array $variables contiene el nombre de las variables enviadas por post
+	 *	@param array $variablesii contiene un array del nombre de variables del subarray de variables.
+	 *	@return json $resultado de la transacción.
+	 */
 	public function actionModificaValoracionEnfOpt(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionEnfForm";
@@ -2212,6 +2885,17 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Recibe datos del formulario de verificación de derechos del adolescente e instancia a modelo para crear registro de verificación de derechos.
+	 *
+	 *	Modelos instanciados:
+	 *		- DerechoAdol
+	 *
+	 *	@param array $dataInput	contiene datos de adolescente, id de valoración, nombre de campo, texto de campo y nombre de entdiad.
+	 *	@param array $variables contiene el nombre de las variables enviadas por post
+	 *	@param array $variablesii contiene un array del nombre de variables del subarray de variables.
+	 *	@return json $resultado de la transacción.
+	 */
 	public function actionCreaVerifDerAdol(){
 		$modeloVerifDerechos=new DerechoAdol();
 		$this->performAjaxValidation('formularioVerifDer',$modeloVerifDerechos);
@@ -2229,6 +2913,17 @@ class ValoracionIntegralController extends Controller{
 			}
 		}
 	}
+	/**
+	 *	Recibe datos del formulario de verificación de derechos del adolescente e instancia a modelo para modificar la verificación de derechos.
+	 *
+	 *	Modelos instanciados:
+	 *		- DerechoAdol
+	 *
+	 *	@param array $dataInput	contiene datos de adolescente, id de valoración, nombre de campo, texto de campo y nombre de entdiad.
+	 *	@param array $variables contiene el nombre de las variables enviadas por post
+	 *	@param array $variablesii contiene un array del nombre de variables del subarray de variables.
+	 *	@return json $resultado de la transacción.
+	 */
 	public function actionModVerifDerAdol(){
 		$modeloVerifDerechos=new DerechoAdol();
 		$derechosAdol=Yii::app()->input->post();
@@ -2252,7 +2947,8 @@ class ValoracionIntegralController extends Controller{
 		$consAdol->searchTerm=$datos["search_term"];
 		$res=$consAdol->buscaAdolGen();
 		echo CJSON::encode($res);
-	}	//Consulta Municipio segun departamento
+	}	
+	//Consulta el nombre de los campos de una entidad y su identificador en la base de datos
 	public function actionConsultaDatosForm(){
 		$datosInput=Yii::app()->input->post();
 		$consGen=new ConsultasGenerales();
@@ -2266,6 +2962,33 @@ class ValoracionIntegralController extends Controller{
 			}
 		}
 	}
+	/**
+	 *	Acción que renderiza la vista que contiene el formulario para el registro y consulta del concepto integral
+	 *
+	 *	Vista a renderizar:
+	 *		- _conceptoIntegralFormCrea 
+	 *		- _conceptoIntegralFormMod.
+	 *		- _conceptoIntegralFormCons.
+	 *	 
+	 *	Modelos instanciados:          
+	 *		- ConceptoIntegral
+	 *		- DerechoAdol
+	 * 		- OperacionesGenerales
+	 * 		- ConsultasGenerales.
+	 *	
+	 *	@param object	$modeloConInt,
+	 *	@param object	$modeloVerifDerechos,
+	 *	@param array	$formularioConcInt,
+	 *	@param string	$numDocAdol,
+	 *	@param array	$datosAdol,
+	 *	@param int		$edad,
+	 *	@param array	$derechos,
+	 *	@param array	$participacion,
+	 *	@param array	$proteccion,
+	 *	@param boolean	$consEstPsicol,
+	 *	@param boolean	$consEstTrSocial,
+	 *	@param array	$datosConcInt 
+	 */		
 	public function actionConceptoIntegral(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="conceptoIntegral";
@@ -2337,6 +3060,15 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Recibe datos del formulario concepto integral e instancia a modelo para registrar el concepto
+	 *
+	 *	Modelos instanciados:
+	 *		- ConceptoIntegral
+	 *
+	 *	@param array $dataInput	contiene datos de adolescente y datos del concepto integral
+	 *	@return json $resultado de la transacción.
+	 */
 	public function actionRegistraConcInt(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="conceptoIntegral";
@@ -2359,6 +3091,15 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Recibe datos del formulario concepto integral e instancia a modelo para modificar el concepto
+	 *
+	 *	Modelos instanciados:
+	 *		- ConceptoIntegral
+	 *
+	 *	@param array $dataInput	contiene datos de adolescente y datos del concepto integral
+	 *	@return json $resultado de la transacción.
+	 */
 	public function actionModificaConcInt(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="conceptoIntegral";
@@ -2382,6 +3123,16 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Valida si los campos están adecuadamente diligenciados al momento de marcar la valoración de psicología como completa.
+	 *	si tienen el número de carácteres mínimos para marcar el campo como diligenciado
+	 *
+	 *	Modelos instanciados:
+	 *		- ValoracionPsicologia
+	 *
+	 *	@param int Yii::app()->params['num_caracteres'] número de carácteres definidos en la configuración del sistema.
+	 *	@return json $resultado de la transacción.
+	 */
 	public function actionValidaDilValoracionPsicol(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionPsicolForm";
@@ -2440,6 +3191,16 @@ class ValoracionIntegralController extends Controller{
 		}
 	}
 	
+	/**
+	 *	Valida si los campos están adecuadamente diligenciados al momento de marcar la valoración de trabajo social como completa.
+	 *	si tienen el número de carácteres mínimos para marcar el campo como diligenciado
+	 *
+	 *	Modelos instanciados:
+	 *		- ValoracionTrabajoSocial
+	 *
+	 *	@param int Yii::app()->params['num_caracteres'] número de carácteres definidos en la configuración del sistema.
+	 *	@return json $resultado de la transacción.
+	 */
 	public function actionValidaDilValoracionTrSoc(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionTrSocForm";
@@ -2484,6 +3245,16 @@ class ValoracionIntegralController extends Controller{
 		}
 	}
 	
+	/**
+	 *	Valida si los campos están adecuadamente diligenciados al momento de marcar la valoración de terapia ocupacional como completa.
+	 *	si tienen el número de carácteres mínimos para marcar el campo como diligenciado
+	 *
+	 *	Modelos instanciados:
+	 *		- ValoracionTrabajoSocial
+	 *
+	 *	@param int Yii::app()->params['num_caracteres'] número de carácteres definidos en la configuración del sistema.
+	 *	@return json $resultado de la transacción.
+	 */
 	public function actionValidaDilValoracionTO(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionTOForm";
@@ -2527,6 +3298,16 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Valida si los campos están adecuadamente diligenciados al momento de marcar la valoración de enfermería como completa.
+	 *	si tienen el número de carácteres mínimos para marcar el campo como diligenciado
+	 *
+	 *	Modelos instanciados:
+	 *		- ValoracionTrabajoSocial
+	 *
+	 *	@param int Yii::app()->params['num_caracteres'] número de carácteres definidos en la configuración del sistema.
+	 *	@return json $resultado de la transacción.
+	 */
 	public function actionValidaDilValoracionEnf(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionEnfForm";
@@ -2558,7 +3339,17 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
-		public function actionValidaDilValoracionPsiq(){
+	/**
+	 *	Valida si los campos están adecuadamente diligenciados al momento de marcar la valoración de enfermería como completa.
+	 *	si tienen el número de carácteres mínimos para marcar el campo como diligenciado
+	 *
+	 *	Modelos instanciados:
+	 *		- ValoracionTrabajoSocial
+	 *
+	 *	@param int Yii::app()->params['num_caracteres'] número de carácteres definidos en la configuración del sistema.
+	 *	@return json $resultado de la transacción.
+	 */
+	public function actionValidaDilValoracionPsiq(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionPsiqForm";
 		$permiso=$controlAcceso->controlAccesoAcciones();
@@ -2593,7 +3384,98 @@ class ValoracionIntegralController extends Controller{
 		}
 	}
 //************************************************* Valoración en nutrición *********************************************************************************//
-	public function actionValoracionNutrForm(){
+	/**
+	 *	Acción que renderiza la vista que contiene el formulario de registro o consulta de la valoración en nutrición.
+	 *
+	 *	Vista a renderizar:
+	 *		- _valoracionNutrForm 
+	 *		- _valoracionNutrFormCons.
+	 *	 
+	 *	Vistas relacionadas
+	 *		- _valoracionNutrAntSalud
+	 *		- _valoracionNutrExamenes
+	 *		- _valoracionNutrAntAlim
+	 *		- _valoracionNutrEstadoActual.
+	 *		- _valoracionNutrResultados.
+	 *		- _valoracionNutrPlanDietario.
+	 *		- _valoracionNutrEstado.
+	 *		- _valoracionNutrEstadoActual.
+	 *		- _valoracionNutrAntSaludCons.
+	 *		- _valoracionNutrExamenesCons.
+	 *		- _valoracionNutrAntAlimCons.
+	 *		- _valoracionNutrEstadoActualCons.
+	 *		- _valoracionNutrResultadosCons.
+	 *		- _valoracionNutrPlanDietarioCons.
+	 *		- _valoracionNutrEstadoCons.
+	 *	 
+	 *	Modelos instanciados:   				
+	 *		- ForjarAdol
+	 *		- Telefono
+	 * 		- LabclinValnutr
+	 * 		- TipodiscValnutr.
+	 * 		- OrigenalimValnutr.
+	 * 		- GrupocomidaValnutr.
+	 * 		- GrupocomidaNutradol.
+	 * 		- Antropometria.
+	 * 		- PorcionesComida.
+	 * 		- NutricionAdol.
+	 * 		- EsquemaVacunacion.
+	 * 		- OperacionesGenerales.
+	 * 		- ConsultasGenerales.
+	 * 		- Familia.
+	 * 		- Familiar.
+	 *	
+	 *	@param string	$numDocAdol,	
+	 *	@param array	$datosAdol,
+	 *	@param object	$modeloValNutr,
+	 *	@param int		$idValNutr,
+	 *	@param int		$edad,
+	 *	@param boolean	$estadoCompVal,
+	 *	@param int		$estadoAdol,
+	 *	@param array	$tipoParto,
+	 *	@param object	$modeloFamilia,
+	 *	@param object	$modeloFamiliar,
+	 *	@param array	$grupoFamiliar,
+	 *	@param object	$modeloTelefono,
+	 *	@param array	$nivelEduc,
+	 *	@param array	$parentesco,
+	 *		//laboratorios clinicos
+	 *	@param object	$modeloLabclinValnutr,
+	 *	@param array	$labClinicosAdol,
+	 *	@param array	$laboratorios,
+	 *	@param array	$laboratoriosExtra,
+	 *	@param array	$esquemasVac,
+	 *	@param array	$tiposDiscapacidad,
+	 *	@param object	$modeloTipodiscValnutr,
+	 *	@param array	$tiposDiscAdol,
+	 *	@param array	$consLecheMat,
+	 *	@param array	$consBiberon,
+	 *	@param object	$modeloOrigenalimValnutr,
+	 *	@param array	$origenAlimentosHogar,
+	 *	@param array	$origenAlimentos,
+	 *	@param array	$apetito,
+	 *	@param array	$ingesta,
+	 *	@param array	$masticacion,
+	 *	@param array	$digestion,
+	 *	@param array	$habitoIntestinal,
+	 *	@param array	$nivelActFisica,
+	 *	@param array	$frecConsumo,
+	 *	@param array	$grupoComida,
+	 *	frecuencia de consumo
+	 *	@param object	$modeloGrupocomidaValnutr,
+	 *	//estado actual
+	 *	@param object	$modeloAntropometria,
+	 *	@param array	$antropometriaAdol,
+	 *	//plan dietario
+	 *	@param object	$modeloNutricionAdol,
+	 *	@param array	$tiempoAlimento,	
+	 *	@param array	$planDietario,	
+	 *	@param object	$modeloGrupocomidaNutradol,	
+	 *	@param object	$modeloPorcionesComida,
+	 *	@param int		$estadoCompVal,
+	 *	@param object	$modeloEsquemaVacunacion,
+	 */		
+	 public function actionValoracionNutrForm(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionNutrForm";
 		$permiso=$controlAcceso->controlAccesoAcciones();
@@ -2766,6 +3648,17 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Recibe datos por campo de valoración e instancia a modelo para realizar la modificación.
+	 *
+	 *	Modelos instanciados:
+	 *		- ValoracionNutricional
+	 *
+	 *	@param array $dataInput	contiene datos de adolescente, id de valoración, nombre de campo, texto de campo y nombre de entdiad.
+	 *	@param array $variables contiene el nombre de las variables enviadas por post
+	 *	@param array $variablesii contiene un array del nombre de variables del subarray de variables.
+	 *	@return json $resultado de la transacción.
+	 */
 	public function actionRegistraCampoTextoValNutr(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionNutrForm";
@@ -2816,6 +3709,17 @@ class ValoracionIntegralController extends Controller{
 		}
 	}
 	
+	/**
+	 *	Recibe datos por campo de valoración e instancia a modelo para realizar la modificación.
+	 *
+	 *	Modelos instanciados:
+	 *		- ValoracionNutricional
+	 *
+	 *	@param array $dataInput	contiene datos de adolescente, id de valoración, nombre de campo, texto de campo y nombre de entdiad.
+	 *	@param array $variables contiene el nombre de las variables enviadas por post
+	 *	@param array $variablesii contiene un array del nombre de variables del subarray de variables.
+	 *	@return json $resultado de la transacción.
+	 */
 	public function actionRegistraFrecCons(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionNutrForm";
@@ -2845,6 +3749,18 @@ class ValoracionIntegralController extends Controller{
 		}
 	}
 
+	/**
+	 *	Recibe datos formulario de registro del plan dietario instancia a modelo para crear los registros en base de datos.
+	 *	Si ha habido modificación en el campo, se registra en base de datos y es guardado un histórico del a información anterior.
+	 *
+	 *	Modelos instanciados:
+	 *		- GrupocomidaNutradol
+	 *		- NutricionAdol
+	 *		- PorcionesComida
+	 *
+	 *	@param array $dataInput	contiene datos de adolescente, id de valoración, nombre de campo, texto de campo y nombre de entidades.
+	 *	@return json $resultado de la transacción.
+	 */
 	public function actionRegistraPlanDietario(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionNutrForm";
@@ -2916,6 +3832,18 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Recibe datos por campo de valoración nutricional e instancia a modelo para realizar la modificación.
+	 *
+	 *	Modelos instanciados:
+	 *		- OrigenalimValnutr
+	 *		- ValoracionNutricional
+	 *
+	 *	@param array $dataInput	contiene datos de adolescente, id de valoración, nombre de campo, texto de campo y nombre de entdiad.
+	 *	@param array $variables contiene el nombre de las variables enviadas por post
+	 *	@param array $variablesii contiene un array del nombre de variables del subarray de variables.
+	 *	@return json $resultado de la transacción.
+	 */
 	public function actionRegistraCampoGrupoValNutr(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionNutrForm";
@@ -2989,6 +3917,16 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Recibe datos formulario de registro de laboratorios clínicos e instancia a modelo para crear los registros en base de datos.
+	 *	Si ha habido modificación en el campo, se registra en base de datos y es guardado un histórico del a información anterior.
+	 *
+	 *	Modelos instanciados:
+	 *		- LabclinValnutr
+	 *
+	 *	@param array $dataInput	contiene datos de adolescente, id de valoración, nombre de campo, texto de campo y nombre de entidades.
+	 *	@return json $resultado de la transacción.
+	 */
 	public function actionRegistraLabClinico(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionNutrForm";
@@ -3032,6 +3970,17 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Recibe datos formulario de registro tipos de discapacidad e instancia a modelo para crear los registros en base de datos.
+	 *	Si ha habido modificación en el campo, se registra en base de datos y es guardado un histórico del a información anterior.
+	 *
+	 *	Modelos instanciados:
+	 *		- TipodiscValnutr
+	 *
+	 *	@param array	$dataInput	contiene datos de adolescente, id de valoración, nombre de campo, texto de campo y nombre de entidades.
+	 *	@param int		$modeloTipodiscValnutr->_grupoDiscapacidad código de tipo de discapacidad.s
+	 *	@return json 	$resultado de la transacción.
+	 */
 	public function actionRegistraDiscapacidadValNutr(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionNutrForm";
@@ -3056,6 +4005,16 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Recibe datos del formulario esquema de vacunación de la valoración en nutrición e instancia a modelo para crear los registros en base de datos.
+	 *	Si ha habido modificación en el campo, se registra en base de datos y es guardado un histórico del a información anterior.
+	 *
+	 *	Modelos instanciados:
+	 *		- EsquemaVacunacion
+	 *
+	 *	@param array	$dataInput	contiene datos de adolescente, id de valoración, nombre de campo, texto de campo y nombre de entidades.
+	 *	@return json 	$resultado de la transacción.
+	 */
 	public function actionRegistraEsquemaVac(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionNutrForm";
@@ -3106,6 +4065,16 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Recibe datos del formulario esquema de vacunación de la valoración en nutrición e instancia a modelo para crear los registros en base de datos.
+	 *	Si ha habido modificación en el campo, se registra en base de datos y es guardado un histórico del a información anterior.
+	 *
+	 *	Modelos instanciados:
+	 *		- EsquemaVacunacion
+	 *
+	 *	@param array	$dataInput	contiene datos de adolescente, id de valoración, nombre de campo, texto de campo y nombre de entidades.
+	 *	@return json 	$resultado de la transacción.
+	 */
 	public function actionRegistraAntropometriaValIni(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionNutrForm";
@@ -3128,6 +4097,16 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Recibe datos del formulario antropometría de la valoración en nutrición e instancia a modelo para crear los registros en base de datos.
+	 *	Si ha habido modificación en el campo, se registra en base de datos y es guardado un histórico del a información anterior.
+	 *
+	 *	Modelos instanciados:
+	 *		- Antropometria
+	 *
+	 *	@param array	$dataInput	contiene datos de adolescente, id de valoración, nombre de campo, texto de campo y nombre de entidades.
+	 *	@return json 	$resultado de la transacción.
+	 */
 	public function actionModifAntropometriaValIni(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionNutrForm";
@@ -3166,6 +4145,16 @@ class ValoracionIntegralController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Recibe datos del formulario antropometría de la valoración en nutrición e instancia a modelo para crear los registros en base de datos.
+	 *	Si ha habido modificación en el campo, se registra en base de datos y es guardado un histórico del a información anterior.
+	 *
+	 *	Modelos instanciados:
+	 *		- ValoracionNutricional
+	 *
+	 *	@param array	$dataInput	contiene datos de adolescente, id de valoración, nombre de campo, texto de campo y nombre de entidades.
+	 *	@return json 	$resultado de la transacción.
+	 */
 	public function actionValidaDilValoracionNutr(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionNutrForm";
@@ -3260,7 +4249,98 @@ class ValoracionIntegralController extends Controller{
 	
 	//consulta valoraciones
 	
-	public function actionConsultaValNutr(){
+	/**
+	 *	Acción que renderiza la vista que contiene el formulario de consulta de la valoración en nutrición.
+	 *
+	 *	Vista a renderizar:
+	 *		- _valoracionNutrForm 
+	 *		- _valoracionNutrFormCons.
+	 *	 
+	 *	Vistas relacionadas
+	 *		- _valoracionNutrAntSalud
+	 *		- _valoracionNutrExamenes
+	 *		- _valoracionNutrAntAlim
+	 *		- _valoracionNutrEstadoActual.
+	 *		- _valoracionNutrResultados.
+	 *		- _valoracionNutrPlanDietario.
+	 *		- _valoracionNutrEstado.
+	 *		- _valoracionNutrEstadoActual.
+	 *		- _valoracionNutrAntSaludCons.
+	 *		- _valoracionNutrExamenesCons.
+	 *		- _valoracionNutrAntAlimCons.
+	 *		- _valoracionNutrEstadoActualCons.
+	 *		- _valoracionNutrResultadosCons.
+	 *		- _valoracionNutrPlanDietarioCons.
+	 *		- _valoracionNutrEstadoCons.
+	 *	 
+	 *	Modelos instanciados:   				
+	 *		- ForjarAdol
+	 *		- Telefono
+	 * 		- LabclinValnutr
+	 * 		- TipodiscValnutr.
+	 * 		- OrigenalimValnutr.
+	 * 		- GrupocomidaValnutr.
+	 * 		- GrupocomidaNutradol.
+	 * 		- Antropometria.
+	 * 		- PorcionesComida.
+	 * 		- NutricionAdol.
+	 * 		- EsquemaVacunacion.
+	 * 		- OperacionesGenerales.
+	 * 		- ConsultasGenerales.
+	 * 		- Familia.
+	 * 		- Familiar.
+	 *	
+	 *	@param string	$numDocAdol,	
+	 *	@param array	$datosAdol,
+	 *	@param object	$modeloValNutr,
+	 *	@param int		$idValNutr,
+	 *	@param int		$edad,
+	 *	@param boolean	$estadoCompVal,
+	 *	@param int		$estadoAdol,
+	 *	@param array	$tipoParto,
+	 *	@param object	$modeloFamilia,
+	 *	@param object	$modeloFamiliar,
+	 *	@param array	$grupoFamiliar,
+	 *	@param object	$modeloTelefono,
+	 *	@param array	$nivelEduc,
+	 *	@param array	$parentesco,
+	 *		//laboratorios clinicos
+	 *	@param object	$modeloLabclinValnutr,
+	 *	@param array	$labClinicosAdol,
+	 *	@param array	$laboratorios,
+	 *	@param array	$laboratoriosExtra,
+	 *	@param array	$esquemasVac,
+	 *	@param array	$tiposDiscapacidad,
+	 *	@param object	$modeloTipodiscValnutr,
+	 *	@param array	$tiposDiscAdol,
+	 *	@param array	$consLecheMat,
+	 *	@param array	$consBiberon,
+	 *	@param object	$modeloOrigenalimValnutr,
+	 *	@param array	$origenAlimentosHogar,
+	 *	@param array	$origenAlimentos,
+	 *	@param array	$apetito,
+	 *	@param array	$ingesta,
+	 *	@param array	$masticacion,
+	 *	@param array	$digestion,
+	 *	@param array	$habitoIntestinal,
+	 *	@param array	$nivelActFisica,
+	 *	@param array	$frecConsumo,
+	 *	@param array	$grupoComida,
+	 *	frecuencia de consumo
+	 *	@param object	$modeloGrupocomidaValnutr,
+	 *	//estado actual
+	 *	@param object	$modeloAntropometria,
+	 *	@param array	$antropometriaAdol,
+	 *	//plan dietario
+	 *	@param object	$modeloNutricionAdol,
+	 *	@param array	$tiempoAlimento,	
+	 *	@param array	$planDietario,	
+	 *	@param object	$modeloGrupocomidaNutradol,	
+	 *	@param object	$modeloPorcionesComida,
+	 *	@param int		$estadoCompVal,
+	 *	@param object	$modeloEsquemaVacunacion,
+	 */		
+	 public function actionConsultaValNutr(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="consultaValNutr";
 		$permiso=$controlAcceso->controlAccesoAcciones();
@@ -3410,63 +4490,98 @@ class ValoracionIntegralController extends Controller{
 	}
 //*********************************************************** PERFIL OCUPACIONAL ***************************************************************//
 
-public function actionPerfilOcupacionalForm(){
-	$controlAcceso=new ControlAcceso();
-	$controlAcceso->accion="perfilOcupacionalForm";
-	$permiso=$controlAcceso->controlAccesoAcciones();
-	if($permiso["acceso_rolmenu"]==1){
-		$datosInput=Yii::app()->input->post();
-		if(isset($datosInput["numDocAdol"]) && !empty($datosInput["numDocAdol"])){
-			$numDocAdol=$datosInput["numDocAdol"];
-			Yii::app()->getSession()->add('numDocAdol',$numDocAdol);
+	/**
+	 *	Acción que renderiza la vista que contiene el formulario de registro del perfil ocupacional del adolescente.
+	 *
+	 *	Vista a renderizar:
+	 *		- _perfilOcupacionalForm 
+	 *	 
+	 *	Vistas relacionadas
+	 *		- _valoracionNutrAntSalud
+	 *		- _valoracionNutrExamenes
+	 *	 
+	 *	Modelos instanciados:   				
+	 *		- AspectoValteo
+	 *		- FactorVteo
+	 * 		- ValoracionTeo
+	 * 		- OperacionesGenerales
+	 * 		- ConsultasGenerales
+	 *	
+	 *	@param object	$modeloAspectoValTO,
+	 *	@param object	$modeloValTO,
+	 *	@param string	$numDocAdol,
+	 *	@param array	$datosAdol,					
+	 *	@param int		$edad,
+	 *	@param array	$valTO,
+	 *	@param array	$aspectosPerfOc,
+	 *	@param object	$modeloFactorVteo,
+	 *	@param array	$consultaAspectoValTO
+	 */		
+	public function actionPerfilOcupacionalForm(){
+		$controlAcceso=new ControlAcceso();
+		$controlAcceso->accion="perfilOcupacionalForm";
+		$permiso=$controlAcceso->controlAccesoAcciones();
+		if($permiso["acceso_rolmenu"]==1){
+			$datosInput=Yii::app()->input->post();
+			if(isset($datosInput["numDocAdol"]) && !empty($datosInput["numDocAdol"])){
+				$numDocAdol=$datosInput["numDocAdol"];
+				Yii::app()->getSession()->add('numDocAdol',$numDocAdol);
+			}
+			else{
+				$numDocAdol=Yii::app()->getSession()->get('numDocAdol');
+			}
+			if(!empty($numDocAdol)){
+				$modeloAspectoValTO=new AspectoValteo();
+				$modeloFactorVteo=new FactorVteo();
+				$modeloValTO=new ValoracionTeo();
+				$operaciones=new OperacionesGenerales();
+				$consultaGeneral=new ConsultasGenerales();
+				$datosAdol=$consultaGeneral->consultaDatosAdol($numDocAdol);					
+				$edad=$operaciones->hallaEdad($datosAdol["fecha_nacimiento"],date("Y-m-d"));				
+		
+				$modeloValTO->num_doc=$numDocAdol;
+				$valTO=$modeloValTO->consultaIdValTO();
+				$modeloValTO->attributes=$valTO;
+				
+				$aspectosPerfOc=$modeloAspectoValTO->consultaAspectoPerfOc();
+				if(!empty($valTO)){					
+					$modeloValTO->id_valor_teo=$valTO["id_valor_teo"];
+					$modeloAspectoValTO->id_valor_teo=$modeloValTO->id_valor_teo;
+					$consultaAspectoValTO=$modeloAspectoValTO->consultaAspectosValTo();
+					if(empty($consultaAspectoValTO)){
+						$modeloAspectoValTO->creaAspectoValTo();
+						$consultaAspectoValTO=$modeloAspectoValTO->consultaAspectosValTo();
+					}
+				}	
+			}
+			$this->render("_perfilOcupacionalForm",array(
+				'modeloAspectoValTO'=>$modeloAspectoValTO,
+				'modeloValTO'=>$modeloValTO,
+				'numDocAdol'=>$numDocAdol,
+				'datosAdol'=>$datosAdol,					
+				'edad'=>$edad,
+				'valTO'=>$valTO,
+				'aspectosPerfOc'=>$aspectosPerfOc,
+				'modeloFactorVteo'=>$modeloFactorVteo,
+				'consultaAspectoValTO'=>$consultaAspectoValTO
+			));
 		}
 		else{
-			$numDocAdol=Yii::app()->getSession()->get('numDocAdol');
+			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
-		if(!empty($numDocAdol)){
-			$modeloAspectoValTO=new AspectoValteo();
-			$modeloFactorVteo=new FactorVteo();
-			$modeloValTO=new ValoracionTeo();
-			$operaciones=new OperacionesGenerales();
-			$consultaGeneral=new ConsultasGenerales();
-			$datosAdol=$consultaGeneral->consultaDatosAdol($numDocAdol);					
-			$edad=$operaciones->hallaEdad($datosAdol["fecha_nacimiento"],date("Y-m-d"));				
-	
-			$modeloValTO->num_doc=$numDocAdol;
-			$valTO=$modeloValTO->consultaIdValTO();
-			$modeloValTO->attributes=$valTO;
-			
-			$aspectosPerfOc=$modeloAspectoValTO->consultaAspectoPerfOc();
-			if(!empty($valTO)){					
-				$modeloValTO->id_valor_teo=$valTO["id_valor_teo"];
-				$modeloAspectoValTO->id_valor_teo=$modeloValTO->id_valor_teo;
-				$consultaAspectoValTO=$modeloAspectoValTO->consultaAspectosValTo();
-				if(empty($consultaAspectoValTO)){
-					$modeloAspectoValTO->creaAspectoValTo();
-					$consultaAspectoValTO=$modeloAspectoValTO->consultaAspectosValTo();
-				}
-			}	
-		}
-		$this->render("_perfilOcupacionalForm",array(
-			'modeloAspectoValTO'=>$modeloAspectoValTO,
-			'modeloValTO'=>$modeloValTO,
-			'numDocAdol'=>$numDocAdol,
-			'datosAdol'=>$datosAdol,					
-			'edad'=>$edad,
-			'valTO'=>$valTO,
-			'aspectosPerfOc'=>$aspectosPerfOc,
-			'modeloFactorVteo'=>$modeloFactorVteo,
-			'consultaAspectoValTO'=>$consultaAspectoValTO
-		));
 	}
-	else{
-		throw new CHttpException(403,'No tiene acceso a esta acción');
-	}
-	
-	
-}
 
 
+	/**
+	 *	Recibe datos del formulario perfil ocupacional e instancia a modelo para crear los registros en base de datos.
+	 *
+	 *	Modelos instanciados:
+	 *		- FactorVteo
+	 *		- AspectoValteo
+	 *
+	 *	@param array	$dataInput	contiene datos de adolescente, id de valoración, nombre de campo, texto de campo y nombre de entidades.
+	 *	@return json 	$resultado de la transacción.
+	 */
 	public function actionRegistraAspectoValTo(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="perfilOcupacionalForm";
@@ -3500,18 +4615,6 @@ public function actionPerfilOcupacionalForm(){
 
 	// Uncomment the following methods and override them if needed
 	/*
-	public function filters()
-	{
-		// return the filter configuration for this controller, e.g.:
-		return array(
-			'inlineFilterName',
-			array(
-				'class'=>'path.to.FilterClass',
-				'propertyName'=>'propertyValue',
-			),
-		);
-	}
-
 	public function actions()
 	{
 		// return external action classes, e.g.:

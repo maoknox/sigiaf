@@ -92,6 +92,13 @@ class AntFFamilia extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	/**
+	 *	Crea registro de los antecedentes familiares.
+	 *
+	 *	@param int id_ant_fam.
+	 *	@param int id_valtsoc.
+	 *	@return resultado de la transacción
+	 */		
 	public function registraAntFam(){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();

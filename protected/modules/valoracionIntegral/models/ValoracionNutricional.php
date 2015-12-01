@@ -293,7 +293,12 @@ class ValoracionNutricional extends CActiveRecord
 	{
 		return parent::model($className);
 	}
-	//crea registro en limpio de valoración para luego ser modificado.
+	/**
+	 *	Registra valoración nutriional empty del adolescente.
+	 *
+	 *	@param string $this->num_doc
+	 *	@return resultado de la transacción 
+	 */		
 	public function creaRegValNutrAdol(){
 		$conect=Yii::app()->db;
 		$sqlCreaValNutr="insert into valoracion_nutricional (id_val_nutricion,num_doc,val_act_nutr) values (default,:num_doc,'true') returning id_val_nutricion";
@@ -304,6 +309,12 @@ class ValoracionNutricional extends CActiveRecord
 		$readValNutr->close();
 		return $resValNutr["id_val_nutricion"];
 	}
+	/**
+	 *	Consulta valoración nutricional del adolescente.
+	 *
+	 *	@param string $this->num_doc
+	 *	@return $consIdValNutr
+	 */		
 	public function consultaIdValNutr(){
 		$consultasGenerales=new ConsultasGenerales();
 		$linkBd=$consultasGenerales->conectaBDSinPdo();
@@ -315,6 +326,12 @@ class ValoracionNutricional extends CActiveRecord
 		pg_close($linkBd);	
 		return $consIdValNutr;		
 	}
+	/**
+	 *	Consulta estado de activación de la valoración nutricional del adolescente.
+	 *
+	 *	@param string $this->num_doc
+	 *	@return $consValHabNutr
+	 */		
 	public function consValHab(){
 		$consultasGenerales=new ConsultasGenerales();
 		$linkBd=$consultasGenerales->conectaBDSinPdo();
@@ -326,6 +343,12 @@ class ValoracionNutricional extends CActiveRecord
 		pg_close($linkBd);	
 		return $consValHabNutr;				
 	}
+	/**
+	 *	Modifica a false el estado de activación de la valoración nutricional del adolescente.
+	 *
+	 *	@param string $this->num_doc
+	 *	@return resultado de la transacción 
+	 */		
 	public function modValHabFalse(){
 		$conect=Yii::app()->db;
 		$sqlActHabVal="update valoracion_nutricional set val_hab_nutr='false' where num_doc=:num_doc";
@@ -333,6 +356,12 @@ class ValoracionNutricional extends CActiveRecord
 		$actHabVal->bindParam(":num_doc",$this->num_doc,PDO::PARAM_STR);
 		$actHabVal->execute();		
 	}
+	/**
+	 *	Modifica a false el estado de activación de la valoración nutricional del adolescente.
+	 *
+	 *	@param string $this->num_doc
+	 *	@return $consValHabNutr
+	 */		
 	public function consLabClinicosAdol(){
 		$conect=Yii::app()->db;
 		$sqlConsLabClin="select * from labclin_valnutr where id_val_nutricion=:id_val_nutricion";
@@ -343,6 +372,12 @@ class ValoracionNutricional extends CActiveRecord
 		$readLabClin->close();
 		return $resLabClin;		
 	}
+	/**
+	 *	Consulta el registro de consumo de leche materna según adolescente
+	 *
+	 *	@param int $this->id_val_nutricion
+	 *	@return $consLechMat
+	 */		
 	public function consRecibLecheMat(){
 		$consultasGenerales=new ConsultasGenerales();
 		$linkBd=$consultasGenerales->conectaBDSinPdo();
@@ -354,6 +389,12 @@ class ValoracionNutricional extends CActiveRecord
 		pg_close($linkBd);	
 		return $consLechMat;		
 	}
+	/**
+	 *	Consulta el registro de consumo de biberón  según adolescente
+	 *
+	 *	@param int $this->id_val_nutricion
+	 *	@return $consBib
+	 */		
 	public function consRecibBiberon(){
 		$consultasGenerales=new ConsultasGenerales();
 		$linkBd=$consultasGenerales->conectaBDSinPdo();
@@ -365,6 +406,16 @@ class ValoracionNutricional extends CActiveRecord
 		pg_close($linkBd);	
 		return $consBib;		
 	}
+	/**
+	 *	Modifica la valoración en nutrición del adolescente por campo específico
+	 *
+	 *	@param string $this->nombreCampoValoracion
+	 *	@param string $this->campoFecha
+	 *	@param string $this->fecha
+	 *	@param string $this->contenidoValoracion
+	 *	@param int $this->id_val_nutricion
+	 *	@return resultado de la transacción 
+	 */		
 	public function modificaValoracionNutr($accion){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -388,6 +439,15 @@ class ValoracionNutricional extends CActiveRecord
 			return $e;
 		}
 	}
+	/**
+	 *	Registra cédula del prfesional que realiza o modifica la  valoración de nutrición
+	 *
+	 *	@param int 	   Yii::app()->user->getState('cedula')
+	 *	@param int 	  ,$idValoracion
+	 *	@param int 	   $accion
+	 *	@param string  $fechaRegistro
+	 *	@return resultado de la transacción 
+	 */		
 	public function creaRegProfVal($idValoracion,$accion){
 		$conect=Yii::app()->db;
 		$fechaRegistro=date("Y-m-d");
@@ -426,6 +486,16 @@ class ValoracionNutricional extends CActiveRecord
 			$creaRegProfVal->execute();		
 		}					
 	}
+	/**
+	 *	Modifica la valoración en nutrición del adolescente por campo específico
+	 *
+	 *	@param int $this->id_val_nutricion
+	 *	@param int Yii::app()->user->getState('cedula')
+	 *	@param string $this->contHist
+	 *	@param string $this->nombreCampoValoracion
+	 *	@param string $fecha
+	 *	@return resultado de la transacción 
+	 */		
 	public function regHistoricoValNutr(){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -459,6 +529,11 @@ class ValoracionNutricional extends CActiveRecord
 			$transaction->rollBack();
 		}
 	}
+	/**
+	 *	Consulta estructura de entidad valoracion_nutricional
+	 *
+	 *	@return $resInfEsq
+	 */		
 	public function conultaInfEsch(){
 		$conect=Yii::app()->db;
 		$sqlConsInfEsq="select column_name,udt_name,data_type from information_schema.columns where table_name='valoracion_nutricional'";	
@@ -468,6 +543,13 @@ class ValoracionNutricional extends CActiveRecord
 		$readInfEsq->close();
 		return $resInfEsq;
 	}
+	/**
+	 *	Consulta contenido de campo en específico de la valoración nutriconal del adolescente
+	 *
+	 *	@param string $this->nombreCampoValoracion
+	 *	@param int    $this->id_val_nutricion
+	 *	@return $resCampoVal
+	 */		
 	public function consultaContenidoCampo(){
 		$conect=Yii::app()->db;
 		$sqlConsCampoVal="select ".pg_escape_string($this->nombreCampoValoracion)." from valoracion_nutricional where id_val_nutricion=:id_val_nutricion";
@@ -479,6 +561,13 @@ class ValoracionNutricional extends CActiveRecord
 		return $resCampoVal;
 	//pg_escape_string($this->nombreCampoValoracion)	
 	}
+	/**
+	 *	Consulta contenido de campo en específico booleano de la valoración nutriconal del adolescente
+	 *
+	 *	@param string $this->nombreCampoValoracion
+	 *	@param int 	  $this->id_val_nutricion
+	 *	@return $consSolCS
+	 */		
 	public function consultaContenidoCampoBool($linkBd,$id){	
 		$sqlConsEsqBool="select ".pg_escape_string($this->nombreCampoValoracion)." from valoracion_nutricional where id_val_nutricion=$1";
 		$res=pg_prepare($linkBd,"consEsqBopl".$id,$sqlConsEsqBool);

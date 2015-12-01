@@ -171,6 +171,13 @@ class NutricionAdol extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	/**
+	 *	Consulta plan dietario del adolescente
+	 *
+	 *	@param int $this->id_val_nutricion
+	 *	@param int $this->id_tipoact_pld
+	 *	@return $resPlanDietario
+	 */		
 	public function consultaPlanDietario(){
 		$conect= Yii::app()->db;
 		$sqlPlanDietario="select * from nutricion_adol where id_val_nutricion=:id_val_nutricion and id_tipoact_pld=:id_tipoact_pld";	
@@ -183,6 +190,12 @@ class NutricionAdol extends CActiveRecord
 		return $resPlanDietario;					
 	}
 	
+	/**
+	 *	Consulta plan dietario del adolecente y las porciones de consumo
+	 *
+	 *	@param int $this->id_val_nutricion
+	 *	@return $resPlanDietario
+	 */		
 	public function consultaPlanDietarioSeg(){
 		$conect= Yii::app()->db;
 		$sqlPlanDietario="select * from nutricion_adol as a 
@@ -197,6 +210,13 @@ class NutricionAdol extends CActiveRecord
 		return $resPlanDietario;					
 	}
 	
+	/**
+	 *	Consulta seguimiento del plan dietario del adolescente
+	 *
+	 *	@param int $this->id_val_nutricion
+	 *	@param int $this->id_tipoact_pld
+	 *	@return $resPlanDietario
+	 */		
 	public function consultaNutricionAdolSeg(){
 		$conect= Yii::app()->db;
 		$sqlPlanDietario="select * from nutricion_adol as a 
@@ -214,6 +234,16 @@ class NutricionAdol extends CActiveRecord
 		$readPlanDietario->close();
 		return $resPlanDietario;					
 	}
+	/**
+	 *	Registra valoración en nutrición del adolescente.
+	 *
+	 *	@param string $this->id_nutradol
+	 *	@param int Yii::app()->user->getState('cedula')
+	 *	@param int $this->id_val_nutricion
+	 *	@param int $this->id_tipoact_pld
+	 *	@param string $fechaSeg
+	 *	@return resultado de la transacción 
+	 */		
 	public function creaRegNutricion(){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -235,7 +265,7 @@ class NutricionAdol extends CActiveRecord
 			$fechaSeg=date("Y-m-d");
 			$regNutrAdol=$conect->createCommand($sqlRegNutrAdol);
 			$regNutrAdol->bindParam(":id_nutradol",$this->id_nutradol,PDO::PARAM_STR);
-			$regNutrAdol->bindParam(":id_cedula",Yii::app()->user->getState('cedula'),PDO::PARAM_STR);			
+			$regNutrAdol->bindParam(":id_cedula",Yii::app()->user->getState('cedula'),PDO::PARAM_INT);			
 			$regNutrAdol->bindParam(":id_val_nutricion",$this->id_val_nutricion,PDO::PARAM_INT);
 			$regNutrAdol->bindParam(":id_tipoact_pld",$this->id_tipoact_pld,PDO::PARAM_INT);
 			$regNutrAdol->bindParam(":fecha_segnutr",$fechaSeg,PDO::PARAM_STR);
@@ -248,6 +278,21 @@ class NutricionAdol extends CActiveRecord
 			return $e;
 		}		
 	}
+	/**
+	 *	Registra valoración en nutrición del adolescente.
+	 *
+	 *	
+	 *	@param string $this->id_nutradol
+	 *	@param int Yii::app()->user->getState('cedula')
+	 *	@param int $this->id_val_nutricion
+	 *	@param int $this->id_tipoact_pld
+	 *	@param string $this->diagnostico_clasif_nutr_na
+	 *	@param string $this->eval_cumpl_obj_alim
+	 *	@param int $this->plan_nutr
+	 *	@param int $this->ant_salud_al_cl
+	 *	@param string $fechaSeg	 
+	 *	@return resultado de la transacción 
+	 */		
 	public function creaRegNutricionSeguimiento(){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();

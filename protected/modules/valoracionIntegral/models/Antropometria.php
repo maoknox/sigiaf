@@ -128,6 +128,12 @@ public function attributeLabels()
 	{
 		return parent::model($className);
 	}
+	/**
+	 *	Consulta información sobre antropometría inicial del adolexcente.
+	 *
+	 *	@param int id_val_nutricion.
+	 *	@return $resValNutr 
+	 */		
 	public function consultaAntropValNutr(){
 		$conect= Yii::app()->db;
 		$sqlAntrValNutr="select * from antropometria where id_val_nutricion=:id_val_nutricion order by fecha_antrp asc  limit 1";	
@@ -138,6 +144,12 @@ public function attributeLabels()
 		$readValNutr->close();
 		return $resValNutr;							
 	}
+	/**
+	 *	Consulta información sobre las mediciones de antropometría del adolescente hasta la fecha.
+	 *
+	 *	@param int id_val_nutricion.
+	 *	@return $resValNutr 
+	 */		
 	public function consultaAntropValNutrSeg(){
 		$conect= Yii::app()->db;
 		$sqlAntrValNutr="select * from antropometria where id_val_nutricion=:id_val_nutricion order by fecha_antrp desc";	
@@ -149,6 +161,21 @@ public function attributeLabels()
 		return $resValNutr;							
 	}
 
+	/**
+	 *	Registra la información de antropometría del adolescente.
+	 *
+	 *	@param int $this->id_val_nutricion
+	 *	@param int $this->antr_peso_kgs
+	 *	@param int $this->antr_talla_cms
+	 *	@param int $this->antr_imc
+	 *	@param int $this->circunf_cefalica
+	 *	@param int $this->antr_peso_ideal
+	 *	@param int $this->antr_talla_ideal
+	 *	@param int $this->antr_ind_p_t_imc_ed
+	 *	@param int $this->indice_talla_edad
+	 *	@param string $fecha
+	 *	@return resultado de la transacción 
+	 */		
 	public function registraAntropometria(){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -203,6 +230,14 @@ public function attributeLabels()
 			
 		}
 	}
+	/**
+	 *	Modifica un campo en específico de antropometría del adolescente.
+	 *
+	 *	@param int $this->id_val_nutricion
+	 *	@param int $this->id_antropometria
+	 *	@param int $this->contenido
+	 *	@return resultado de la transacción 
+	 */		
 	public function modificaAntropometria(){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -222,6 +257,14 @@ public function attributeLabels()
 			return $e;			
 		}		
 	}
+	/**
+	 *	Registra seguimiento de la antropometría.
+	 *
+	 *	@param int $this->id_antropometria
+	 *	@param int $this->id_nutradol
+	 *	@param int $this->id_val_nutricion
+	 *	@return resultado de la transacción 
+	 */		
 	public function registraAntropometriaNutrAdol(){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();

@@ -43,7 +43,7 @@ class SeguimientoAdolController extends Controller{
 	 *	Vista a renderizar:
 	 *		- _registrarSegForm.
 	 *
-	 *	Modelos instanciados:          
+	 *	Modelos instanciados:
 	 *		- PlanPostegreso
 	 * 		- SeguimientoAdol
 	 * 		- Psc
@@ -54,23 +54,23 @@ class SeguimientoAdolController extends Controller{
 	 * 		- OperacionesGenerales.
 	 * 		- ConsultasGenerales.
 	 *
-	 *	@param object 	$modeloInfJudAdmon                
 	 *	@param string	$numDocAdol
-	 *	@param array 	$datosAdol
-	 *	@param int	 	$edad
-	 *	@param object 	$modeloInfJud
-	 *	@param int	 	$tipoSeguimiento
-	 *	@param array 	$areaDisc
-	 *	@param array 	$seguimientos
-	 *	@param array 	$seguimientoPosEgreso
-	 *	@param object 	$modeloPsc
-	 *	@param array 	$pscSinCulm
-	 *	@param object 	$modeloSeguimientoPsc
-	 *	@param object 	$modeloAsistenciaPsc
-	 *	@param object 	$modeloAcudiente
-	 *	@param array 	$pscDes
-	 *	@param object 	$offset
-	 *	@param array 	$paiAdol
+	 *	@param array	$datosAdol
+	 *	@param int		$edad
+	 *	@param object	$modeloInfJud,
+	 *	@param array	$infJudicial,
+	 *	@param object	$modeloSeguimiento,
+	 *	@param int		$tipoSeguimiento,
+	 *	@param array	$areaDisc,
+	 *	@param array	$seguimientos,
+	 *	@param array	$seguimientoPosEgreso,
+	 *	@param object	$modeloPsc,
+	 *	@param array	$pscSinCulm,
+	 *	@param object	$modeloSeguimientoPsc,
+	 *	@param object	$modeloAsistenciaPsc,
+	 *	@param array	$pscDes, 
+	 *	@param int		$offset,
+	 *	@param array	$paiAdol
 	 */		
 	public function actionRegistrarSeg(){
 		$controlAcceso=new ControlAcceso();
@@ -85,7 +85,7 @@ class SeguimientoAdolController extends Controller{
 			else{
 				$numDocAdol=Yii::app()->getSession()->get('numDocAdol');
 			}		
-			if(!empty($numDocAdol)){
+			if(!empty($numDocAdol)){ // 
 				$modeloPlanPostegreso=new PlanPostegreso();
 				$modeloSeguimiento=new SeguimientoAdol();
 				$modeloPsc=new Psc();

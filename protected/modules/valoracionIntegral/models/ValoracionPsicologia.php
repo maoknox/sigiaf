@@ -212,6 +212,12 @@ class ValoracionPsicologia extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	/**
+	 *	Consulta la valoración de psicología actual del adolescente.
+	 *
+	 *	@param string $this->num_doc
+	 *	@return $consEstUsr
+	 */		
 	public function consultaIdValPsicol(){
 /*		$conect=Yii::app()->db;
 		$sqlConsIdValPsicol="select * from valoracion_psicologia where num_doc=:numDoc and val_act_psicol='true'" ;
@@ -232,10 +238,13 @@ class ValoracionPsicologia extends CActiveRecord
 		$consEstUsr=pg_fetch_array($res);
 		pg_close($linkBd);	
 		return $consEstUsr;		
-
-		
-		
 	}
+	/**
+	 *	Consulta antecedentes de vinculación a srpa del adolescente
+	 *
+	 *	@param int $this->id_valoracion_psicol
+	 *	@return $resVincPrevSRPA
+	 */		
 	public function consultaDelitoVinc(){
 		$conect=Yii::app()->db;
 		$sqlConsVincPrevSRPA = "select * from delito_por_vinc where id_valoracion_psicol=:idValoracion order by id_casodelito asc";
@@ -246,6 +255,12 @@ class ValoracionPsicologia extends CActiveRecord
 		$readVincPrevSRPA->close();
 		return $resVincPrevSRPA;	
 	}
+	/**
+	 *	Consulta consumo de spa del adolescente
+	 *
+	 *	@param int $this->id_valoracion_psicol
+	 *	@return $resConsSPA
+	 */		
 	public function consultaConsumoSPA(){
 		$conect=Yii::app()->db;
 		$sqlConsConsSPA = "select * from consumo_drogas where id_valoracion_psicol=:idValoracion order by id_tipo_conspa asc";
@@ -256,6 +271,12 @@ class ValoracionPsicologia extends CActiveRecord
 		$readConsSPA->close();
 		return $resConsSPA;	
 	}
+	/**
+	 *	Consulta via de administración de spa
+	 *
+	 *	@param int $this->idSPACon
+	 *	@return $resConsSPA
+	 */		
 	public function consultaViasAdmonAdol(){
 		$conect=Yii::app()->db;
 		$sqlConsConsSPA = "select * from viaadmon_consumo where id_tipo_conspa=:idSPACons order by id_viaadmon_spa asc";
@@ -267,6 +288,12 @@ class ValoracionPsicologia extends CActiveRecord
 		return $resConsSPA;	
 	
 	}
+	/**
+	 *	Consulta via de administración de spa
+	 *
+	 *	@param string $this->num_doc
+	 *	@return $resValPsicol["id_valoracion_psicol"]
+	 */		
 	public function creaRegValPsicol(){
 		$conect=Yii::app()->db;
 		$sqlCreaValPsicol="insert into valoracion_psicologia (id_valoracion_psicol,num_doc,val_act_psicol) values (default,:numDoc,'true') returning id_valoracion_psicol";
@@ -277,6 +304,16 @@ class ValoracionPsicologia extends CActiveRecord
 		$readValPsicol->close();
 		return $resValPsicol["id_valoracion_psicol"];
 	}
+	/**
+	 *	Registra vinculación a srpa previa
+	 *
+	 *	@param int 	$this->id_valoracion_psicol
+	 *	@param int  $this->id_tipo_sancion
+	 *	@param int 	$this->id_del_rc
+	 *	@param bool $this->medida_int_prev
+	 *	@param bool $this->sancion_impuesta_vinc
+	 *	@return resultado de la transacción 
+	 */		
 	public function creaVincPrevSrpa(){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -316,6 +353,17 @@ class ValoracionPsicologia extends CActiveRecord
 			return $e;
 		}
 	}
+	/**
+	 *	Modifica vinculación a srpa previa 
+	 *
+	 *	@param int 	$this->idCasoDelito
+	 *	@param int 	$this->id_valoracion_psicol
+	 *	@param int  $this->id_tipo_sancion
+	 *	@param int 	$this->id_del_rc
+	 *	@param bool $this->medida_int_prev
+	 *	@param bool $this->sancion_impuesta_vinc
+	 *	@return resultado de la transacción 
+	 */		
 	public function modificaVincPrevSrpa(){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -345,6 +393,16 @@ class ValoracionPsicologia extends CActiveRecord
 			return $e;
 		}
 	}
+	/**
+	 *	Modifica la valoración en psicología del adolescente por campo específico
+	 *
+	 *	@param int $this->id_valoracion_psicol
+	 *	@param int Yii::app()->user->getState('cedula')
+	 *	@param string $this->contHist
+	 *	@param string $this->nombreCampoValoracion
+	 *	@param string $fecha
+	 *	@return resultado de la transacción 
+	 */		
 	public function regHistoricoValPsic(){
 		if(!empty($this->nombreCampoValoracioni)){
 			$this->nombreCampoValoracion=$this->nombreCampoValoracioni;
@@ -385,6 +443,16 @@ class ValoracionPsicologia extends CActiveRecord
 	}
 	
 	
+	/**
+	 *	Modifica vinculación en enfermería por campo en específico
+	 *
+	 *	@param string 	$this->nombreCampoValoracion
+	 *	@param string 	$this->campoFecha
+	 *	@param string   $this->fecha
+	 *	@param   	    $this->contenidoValoracion
+	 *	@param int	    $this->id_valoracion_psicol
+	 *	@return resultado de la transacción 
+	 */		
 	public function modificaValoracionPsicol($accion){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -408,6 +476,19 @@ class ValoracionPsicologia extends CActiveRecord
 			return $e;
 		}
 	}
+	/**
+	 *	Modifica vinculación en enfermería por dos campo en específico
+	 *
+	 *	@param string 	$this->nombreCampoValoracion
+	 *	@param string 	$this->nombreCampoValoracioni
+	 *	@param string 	$this->campoFecha
+	 *	@param string   $this->fecha
+	 *	@param   	    $this->contenidoValoracion
+	 *	@param   	    $this->contenidoValoracioni
+	 *	@param int	    $this->id_valoracion_psicol
+	 *	@param string   $this->num_doc
+	 *	@return resultado de la transacción 
+	 */		
 	public function modificaValoracionPsicolOpt($accion){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -434,6 +515,20 @@ class ValoracionPsicologia extends CActiveRecord
 			return $e;
 		}
 	}
+	/**
+	 *	Registra consumo de sustancias psicoactivas
+	 *
+	 *	@param int  	$this->id_frecuencia_uso,
+	 *	@param int  	$this->id_tipo_droga,
+	 *	@param int  	$this->id_valoracion_psicol,
+	 *	@param bool  	$this->consumo_ult_anio,
+	 *	@param int  	$this->edad_inicio_cons,
+	 *	@param int  	$this->edad_fin_cons,
+	 *	@param bool  	$this->droga_inicio,
+	 *	@param bool  	$this->droga_mayor_impacto,
+	 *	@param string  	$this->motivo_inicio_cons
+	 *	@return resultado de la transacción 
+	 */		
 	public function creaConsSpa(){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -503,6 +598,14 @@ class ValoracionPsicologia extends CActiveRecord
 			return $e;
 		}	
 	}
+	/**
+	 *	Modifica estado actual de consumo del adolescente, es decir, si consume o no consume
+	 *
+	 *	@param bool 	$this->consumo_spa
+	 *	@param int 		$this->id_valoracion_psicol
+	 *	@param string 	$this->num_doc
+	 *	@return resultado de la transacción 
+	 */		
 	public function modEstadoConsSpa(){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -513,9 +616,6 @@ class ValoracionPsicologia extends CActiveRecord
 			$modEstConsSpa->bindParam(":id_valoracion_psicol",$this->id_valoracion_psicol,PDO::PARAM_INT);
 			$modEstConsSpa->bindParam(":num_doc",$this->num_doc,PDO::PARAM_STR);
 			$modEstConsSpa->execute();
-			
-			
-			
 			$transaction->commit();
 			return "exito";
 		}
@@ -525,6 +625,21 @@ class ValoracionPsicologia extends CActiveRecord
 			
 		}
 	}
+	/**
+	 *	Modifica consumo de sustancias psicoactivas
+	 *
+	 *	@param int  	$this->idConsSpa,
+	 *	@param int  	$this->id_frecuencia_uso,
+	 *	@param int  	$this->id_tipo_droga,
+	 *	@param int  	$this->id_valoracion_psicol,
+	 *	@param bool  	$this->consumo_ult_anio,
+	 *	@param int  	$this->edad_inicio_cons,
+	 *	@param int  	$this->edad_fin_cons,
+	 *	@param bool  	$this->droga_inicio,
+	 *	@param bool  	$this->droga_mayor_impacto,
+	 *	@param string  	$this->motivo_inicio_cons
+	 *	@return resultado de la transacción 
+	 */		
 	public function modificaConsSPA(){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -585,6 +700,15 @@ class ValoracionPsicologia extends CActiveRecord
 		}	
 	}
 	
+	/**
+	 *	Modifica consumo de sustancias psicoactivas
+	 *
+	 *	@param string  	$this->campoFecha
+	 *	@param string  	$this->fecha
+	 *	@param int  	$this->id_valoracion_psicol
+	 *	@param string  	$this->num_doc
+	 *	@return resultado de la transacción 
+	 */		
 	public function modFechaActuacion($accion){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -603,6 +727,12 @@ class ValoracionPsicologia extends CActiveRecord
 			$transaction->rollBack();
 		}
 	}
+	/**
+	 *	Consulta el estado de permiso de modificación de la valoración de psicología respecto al adolescente
+	 *
+	 *	@param string	Yii::app()->getSession()->get('numDocAdol')
+	 *	@return $resHabVal
+	 */		
 	public function consValHab(){
 		$conect=Yii::app()->db;
 		$sqlConsHabVal="select val_hab_ps from valoracion_psicologia where num_doc=:num_doc";
@@ -613,6 +743,12 @@ class ValoracionPsicologia extends CActiveRecord
 		$readHabVal->close();
 		return $resHabVal;
 	}
+	/**
+	 *	Modifica el estado de la valoración en psicología del adolescente
+	 *
+	 *	@param string 	   Yii::app()->getSession()->get('numDocAdol')
+	 *	@return resultado de la transacción 
+	 */		
 	public function modValHabFalse(){
 		$conect=Yii::app()->db;
 		$sqlActHabVal="update valoracion_psicologia set val_hab_ps='false' where num_doc=:num_doc";
@@ -621,6 +757,15 @@ class ValoracionPsicologia extends CActiveRecord
 		$actHabVal->execute();		
 	}
 	//crea el registro en el caso que el 
+	/**
+	 *	Registra cédula del prfesional que realiza o modifica la  valoración de nutrición
+	 *
+	 *	@param int 	   Yii::app()->user->getState('cedula')
+	 *	@param int 	   $idValoracion
+	 *	@param int 	   $accion
+	 *	@param string  $fechaRegistro
+	 *	@return resultado de la transacción 
+	 */		
 	public function creaRegProfVal($idValoracion,$accion){
 		$conect=Yii::app()->db;
 		$fechaRegistro=date("Y-m-d");
@@ -659,6 +804,12 @@ class ValoracionPsicologia extends CActiveRecord
 			$creaRegProfVal->execute();		
 		}					
 	}
+	/**
+	 *	Consulta información de la valoración en específico del adolescente.
+	 *
+	 *	@param int	$this->id_valoracion_psicol
+	 *	@return $resValPsicol
+	 */		
 	public function consultaValPsicol(){
 		$conect=Yii::app()->db;
 		$sqlConsValPsicol="select * from valoracion_psicologia where id_valoracion_psicol=:id_valoracion_psicol";

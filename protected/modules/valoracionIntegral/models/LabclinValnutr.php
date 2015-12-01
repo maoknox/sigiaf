@@ -114,6 +114,12 @@ class LabclinValnutr extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	/**
+	 *	Consulta laboratorios clínicos
+	 *
+	 *	@param int $this->id_val_nutricion
+	 *	@return $resLabClinExt
+	 */		
 	public function consLabClinicosExtra(){		
 		$conect=Yii::app()->db;
 		$sqlConsLabClinExt="select id_laboratorio,laboratorio_clin from laboratorio_clinico where id_laboratorio<>1 and id_laboratorio<>2 except 
@@ -127,6 +133,12 @@ class LabclinValnutr extends CActiveRecord
 		$readLabClinExt->close();
 		return $resLabClinExt;		
 	}
+	/**
+	 *	Registra nuevo tipo de exámen de laboratorio.
+	 *
+	 *	@param string $this->laboratorio_clin
+	 *	@return resultado de la transacción 
+	 */		
 	public function creaExamenLab(){
 		if(!empty($this->_labExtr)){
 			$conect=Yii::app()->db;
@@ -153,6 +165,15 @@ class LabclinValnutr extends CActiveRecord
 			}
 		}
 	}
+	/**
+	 *	Registra restulado de exámen de laboratorio clínico.
+	 *
+	 *	@param int $this->id_laboratorio
+	 *	@param int $this->id_val_nutricion
+	 *	@param string $this->resultado_labclin
+	 *	@param string $this->fecha_reslabclin
+	 *	@return resultado de la transacción 
+	 */		
 	public function registraLabClinico(){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -182,6 +203,15 @@ class LabclinValnutr extends CActiveRecord
 			return $e;
 		}		
 	}
+	/**
+	 *	Modifica restulado de exámen de laboratorio clínico.
+	 *
+	 *	@param int $this->id_laboratorio
+	 *	@param int $this->id_val_nutricion
+	 *	@param string $this->resultado_labclin
+	 *	@param string $this->fecha_reslabclin
+	 *	@return resultado de la transacción 
+	 */		
 	public function modificaLabClinico(){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -206,6 +236,12 @@ class LabclinValnutr extends CActiveRecord
 		}		
 	}
 
+	/**
+	 *	Consulta resultados de laboratorios clínicos del adoelscente
+	 *
+	 *	@param string $this->id_val_nutricion
+	 *	@return $resLabClin
+	 */		
 	public function consLabClinicosAdol(){
 		$conect=Yii::app()->db;
 		$sqlConsLabClin="select * from labclin_valnutr where id_val_nutricion=:id_val_nutricion";
@@ -216,6 +252,13 @@ class LabclinValnutr extends CActiveRecord
 		$readLabClin->close();
 		return $resLabClin;		
 	}
+	/**
+	 *	Consulta resultado de laboratorio clínicos en específico
+	 *
+	 *	@param string $this->id_val_nutricion
+	 *	@param string $this->id_laboratorio
+	 *	@return $resLabClin
+	 */		
 	public function consLabClinicoAdol(){
 		$conect=Yii::app()->db;
 		$sqlConsLabClin="select * from labclin_valnutr where id_val_nutricion=:id_val_nutricion and id_laboratorio=:id_laboratorio";
@@ -227,6 +270,17 @@ class LabclinValnutr extends CActiveRecord
 		$readLabClin->close();
 		return $resLabClin;		
 	}
+	/**
+	 *	Registra histórico de modificaciones de la valoración en nutrición del adolescente
+	 *
+	 *	@param int $this->id_val_nutricion
+	 *	@param int Yii::app()->user->getState('cedula')
+	 *	@param string $this->contHist
+	 *	@param string $this->id_campovalnutr
+	 *	@param string $this->nombreCampoValoracion
+	 *	@param string $fecha
+	 *	@return resultado de la transacción 
+	 */		
 	public function regHistoricoLabClin(){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();

@@ -154,6 +154,12 @@ class ValoracionTrabajoSocial extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	/**
+	 *	Consulta valoración actual en trabajo social del adolescente.
+	 *
+	 *	@param string $this->num_doc
+	 *	@return $resConsIdValTrSoc
+	 */		
 	public function consultaIdValTrSoc(){
 		$conect=Yii::app()->db;
 		$sqlConsIdValTrSoc="select * from valoracion_trabajo_social where num_doc=:numDoc and val_act_trsoc='true'" ;
@@ -164,6 +170,12 @@ class ValoracionTrabajoSocial extends CActiveRecord
 		$readIdValTrSoc->close();
 		return $resConsIdValTrSoc;
 	}
+	/**
+	 *	Registra valoración empty de trabajo social del adolescente.
+	 *
+	 *	@param string $this->num_doc
+	 *	@return  $resValTrSoc["id_valtsoc"];
+	 */		
 	public function creaRegValTrSoc(){
 		$conect=Yii::app()->db;
 		$sqlCreaValTrSoc="insert into valoracion_trabajo_social (id_valtsoc,num_doc,val_act_trsoc) values (default,:numDoc,'true') returning id_valtsoc";
@@ -174,6 +186,12 @@ class ValoracionTrabajoSocial extends CActiveRecord
 		$readValTrSoc->close();
 		return $resValTrSoc["id_valtsoc"];
 	}
+	/**
+	 *	Consulta problemas asociados del adolescente registrados en la valoración de trabajo social
+	 *
+	 *	@param int $idValTrSoc
+	 *	@return $resConsProc
+	 */		
 	public function consultaProbAsoc($idValTrSoc){
 		$conect=Yii::app()->db;
 		$sqlConsProv="select * from problema_valtsocial where id_valtsoc=:idValTreSoc";
@@ -185,6 +203,12 @@ class ValoracionTrabajoSocial extends CActiveRecord
 		return $resConsProc;
 		
 	}
+	/**
+	 *	Consulta servicios de protección del adolescente
+	 *
+	 *	@param int $idValTrSoc
+	 *	@return $resConsProb
+	 */		
 	public function consultaServProt($idValTrSoc){
 		$conect=Yii::app()->db;
 		$sqlConsProb="select * from servprotec_valtsocial where id_valtsoc=:idValTreSoc";
@@ -196,6 +220,16 @@ class ValoracionTrabajoSocial extends CActiveRecord
 		return $resConsProb;
 		
 	}
+	/**
+	 *	Modifica la valoración en trabajo social del adolescente por campo específico
+	 *
+	 *	@param string $this->nombreCampoValoracion
+	 *	@param string $this->campoFecha
+	 *	@param string $this->fecha
+	 *	@param string $this->contenidoValoracion
+	 *	@param int $this->id_valtsoc
+	 *	@return resultado de la transacción 
+	 */		
 	public function modificaValoracionTrSoc($accion){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -219,6 +253,16 @@ class ValoracionTrabajoSocial extends CActiveRecord
 			return $e;
 		}
 	}
+	/**
+	 *	Modifica la valoración en trabajo social del adolescente por campo específico
+	 *
+	 *	@param int $this->id_valtsoc
+	 *	@param int Yii::app()->user->getState('cedula')
+	 *	@param string $this->contHist
+	 *	@param string $this->nombreCampoValoracion
+	 *	@param string $fecha
+	 *	@return resultado de la transacción 
+	 */		
 	public function regHistoricoValTrSoc(){
 		if(!empty($this->nombreCampoValoracioni)){
 			$this->nombreCampoValoracion=$this->nombreCampoValoracioni;
@@ -258,6 +302,19 @@ class ValoracionTrabajoSocial extends CActiveRecord
 		}
 	}
 
+	/**
+	 *	Modifica vinculación en terapia ocupacional por dos campo en específico
+	 *
+	 *	@param string 	$this->nombreCampoValoracion
+	 *	@param string 	$this->nombreCampoValoracioni
+	 *	@param string 	$this->campoFecha
+	 *	@param string   $this->fecha
+	 *	@param   	    $this->contenidoValoracion
+	 *	@param   	    $this->contenidoValoracioni
+	 *	@param int	    $this->id_valtsoc
+	 *	@param string   $this->num_doc
+	 *	@return resultado de la transacción 
+	 */		
 	public function modificaValoracionTrSocOpt($accion){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -285,6 +342,12 @@ class ValoracionTrabajoSocial extends CActiveRecord
 		}
 	}
 
+	/**
+	 *	Consulta tipo de familia
+	 *
+	 *	@param string $this->num_doc
+	 *	@return $resTipoFam
+	 */		
 	public function consultaTipoFamilia(){
 		$conect=Yii::app()->db;
 		$sqlConsTipoFam="select * from adolescente as a 
@@ -297,6 +360,12 @@ class ValoracionTrabajoSocial extends CActiveRecord
 		$readTipoFam->close();
 		return $resTipoFam;
 	}
+	/**
+	 *	Consulta tipo de familia
+	 *
+	 *	@param int $this->id_valtsoc
+	 *	@return $resConsultaAdol
+	 */		
 	public function consAntFamiliares(){
 		$conect= Yii::app()->db;
 		$sqlConsultaAdol="select * from ant_f_familia where id_valtsoc=:id_valtsoc";
@@ -307,6 +376,14 @@ class ValoracionTrabajoSocial extends CActiveRecord
 		$readConsultaAdol->close();			
 		return $resConsultaAdol;
 	}	
+	/**
+	 *	Modifica fecha de creación o modificación de la valoración
+	 *
+	 *	@param string 	$this->fecha
+	 *	@param int 	$this->id_valtsoc
+	 *	@param string 	$this->num_doc
+	 *	@return resultado de la transacción 
+	 */		
 	public function modFechaActuacion($accion){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -325,6 +402,12 @@ class ValoracionTrabajoSocial extends CActiveRecord
 			$transaction->rollBack();
 		}
 	}
+	/**
+	 *	Consulta el estado de modificación de la valoración en trabajo social
+	 *
+	 *	@param string Yii::app()->getSession()->get('numDocAdol')
+	 *	@return $resHabVal
+	 */		
 	public function consValHabTrSoc(){
 		$conect=Yii::app()->db;
 		$sqlConsHabVal="select val_hab_ts from valoracion_trabajo_social where num_doc=:num_doc";
@@ -335,6 +418,11 @@ class ValoracionTrabajoSocial extends CActiveRecord
 		$readHabVal->close();
 		return $resHabVal;
 	}
+	/**
+	 *	Modifica a false el estado de modificación de la valoración en trabajo social
+	 *
+	 *	@param string Yii::app()->getSession()->get('numDocAdol')
+	 */		
 	public function modValHabFalseTrSoc(){
 		$conect=Yii::app()->db;
 		$sqlActHabVal="update valoracion_trabajo_social set val_hab_ts='false' where num_doc=:num_doc";
@@ -342,6 +430,15 @@ class ValoracionTrabajoSocial extends CActiveRecord
 		$actHabVal->bindParam(":num_doc",Yii::app()->getSession()->get('numDocAdol'),PDO::PARAM_STR);
 		$actHabVal->execute();		
 	}
+	/**
+	 *	Registra cédula del prfesional que realiza o modifica la  valoración de trabajo social
+	 *
+	 *	@param int 	   Yii::app()->user->getState('cedula')
+	 *	@param int 	   $idValoracion
+	 *	@param int 	   $accion
+	 *	@param string  $fechaRegistro
+	 *	@return resultado de la transacción 
+	 */		
 	public function creaRegProfVal($idValoracion,$accion){		
 		$conect=Yii::app()->db;
 		$fechaRegistro=date("Y-m-d");
@@ -379,6 +476,12 @@ class ValoracionTrabajoSocial extends CActiveRecord
 			$creaRegProfVal->execute();
 		}
 	}
+	/**
+	 *	Consulta la valoración en trabajo social del adolescente
+	 *
+	 *	@param int $this->id_valtsoc
+	 *	@return $resValTrSoc
+	 */		
 	public function consultaValTrSoc(){
 		$conect=Yii::app()->db;
 		$sqlConsValTrSoc="select * from valoracion_trabajo_social where id_valtsoc=:id_valtsoc";
@@ -389,5 +492,4 @@ class ValoracionTrabajoSocial extends CActiveRecord
 		$readValTrSoc->close();
 		return $resValTrSoc;
 	}
-
 }

@@ -111,6 +111,14 @@ class PorcionesComida extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	/**
+	 *	Consulta consumo de porciones de consumo
+	 *
+	 *	@param string $this->id_val_nutricion
+	 *	@param int $this->id_grupo_comida
+	 *	@param int $this->id_nutradol
+	 *	@return $resFrecCons
+	 */		
 	public function consultaConsumPorcionesGen(){
 		$conect= Yii::app()->db;
 		$sqlFrecCons="select * from porciones_comida where id_val_nutricion=:id_val_nutricion and id_grupo_comida=:id_grupo_comida and id_nutradol=:id_nutradol";	
@@ -123,6 +131,18 @@ class PorcionesComida extends CActiveRecord
 		$readFrecCons->close();
 		return $resFrecCons;					
 	}
+	/**
+	 *	Registra porciones de consumo
+	 *
+	 *	@param int $this->id_grupo_comida
+	 *	@param string $this->id_nutradol
+	 *	@param int $this->id_val_nutricion
+	 *	@param int $this->num_porc_cons_diario
+	 *	@param int $this->num_porc_recomendadas
+	 *	@param int $this->dif_num_porc_cons_rec			
+	 *	@param string $this->concepto_integral
+	 *	@return resultado de la transacción 
+	 */		
 	public function registraPorcionesRec(){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -161,6 +181,18 @@ class PorcionesComida extends CActiveRecord
 			
 		}
 	}
+	/**
+	 *	Modifica porciones de consumo
+	 *
+	 *	@param int $this->id_grupo_comida
+	 *	@param string $this->id_nutradol
+	 *	@param int $this->id_val_nutricion
+	 *	@param int $this->num_porc_cons_diario
+	 *	@param int $this->num_porc_recomendadas
+	 *	@param int $this->dif_num_porc_cons_rec			
+	 *	@param string $this->concepto_integral
+	 *	@return resultado de la transacción 
+	 */		
 	public function modificaPorcionesRec(){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();

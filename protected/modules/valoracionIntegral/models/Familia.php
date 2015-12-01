@@ -104,6 +104,12 @@ class Familia extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	/**
+	 *	Crea tipo de familia .
+	 *
+	 *	@param int $this->id_tipo_familia
+	 *	@return resultado de la transacción 
+	 */		
 	public function creaTipoFam(){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -137,6 +143,13 @@ class Familia extends CActiveRecord
 		}
 	}
 	
+	/**
+	 *	Modifica tipo de familia tipo de familia .
+	 *
+	 *	@param int $this->id_familia
+	 *	@param int $this->id_tipo_familia
+	 *	@return resultado de la transacción 
+	 */		
 	public function modTipoFam(){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();

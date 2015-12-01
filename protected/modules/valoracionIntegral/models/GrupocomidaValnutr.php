@@ -106,6 +106,13 @@ class GrupocomidaValnutr extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	/**
+	 *	Consulta frecuencia de consumo de alimentos
+	 *
+	 *	@param int $this->id_val_nutricion
+	 *	@param int $this->id_grupo_comida
+	 *	@return $resFrecCons
+	 */		
 	public function consultaFrecuenciaConsObs(){
 		$conect= Yii::app()->db;
 		$sqlFrecCons="select * from grupocomida_valnutr where id_val_nutricion=:id_val_nutricion and id_grupo_comida=:id_grupo_comida";	
@@ -117,6 +124,15 @@ class GrupocomidaValnutr extends CActiveRecord
 		$readFrecCons->close();
 		return $resFrecCons;					
 	}
+	/**
+	 *	Registra frecuencia de consumo.
+	 *
+	 *	@param int $this->id_frec_cons
+	 *	@param int $this->id_val_nutricion
+	 *	@param int $this->id_grupo_comida
+	 *	@param string $this->observ_frec_cons
+	 *	@return resultado de la transacción 
+	 */		
 	public function registraFrecCons(){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -149,6 +165,15 @@ class GrupocomidaValnutr extends CActiveRecord
 			return $e;
 		}
 	}
+	/**
+	 *	Registra frecuencia de consumo.
+	 *
+	 *	@param int $this->id_frec_cons
+	 *	@param int $this->id_val_nutricion
+	 *	@param int $this->id_grupo_comida
+	 *	@param string $this->observ_frec_cons
+	 *	@return resultado de la transacción 
+	 */		
 	public function modificaFrecCons(){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();

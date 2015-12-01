@@ -130,6 +130,14 @@ class GrupocomidaNutradol extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	/**
+	 *	Consulta consumo de porciones por grupo de comida del adolescente
+	 *
+	 *	@param int $this->id_val_nutricion
+	 *	@param int $this->id_grupo_comida
+	 *	@param int $this->id_nutradol
+	 *	@return $resFrecCons
+	 */		
 	public function consultaConsumPorciones(){
 		$conect= Yii::app()->db;
 		$sqlFrecCons="select * from grupocomida_nutradol where id_val_nutricion=:id_val_nutricion and id_grupo_comida=:id_grupo_comida and id_nutradol=:id_nutradol";	
@@ -142,6 +150,15 @@ class GrupocomidaNutradol extends CActiveRecord
 		$readFrecCons->close();
 		return $resFrecCons;					
 	}
+	/**
+	 *	Consulta consumo de porciones por grupo de comida del adolescente
+	 *
+	 *	@param int $this->id_val_nutricion
+	 *	@param int $this->id_grupo_comida
+	 *	@param int $this->id_nutradol
+	 *	@param int $this->id_tiempo_alimento
+	 *	@return $resFrecCons
+	 */		
 	public function consultaConsumPorcionesTiempo(){
 		$conect= Yii::app()->db;
 		$sqlFrecCons="select * from grupocomida_nutradol where id_val_nutricion=:id_val_nutricion and id_grupo_comida=:id_grupo_comida and id_nutradol=:id_nutradol and id_tiempo_alimento=:id_tiempo_alimento";	
@@ -155,6 +172,16 @@ class GrupocomidaNutradol extends CActiveRecord
 		$readFrecCons->close();
 		return $resFrecCons;					
 	}
+	/**
+	 *	Registra consumo de porciones
+	 *
+	 *	@param int $this->id_grupo_comida
+	 *	@param string $this->id_nutradol
+	 *	@param int $this->id_val_nutricion
+	 *	@param int $pk
+	 *	@param int $porcion
+	 *	@return resultado de la transacción 
+	 */		
 	public function creaRegPorciones(){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -194,6 +221,16 @@ class GrupocomidaNutradol extends CActiveRecord
 		}				
 	}
 	
+	/**
+	 *	Elimina porción por comida.
+	 *
+	 *	@param int $this->id_grupo_comida
+	 *	@param string $this->id_nutradol
+	 *	@param int $this->id_val_nutricion
+	 *	@param int $pk
+	 *	@param int $porcion
+	 *	@return resultado de la transacción 
+	 */		
 	public function eliminaPorcionComida(){
 		$conect= Yii::app()->db;
 		$sqlFrecCons="delete from grupocomida_nutradol where id_val_nutricion=:id_val_nutricion and id_grupo_comida=:id_grupo_comida and id_nutradol=:id_nutradol";	

@@ -110,6 +110,12 @@ class ConceptoIntegral extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	/**
+	 *	Consulta concepto integral del adolescente
+	 *
+	 *	@param string $this->num_doc
+	 *	@return $resConcInt
+	 */		
 	public function consultaConcInt(){
 		$conect= Yii::app()->db;
 		$sqlConsConcInt="select * from concepto_integral where num_doc=:num_doc";
@@ -120,6 +126,15 @@ class ConceptoIntegral extends CActiveRecord
 		$readConcInt->close();
 		return $resConcInt;		
 	}
+	/**
+	 *	Registra concepto integral del adolescente.
+	 *
+	 *	@param string $this->fecha_concint
+	 *	@param int Yii::app()->user->getState('cedula')
+	 *	@param string $this->num_doc
+	 *	@param text $this->concepto_integral
+	 *	@return resultado de la transacción 
+	 */		
 	public function registraConcInt(){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -150,6 +165,15 @@ class ConceptoIntegral extends CActiveRecord
 			return $e;
 		}
 	}
+	/**
+	 *	Modifica concepto integral del adolescente.
+	 *
+	 *	@param string $this->fecha_concint
+	 *	@param int Yii::app()->user->getState('cedula')
+	 *	@param string $this->num_doc
+	 *	@param text $this->concepto_integral
+	 *	@return resultado de la transacción 
+	 */		
 	public function modificaConcInt(){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();

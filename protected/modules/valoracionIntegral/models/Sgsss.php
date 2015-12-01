@@ -105,6 +105,12 @@ class Sgsss extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	/**
+	 *	Consulta afiliación a seguridad social del adolescnete
+	 *
+	 *	@param string $this->num_doc
+	 *	@return $resSgsssAdol
+	 */		
 	public function consultaSegSocial(){
 		$conect= Yii::app()->db;
 		$sqlSgsssAdol="select * from sgsss where num_doc=:numDoc";
@@ -115,6 +121,14 @@ class Sgsss extends CActiveRecord
 		$readSgsssAdol->close();
 		return $resSgsssAdol;		
 	}
+	/**
+	 *	Registra seguridad social del adolescente
+	 *
+	 *	@param int $this->id_eps_adol
+	 *	@param int $this->id_regimen_salud
+	 *	@param string $this->num_doc
+	 *	@return resultado de la transacción 
+	 */		
 	public function registraSgss(){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -141,6 +155,14 @@ class Sgsss extends CActiveRecord
 			return $e;
 		}
 	}
+	/**
+	 *	Modifica seguridad social del adolescente
+	 *
+	 *	@param string $this->nombreCampoValoracion
+	 *	@param int $this->contenidoValoracion
+	 *	@param string $this->num_doc
+	 *	@return resultado de la transacción 
+	 */		
 	public function modificaSgsss(){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();

@@ -114,6 +114,14 @@ class Telefono extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	/**
+	 *	Registra teléfono del adolescente
+	 *
+	 *	@param int $tipoTelefono
+	 *	@param string $this->num_doc
+	 *	@param string $numeroTelefono
+	 *	@return resultado de la transacción 
+	 */		
 	public function registraTelefono($tipoTelefono,$numeroTelefono){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -142,6 +150,14 @@ class Telefono extends CActiveRecord
 			$this->mensajeErrorTel=$e;
 		}
 	}
+	/**
+	 *	Registra teléfono del adolescente
+	 *
+	 *	@param int $tipoTelefono
+	 *	@param int $this->id_doc_familiar
+	 *	@param string $numeroTelefono
+	 *	@return resultado de la transacción 
+	 */		
 	public function registraTelefonoAcud($tipoTelefono,$numeroTelefono){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -171,6 +187,12 @@ class Telefono extends CActiveRecord
 		}
 	}
 	
+	/**
+	 *	Consulta teléfonos del adolescente
+	 *
+	 *	@param string $numDocAdol
+	 *	@return $resConsultaTelefono
+	 */		
 	public function consultaTelefono($numDocAdol){
 		$conect= Yii::app()->db;
 		$sqlConsultaTelefono="select * from telefono as a left join tipo_telefono as b on a.id_tipo_telefono=b.id_tipo_telefono where num_doc=:numDoc";
@@ -181,6 +203,12 @@ class Telefono extends CActiveRecord
 		$readConsultaTelefono->close();			
 		return $resConsultaTelefono;
 	}
+	/**
+	 *	Consulta teléfonos del acudiente o familiar
+	 *
+	 *	@param int $idDocFam
+	 *	@return $resConsultaTelefono
+	 */		
 	public function consultaTelefonosAcud($idDocFam){
 		$conect= Yii::app()->db;
 		$sqlConsultaTelefono="select * from telefono as a left join tipo_telefono as b on a.id_tipo_telefono=b.id_tipo_telefono where id_doc_familiar=:idDocFam";
@@ -191,6 +219,13 @@ class Telefono extends CActiveRecord
 		$readConsultaTelefono->close();			
 		return $resConsultaTelefono;
 	}
+	/**
+	 *	Consulta teléfonos del adolescente por tipo de teléfono
+	 *
+	 *	@param string $numDocAdol
+	 *	@param int $tipoTelefono
+	 *	@return $resConsultaTelefono
+	 */		
 	public function consultaTelefonoAdol($numDocAdol,$tipoTelefono){
 		$conect= Yii::app()->db;
 		$sqlConsultaTelefono="select * from telefono as a 
@@ -204,6 +239,13 @@ class Telefono extends CActiveRecord
 		$readConsultaTelefono->close();			
 		return $resConsultaTelefono;
 	}
+	/**
+	 *	Consulta teléfonos del acudiente
+	 *
+	 *	@param int $idAcud
+	 *	@param int $tipoTelefono
+	 *	@return $resConsultaTelefono
+	 */		
 	public function consultaTelefonoAcud($idAcud,$tipoTelefono){
 		$conect= Yii::app()->db;
 		$sqlConsultaTelefono="select * from telefono as a 
@@ -217,6 +259,12 @@ class Telefono extends CActiveRecord
 		$readConsultaTelefono->close();			
 		return $resConsultaTelefono;
 	}
+	/**
+	 *	Consulta teléfonos del familiar
+	 *
+	 *	@param int $this->idFamiliar
+	 *	@return $resConsultaTelefono
+	 */		
 	public function consultaTelFamiliar(){
 		$conect= Yii::app()->db;
 		$sqlConsultaTelefono="select * from telefono as a 
@@ -229,6 +277,15 @@ class Telefono extends CActiveRecord
 		$readConsultaTelefono->close();			
 		return $resConsultaTelefono;
 	}
+	/**
+	 *	Modifica registro de teléfono de acuerdo a un campo en específico
+	 *
+	 *	@param string $nombreCampo
+	 *	@param string $nombreTabla
+	 *	@param string $datoAntiguo
+	 *	@param string $datoActual
+	 *	@return resultado de la transacción 
+	 */		
 	public function modificaDatosTelAdolMany($nombreCampo,$nombreTabla,$datoAntiguo,$datoActual,$camposComp,$tipoDato){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();

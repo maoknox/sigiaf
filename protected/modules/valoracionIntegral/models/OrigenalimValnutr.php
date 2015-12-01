@@ -93,6 +93,12 @@ class OrigenalimValnutr extends CActiveRecord
 		return parent::model($className);
 	}
 	
+	/**
+	 *	Consulta origen de alimentos en el hogar
+	 *
+	 *	@param string $this->id_val_nutricion
+	 *	@return $resLabOrigenAlim
+	 */		
 	public function consultaOrigenAlimentosHogar(){
 		$conect=Yii::app()->db;
 		$sqlConsOrigenAlim="select * from origenalim_valnutr where id_val_nutricion=:id_val_nutricion";
@@ -103,6 +109,13 @@ class OrigenalimValnutr extends CActiveRecord
 		$readOrigenAlim->close();
 		return $resLabOrigenAlim;		
 	}
+	/**
+	 *	Registra origenes alimentos en el hogar, si tiene alguno creado con anterioridad se elimina.
+	 *
+	 *	@param string $this->id_val_nutricion
+	 *	@param array $this->_origenAlimentos
+	 *	@return resultado de la transacción 
+	 */		
 	public function registraOrigenAlimentos(){
 		if(!empty($this->_origenAlimentos)){
 			$conect= Yii::app()->db;

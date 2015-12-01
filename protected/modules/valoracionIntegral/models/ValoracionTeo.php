@@ -173,6 +173,12 @@ class ValoracionTeo extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	/**
+	 *	Consulta valoración actual en terapia ocupacional del adolescente.
+	 *
+	 *	@param string $this->num_doc
+	 *	@return $resConsIdValTO
+	 */		
 	public function consultaIdValTO(){
 		$conect=Yii::app()->db;
 		$sqlConsIdValTO="select * from valoracion_teo where num_doc=:numDoc and val_act_to='true'" ;
@@ -183,6 +189,12 @@ class ValoracionTeo extends CActiveRecord
 		$readIdValTO->close();
 		return $resConsIdValTO;
 	}
+	/**
+	 *	Registra valoración empty de terapia ocupacional del adolescente.
+	 *
+	 *	@param string $this->num_doc
+	 *	@return $resValTO["id_valor_teo"]
+	 */		
 	public function creaRegValTO(){
 		$conect=Yii::app()->db;
 		$sqlCreaValTO="insert into valoracion_teo (id_valor_teo,num_doc,val_act_to) values (default,:numDoc,'true') returning id_valor_teo";
@@ -194,6 +206,16 @@ class ValoracionTeo extends CActiveRecord
 		return $resValTO["id_valor_teo"];
 	}
 	
+	/**
+	 *	Modifica la valoración en terapia ocupacional del adolescente por campo específico
+	 *
+	 *	@param int $this->id_valor_teo
+	 *	@param int Yii::app()->user->getState('cedula')
+	 *	@param string $this->contHist
+	 *	@param string $this->nombreCampoValoracion
+	 *	@param string $fecha
+	 *	@return resultado de la transacción 
+	 */		
 	public function regHistoricoValTO(){
 		if(!empty($this->nombreCampoValoracioni)){
 			$this->nombreCampoValoracion=$this->nombreCampoValoracioni;
@@ -234,6 +256,16 @@ class ValoracionTeo extends CActiveRecord
 	}
 	
 	
+	/**
+	 *	Modifica la valoración en terapia ocupacional del adolescente por campo específico
+	 *
+	 *	@param string $this->nombreCampoValoracion
+	 *	@param string $this->campoFecha
+	 *	@param string $this->fecha
+	 *	@param string $this->contenidoValoracion
+	 *	@param int $this->id_valor_teo
+	 *	@return resultado de la transacción 
+	 */		
 	public function modificaValoracionTO($accion){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -257,6 +289,19 @@ class ValoracionTeo extends CActiveRecord
 			return $e;
 		}
 	}
+	/**
+	 *	Modifica vinculación en terapia ocupacional por dos campo en específico
+	 *
+	 *	@param string 	$this->nombreCampoValoracion
+	 *	@param string 	$this->nombreCampoValoracioni
+	 *	@param string 	$this->campoFecha
+	 *	@param string   $this->fecha
+	 *	@param   	    $this->contenidoValoracion
+	 *	@param   	    $this->contenidoValoracioni
+	 *	@param int	    $this->id_valor_teo
+	 *	@param string   $this->num_doc
+	 *	@return resultado de la transacción 
+	 */		
 	public function modificaValoracionTOOpt($accion){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -283,6 +328,12 @@ class ValoracionTeo extends CActiveRecord
 			return $e;
 		}
 	}
+	/**
+	 *	Consulta el estado de modificación de la valoración en terapia ocupacional
+	 *
+	 *	@param string Yii::app()->getSession()->get('numDocAdol')
+	 *	@return $resHabVal
+	 */		
 	public function consValHabTO(){
 		$conect=Yii::app()->db;
 		$sqlConsHabVal="select val_hab_to from valoracion_teo where num_doc=:num_doc";
@@ -293,6 +344,12 @@ class ValoracionTeo extends CActiveRecord
 		$readHabVal->close();
 		return $resHabVal;
 	}
+	/**
+	 *	Modifica a false el estado de modificación de la valoración en terapia ocupacional
+	 *
+	 *	@param string Yii::app()->getSession()->get('numDocAdol')
+	 *	@return resultado de la transacción 
+	 */		
 	public function modValHabFalseTO(){
 		$conect=Yii::app()->db;
 		$sqlActHabVal="update valoracion_teo set val_hab_to='false' where num_doc=:num_doc";
@@ -300,6 +357,15 @@ class ValoracionTeo extends CActiveRecord
 		$actHabVal->bindParam(":num_doc",Yii::app()->getSession()->get('numDocAdol'),PDO::PARAM_STR);
 		$actHabVal->execute();		
 	}
+	/**
+	 *	Registra cédula del prfesional que realiza o modifica la  valoración de terapia ocupacional
+	 *
+	 *	@param int 	   Yii::app()->user->getState('cedula')
+	 *	@param int 	   $idValoracion
+	 *	@param int 	   $accion
+	 *	@param string  $fechaRegistro
+	 *	@return resultado de la transacción 
+	 */		
 	public function creaRegProfVal($idValoracion,$accion){
 		$conect=Yii::app()->db;
 		$fechaRegistro=date("Y-m-d");
@@ -338,6 +404,12 @@ class ValoracionTeo extends CActiveRecord
 			$creaRegProfVal->execute();
 		}
 	}
+	/**
+	 *	Consulta la valoración en terapia ocupacional del adolescente
+	 *
+	 *	@param int $this->id_valor_teo
+	 *	@return $resValTO
+	 */		
 	public function consultaValTO(){
 		$conect=Yii::app()->db;
 		$sqlConsValTO="select * from valoracion_teo where id_valor_teo=:id_valor_teo";

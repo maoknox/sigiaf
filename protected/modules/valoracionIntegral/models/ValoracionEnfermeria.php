@@ -149,6 +149,12 @@ class ValoracionEnfermeria extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	/**
+	 *	Consulta valoración de enfermería del adolescente actual
+	 *
+	 *	@param string $this->num_doc
+	 *	@return $resConsIdValEnf
+	 */		
 	public function consultaIdValEnf(){
 		$conect=Yii::app()->db;
 		$sqlConsIdValEnf="select * from valoracion_enfermeria where num_doc=:numDoc and val_act_enf='true'" ;
@@ -159,6 +165,12 @@ class ValoracionEnfermeria extends CActiveRecord
 		$readIdValEnf->close();
 		return $resConsIdValEnf;
 	}
+	/**
+	 *	Crea registro empty de enfermería de acuerdo al adolescente
+	 *
+	 *	@param string $this->num_doc
+	 *	@return resultado de la transacción 
+	 */		
 	public function creaRegValEnf(){
 		$conect=Yii::app()->db;
 		$sqlCreaValEnf="insert into valoracion_enfermeria (id_valor_enf,num_doc,val_act_enf) values (default,:numDoc,'true') returning id_valor_enf";
@@ -169,6 +181,16 @@ class ValoracionEnfermeria extends CActiveRecord
 		$readValEnf->close();
 		return $resValEnf["id_valor_enf"];
 	}
+	/**
+	 *	Registra histórico de valoración de enfermería 
+	 *
+	 *	@param int $this->id_valor_enf
+	 *	@param int Yii::app()->user->getState('cedula')
+	 *	@param string $this->contHist
+	 *	@param string $this->nombreCampoValoracion
+	 *	@param string $fecha
+	 *	@return resultado de la transacción 
+	 */		
 	public function regHistoricoValEnf(){
 		if(!empty($this->nombreCampoValoracioni)){
 			$this->nombreCampoValoracion=$this->nombreCampoValoracioni;
@@ -208,6 +230,15 @@ class ValoracionEnfermeria extends CActiveRecord
 		}
 	}
 
+	/**
+	 *	Modifica valoración de enfermería por campo específico
+	 *
+	 *	@param string $this->nombreCampoValoracion
+	 *	@param string $this->fecha
+	 *	@param string $this->contenidoValoracion
+	 *	@param int	  $this->id_valor_enf
+	 *	@return resultado de la transacción 
+	 */		
 	public function modificaValoracionEnf($accion){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -231,6 +262,18 @@ class ValoracionEnfermeria extends CActiveRecord
 			return $e;
 		}
 	}
+	/**
+	 *	Modifica valoración de enfermería por campo específico
+	 *
+	 *	@param string $this->nombreCampoValoracion
+	 *	@param string $this->nombreCampoValoracioni
+	 *	@param string $this->campoFecha
+	 *	@param string $this->contenidoValoracion
+	 *	@param string $this->contenidoValoracioni
+	 *	@param int	  $this->id_valor_enf
+	 *	@param string	  $this->num_doc
+	 *	@return resultado de la transacción 
+	 */		
 	public function modificaValoracionEnfOpt($accion){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -257,6 +300,12 @@ class ValoracionEnfermeria extends CActiveRecord
 			return $e;
 		}
 	}
+	/**
+	 *	Consulta estado de activación de la valoración del adolescente
+	 *
+	 *	@param string Yii::app()->getSession()->get('numDocAdol')
+	 *	@return $resHabVal
+	 */		
 	public function consValHabEnf(){
 		$conect=Yii::app()->db;
 		$sqlConsHabVal="select val_hab_enf from valoracion_enfermeria where num_doc=:num_doc";
@@ -267,6 +316,12 @@ class ValoracionEnfermeria extends CActiveRecord
 		$readHabVal->close();
 		return $resHabVal;
 	}
+	/**
+	 *	Modifica a false estado de activación de la valoración del adolescente
+	 *
+	 *	@param string Yii::app()->getSession()->get('numDocAdol')
+	 *	@return $resHabVal
+	 */		
 	public function modValHabFalseEnf(){
 		$conect=Yii::app()->db;
 		$sqlActHabVal="update valoracion_enfermeria set val_hab_enf='false' where num_doc=:num_doc";
@@ -274,6 +329,15 @@ class ValoracionEnfermeria extends CActiveRecord
 		$actHabVal->bindParam(":num_doc",Yii::app()->getSession()->get('numDocAdol'),PDO::PARAM_STR);
 		$actHabVal->execute();		
 	}
+	/**
+	 *	Registra cédula del prfesional que realiza o modifica la  valoración de enfermería
+	 *
+	 *	@param int 	   Yii::app()->user->getState('cedula')
+	 *	@param int 	   $this->id_valor_enf
+	 *	@param int 	   $this->id_accval
+	 *	@param string  $this->fecha_regprvenf
+	 *	@return resultado de la transacción 
+	 */		
 	public function creaRegProfVal($idValoracion,$accion){
 		$conect=Yii::app()->db;
 		$fechaRegistro=date("Y-m-d");
@@ -312,6 +376,12 @@ class ValoracionEnfermeria extends CActiveRecord
 			$creaRegProfVal->execute();
 		}
 	}
+	/**
+	 *	Consulta valoración del adolescente en enfermería
+	 *
+	 *	@param int $this->id_valor_enf
+	 *	@return $resValEnf
+	 */		
 	public function consultaValEnf(){
 		$conect=Yii::app()->db;
 		$sqlConsValEnf="select * from valoracion_enfermeria where id_valor_enf=:id_valor_enf";

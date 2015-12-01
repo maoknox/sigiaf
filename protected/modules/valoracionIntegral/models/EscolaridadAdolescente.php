@@ -133,6 +133,12 @@ class EscolaridadAdolescente extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	/**
+	 *	Consulta histórico de escolaridad del adoelscente
+	 *
+	 *	@param string $this->num_doc
+	 *	@return $resConsAdol
+	 */		
 	public function consultaEscolaridad(){
 		$conect= Yii::app()->db;
 		$sqlConsEscAdol="select * from escolaridad_adolescente where num_doc=:numDoc order by anio_escolaridad desc";
@@ -143,6 +149,12 @@ class EscolaridadAdolescente extends CActiveRecord
 		$readConsEscAdol->close();
 		return $resConsAdol;
 	}
+	/**
+	 *	Consulta información de escolaridad del adoelscente de un año en específico
+	 *
+	 *	@param string $this->num_doc
+	 *	@return $resConsAdol
+	 */		
 	public function consultaAnioEsc(){
 		$conect= Yii::app()->db;
 		$sqlConsEscAdol="select * from escolaridad_adolescente where num_doc=:numDoc and id_escolaridad=:id_escolaridad ";
@@ -155,6 +167,17 @@ class EscolaridadAdolescente extends CActiveRecord
 		return $resConsAdol;
 
 	}
+	/**
+	 *	Registra escolaridad del adolescente.
+	 *
+	 *	@param string $this->num_doc
+	 *	@param int $this->id_nivel_educ
+	 *	@param int $this->anio_escolaridad
+	 *	@param string $this->instituto_escolaridad
+	 *	@param int $this->id_municipio
+	 *	@param int $this->id_jornada_educ
+	 *	@return resultado de la transacción 
+	 */		
 	public function creaRegEscAdol(){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();
@@ -195,6 +218,16 @@ class EscolaridadAdolescente extends CActiveRecord
 			return $e;
 		}
 	}
+	/**
+	 *	Modifica por campo escolaridad del adolescente.
+	 *
+	 *	@param string $this->nombreCampo
+	 *	@param  $this->datosCampo
+	 *	@param int $this->anio_escolaridad
+	 *	@param int $this->id_escolaridad
+	 *	@param string $this->num_doc
+	 *	@return resultado de la transacción 
+	 */		
 	public function modificaEscolAdol(){
 		$conect= Yii::app()->db;
 		$transaction=$conect->beginTransaction();

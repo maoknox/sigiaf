@@ -13,7 +13,9 @@ $this->widget('application.extensions.jqAjaxSearchDate.AjaxSearch',
 		'fecha'=>''
 	)
 );
-?>
+//$comando = "ping 192.168.0.1";
+//$output = shell_exec($comando);
+//echo $output;?>
 <?php if(!empty($mensaje)):?>
 	    <hr />
     <div class="panel panel-default">

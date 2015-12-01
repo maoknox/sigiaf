@@ -92,6 +92,13 @@ class ServprotecValtsocial extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	/**
+	 *	Registra concepto integral del adolescente.
+	 *
+	 *	@param int $this->id_serv_protec
+	 *	@param int $this->id_valtsoc
+	 *	@return resultado de la transacción 
+	 */		
 	public function registraServProtec(){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();

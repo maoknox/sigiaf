@@ -101,6 +101,14 @@ class ProblemaValtsocial extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	/**
+	 *	Registra prolemas asociados, si tiene registrados históricos estos se eliminan.
+	 *
+	 *	@param int $this->id_problema_asoc
+	 *	@param int $this->id_valtsoc
+	 *	@param bool $this->vinc_act_prob
+	 *	@return resultado de la transacción 
+	 */		
 	public function registraProbAsoc(){
 		$conect=Yii::app()->db;
 		$transaction=$conect->beginTransaction();
