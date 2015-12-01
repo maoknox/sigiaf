@@ -527,7 +527,7 @@ class ConsultasGenerales extends CFormModel{
 			$compCondicion="and c.num_doc=a.num_doc and id_forjar=:id_forjar";
 		}
 		if(count($nombres)==1 && !empty($nombres[0])){
-			$sqlCons = "select distinct(b.num_doc), nombres,apellido_1,apellido_2,b.num_doc ";
+			$sqlCons = "select distinct(b.num_doc), nombres,apellido_1,apellido_2,b.num_doc,id_doc_adol ";
 			$sqlCons .= "from (select num_doc from adolescente where sinacentos(nombres) like '%".pg_escape_string($nombres[0])."%' or sinacentos(apellido_1) like '%".pg_escape_string($nombres[0])."%' ";
 			$sqlCons .= "or sinacentos(apellido_2) like '%".pg_escape_string($nombres[0])."%' limit 20) as a,";
 			$sqlCons .= "adolescente as b ".pg_escape_string($compConsSql)." where ";
@@ -535,14 +535,14 @@ class ConsultasGenerales extends CFormModel{
 		}
 		elseif(count($nombres)==2&&!empty($nombres[1])){
 			$nomb = $nombres[0]." ".$nombres[1];
-			$sqlCons = "select  distinct(b.num_doc), nombres,apellido_1,apellido_2,b.num_doc ";
+			$sqlCons = "select  distinct(b.num_doc), nombres,apellido_1,apellido_2,b.num_doc,id_doc_adol ";
 			$sqlCons .="from (select num_doc from adolescente where sinacentos(nombres) like '%".pg_escape_string($nombres[0])." ".pg_escape_string($nombres[1])."%' or sinacentos(apellido_1) like '%".pg_escape_string($nombres[0])."%' ";
 			$sqlCons .= "and sinacentos(apellido_2) like '%".pg_escape_string($nombres[1])."%' or sinacentos(nombres) like '%".pg_escape_string($nombres[0])."%' and sinacentos(apellido_1) like '%".pg_escape_string($nombres[1])."%' or sinacentos(nombres) like '%".pg_escape_string($nombres[1])."%' and sinacentos(apellido_1) like '%".pg_escape_string($nombres[0])."%' order by nombres asc limit 20) as a,";
 			$sqlCons .= "adolescente as b ".pg_escape_string($compConsSql)." where a.num_doc=b.num_doc ".pg_escape_string($compCondicion)." order by nombres asc";		
 		}
 		elseif(count($nombres)==3&&!empty($nombres[1])&&!empty($nombres[2])){
 			$nomb = $strCons[0]." ".$strCons[1];
-			$sqlCons = "select  distinct(b.num_doc), nombres,apellido_1,apellido_2,b.num_doc ";
+			$sqlCons = "select  distinct(b.num_doc), nombres,apellido_1,apellido_2,b.num_doc,id_doc_adol ";
 			$sqlCons .="from (select num_doc from adolescente where sinacentos(nombres) like '%".pg_escape_string($nomb)."%' and  sinacentos(apellido_1) like '%".pg_escape_string($nombres[2])."%' or  sinacentos(nombres) like '%".pg_escape_string($nombres[2])."%' ";
 			$sqlCons .= "and  sinacentos(apellido_1) like '%".$nombres[0]."%' and  sinacentos(apellido_2) like '%".pg_escape_string($nombres[1])."%' order by nombres asc limit 20) as a,";
 			$sqlCons .= "adolescente as b ".pg_escape_string($compConsSql)." where a.num_doc=b.num_doc ".pg_escape_string($compCondicion)." order by nombres asc";
@@ -550,7 +550,7 @@ class ConsultasGenerales extends CFormModel{
 		elseif(count($nombres)==4&&$nombres[1]!=""&&$nombres[2]!=""&&$nombres[3]!=""){
 			$nomb = $nombres[0]." ".$nombres[1];
 			$nombi = $nombres[2]." ".$nombres[3];
-			$sqlCons = "select  distinct(b.num_doc), nombres,apellido_1,apellido_2,b.num_doc ";
+			$sqlCons = "select  distinct(b.num_doc), nombres,apellido_1,apellido_2,b.num_doc,id_doc_adol ";
 			$sqlCons .="from (select num_doc from adolescente where  sinacentos(nombres) like '%".pg_escape_string($nomb)."%' and  sinacentos(apellido_1) like '%".pg_escape_string($nombres[2])."%' ";
 			$sqlCons .= "and  sinacentos(apellido_2) like '%".pg_escape_string($nombres[3])."%' or  sinacentos(nombres) like '%".pg_escape_string($nombi)."%' and  sinacentos(apellido_1) like '%".pg_escape_string($nombres[0])."%' and  sinacentos(apellido_2) like '%".pg_escape_string($nombres[1])."%' order by nombres asc limit 20) as a,";
 			$sqlCons .= "adolescente as b ".pg_escape_string($compConsSql)." where a.num_doc=b.num_doc and a.num_doc=b.num_doc ".pg_escape_string($compCondicion)."order by nombres asc";
@@ -564,7 +564,7 @@ class ConsultasGenerales extends CFormModel{
 		}
 		$queryConsulta=$consultaAdol->query();
 		while($readConsulta=$queryConsulta->read()){
-			$res[]=array( "numDocAdol" =>$readConsulta["num_doc"], "nombre"=>$readConsulta["nombres"]." ".$readConsulta["apellido_1"]." ".$readConsulta["apellido_2"]);
+			$res[]=array("idDocAdolBd"=>$readConsulta["id_doc_adol"], "numDocAdol" =>$readConsulta["num_doc"], "nombre"=>$readConsulta["nombres"]." ".$readConsulta["apellido_1"]." ".$readConsulta["apellido_2"]);
 		}
 		$queryConsulta->close();
 		return $res;	

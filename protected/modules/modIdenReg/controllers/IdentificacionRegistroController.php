@@ -166,6 +166,7 @@ class IdentificacionRegistroController extends Controller
 		if(isset($_POST["Adolescente"])){
 			$datosInput=Yii::app()->input->post();
 			$formPr->attributes=$_POST["Adolescente"];
+			$formPr->id_doc_adol=$_POST["Adolescente"]["num_doc"];
 			//$valido=$formPr->validate();   
 			if($formPr->validate()){
 				$formPr->sedeForjar=Yii::app()->user->getState('sedeForjar');
@@ -762,6 +763,7 @@ class IdentificacionRegistroController extends Controller
 			$derechos=$consGen->consultaDerechos();
 			$datosAdol=$formAdol->consultaDatosAdol($numDocAdol);
 			$formAdol->num_doc=$numDocAdol;
+			$formAdol->id_doc_adol=$datosAdol["id_doc_adol"];
 			$formAdol->nombres=$datosAdol["nombres"];
 			$formAdol->apellido_1=$datosAdol["apellido_1"];
 			$formAdol->apellido_2=$datosAdol["apellido_2"];
@@ -867,6 +869,106 @@ class IdentificacionRegistroController extends Controller
 			'parentesco'=>$parentesco,
 			'acudiente'=>$acudiente
 		));		
+	}
+	
+	/**
+	 *	Acción que renderiza la vista que contiene el formulario para actualizar los datos de identificación del adolescente.
+	 *
+	 *	Vista a renderizar:
+	 *		- modificarDocumentoForm.
+	 *
+	 *	Modelos instanciados:
+	 *		- Adolescente
+	 * 		- LocalizacionViv
+	 * 		- DerechoAdol
+	 * 		- Telefono
+	 * 		- DocumentoCespa
+	 * 		- Familiar
+	 * 		- ConsultasGenerales.
+	 *
+	 *	@param array $estrato,
+	 *	@param object $modeloTelefono,
+	 *	@param object array $modeloDocCespa,
+	 *	@param object $docsCespa,
+	 *	@param object $modeloAcudiente,
+	 *	@param array $parentesco,
+	 *	@param object $modeloVerifDerechos,
+	 *	@param array $derechos,
+	 *	@param array $participacion,
+	 *	@param array $proteccion,					
+	 */		
+	public function actionModificarDocForm(){
+		$datosInput=Yii::app()->input->post();
+		if(isset($datosInput["numDocAdol"]) && !empty($datosInput["numDocAdol"])){
+			$numDocAdol=$datosInput["numDocAdol"];
+			Yii::app()->getSession()->add('numDocAdol',$numDocAdol);
+		}
+		else{
+			$numDocAdol=Yii::app()->getSession()->get('numDocAdol');
+		}
+		if(!empty($numDocAdol)){	
+			$formAdol=new Adolescente();
+			$consGen=new ConsultasGenerales();
+			$datosAdol=$formAdol->consultaDatosAdol($numDocAdol);
+			$tipoDocBd=$consGen->consultaTipoDocumento();
+			$formAdol->num_doc=$numDocAdol;
+			$formAdol->id_doc_adol=$datosAdol["id_doc_adol"];
+			$formAdol->id_sexo=0;
+			$formAdol->id_municipio=0;
+			$formAdol->nombres=$datosAdol["nombres"];
+			$formAdol->apellido_1=$datosAdol["apellido_1"];
+			$formAdol->apellido_2=$datosAdol["apellido_2"];
+			$formAdol->id_tipo_doc=0;
+			$formAdol->fecha_nacimiento=$datosAdol["fecha_nacimiento"];
+			//$formAdol->id_municipio=$datosAdol["id_municipio"];
+				
+		}		
+		$this->render('modificarDocForm',array(
+			'formAdol'=>$formAdol,
+			'numDocAdol'=>$numDocAdol,
+			'datosAdol'=>$datosAdol,
+			'tipoDocBd'=>$tipoDocBd
+		));		
+	}
+	/**
+	 *	Recibe datos del formulario de actualización de datos de documento del adolescente e instancia a modelo para modificar en base de datos
+	 *	Consulta en primera instancia si el valor recibido es diferente del valor registrado, si es así procede a la modificación en caso contratio pasa al siguiente dato
+	 *	para continuar con la verificación
+	 *
+	 *	Modelos instanciados:
+	 *		- Adolescente
+	 *
+	 *	@param array $datosInput=$_POST array de datos del formulario de datos básicos del adolescente
+	 *	@param string $formPr->mensajeErrorProf mensaje de error si hay inconvenientes en el registro del equipo piscosocial asignado al adolescente.
+	 *	@param string $formPr->mensajeError mensaje de error si hay algún problema en el registro de datos básicos del adolescente.
+	 *	@return json resultado de la transacción.
+	 */		
+	public function actionModifDocAdol(){
+		$datosInput=Yii::app()->input->post();
+		$formPr=new Adolescente();          
+		$consGen=new ConsultasGenerales();
+		$operaciones= new OperacionesGenerales();  
+		//$this->performAjaxValidation($formPr);  
+		$numDocAdol=$datosInput["Adolescente"]["num_doc"];
+		if(isset($_POST["Adolescente"])){
+			$formPr->attributes=$datosInput["Adolescente"];
+			if($formPr->validate()){
+				$datosAdol==$formPr->consultaDatosAdol($numDocAdol);
+				if($formPr->id_doc_adol!=$datosAdol["id_doc_adol"]){
+					$tipoDato=PDO::PARAM_STR;
+					$formPr->modificaDatosAdol('id_doc_adol','adolescente',$datosAdol["id_doc_adol"],$formPr->id_doc_adol,$numDocAdol,$tipoDato);
+				}
+				if(empty($formPr->mensajeError)){
+					$resultado="exito";
+				}else{
+					$resultado="error";
+				}
+				echo CJSON::encode(array("estadoComu"=>"exito","resultado"=>CJavaScript::encode($resultado),"msnError"=>CJavaScript::encode(CJavaScript::quote($formPr->mensajeError))));
+			}
+			else{
+				echo CActiveForm::validate($formPr);
+			}
+		}
 	}
 	/**
 	 *	Recibe datos del formulario de datos básicos del acudiente e instancia a modelo para modificar en base de datos
@@ -1011,19 +1113,19 @@ class IdentificacionRegistroController extends Controller
 		$consGen=new ConsultasGenerales();
 		$operaciones= new OperacionesGenerales();  
 		//$this->performAjaxValidation($formPr);  
-		$numDocAdol=$datosInput["Adolescente"]["numDocAdol"];
+		$numDocAdol=$datosInput["Adolescente"]["num_doc"];
 		if(isset($_POST["Adolescente"])){
 			$formPr->attributes=$datosInput["Adolescente"];
 			if($formPr->validate()){
 				$datosAdol==$formPr->consultaDatosAdol($numDocAdol);
-				if($formPr->num_doc!=$datosAdol["num_doc"]){
+				/*if($formPr->id_doc_adol!=$datosAdol["id_doc_adol"]){
 					$tipoDato=PDO::PARAM_STR;
-					$formPr->modificaDatosAdol('num_doc','adolescente',$datosInput["Adolescente"]["numDocAdol"],$formPr->num_doc,$numDocAdol,$tipoDato);
-					$datosInput["Adolescente"]["numDocAdol"]=$formPr->num_doc;
-					$numDocAdol=$formPr->num_doc;
-					Yii::app()->getSession()->remove('numDocAdol');
-					Yii::app()->getSession()->add('numDocAdol',$formPr->num_doc);
-				}
+					$formPr->modificaDatosAdol('id_doc_adol','adolescente',$datosAdol["id_doc_adol"],$formPr->id_doc_adol,$numDocAdol,$tipoDato);
+					//$datosInput["Adolescente"]["numDocAdol"]=$formPr->num_doc;
+					//$numDocAdol=$formPr->id_doc_adol;
+					//Yii::app()->getSession()->remove('numDocAdol');
+					//Yii::app()->getSession()->add('numDocAdol',$formPr->num_doc);
+				}*/
 				if($formPr->nombres!=$datosAdol["nombres"]){
 					$tipoDato=PDO::PARAM_STR;
 					$formPr->nombres=mb_strtoupper($formPr->nombres,"UTF-8");
@@ -1795,6 +1897,7 @@ class IdentificacionRegistroController extends Controller
 			$departamento=$consGen->consultaDepartamento();
 			$datosAdol=$formAdol->consultaDatosAdol($numDocAdol);
 			$formAdol->num_doc=$numDocAdol;
+			$formAdol->id_doc_adol=$datosAdol["id_doc_adol"];
 			$formAdol->nombres=$datosAdol["nombres"];
 			$formAdol->apellido_1=$datosAdol["apellido_1"];
 			$formAdol->apellido_2=$datosAdol["apellido_2"];

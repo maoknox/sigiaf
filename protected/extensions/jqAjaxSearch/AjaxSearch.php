@@ -45,10 +45,10 @@ class AjaxSearch extends CWidget {
 							var contenido="";
 							if(datos!=null){
 								$.each(datos,function(key){
-									contenido+="<div id=\""+datos[key].numDocAdol+"\" onclick=\"javascript:cargaDatos("+datos[key].numDocAdol+",\'"+datos[key].nombre+"\')\"";
+									contenido+="<div id=\""+datos[key].numDocAdol+"\" onclick=\"javascript:cargaDatos("+datos[key].idDocAdolBd+","+datos[key].numDocAdol+",\'"+datos[key].nombre+"\')\"";
 									contenido+=" onmouseover=\"javascript:searchOver("+datos[key].numDocAdol+")\"";
 									contenido+=" onmouseout=\"javascript:searchOut("+datos[key].numDocAdol+")\" style=\"cursor:pointer\">";
-									contenido+=datos[key].numDocAdol+" "+datos[key].nombre+"</div>";
+									contenido+=datos[key].idDocAdolBd+" "+datos[key].nombre+"</div>";
 								});
 								$("#'.$this->target.'").html(contenido)
 								$("#'.$this->target.'").slideDown();
@@ -90,8 +90,8 @@ class AjaxSearch extends CWidget {
 			function searchOut(elemento){
 				$("#"+elemento).css("background","#FFF");
 			}
-			function cargaDatos(numDocAdol,nombre){
-				$("#search_term_'.$this->numDocAdol.'").val(numDocAdol+" "+nombre)
+			function cargaDatos(idDocAdolBd,numDocAdol,nombre){
+				$("#search_term_'.$this->numDocAdol.'").val(idDocAdolBd+" "+nombre)
 				$("#datosAdol #numDocAdol").val(numDocAdol);
 				 $("#'.$this->target.'").hide("slow");
 			}

@@ -43,10 +43,10 @@
 		</div>
     </div>
     <div class="form-group">
-	<?php echo $form->labelEx($formAdol,'num_doc',array('class'=>'col-md-4 control-label','for'=>'searchinput'));?>
+	<?php echo $form->labelEx($formAdol,'id_doc_adol',array('class'=>'col-md-4 control-label','for'=>'searchinput'));?>
 	    <div class="col-md-4">
-			<?php echo $form->textField($formAdol,'num_doc',array('prompt'=>'Seleccione Tipo documento','class'=>'form-control'));?>
-            <?php echo $form->error($formAdol,'num_doc',array('style' => 'color:#F00'));?>
+			<?php echo $form->textField($formAdol,'id_doc_adol',array('prompt'=>'Seleccione Tipo documento','class'=>'form-control'));?>
+            <?php echo $form->error($formAdol,'id_doc_adol',array('style' => 'color:#F00'));?>
 		</div>
     </div>
     <div class="form-group">

@@ -108,7 +108,7 @@ echo CHtml::submitButton('Cargar',array(
         	Edad: <?php echo $edad;?>
         </td>
         <td style="border:1px solid #003;">
-        	Número de identificación: <?php echo $datosAdol["num_doc"];?>
+        	Número de identificación: <?php echo $datosAdol["id_doc_adol"];?>
         </td>
     </tr>
     <tr>

@@ -44,13 +44,6 @@
 		</div>
     </div>
     <div class="form-group">
-	<?php echo $form->labelEx($formAdol,'num_doc',array('class'=>'col-md-4 control-label','for'=>'searchinput'));?>
-	    <div class="col-md-4">
-			<?php echo $form->textField($formAdol,'num_doc',array('prompt'=>'Seleccione Tipo documento','class'=>'form-control'));?>
-            <?php echo $form->error($formAdol,'num_doc',array('style' => 'color:#F00'));?>
-		</div>
-    </div>
-    <div class="form-group">
 	<?php echo $form->labelEx($formAdol,'fecha_nacimiento',array('class'=>'col-md-4 control-label','for'=>'searchinput'));?>
 	    <div class="col-md-4">
 	<?php //
@@ -214,7 +207,12 @@
 						array('id'=>'btnFormAdolId','name'=>'btnCreaAdolN','class'=>'btn btn-default btn-sdis')
 				);
     ?>
-	<?php echo CHtml::hiddenField('Adolescente[numDocAdol]',$formAdol->num_doc,array('id'=>'numDocAdol'));?>
+	<?php echo CHtml::hiddenField('Adolescente[numDocAdol]',$formAdol->id_doc_adol,array('id'=>'numDocAdol'));?>
+	<?php echo CHtml::hiddenField('Adolescente[num_doc]',$formAdol->num_doc,array('id'=>'Adolescente_num_doc'));?>
+	<?php
+		$formAdol->id_doc_adol="";
+		echo CHtml::hiddenField('Adolescente[id_doc_adol]',$formAdol->num_doc,array('id'=>'Adolescente_num_doc'));
+	?>
     	    <div class="form-group">
             <label class="col-md-4 control-label"></label>
             	<div class="col-md-4"><?php echo $boton; //CHtml::submitButton('Crear');?></div>

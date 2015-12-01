@@ -5,6 +5,7 @@
  *
  * The followings are the available columns in table 'adolescente':
  * @property string $num_doc
+ * @property string $id_doc_adol
  * @property integer $id_tipo_doc
  * @property integer $id_sexo
  * @property string $id_municipio
@@ -62,10 +63,11 @@ class Adolescente extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('num_doc, id_tipo_doc,escIngEgrs, id_sexo, id_municipio, apellido_1, nombres,fecha_nacimiento', 'required'),
+			array('num_doc, id_doc_adol, id_tipo_doc,escIngEgrs, id_sexo, id_municipio, apellido_1, nombres,fecha_nacimiento', 'required'),
 			array('id_tipo_doc, id_sexo, id_familia, id_etnia', 'numerical', 'integerOnly'=>true),
 			array('edad_ingreso, edad_actual', 'numerical'),
 			array('num_doc', 'length', 'max'=>15),
+			array('id_doc_adol', 'length', 'max'=>20),
 			array('id_municipio', 'length', 'max'=>10),
 			array('apellido_1, apellido_2, nombres', 'length', 'max'=>100),
 			array('num_doc','validaAdol'),
@@ -73,7 +75,7 @@ class Adolescente extends CActiveRecord
 			array('fecha_nacimiento,id_etnia,apellido_2,psicologos,escIngEgrs,trabSocials,responsableAdol,id_regimen_salud', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('num_doc, id_tipo_doc, id_sexo, id_municipio,id_familia, id_etnia, apellido_1, apellido_2, nombres, fecha_nacimiento, edad_ingreso, edad_actual', 'safe', 'on'=>'search'),
+			array('num_doc, id_doc_adol, id_tipo_doc, id_sexo, id_municipio,id_familia, id_etnia, apellido_1, apellido_2, nombres, fecha_nacimiento, edad_ingreso, edad_actual', 'safe', 'on'=>'search'),
 			array('psicologos','validaPsic'),
 			array('trabSocials','validaTr'),
 			array('responsableAdol','validaResp')
@@ -84,23 +86,25 @@ class Adolescente extends CActiveRecord
 	 * 	método que valida al momento de crear el registro del adolescente si ya está registrado con el número del documento, 
 	 */
 	public function validaAdol($attribute=NULL,$params=NULL){
-		
-		$consultaAdol=$this->find('num_doc=:numDoc',
-		array(
-			':numDoc'=>$_POST["Adolescente"]["num_doc"]
-		));
-		if(isset($_POST["Adolescente"]["numDocAdol"]) && !empty($_POST["Adolescente"]["numDocAdol"])){
-			if($_POST["Adolescente"]["numDocAdol"]!==$_POST["Adolescente"]["num_doc"]){
-				if(!empty($consultaAdol)){
-					$this->addError($attribute,"Este número de documento ya se encuentra registrado");
-				}
-			}
-		}
-		else{
+		if(Yii::app()->controller->action->id!="modifDocAdol"){		
+			$consultaAdol=$this->find('num_doc=:numDoc or id_doc_adol=:id_doc_adol',
+			array(
+				':numDoc'=>$_POST["Adolescente"]["num_doc"],
+				':id_doc_adol'=>$_POST["Adolescente"]["num_doc"]
+			));
 			if(!empty($consultaAdol)){
 				$this->addError($attribute,"Este número de documento ya se encuentra registrado");
 			}
-		}			
+		}
+		else{
+			$consultaAdol=$this->find('id_doc_adol=:id_doc_adol',
+			array(
+				':id_doc_adol'=>$_POST["Adolescente"]["id_doc_adol"]
+			));
+			if(!empty($consultaAdol)){
+				$this->addError("id_doc_adol","Este número de documento ya se encuentra registrado");
+			}
+		}
 	}
 	
 	/**
@@ -188,6 +192,7 @@ class Adolescente extends CActiveRecord
 	{
 		return array(
 			'num_doc' => 'Número de documento',
+			'id_doc_adol' => 'Número de documento',
 			'id_tipo_doc' => 'Tipo de documento',
 			'id_sexo' => 'Sexo',
 			'id_municipio' => 'Municipio',
@@ -224,6 +229,7 @@ class Adolescente extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('num_doc',$this->num_doc,true);
+		$criteria->compare('id_doc_adol',$this->id_doc_adol,true);
 		$criteria->compare('id_tipo_doc',$this->id_tipo_doc);
 		$criteria->compare('id_sexo',$this->id_sexo);
 		$criteria->compare('id_municipio',$this->id_municipio,true);
@@ -271,6 +277,7 @@ class Adolescente extends CActiveRecord
 			//$edadIngreso=$operGen->hallaEdad($this->fecha_nacimiento,date("Y-m-d"));
 			$sqlCreaRegAdol="insert into adolescente (
 					num_doc,
+					id_doc_adol,
 					id_tipo_doc,
 					id_sexo,
 					id_municipio,
@@ -283,6 +290,7 @@ class Adolescente extends CActiveRecord
 					edad_actual
 					) values (
 						:numDoc,
+						:id_doc_adol,
 						:tipoDoc,
 						:sexo,
 						:municipio,
@@ -296,6 +304,7 @@ class Adolescente extends CActiveRecord
 					)";
 				$registraReg=$conect->createCommand($sqlCreaRegAdol);
 				$registraReg->bindParam(':numDoc',$this->num_doc,PDO::PARAM_STR);
+				$registraReg->bindParam(':id_doc_adol',$this->num_doc,PDO::PARAM_STR);
 				$registraReg->bindParam(':tipoDoc',$this->id_tipo_doc,PDO::PARAM_INT);
 				$registraReg->bindParam(':sexo',$this->id_sexo,PDO::PARAM_INT);
 				$registraReg->bindParam(':municipio',$this->id_municipio,PDO::PARAM_STR);
