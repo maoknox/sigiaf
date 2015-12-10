@@ -284,10 +284,9 @@ class SeguimientoAdolController extends Controller{
 				for($i=1;$i<=$dataInput["numFechas"];$i++){
 					$fecha = date('w', strtotime($dataInput["AsistenciaPsc"]["inpFecha_".$i]));
 					$numHoras=$consultaGeneral->consultaNumHoras($dataInput["SeguimientoPsc"]["id_psc"],$dataInput["SeguimientoPsc"]["num_doc"],$fecha);
-					$modeloSeguimientoPsc->fechas[]=array('fecha'=>$dataInput["AsistenciaPsc"]["inpFecha_".$i],'horas'=>$numHoras);
+					$modeloSeguimientoPsc->fechas[]=array('fecha'=>$dataInput["AsistenciaPsc"]["inpFecha_".$i],'horas'=>$dataInput["AsistenciaPsc"]["num_horas_".$i],'minutos'=>$dataInput["AsistenciaPsc"]["num_minutos_".$i]);
 				}
 			}
-			//print_r($modeloAsistenciaPsc->attributes);
 			if($modeloSeguimientoPsc->validate() && $modeloAsistenciaPsc->validate()){
 				//if($_POST["SeguimientoAdolPsc"]["seguim_conj"]==1){$modeloSeguimiento->seguim_conj='false';}else{$modeloSeguimiento->seguim_conj='true';}
 				$resultado=$modeloSeguimientoPsc->registraSeguimientoPsc();
@@ -550,7 +549,8 @@ class SeguimientoAdolController extends Controller{
 					'datosAdol'=>$datosAdol,
 					'edad'=>$edad,
 					'telefono'=>$telefono,
-					'offset'=>$offset
+					'offset'=>$offset,
+					'operaciones'=>$operaciones					
 				)
 			);		
 		}
@@ -843,6 +843,120 @@ class SeguimientoAdolController extends Controller{
 		}
 		else{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
+		}
+	}
+	public function actionModificarSegPscForm(){
+		$controlAcceso=new ControlAcceso();
+		$controlAcceso->accion="consPscSeg";
+		$permiso=$controlAcceso->controlAccesoAcciones();
+		if($permiso["acceso_rolmenu"]==1){
+			$dataInput=Yii::app()->input->post();
+			if(isset($_POST["numDocAdol"]) && !empty($_POST["numDocAdol"])){
+				$numDocAdol=htmlspecialchars(strip_tags(trim($_POST["numDocAdol"])));
+				Yii::app()->getSession()->add('numDocAdol',htmlspecialchars(strip_tags(trim($_POST["numDocAdol"]))));
+			}
+			else{
+				$numDocAdol=Yii::app()->getSession()->get('numDocAdol');
+			}
+			if(!empty($numDocAdol)){
+				$modeloPsc=new Psc();
+				$modeloInfJud=new InformacionJudicial();					
+				$modeloDatosTelefono=new Telefono();
+				$modeloAsistenciaPsc=new AsistenciaPsc();
+				$modeloAsistenciaPsc->id_seguimiento_ind=$dataInput["Psc"]["id_seguimiento_ind"];
+				$consultaAsistencia=$modeloAsistenciaPsc->consultaAsistencia();
+				$modeloSeguimientoPsc=new SeguimientoPsc();
+				$modeloSeguimientoPsc->num_doc=$numDocAdol;
+				$modeloSeguimientoPsc->id_psc=$dataInput["Psc"]["id_psc"];
+				$modeloSeguimientoPsc->id_seguimiento_ind=$dataInput["Psc"]["id_seguimiento_ind"];
+				$seguimientoPscInd=$modeloSeguimientoPsc->consSeguimientosInd();
+				$modeloSeguimientoPsc->desarrollo_act_psc=$seguimientoPscInd["desarrollo_act_psc"];
+				$modeloSeguimientoPsc->reporte_nov_psc=$seguimientoPscInd["reporte_nov_psc"];
+				$modeloSeguimientoPsc->cump_acu_psc=$seguimientoPscInd["cump_acu_psc"];
+				$consGen=new ConsultasGenerales();	
+				$operaciones=new OperacionesGenerales();
+				$datosAdol="";
+				$edad="";
+				$telefono="";			
+				$datosAdol=$consGen->consultaDatosAdol($numDocAdol);
+				$edad=$operaciones->hallaEdad($datosAdol["fecha_nacimiento"],date("Y-m-d"));
+				$telefono=$modeloDatosTelefono->consultaTelefono($numDocAdol);
+				$modeloPsc->num_doc=$numDocAdol;
+				$pscDes=$modeloPsc->consultaPscSeg($offset);
+				$modeloInfJud->num_doc=$numDocAdol;
+				$modeloSeguimiento->num_doc=$numDocAdol;
+				$infJudicial=$modeloInfJud->consultaInfJud();
+				if(!empty($infJudicial)){
+					foreach($infJudicial as $pk=>$infJudicialNov){
+						$infJud=$modeloInfJud->consultaInfJudNov($infJudicialNov["id_inf_judicial"]);
+						if(!empty($infJud)){
+							$infJudicial[$pk]=$infJud;
+						}			
+					}
+				}
+				$modeloPsc->num_doc=$numDocAdol;
+				$modeloPsc->id_psc=$dataInput["Psc"]["id_psc"];
+				$pscSinCulm=$modeloPsc->consultaPscSegForm();	
+				$seguimientoPsc=$modeloSeguimientoPsc->consSeguimientosPsc();
+			}
+			//consulta Instancia remisora
+			$this->render('_modSegPscForm',
+				array(
+					'numDocAdol'=>$numDocAdol,	
+					//'modeloInfJud'=>$modeloInfJud,
+					//'infJudicial'=>$infJudicial,
+					//'modeloSeguimiento'=>$modeloSeguimiento,
+					'modeloPsc'=>$modeloPsc,
+					'pscSinCulm'=>$pscSinCulm,
+					'modeloSeguimientoPsc'=>$modeloSeguimientoPsc,
+					'modeloPsc'=>$modeloPsc,
+					'modeloAsistenciaPsc'=>$modeloAsistenciaPsc,
+					'pscDes'=>$pscDes,
+					'datosAdol'=>$datosAdol,
+					'edad'=>$edad,
+					'telefono'=>$telefono,
+					'offset'=>$offset,
+					'seguimientoPscInd'=>$seguimientoPscInd,
+					'consultaAsistencia'=>$consultaAsistencia,
+				)
+			);		
+		}
+		else{
+			throw new CHttpException(403,'No tiene acceso a esta acción');
+		}
+	}
+	
+	public function actionModificaSegimientoPSC(){
+		$dataInput=Yii::app()->input->post();
+		if(isset($_POST["SeguimientoPsc"]) && !empty($_POST["SeguimientoPsc"]) && isset($_POST["AsistenciaPsc"]) && !empty($_POST["AsistenciaPsc"])){
+			$modeloSeguimientoPsc=new SeguimientoPsc();
+			$modeloAsistenciaPsc=new AsistenciaPsc();		
+			$consultaGeneral=new ConsultasGenerales();
+			$modeloSeguimientoPsc->attributes=$dataInput["SeguimientoPsc"];
+			$modeloAsistenciaPsc->attributes=$dataInput["AsistenciaPsc"];
+			$modeloSeguimientoPsc->id_seguimiento_ind=$dataInput["SeguimientoPsc"]["id_seguimiento_ind"];
+			$modeloAsistenciaPsc->id_seguimiento_ind=$modeloSeguimientoPsc->id_seguimiento_ind;
+			//print_r($modeloSeguimientoPsc->attributes);
+			//echo $dataInput["SeguimientoPsc"]["id_seguimiento_ind"];
+			//exit;
+			if($dataInput["numFechas"]==0){
+				$modeloAsistenciaPsc->fecha_asist_psc="";
+			}
+			else{
+				for($i=1;$i<=$dataInput["numFechas"];$i++){
+					$fecha = date('w', strtotime($dataInput["AsistenciaPsc"]["inpFecha_".$i]));
+					$numHoras=$consultaGeneral->consultaNumHoras($dataInput["SeguimientoPsc"]["id_psc"],$dataInput["SeguimientoPsc"]["num_doc"],$fecha);
+					$modeloSeguimientoPsc->fechas[]=array('fecha'=>$dataInput["AsistenciaPsc"]["inpFecha_".$i],'horas'=>$dataInput["AsistenciaPsc"]["num_horas_".$i],'minutos'=>$dataInput["AsistenciaPsc"]["num_minutos_".$i]);
+				}
+			}
+			if($modeloSeguimientoPsc->validate() && $modeloAsistenciaPsc->validate()){
+				//if($_POST["SeguimientoAdolPsc"]["seguim_conj"]==1){$modeloSeguimiento->seguim_conj='false';}else{$modeloSeguimiento->seguim_conj='true';}
+				$resultado=$modeloSeguimientoPsc->modificaSeguimientoPsc();
+				echo CJSON::encode(array("estadoComu"=>"exito",'resultado'=>CJavaScript::encode(CJavaScript::quote($resultado))));
+			}
+			else{
+				echo CActiveForm::validate(array($modeloSeguimientoPsc,$modeloAsistenciaPsc));
+			}
 		}
 	}
 	// Uncomment the following methods and override them if needed

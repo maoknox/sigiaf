@@ -196,19 +196,90 @@ class SeguimientoPsc extends CActiveRecord
 					id_asist_psc,
 					id_seguimiento_ind,
 					fecha_asist_psc,
-					num_hora
+					num_hora,
+					num_minutos
 				) values (
 					default,
 					:id_seguimiento_ind,
 					:fecha_asist_psc,
-					:num_hora
+					:num_hora,
+					:num_minutos
 				)";
 				$regAsist=$conect->createCommand($sqlRegsAsist);
 				$regAsist->bindParam(":id_seguimiento_ind",$resSegPsc["id_seguimiento_ind"],PDO::PARAM_INT);
 				$regAsist->bindParam(":fecha_asist_psc",$fecha["fecha"],PDO::PARAM_STR);
 				$regAsist->bindParam(":num_hora",$fecha["horas"],PDO::PARAM_INT);
+				$regAsist->bindParam(":num_minutos",$fecha["minutos"],PDO::PARAM_INT);
 				$regAsist->execute();
 			}
+			$transaction->commit();
+			return "exito";
+		}
+		catch(CDbCommand $e){
+			$transaction->rollBack();
+			return $e;
+		}				
+	}
+	/**
+	 *	Crea registro de seguimiento psc.
+	 *	@param int id_seguimiento_ind.
+	 *	@param int id_psc.
+	 *	@param string num_doc.
+	 *	@param int id_cedula.
+	 *	@param string desarrollo_act_psc.
+	 *	@param string reporte_nov_psc.
+	 *	@param string cump_acu_psc.
+	 *	@param string fecha_seg_ind.
+	 *	@return resultado de la transacción
+	 */		
+	public function modificaSeguimientoPsc(){
+		$conect=Yii::app()->db;
+		$transaction=$conect->beginTransaction();
+		try{
+			$sqlRegSegPsc="update seguimiento_psc set 
+				desarrollo_act_psc=:desarrollo_act_psc,
+				reporte_nov_psc=:reporte_nov_psc, 
+				cump_acu_psc=:cump_acu_psc
+				where
+				id_seguimiento_ind=:id_seguimiento_ind and
+				id_psc=:id_psc and
+				num_doc=:num_doc";
+			$regSegPsc=$conect->createCommand($sqlRegSegPsc);
+			$regSegPsc->bindParam(":desarrollo_act_psc",$this->desarrollo_act_psc,PDO::PARAM_STR);
+			$regSegPsc->bindParam(":reporte_nov_psc",$this->reporte_nov_psc,PDO::PARAM_STR);
+			$regSegPsc->bindParam(":cump_acu_psc",$this->cump_acu_psc,PDO::PARAM_STR);
+			$regSegPsc->bindParam(":id_seguimiento_ind",$this->id_seguimiento_ind,PDO::PARAM_STR);
+			$regSegPsc->bindParam(":num_doc",$this->num_doc,PDO::PARAM_STR);
+			$regSegPsc->bindParam(":id_psc",$this->id_psc,PDO::PARAM_STR);
+			$readSegPsc=$regSegPsc->query();
+			$resSegPsc=$readSegPsc->read();
+			$readSegPsc->close();
+			$sqlDelAsist="delete from asistencia_psc where id_seguimiento_ind=:id_seguimiento_ind";
+			$delAsist=$conect->createCommand($sqlDelAsist);
+			$delAsist->bindParam(":id_seguimiento_ind",$this->id_seguimiento_ind,PDO::PARAM_INT);
+			$delAsist->execute();
+			
+				foreach($this->fechas as $pk=>$fecha){
+					$sqlRegsAsist="insert into asistencia_psc (
+						id_asist_psc,
+						id_seguimiento_ind,
+						fecha_asist_psc,
+						num_hora,
+						num_minutos
+					) values (
+						default,
+						:id_seguimiento_ind,
+						:fecha_asist_psc,
+						:num_hora,
+						:num_minutos
+					)";
+					$regAsist=$conect->createCommand($sqlRegsAsist);
+					$regAsist->bindParam(":id_seguimiento_ind",$this->id_seguimiento_ind,PDO::PARAM_INT);
+					$regAsist->bindParam(":fecha_asist_psc",$fecha["fecha"],PDO::PARAM_STR);
+					$regAsist->bindParam(":num_hora",$fecha["horas"],PDO::PARAM_INT);
+					$regAsist->bindParam(":num_minutos",$fecha["minutos"],PDO::PARAM_INT);
+					$regAsist->execute();
+				}
 			$transaction->commit();
 			return "exito";
 		}
@@ -235,6 +306,19 @@ class SeguimientoPsc extends CActiveRecord
 		$readHorasPsc->close();
 		return $resHorasPsc;
 	}
+	public function consMinutosCumpPsc(){
+		$conect=Yii::app()->db;
+		$sqlConsHorasPsc="select num_minutos from seguimiento_psc as a left join asistencia_psc as b on b.id_seguimiento_ind=a.id_seguimiento_ind 
+			where num_doc=:num_doc and id_psc=:id_psc";
+		$consHorasPsc=$conect->createCommand($sqlConsHorasPsc);
+		$consHorasPsc->bindParam(":num_doc",$this->num_doc,PDO::PARAM_STR);
+		$consHorasPsc->bindParam(":id_psc",$this->id_psc,PDO::PARAM_STR);
+		$readHorasPsc=$consHorasPsc->query();
+		$resHorasPsc=$readHorasPsc->readAll();
+		$readHorasPsc->close();
+		return $resHorasPsc;
+	}
+
 	/**
 	 *	Retorna los seguimientos de una prestación de servicios a la comunidad.
 	 *	@param string $this->num_doc.
@@ -244,7 +328,7 @@ class SeguimientoPsc extends CActiveRecord
 	public function consSeguimientosPsc(){
 		$conect=Yii::app()->db;
 		$sqlConsSegPsc="select a.desarrollo_act_psc,a.reporte_nov_psc,a.cump_acu_psc, 
-			a.fecha_seg_ind,(nombre_personal ||' '||apellidos_personal)as nombrespersona,f.nombre_rol,c.institucionpsc 
+			a.fecha_seg_ind,(nombre_personal ||' '||apellidos_personal)as nombrespersona,f.nombre_rol,c.institucionpsc, a,id_seguimiento_ind
 			from seguimiento_psc as a left join psc as b on b.id_psc=a.id_psc left join institucion_psc as c on c.id_institucionpsc=b.id_institucionpsc 
 			left join persona as d on a.id_cedula=d.id_cedula 
 			left join usuario as e on d.id_cedula=e.id_cedula 
@@ -257,4 +341,22 @@ class SeguimientoPsc extends CActiveRecord
 		$readSegPsc->close();
 		return $resSegPsc;
 	}
+		public function consSeguimientosInd(){
+		$conect=Yii::app()->db;
+		$sqlConsSegPsc="select a.desarrollo_act_psc,a.reporte_nov_psc,a.cump_acu_psc, 
+			a.fecha_seg_ind,(nombre_personal ||' '||apellidos_personal)as nombrespersona,f.nombre_rol,c.institucionpsc, a,id_seguimiento_ind
+			from seguimiento_psc as a left join psc as b on b.id_psc=a.id_psc left join institucion_psc as c on c.id_institucionpsc=b.id_institucionpsc 
+			left join persona as d on a.id_cedula=d.id_cedula 
+			left join usuario as e on d.id_cedula=e.id_cedula 
+			left join rol as f on f.id_rol=e.id_rol where a.num_doc=:num_doc and a.id_psc=:id_psc and id_seguimiento_ind=:id_seguimiento_ind";
+		$consSegPsc=$conect->createCommand($sqlConsSegPsc);
+		$consSegPsc->bindParam(":num_doc",$this->num_doc,PDO::PARAM_STR);
+		$consSegPsc->bindParam(":id_psc",$this->id_psc,PDO::PARAM_STR);
+		$consSegPsc->bindParam(":id_seguimiento_ind",$this->id_seguimiento_ind,PDO::PARAM_STR);
+		$readSegPsc=$consSegPsc->query();
+		$resSegPsc=$readSegPsc->read();
+		$readSegPsc->close();
+		return $resSegPsc;
+	}
+
 }

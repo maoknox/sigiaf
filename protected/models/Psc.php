@@ -59,9 +59,12 @@ class Psc extends CActiveRecord
 			// @todo Please remove those attributes that should not be searched.
 			array('id_psc, num_doc, id_cedula, id_institucionpsc, id_sector_psc, fecha_inicio_psc, fecha_fin_psc, firma_acuerdos, horas_semana, culminacion, observaciones_psc, responsable_psc, telefono_resp, num_dias_psc', 'safe', 'on'=>'search'),
 			array('id_institucionpsc','validaInstitucion'),
-			array('nueva_institucionpsc','validaNuevaInstitucion')
+			array('nueva_institucionpsc','validaNuevaInstitucion'),
+			array('fecha_fin_psc','validaFechaFin')
 		);
 	}
+	
+	
 	
 	/**
 	 * 	Verifica y valida si el adolescente está realizando actualmente una psc en la institución seleccionada al momento de crear una nueva psc, 
@@ -71,11 +74,11 @@ class Psc extends CActiveRecord
 			
 			$dataInput=Yii::app()->input->post();
 			$this->num_doc=$dataInput["Psc"]["num_doc"];
-			$this->id_institucionpsc=$dataInput["Psc"]["id_institucionpsc"];
+			//$this->id_institucionpsc=$dataInput["Psc"]["id_institucionpsc"];
 			//consulta psc sin culminar de acuerdo al instituto.  Si tiene una psc en el mismo instituto sin culminar no dejará crear otro servicio.
 			$consultaPai=$this->consultaPscSinCulmInstituto();
 			if(!empty($consultaPai)){
-				$this->addError($attribute,"Ya hay una prestación de servicios en esta institución y no ha culminado aún");
+				$this->addError($attribute,"El adolescente tiene una prestación de servicios a la comunidad activa.  \n si requiere crear otra, debe culminar la actual");
 			}
 		}		
 	}
@@ -93,7 +96,27 @@ class Psc extends CActiveRecord
 			}
 		}		
 	}
-
+	/**
+	 * 	Verifica y valida si el adolescente está realizando actualmente una psc en la institución seleccionada al momento de crear una nueva psc, 
+	 */
+	public function validaFechaFin($attribute=NULL,$params=NULL){
+		if(isset($_POST["Psc"]["fecha_fin_psc"]) && !empty($_POST["Psc"]["fecha_fin_psc"])){
+			
+			$dataInput=Yii::app()->input->post();
+			$this->fecha_inicio_psc=$dataInput["Psc"]["fecha_inicio_psc"];
+			$this->fecha_fin_psc=$dataInput["Psc"]["fecha_fin_psc"];
+			$modeloOperacionesGenerales=new OperacionesGenerales();
+			$res=$modeloOperacionesGenerales->comparaFecha($this->fecha_inicio_psc,$this->fecha_fin_psc);
+			//$this->id_institucionpsc=$dataInput["Psc"]["id_institucionpsc"];
+			//consulta psc sin culminar de acuerdo al instituto.  Si tiene una psc en el mismo instituto sin culminar no dejará crear otro servicio.
+			if(!$res){
+				$this->addError($attribute,"Debe seleccionar una fecha mayor a la fecha inicial de PSC.");
+			}
+		}		
+		else{
+			$this->addError($attribute,"Debe seleccionar una fecha de finalización de la prestación de servicios a la comunidad.");
+		}
+	}
 	/**
 	 * @return array relational rules.
 	 */
@@ -206,11 +229,11 @@ class Psc extends CActiveRecord
 	public function consultaPscSinCulmInstituto(){
 		$conect=Yii::app()->db;
 		
-		$sqlConsPsc="select * from psc where num_doc=:num_doc and id_estadopsc is null and id_institucionpsc=:id_institucionpsc 
-			or num_doc=:num_doc and id_estadopsc>=3 and id_institucionpsc=:id_institucionpsc";
+		$sqlConsPsc="select * from psc where num_doc=:num_doc and id_estadopsc is null
+			or num_doc=:num_doc and id_estadopsc>=3"; //and id_institucionpsc=:id_institucionpsc  and id_institucionpsc=:id_institucionpsc
 		$consPsc=$conect->createCommand($sqlConsPsc);
 		$consPsc->bindParam(":num_doc",$this->num_doc,PDO::PARAM_STR);
-		$consPsc->bindParam(":id_institucionpsc",$this->id_institucionpsc,PDO::PARAM_STR);
+		//$consPsc->bindParam(":id_institucionpsc",$this->id_institucionpsc,PDO::PARAM_STR);
 		$readConsPsc=$consPsc->query();
 		$resConsPsc=$readConsPsc->readAll();
 		$readConsPsc->close();
@@ -368,6 +391,7 @@ class Psc extends CActiveRecord
 		$sqlConsPscDes="select * from psc as a 
 			left join institucion_psc as b on b.id_institucionpsc=a.id_institucionpsc 
 			left join sector_psc as c on c.id_sector_psc=b.id_sector_psc
+			left join estado_psc as d on d.id_estadopsc=a.id_estadopsc
 			where num_doc=:num_doc limit 5 offset :offset";		
 		$consPscDes=$conect->createCommand($sqlConsPscDes);
 		$consPscDes->bindParam(":num_doc",$this->num_doc,PDO::PARAM_STR);
@@ -403,7 +427,8 @@ class Psc extends CActiveRecord
 		$sqlConsPscDes="select * from psc as a 
 			left join institucion_psc as b on b.id_institucionpsc=a.id_institucionpsc 
 			left join sector_psc as c on c.id_sector_psc=b.id_sector_psc
-			where num_doc=:num_doc and id_estadopsc >=3";		
+			left join estado_psc as d on d.id_estadopsc=a.id_estadopsc
+			where num_doc=:num_doc and a.id_estadopsc >=3";		
 		$consPscDes=$conect->createCommand($sqlConsPscDes);
 		$consPscDes->bindParam(":num_doc",$this->num_doc,PDO::PARAM_STR);
 		$readPscDes=$consPscDes->query();
@@ -445,5 +470,25 @@ class Psc extends CActiveRecord
 		$resPscDes=$readPscDes->readAll();
 		$readPscDes->close();
 		return $resPscDes;			
+	}
+	public function modificaDatosPsc(){
+		$conect=Yii::app()->db;
+		$transaction=$conect->beginTransaction();
+		try{
+			$sqlModPsc="update psc set id_estadopsc=:id_estadopsc, fecha_fin_psc=:fecha_fin_psc where id_psc=:id_psc and num_doc=:num_doc";		
+			$modPsc=$conect->createCommand($sqlModPsc);
+			$modPsc->bindParam(":id_estadopsc",$this->id_estadopsc,PDO::PARAM_INT);
+			$modPsc->bindParam(":fecha_fin_psc",$this->fecha_fin_psc,PDO::PARAM_STR);
+			$modPsc->bindParam(":num_doc",$this->num_doc,PDO::PARAM_STR);
+			$modPsc->bindParam(":id_psc",$this->id_psc,PDO::PARAM_STR);
+			$modPsc->execute();
+			$transaction->commit();
+			return "exito";
+		}
+		catch(CDbCommand $e){
+			$transaction->rollBack();
+			return $e;
+		}
+		return $resModPsc;					
 	}
 }

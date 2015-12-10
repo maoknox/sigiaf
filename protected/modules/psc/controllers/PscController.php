@@ -434,6 +434,24 @@ class PscController extends Controller{
 			'estadoPsc'=>$estadoPsc		
 		));
 	}
+	public function actionActEstadoPsc(){
+		$datosInput=Yii::app()->input->post();	
+		//print_r($datosInput);
+		$modeloPsc=new Psc();
+		$modeloPsc->attributes=$datosInput["Psc"];
+		$modeloDiaHora=new DiaHora();
+		//echo $modeloDiaHora->dia;
+		$modeloPsc->id_psc=$datosInput["Psc"]["id_psc"];
+		$modeloPsc->id_estadopsc=$datosInput["Psc"]["id_estadopsc"];
+		//print_r($modeloPsc->attributes);
+		if($modeloPsc->validate()){
+			$resultado=$modeloPsc->modificaDatosPsc();
+			echo CJSON::encode(array("estadoComu"=>"exito",'resultado'=>CJavaScript::encode(CJavaScript::quote($resultado))));
+		}
+		else{
+			echo CActiveForm::validate($modeloPsc);		
+		}
+	}
 	// Uncomment the following methods and override them if needed
 	/*
 	public function actions()

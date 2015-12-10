@@ -100,14 +100,26 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
                         $modeloSeguimientoPsc->num_doc=$numDocAdol;
                         //echo $modeloSeguimientoPsc->id_psc;
                         $horasCumpPsc=$modeloSeguimientoPsc->consHorasCumpPsc();
+						$minutosCumpPsc=$modeloSeguimientoPsc->consMinutosCumpPsc();
+						print_r($minutosCumplimiento);
                         $numHoras=0;
+						$numHorasRes=0;
+						$numMinutos=0;
+						if(!empty($minutosCumpPsc)){
+							foreach($minutosCumpPsc as $minutoCumpPsc){//revisar
+                                $numMinutos+=$minutoCumpPsc["num_minutos"];
+                            }
+							$numHorasRes=floor($numMinutos/60);
+							$numMinutos=$numMinutos-($numHorasRes*60);
+						}
                         if(!empty($horasCumpPsc)){
                             foreach($horasCumpPsc as $horaCumpPsc){//revisar
                                 $numHoras+=$horaCumpPsc["num_hora"];
                             }
                         }
+						$numHoras+=$numHorasRes;
                     ?>
-                    Ha realizado <strong><?php echo $numHoras;?></strong> horas
+                    Ha realizado <strong><?php echo $numHoras;?></strong> horas y <strong><?php echo $numMinutos;?></strong> minutos
                 </p>
             </div>
         </div>
@@ -170,11 +182,11 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
                             var date=new Date(a);
                             dia=date.getDay();
                             dia=dia+1;
-                            if(diasem.indexOf(dia)==-1){
-                                jAlert('No puede seleccionar este día pues no corresponde a los asignados para asistencia', 'Mensaje');
-                                $('#AsistenciaPsc_fecha_asist_psc').val('');
-                            }	
-                            else{
+                           // if(diasem.indexOf(dia)==-1){
+                                //jAlert('No puede seleccionar este día pues no corresponde a los asignados para asistencia', 'Mensaje');
+                                //$('#AsistenciaPsc_fecha_asist_psc').val('');
+                            //}	
+                            //else{
                                 if($('.'+a).length){
                                     jAlert('Este día ya está seleccionado', 'Mensaje');
                                     $('#AsistenciaPsc_fecha_asist_psc').val('');
@@ -204,7 +216,7 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
                                     });	
                                     
                                 }
-                            }							
+                            //}							
                         }")					
                     ),
                 ));
@@ -224,11 +236,23 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
                 </div>
             </div>
         </div> 
+        
         <div class="form-group">
-            <?php echo CHtml::label('Fechas:','',array('class'=>'col-md-4 control-label','for'=>'searchinput'));?>
-            <div class="col-md-4">
-                <div id="divFechas"></div>
+            <?php echo CHtml::label('','',array('class'=>'col-md-4 control-label','for'=>'searchinput'));?>
+             <div class="col-sm-1">
+                <div >fechas</div>
+                
             </div>
+            <div class="col-sm-1">
+                <div >horas</div>
+                
+            </div>
+            <div class="col-sm-1">
+                <div >Minutos</div>
+                
+            </div>
+        </div> 
+        <div id="divFechas">
         </div>  
                 <?php echo $formSegPsc->error($modeloAsistenciaPsc,'fecha_asist_psc',array('style' => 'color:#F00'));?>
         
@@ -348,8 +372,14 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
                         $segsPsc=$modeloSeguimientoPsc->consSeguimientosPsc();
                         if(!empty($segsPsc)):?>
                             <?php foreach($segsPsc as $pk=>$segPsc):?>
-                                <a name="segpsc_<?php echo $pk;?>"><strong>Fecha del seguimiento: <?php echo $segPsc["fecha_seg_ind"] ?>
-                               || Institución: <?php echo $segPsc["institucionpsc"]; ?> || Nombre del profesional <?php echo $segPsc["nombrespersona"]?> || Profesión: <?php echo $segPsc["nombre_rol"]?></strong></a><br /><br />
+                                	<a name="segpsc_<?php echo $pk;?>"><strong>Fecha del seguimiento: <?php echo $segPsc["fecha_seg_ind"] ?>
+                               || Institución: <?php echo $segPsc["institucionpsc"]; ?> || Nombre del profesional <?php echo $segPsc["nombrespersona"]?> || Profesión: <?php echo $segPsc["nombre_rol"]?></strong></a>
+                               <br />
+                            	<?php $actModificacion=$operaciones->comparaFecha(date("Y-m-d"),$segPsc["fecha_seg_ind"]); if($actModificacion==true):?>
+                              		<?php echo CHtml::link("Modificar este seguimiento","Modificar este seguimiento",array('submit'=>array('modificarSegPscForm'),'params'=>array('Psc[id_psc]'=>$modeloSeguimientoPsc->id_psc,'Psc[id_seguimiento_ind]'=>$segPsc["id_seguimiento_ind"]))); ?><br />
+                                <?php endif?>
+                               <br />
+                               <br />
                                 <p style="margin:0px 10px 0px 0px"><strong>Desarrollo de actividades:</strong><br /><?php echo CHtml::encode($segPsc["desarrollo_act_psc"]); ?></p><br />
                                 <p style="margin:0px 10px 0px 0px"><strong>Reportes de novedad de la prestación de servicios a la comunidad:</strong><br /><?php echo CHtml::encode($segPsc["reporte_nov_psc"]); ?></p><br />
                                 <p style="margin:0px 10px 0px 0px"><strong>Cumplimiento de acuerdos:</strong><br /><?php echo CHtml::encode($segPsc["cump_acu_psc"]); ?></p> 
@@ -369,8 +399,28 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
                         </div>
                     </td>
                 </tr>
-            </table>
+            </table>            
         </fieldset>
+        
+        <?php 
+			$horas="<option value='1'>1</option>";
+			$horas.="<option value='2'>2</option>";
+			$horas.="<option value='3'>3</option>";
+			$horas.="<option value='4'>4</option>";
+			$horas.="<option value='5'>5</option>";
+
+			$minutos="<option value='0'>0</option>";
+			$minutos.="<option value='10'>10</option>";
+			$minutos.="<option value='15'>15</option>";
+			$minutos.="<option value='20'>20</option>";
+			$minutos.="<option value='25'>25</option>";
+			$minutos.="<option value='30'>30</option>";
+			$minutos.="<option value='35'>35</option>";
+			$minutos.="<option value='40'>40</option>";
+			$minutos.="<option value='45'>45</option>";
+				
+				
+		?>
         <?php Yii::app()->getClientScript()->registerScript('script_asignaref','
 				$(document).ready(function(){
 					$("form").find("textArea").each(function(){
@@ -389,7 +439,7 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
                             if($("#AsistenciaPsc_fecha_asist_psc").val().length){		
                                 var numFechas=parseInt($("#numFechas").val());
                                 numFechas+=1;
-                                $("#divFechas").append("<div id=\"horaFecha_"+numFechas+"\">Fecha "+$("#AsistenciaPsc_fecha_asist_psc").val()+"</div>");
+                                $("#divFechas").append("<div class=\"form-group\" id=\"horaFecha_"+numFechas+"\"><label class=\"col-md-4 control-label\"></label><div class=\"col-sm-1\">"+$("#AsistenciaPsc_fecha_asist_psc").val()+"</div> <div class=\"col-sm-1\"><select id=\"num_horas_"+numFechas+"\" name=\"AsistenciaPsc[num_horas_"+numFechas+"]\">'.$horas.'</select></div><div class=\"col-sm-1\"><select id=\"num_minutos_"+numFechas+"\" name=\"AsistenciaPsc[num_minutos_"+numFechas+"]\">'.$minutos.'</select></div></div>");
                                 $("form").append("<input type=\"hidden\" id=\"inpFecha_"+numFechas+"\" class=\""+$("#AsistenciaPsc_fecha_asist_psc").val()+"\" value=\""+$("#AsistenciaPsc_fecha_asist_psc").val()+"\" name=\"AsistenciaPsc[inpFecha_"+numFechas+"]\"/>");	
                                 $("#numFechas").val(numFechas);
                                 $("#AsistenciaPsc_fecha_asist_psc").val("");
@@ -403,6 +453,7 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
                 function quitaFecha(){		
                     var numFechas=parseInt($("#numFechas").val());
                     if(numFechas>0){
+						 $("#horaFecha_"+numFechas).val("");
                         $("#horaFecha_"+numFechas).remove();
                         $("form #inpFecha_"+numFechas).remove();	
                         numFechas-=1;
@@ -415,3 +466,5 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
 <?php else:?>
 El adolescente no tiene creado un Servicio de Prestación a la Comunidad
 <?php endif;?>        
+
+

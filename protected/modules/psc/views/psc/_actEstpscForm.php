@@ -89,10 +89,31 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
         </div>
         <div class="form-group">
             <?php echo $formularioPsc->labelEx($modeloPsc,'fecha_fin_psc',array('class'=>'col-md-4 control-label','for'=>'searchinput'));?>
-            <div class="col-md-4">		
-                <?php echo $modeloPsc->fecha_fin_psc; ?>
+                <div class="col-md-4">		
+                    <?php //
+                            $this->widget('zii.widgets.jui.CJuiDatePicker',
+                                array('model'=>$modeloPsc,
+                                'attribute'=>'fecha_fin_psc',
+                                'value'=>'',
+                                'language'=>'es',
+                                'htmlOptions'=>	array('readonly'=>"readonly","class"=>"form-control"),
+                                'options'=>array('autoSize'=>true,
+                                        'defaultDate'=>'',
+                                        'dateFormat'=>'yy-mm-dd',
+                                        'selectOtherMonths'=>true,
+                                        'showAnim'=>'slide',
+                                        'showOtherMonths'=>true,
+                                        'changeMonth'=>'true',
+                                        'changeYear'=>'true',
+                                        'minDate'=>'',//fecha minima
+                                        'maxDate'=>'',//fecha maxima
+                                ),
+                            ));
+                            
+                        ?>
+                        <?php echo $formularioPsc->error($modeloPsc,'fecha_fin_psc',array('style' => 'color:#F00'));?>
             </div>
-        </div>		
+        </div>   
         <div class="form-group">
             <?php echo $formularioPsc->labelEx($modeloPsc,'id_estadopsc',array('class'=>'col-md-4 control-label','for'=>'searchinput'));?>
             <div class="col-md-4">
@@ -113,6 +134,8 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
             <div class="col-md-4">		
                 <?php echo $formularioPsc->hiddenField($modeloPsc,'num_doc');?>
                 <?php echo $formularioPsc->hiddenField($modeloPsc,'id_psc');?>
+                <?php echo $formularioPsc->hiddenField($modeloPsc,'fecha_inicio_psc');?>
+
                 <?php
                     $boton=CHtml::Button (
                         'Actualizar estado',   
@@ -140,6 +163,7 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
                                 $("#formularioPsc #formularioPsc_es_").hide(); 
                                 if(datos.resultado=="\'exito\'"){
                                     $("#MensajePsc").text("exito");
+									jAlert("Datos Modificados satisfactoriamente","Mensaje");
                                     $("#formularioPsc #btnFormCreaPsc").remove();
                                     $("#formularioPsc #formularioPsc_es_").html("");                                                    
                                     $("#formularioPsc #formularioPsc_es_").hide(); 							

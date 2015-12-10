@@ -56,6 +56,9 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
                 <?php echo $psc["institucionpsc"];?>
             </td>
             <td style="border:1px solid #000">
+             <?php echo $psc["estado_psc"];?>
+            </td>
+            <td style="border:1px solid #000">
              <?php echo $psc["fecha_inicio_psc"];?>
             </td>
             <td style="border:1px solid #000">

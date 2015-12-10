@@ -8,6 +8,7 @@
  * @property integer $id_seguimiento_ind
  * @property string $fecha_asist_psc
  * @property integer $num_hora
+ * @property integer $num_minutos 
  *
  * The followings are the available model relations:
  * @property SeguimientoPsc $idSeguimientoInd
@@ -35,7 +36,7 @@ class AsistenciaPsc extends CActiveRecord
 			array('id_seguimiento_ind, num_hora', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id_asist_psc, id_seguimiento_ind, fecha_asist_psc, num_hora', 'safe', 'on'=>'search'),
+			array('id_asist_psc, id_seguimiento_ind, fecha_asist_psc, num_hora, num_minutos', 'safe', 'on'=>'search'),
 			array('fecha_asist_psc','valAsistenciaPsc')
 		);
 	}
@@ -72,6 +73,7 @@ class AsistenciaPsc extends CActiveRecord
 			'id_seguimiento_ind' => 'Seguimiento',
 			'fecha_asist_psc' => 'Fecha de asistencia',
 			'num_hora' => 'Número de horas',
+			'num_minutos' => 'Número de minutos',
 		);
 	}
 
@@ -97,7 +99,7 @@ class AsistenciaPsc extends CActiveRecord
 		$criteria->compare('id_seguimiento_ind',$this->id_seguimiento_ind);
 		$criteria->compare('fecha_asist_psc',$this->fecha_asist_psc,true);
 		$criteria->compare('num_hora',$this->num_hora);
-
+		$criteria->compare('num_minutos',$this->num_minutos);
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
@@ -112,5 +114,17 @@ class AsistenciaPsc extends CActiveRecord
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
+	}
+	public function consultaAsistencia(){
+		$conect=Yii::app()->db;
+		$sqlConsAsistPsc="select * from asistencia_psc where id_seguimiento_ind=:id_seguimiento_ind";
+		$consAsistenciaPsc=$conect->createCommand($sqlConsAsistPsc);
+		$consAsistenciaPsc->bindParam(":id_seguimiento_ind",$this->id_seguimiento_ind);
+		$readAsistPsc=$consAsistenciaPsc->query();
+		$resAsistPsc=$readAsistPsc->readAll();
+		$readAsistPsc->close();
+		return $resAsistPsc;
+			
+			
 	}
 }

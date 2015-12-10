@@ -57,6 +57,17 @@ class OperacionesGenerales{
         hash_update($hash, $clave);
 		return hash_final($hash);
 	}
+	public function comparaFecha($fechaInicial,$fechaFinal){
+		// Pasa la fecha de la DB a epoch y le aqgrega 7 días
+		$fechaCompIni = strtotime($fechaInicial);
+		$fechaCompFin = strtotime($fechaFinal);
+		if($fechaCompFin<$fechaCompIni){
+			return false;
+		}
+		else{
+			return true;
+		}
+	}
 }
 
 ?>
