@@ -147,7 +147,8 @@ class SeguimientoAdolController extends Controller{
 				'modeloAsistenciaPsc'=>$modeloAsistenciaPsc,
 				'pscDes'=>$pscDes, 
 				'offset'=>$offset,
-				'paiAdol'=>$paiAdol
+				'paiAdol'=>$paiAdol,
+				'operaciones'=>$operaciones
 					
 			));
 		}
@@ -456,7 +457,7 @@ class SeguimientoAdolController extends Controller{
 	 *	Acción que renderiza la vista para mostrar el formulario de prestación de servicios a la comunidad y para mostrar el histórico de seguimientos 
 	 *
 	 *	Vista a renderizar:
-	 *		- _consultaPSC.
+	 *		- _segPscForm.
 	 *
 	 *	Modelos instanciados:          
 	 *		- Psc
@@ -845,6 +846,36 @@ class SeguimientoAdolController extends Controller{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Acción que renderiza la vista para mostrar el formulario de seguimientos de prestación de servicios a la comunidad para realizar modificaciones al seguimiento. 
+	 *
+	 *	Vista a renderizar:
+	 *		- _modSegPscForm.
+	 *
+	 *	Modelos instanciados:          
+	 *		- Psc
+	 *		- InformacionJudicial
+	 * 		- Telefono
+	 * 		- AsistenciaPsc
+	 * 		- SeguimientoPsc
+	 *		- OperacionesGenerales.
+	 * 		- ConsultasGenerales.
+	 *
+	 *	@param string 	$numDocAdol  
+	 *	@param object	$modeloInfJud
+	 *	@param array	$infJudicial
+	 *	@param object 	$modeloSeguimiento
+	 *	@param object 	$modeloPsc
+	 *	@param array 	$pscSinCulm
+	 *	@param object	$modeloSeguimientoPsc
+	 *	@param object 	$modeloPsc
+	 *	@param object	$modeloAsistenciaPsc
+	 *	@param array 	$pscDes
+	 *	@param array 	$datosAdol
+	 *	@param int	 	$edad
+	 *	@param array 	$telefono
+	 *	@param int 		$offset
+	 */		
 	public function actionModificarSegPscForm(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="consPscSeg";
@@ -926,6 +957,17 @@ class SeguimientoAdolController extends Controller{
 		}
 	}
 	
+	/**
+	 *	Recibe datos del formulario de seguimiento e instancia a modelo para registrar el seguimiento post egreso.
+	 *
+	 *	Modelos instanciados:
+	 *		- SeguimientoPsc
+	 *		- AsistenciaPsc
+	 *		- ConsultasGenerales
+	 *
+	 *	@param array $dataInput array de datos de formulario de seguimiento de psc.
+	 *	@return json resultado de la transacción.
+	 */		
 	public function actionModificaSegimientoPSC(){
 		$dataInput=Yii::app()->input->post();
 		if(isset($_POST["SeguimientoPsc"]) && !empty($_POST["SeguimientoPsc"]) && isset($_POST["AsistenciaPsc"]) && !empty($_POST["AsistenciaPsc"])){
@@ -959,6 +1001,115 @@ class SeguimientoAdolController extends Controller{
 			}
 		}
 	}
+//modificar seguimiento
+	/**
+	 *	Acción que renderiza la vista que contiene el formulario para el diligenciamiento del seguimiento del adolescente ya sea del proceso o seguimiento al post egreso.
+	 *
+	 *	Vista a renderizar:
+	 *		- _modSegForm.
+	 *
+	 *	Modelos instanciados:
+	 *		- PlanPostegreso
+	 * 		- SeguimientoAdol
+	 * 		- Psc
+	 * 		- AsistenciaPsc
+	 * 		- SeguimientoPsc
+	 * 		- InformacionJudicial
+	 * 		- Pai.
+	 * 		- OperacionesGenerales.
+	 * 		- ConsultasGenerales.
+	 *
+	 *	@param string	$numDocAdol
+	 *	@param array	$datosAdol
+	 *	@param int		$edad
+	 *	@param object	$modeloInfJud,
+	 *	@param array	$infJudicial,
+	 *	@param object	$modeloSeguimiento,
+	 *	@param int		$tipoSeguimiento,
+	 *	@param array	$areaDisc,
+	 *	@param array	$seguimientos,
+	 *	@param array	$seguimientoPosEgreso,
+	 *	@param object	$modeloPsc,
+	 *	@param array	$pscSinCulm,
+	 *	@param object	$modeloSeguimientoPsc,
+	 *	@param object	$modeloAsistenciaPsc,
+	 *	@param array	$pscDes, 
+	 *	@param int		$offset,
+	 *	@param array	$paiAdol
+	 */		
+	public function actionModificarSegForm(){
+		//print_r($_POST);exit;
+		$controlAcceso=new ControlAcceso();
+		$controlAcceso->accion="registrarSeg";
+		$permiso=$controlAcceso->controlAccesoAcciones();		
+		if($permiso["acceso_rolmenu"]==1){
+			$datosInput=Yii::app()->input->post();
+			//print_r($datosInput);
+			if(isset($datosInput["numDocAdol"]) && !empty($datosInput["numDocAdol"])){
+				$numDocAdol=$datosInput["numDocAdol"];
+				Yii::app()->getSession()->add('numDocAdol',$numDocAdol);
+			}
+			else{
+				$numDocAdol=Yii::app()->getSession()->get('numDocAdol');
+			}		
+			if(!empty($numDocAdol)){ // 
+				$modeloSeguimiento=new SeguimientoAdol();
+				$modeloSeguimiento->id_seguimientoadol=$datosInput["SeguimientoAdol"]["id_seguimientoadol"];
+				$modeloSeguimiento->num_doc=$datosInput["SeguimientoAdol"]["num_doc"];
+				$modeloSeguimiento->fecha_registro_seg=$datosInput["SeguimientoAdol"]["fecha_registro_seg"];
+				$seguimientoAModificar=$modeloSeguimiento->consSegAdolMod();
+				$operaciones=new OperacionesGenerales();
+				$consultaGeneral=new ConsultasGenerales();
+				$datosAdol=$consultaGeneral->consultaDatosAdol($numDocAdol);	
+				$edad=$operaciones->hallaEdad($datosAdol["fecha_nacimiento"],date("Y-m-d"));
+				$modeloInfJud->num_doc=$numDocAdol;
+				$modeloSeguimiento->num_doc=$numDocAdol;
+			}
+			$this->render('_modSegForm',array(
+				'numDocAdol'=>$numDocAdol,	
+				'datosAdol'=>$datosAdol,
+				'edad'=>$edad,
+				'modeloInfJud'=>$modeloInfJud,
+				'infJudicial'=>$infJudicial,
+				'modeloSeguimiento'=>$modeloSeguimiento,
+				'seguimientoAModificar'=>$seguimientoAModificar
+			));
+		}
+		else{
+			throw new CHttpException(403,'No tiene acceso a esta acción');
+		}
+	}
+	/**
+	 *	Recibe datos del formulario de seguimiento e instancia a modelo para registrar el seguimiento al proceso.
+	 *
+	 *	Modelos instanciados:
+	 *		- SeguimientoAdol
+	 *
+	 *	@param arrya $dataClean $_POST	de datos del formulario de seguimiento ya sea al proceso o post egreso.
+	 *	@param string $modeloInfJudAdmon->mensajeErrorInfJud.
+	 *	@return json resultado de la transacción.
+	 */		
+	public function actionRegistraModSegimiento(){
+		$dataInput=Yii::app()->input->post();
+		if(isset($_POST["SeguimientoAdol"]) && !empty($_POST["SeguimientoAdol"])){
+			$modeloSeguimiento=new SeguimientoAdol();
+			$modeloSeguimiento->attributes=$dataInput["SeguimientoAdol"];
+			$modeloSeguimiento->fecha_registro_seg=$dataInput["SeguimientoAdol"]["fecha_registro_seg"];
+			$modeloSeguimiento->num_doc=$dataInput["SeguimientoAdol"]["num_doc"];
+			$modeloSeguimiento->id_seguimientoadol=$dataInput["SeguimientoAdol"]["id_seguimientoadol"];
+			if($modeloSeguimiento->validate()){
+				$resultado=$modeloSeguimiento->registraModSeguimiento();
+				echo CJSON::encode(array("estadoComu"=>"exito",'resultado'=>CJavaScript::encode(CJavaScript::quote($resultado))));
+			}
+			else{
+				echo CActiveForm::validate($modeloSeguimiento);
+			}
+		}
+	}
+	
+	
+	
+	
 	// Uncomment the following methods and override them if needed
 	/*
 	public function actions()

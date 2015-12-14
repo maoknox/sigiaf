@@ -237,13 +237,51 @@ class SeguimientoAdol extends CActiveRecord
 	 */
 	public function consSegAdol(){
 		$conect=Yii::app()->db;
-		$sqlConsSegAdol="select * from seguimiento_adol where num_doc=:num_doc and seg_posegreso='false' and seg_extraordinario='false'";
+		$sqlConsSegAdol="select * from seguimiento_adol where num_doc=:num_doc and seg_posegreso='false' and seg_extraordinario='false' order by fecha_registro_seg desc";
 		$consSegAdol=$conect->createCommand($sqlConsSegAdol);
 		$consSegAdol->bindParam("num_doc",$this->num_doc,PDO::PARAM_STR);
 		$readSegAdol=$consSegAdol->query();
 		$resSegAdol=$readSegAdol->readAll();
 		$readSegAdol->close();
 		return $resSegAdol;		
+	}
+	/**
+	 * 	Consulta el seguimiento a ser modificado. 
+	 */
+	public function consSegAdolMod(){
+		$conect=Yii::app()->db;
+		$sqlConsSegAdol="select * from seguimiento_adol where num_doc=:num_doc and id_seguimientoadol=:id_seguimientoadol and fecha_registro_seg=:fecha_registro_seg";
+		$consSegAdol=$conect->createCommand($sqlConsSegAdol);
+		$consSegAdol->bindParam("num_doc",$this->num_doc,PDO::PARAM_STR);
+		$consSegAdol->bindParam("id_seguimientoadol",$this->id_seguimientoadol,PDO::PARAM_STR);
+		$consSegAdol->bindParam("fecha_registro_seg",$this->fecha_registro_seg,PDO::PARAM_STR);
+		$readSegAdol=$consSegAdol->query();
+		$resSegAdol=$readSegAdol->read();
+		$readSegAdol->close();
+		return $resSegAdol;		
+	}
+	/**
+	 * 	Modifica seguimiento seleccionado. 
+	 */
+	public function registraModSeguimiento(){
+		$conect=Yii::app()->db;
+		$transaction=$conect->beginTransaction();
+		try{
+			$sqlConsSegAdol="update seguimiento_adol set seguimiento_adol=:seguimiento_adol, fecha_seguimiento=:fecha_seguimiento where num_doc=:num_doc and id_seguimientoadol=:id_seguimientoadol and fecha_registro_seg=:fecha_registro_seg";
+			$consSegAdol=$conect->createCommand($sqlConsSegAdol);
+			$consSegAdol->bindParam("num_doc",$this->num_doc,PDO::PARAM_STR);
+			$consSegAdol->bindParam("id_seguimientoadol",$this->id_seguimientoadol,PDO::PARAM_INT);
+			$consSegAdol->bindParam("fecha_registro_seg",$this->fecha_registro_seg,PDO::PARAM_STR);
+			$consSegAdol->bindParam("seguimiento_adol",$this->seguimiento_adol,PDO::PARAM_STR);
+			$consSegAdol->bindParam("fecha_seguimiento",$this->fecha_seguimiento,PDO::PARAM_STR);
+			$readSegAdol=$consSegAdol->execute();
+			$transaction->commit();
+			return "exito";		
+		}
+		catch(CDbCommand $e){
+			$transaction->rollBack();
+			return $e;
+		}
 	}
 	/**
 	 * 	consulta de seguimientos de post egreso del adolescente

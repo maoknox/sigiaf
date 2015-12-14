@@ -375,7 +375,8 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
                                 	<a name="segpsc_<?php echo $pk;?>"><strong>Fecha del seguimiento: <?php echo $segPsc["fecha_seg_ind"] ?>
                                || Institución: <?php echo $segPsc["institucionpsc"]; ?> || Nombre del profesional <?php echo $segPsc["nombrespersona"]?> || Profesión: <?php echo $segPsc["nombre_rol"]?></strong></a>
                                <br />
-                            	<?php $actModificacion=$operaciones->comparaFecha(date("Y-m-d"),$segPsc["fecha_seg_ind"]); if($actModificacion==true):?>
+                            	<?php $actModificacion=$operaciones->comparaFecha(date("Y-m-d"),$segPsc["fecha_seg_ind"]); 
+								if($actModificacion==true):?>
                               		<?php echo CHtml::link("Modificar este seguimiento","Modificar este seguimiento",array('submit'=>array('modificarSegPscForm'),'params'=>array('Psc[id_psc]'=>$modeloSeguimientoPsc->id_psc,'Psc[id_seguimiento_ind]'=>$segPsc["id_seguimiento_ind"]))); ?><br />
                                 <?php endif?>
                                <br />

@@ -25,7 +25,8 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
 			'modeloSeguimiento'=>$modeloSeguimiento,
 			'tipoSeguimiento'=>$tipoSeguimiento,
 			'areaDisc'=>$areaDisc,
-			'seguimientos'=>$seguimientos
+			'seguimientos'=>$seguimientos,
+			'operaciones'=>$operaciones
 		),true,false));
 	}
 	else{
@@ -52,7 +53,8 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
 				'modeloSeguimiento'=>$modeloSeguimiento,
 				'tipoSeguimiento'=>$tipoSeguimiento,
 				'areaDisc'=>$areaDisc,
-				'seguimientos'=>$seguimientos
+				'seguimientos'=>$seguimientos,
+				'operaciones'=>$operaciones
 			),true,false));			
 		}		
 	}

@@ -112,7 +112,7 @@ class SeguimientoRefer extends CActiveRecord
 	 */
 	public function consSegReferAdol(){
 		$conect=Yii::app()->db;
-		$sqlConsSegRefAdol="select a.fecha_seg,a.seg_refer, (nombre_personal||' '||apellidos_personal) as nombrespersonal,d.nombre_rol  from seguimiento_refer as a 
+		$sqlConsSegRefAdol="select a.fecha_seg,a.seg_refer, (nombre_personal||' '||apellidos_personal) as nombrespersonal,d.nombre_rol,a.id_seg_refer  from seguimiento_refer as a 
 		left join persona as b on b.id_cedula=a.id_cedula 
 		left join usuario as c on c.id_cedula=b.id_cedula 
 		left join rol as d on d.id_rol=c.id_rol 
@@ -125,7 +125,25 @@ class SeguimientoRefer extends CActiveRecord
 		$readSegRefAdol->close();
 		return $resSegRefAdol;
 		
+		
 	}
+	/**
+	 * 	Consulta los seguimientos de acuerdo a la referenciación seleccionada.
+	 */
+	public function consSegReferAdolMod(){
+		$conect=Yii::app()->db;
+		$sqlConsSegRefAdol="select *  from seguimiento_refer where id_referenciacion=:id_referenciacion and id_seg_refer=:id_seg_refer";
+		
+		$consSegRefAdol=$conect->createCommand($sqlConsSegRefAdol);
+		$consSegRefAdol->bindParam("id_referenciacion",$this->id_referenciacion,PDO::PARAM_INT);
+		$consSegRefAdol->bindParam("id_seg_refer",$this->id_seg_refer,PDO::PARAM_INT);
+		$readSegRefAdol=$consSegRefAdol->query();
+		$resSegRefAdol=$readSegRefAdol->read();
+		$readSegRefAdol->close();
+		return $resSegRefAdol;
+		
+	}
+
 	/**
 	 * 	registra seguimientos de referenciación.
 	 */
@@ -152,6 +170,28 @@ class SeguimientoRefer extends CActiveRecord
 			$registraSeg->bindParam("id_referenciacion",$this->id_referenciacion,PDO::PARAM_INT);
 			$registraSeg->bindParam("seg_refer",$this->seg_refer,PDO::PARAM_STR);
 			$registraSeg->bindParam("fecha_seg",$fecha,PDO::PARAM_STR);
+			$registraSeg->execute();
+			$transaction->commit();
+			return "exito";
+		}
+		catch(CDbCommand $e){
+			$transaction->rollBack();
+			return $e;
+		}
+	}
+	/**
+	 * 	registra Modificacion del seguimiento de la referenciación
+	 */
+	public function registraModSegimiento(){
+		$conect=Yii::app()->db;
+		$transaction=$conect->beginTransaction();
+		try{
+			$sqlRegistraSeg="update seguimiento_refer set seg_refer=:seg_refer where id_seg_refer=:id_seg_refer and id_referenciacion=:id_referenciacion";
+			$fecha=date("Y-m-d");
+			$registraSeg=$conect->createCommand($sqlRegistraSeg);
+			$registraSeg->bindParam("id_seg_refer",$this->id_seg_refer,PDO::PARAM_INT);
+			$registraSeg->bindParam("id_referenciacion",$this->id_referenciacion,PDO::PARAM_INT);
+			$registraSeg->bindParam("seg_refer",$this->seg_refer,PDO::PARAM_STR);
 			$registraSeg->execute();
 			$transaction->commit();
 			return "exito";

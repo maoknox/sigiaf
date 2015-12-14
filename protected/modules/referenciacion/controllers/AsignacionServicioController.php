@@ -548,13 +548,106 @@ class AsignacionServicioController extends Controller{
 				'profesional'=>$profesional,
 				'rol'=>$rol,
 				'modeloSegRefer'=>$modeloSegRefer,
-				'seguimientos'=>$seguimientos
+				'seguimientos'=>$seguimientos,
+				'operaciones'=>$operaciones
 			));
 		}
 		else{
 			throw new CHttpException(403,'No tiene acceso a esta acción');
 		}
 	}
+	/**
+	 *	Acción que renderiza la vista que contiene el formulario de seguimiento.  Éste se realizará de acuerdo a la referenciación seleccionada en el formulario de listado de referenciación del adolescente
+	 *
+	 *	Vista a renderizar:
+	 *		- _seguimientoForm.
+	 *
+	 *	Modelos instanciados:  
+	 *		- ReferenciacionAdol
+	 * 		- FamiliarBeneficiario
+	 * 		- SeguimientoRefer
+	 * 		- OperacionesGenerales.
+	 * 		- ConsultasGenerales.
+	 *
+	 *	@param object	$modeloRef               
+	 *	@param string	$numDocAdol
+	 *	@param array	$datosFamBenef
+	 *	@param array 	$tipoRef
+	 *	@param array 	$espNi
+	 *	@param array 	$espNii
+	 *	@param array 	$espNiii
+	 *	@param array 	$beneficiario
+	 *	@param int	 	$estadoRef
+	 *	@param array 	$datosAdol
+	 *	@param int	 	$edad
+	 *	@param array 	$profesional
+	 *	@param int	 	$rol
+	 *	@param object 	$modeloSegRefer
+	 *	@param array 	$seguimientos
+	 */		
+	public function actionModSegServicioForm(){
+		$controlAcceso=new ControlAcceso();
+		$controlAcceso->accion="consultaSegServicioForm";
+		$permiso=$controlAcceso->controlAccesoAcciones();
+		if($permiso["acceso_rolmenu"]==1){
+			$datosInput=Yii::app()->input->post();
+			$modeloRef=new ReferenciacionAdol();
+			$modeloFamBenef=new FamiliarBeneficiario();
+			$modeloSegRefer=new SeguimientoRefer();
+			if(isset($datosInput["numDocAdol"]) && !empty($datosInput["numDocAdol"])){
+				$numDocAdol=$datosInput["numDocAdol"];
+				Yii::app()->getSession()->add('numDocAdol',$numDocAdol);
+			}
+			else{
+				$numDocAdol=Yii::app()->getSession()->get('numDocAdol');
+			}
+			if(!empty($numDocAdol)){
+				//print_r($datosInput);
+				$modeloRef->num_doc=$numDocAdol;
+				$modeloRef->id_referenciacion=$datosInput["id_referenciacion"];
+				$modeloFamBenef->id_referenciacion=$datosInput["id_referenciacion"];
+				$operaciones=new OperacionesGenerales();
+				$consultaGeneral=new ConsultasGenerales();
+				$modeloRef->attributes=$modeloRef->consultaRefModAdol();
+				$datosFamBenef=$modeloFamBenef->consultaRefFamBenef();
+				$tipoRef=$consultaGeneral->consultaEntidades('tiporeferenciacion','id_tipo_referenciacion');
+				$espNi=$consultaGeneral->consultaEntidades('esp_sol_ni','id_esp_sol');//consulta especificación de nivel i
+				$espNii=$consultaGeneral->consultaEntidades('esp_sol_nii','id_esp_solii');
+				$espNiii=$consultaGeneral->consultaEntidades('esp_sol_niii','id_esp_soliii');
+				$beneficiario=$consultaGeneral->consultaEntidades('beneficiarios','id_beneficiario');//consulta especificación de nivel i
+				$estadoRef=$consultaGeneral->consultaEntidades('estado_referenciacion','id_estadoref');
+				$datosAdol=$consultaGeneral->consultaDatosAdol($numDocAdol);	
+				$edad=$operaciones->hallaEdad($datosAdol["fecha_nacimiento"],date("Y-m-d"));
+				$profesional=$consultaGeneral->consultaDatosProfesional($modeloRef->id_cedula);
+				$rol=$consultaGeneral->consultaEntidades('rol','id_rol');
+				$modeloSegRefer->id_referenciacion=$datosInput["id_referenciacion"];
+				$modeloSegRefer->id_seg_refer=$datosInput["id_seg_refer"];
+				$seguimiento=$modeloSegRefer->consSegReferAdolMod();
+			}	
+			$this->render('_modSeguimientoForm',array(
+				'modeloRef'=>$modeloRef,
+				'numDocAdol'=>$numDocAdol,
+				'datosFamBenef'=>$datosFamBenef,
+				'tipoRef'=>$tipoRef,
+				'espNi'=>$espNi,
+				'espNii'=>$espNii,
+				'espNiii'=>$espNiii,
+				'beneficiario'=>$beneficiario,
+				'estadoRef'=>$estadoRef,
+				'datosAdol'=>$datosAdol,
+				'edad'=>$edad,
+				'profesional'=>$profesional,
+				'rol'=>$rol,
+				'modeloSegRefer'=>$modeloSegRefer,
+				'seguimiento'=>$seguimiento,
+				'operaciones'=>$operaciones
+			));
+		}
+		else{
+			throw new CHttpException(403,'No tiene acceso a esta acción');
+		}
+	}
+	
 	//Consulta los servicios a los cuales fue referenciado el adolescente
 	/**
 	 *	Acción que renderiza la vista que muestra las referenciaciones asignadas al adolescente.
@@ -741,6 +834,34 @@ class AsignacionServicioController extends Controller{
 		}
 		
 	}
+		/**
+	 *	Recibe datos del formulario de seguimiento de la referenciación del adolescente e instancia a modelo para registrar el seguimiento.
+	 *
+	 *	Modelos instanciados:
+	 *		- SeguimientoRefer
+	 *
+	 *	@param array datosInput array de datos del formulario de seguimientos
+	 *	@return json resultado de la transacción.
+	 */		
+	public function actionRegistraModSegimiento(){
+		if(isset($_POST["SeguimientoRefer"])&& !empty($_POST["SeguimientoRefer"])){
+			$datosInput=Yii::app()->input->post();
+			$modeloSegRefer=new SeguimientoRefer();
+			$modeloSegRefer->attributes=$datosInput["SeguimientoRefer"];
+			$modeloSegRefer->id_seg_refer=$datosInput["SeguimientoRefer"]["id_seg_refer"];
+			$modeloSegRefer->fecha_seg=$datosInput["SeguimientoRefer"]["fecha_seg"];
+			//print_r($modeloSegRefer->attributes);exit;
+			if($modeloSegRefer->validate()){				
+				$resultado=$modeloSegRefer->registraModSegimiento();
+				echo CJSON::encode(array("estadoComu"=>"exito","resultado"=>CJavaScript::encode($resultado)));
+			}
+			else{
+				echo CActiveForm::validate($modeloSegRefer);
+			}
+		}
+		
+	}
+
 	/**
 	 *	Acción que renderiza la vista que muestra todas las referenciaciones en solicitud.
 	 *

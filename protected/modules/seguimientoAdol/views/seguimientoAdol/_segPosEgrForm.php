@@ -144,6 +144,12 @@
 						<a name="segpe_<?php echo $pk;?>"><strong>Fecha del seguimiento: <?php echo $seguimientoPosEgreso["fecha_seguimiento"] ?>
                         || Nombre del profesional <?php echo $profSeg["nombrespersonal"]?> || Profesión: <?php echo $profSeg["nombre_rol"]?></strong></a><br /><br />
                         <p style="margin:0px 10px 0px 0px"><?php echo CHtml::encode($seguimientoPosEgreso["seguimiento_adol"]); ?></p><br />
+                         <?php $actModificacion=$operaciones->comparaFecha(date("Y-m-d"),$segPsc["fecha_seg_ind"]); 
+								if($actModificacion==true):?>
+                              		<?php echo CHtml::link("Modificar este seguimiento","Modificar este seguimiento",array('submit'=>array('modificarSegPscForm'),'params'=>array('Psc[id_psc]'=>$modeloSeguimientoPsc->id_psc,'Psc[id_seguimiento_ind]'=>$segPsc["id_seguimiento_ind"]))); ?><br />
+                                <?php endif?>
+                               <br />
+                               <br />
                         <hr />
 					<?php endforeach;?>					
 				<?php endif;?>

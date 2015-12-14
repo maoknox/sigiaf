@@ -289,6 +289,12 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
 					<?php foreach($seguimientos as $pk=>$seguimiento):?>
 						<a name="<?php echo $pk;?>"><strong>Fecha del seguimiento: <?php echo $seguimiento["fecha_seg"] ?>
                         || Nombre del profesional <?php echo $seguimiento["nombrespersonal"]?> || Profesión: <?php echo $seguimiento["nombre_rol"]?></strong></a><br /><br />
+						<?php 
+							$actModificacion=$operaciones->comparaFecha(date("Y-m-d"),$seguimiento["fecha_seg"]); 
+							if($actModificacion==true):?>
+                            <?php echo CHtml::link("Modificar este seguimiento","Modificar este seguimiento",array('submit'=>array('modSegServicioForm'),'params'=>array('id_referenciacion'=>$modeloRef->id_referenciacion,'id_seg_refer'=>$seguimiento["id_seg_refer"]))); ?><br />
+                        <?php endif?>
+
                         <p style="margin:0px 10px 0px 0px"><?php echo $seguimiento["seg_refer"]; ?></p>
                         <hr />
 					<?php endforeach;?>					
