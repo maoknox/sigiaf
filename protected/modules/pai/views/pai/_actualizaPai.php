@@ -61,7 +61,9 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
                                         'delitoRem'=>$delitoRem,
                                         'modeloInfJud'=>$modeloInfJud,
                                         'infJudicial'=>$infJudicial,
-                                        'tipoSancion'=>$tipoSancion
+                                        'tipoSancion'=>$tipoSancion,
+										'numDocAdol'=>$numDocAdol,
+										'modeloCompSanc'=>$modeloCompSanc,
                                     ),true,false),
                               'Análisis de situación de derechos Forjar'=>$this->renderPartial("_formVerificacionDerForjarCons", 
                                     array(

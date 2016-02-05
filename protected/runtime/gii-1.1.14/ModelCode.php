@@ -3,7 +3,7 @@ return array (
   'template' => 'default',
   'connectionId' => 'db',
   'tablePrefix' => '',
-  'modelPath' => 'application.modules.seguimientoAdol.models',
+  'modelPath' => 'application.modules.gestionSeguimSJ.models',
   'baseClass' => 'CActiveRecord',
   'buildRelations' => '1',
   'commentsAsLabels' => '1',

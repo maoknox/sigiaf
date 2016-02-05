@@ -122,7 +122,7 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
                                     'showOtherMonths'=>true,
                                     'changeMonth'=>'true',
                                     'changeYear'=>'true',
-                                    'minDate'=>'',//fecha minima
+                                    'minDate'=>'date("Y-m-d")-1m',//fecha minima
                                     'maxDate'=>date("Y-m-d"),//fecha maxima
                             ),
                         ));
@@ -131,6 +131,15 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
                     <?php echo $formularioRegGestSJ->error($modeloGestionSJ,'fecha_gestionsj',array('style' => 'color:#F00'));?>
             	</div>
         	</div>   
+            <div class="form-group">
+				<?php echo $formularioRegGestSJ->labelEx($modeloGestionSJ,'observaciones_gestionsj',array('class'=>'col-md-4 control-label','for'=>'searchinput'));?>
+                <div class="col-md-4">		
+                    <?php 									
+                        echo $formularioRegGestSJ->textArea($modeloGestionSJ,'observaciones_gestionsj',array('class'=>'form-control'));						
+                    ?>  
+                    <?php echo $formularioRegGestSJ->error($modeloGestionSJ,'observaciones_gestionsj',array('style' => 'color:#F00'));?>
+                </div>
+           </div>            
             <div class="form-group">
    			 <?php echo CHtml::label('','',array('class'=>'col-md-4 control-label'));?>
                 <div class="col-md-4">		

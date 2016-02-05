@@ -145,7 +145,7 @@ class ConsultasGenerales extends CFormModel{
 		return $resConsulta;
 	}
 	public function conectaBDSinPdo(){
-		$pgConn = pg_connect('host=localhost port=5432 dbname=cforjarv2_4 user=postgres password=root') or die("Error al conectar a la base de datos");
+		$pgConn = pg_connect('host=localhost port=5432 dbname=sigiaf user=sigiaf password=sigiaf2016') or die("Error al conectar a la base de datos");
 		if($pgConn){
 			return $pgConn;
 		}

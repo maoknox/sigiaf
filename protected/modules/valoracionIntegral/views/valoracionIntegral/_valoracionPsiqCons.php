@@ -25,13 +25,6 @@ $this->widget('zii.widgets.jui.CJuiTabs', array(
 				'modeloValPsiq'=>$modeloValPsiq,
 				'idValPsicol'=>$idValPsiq,
 			),true,false),
-		'Estado de la Valoración'=> $this->renderPartial('_valoracionEstadoValPsiqCons', 
-			array(
-				'numDocAdol'=>$numDocAdol,
-				'modeloValPsiq'=>$modeloValPsiq,
-				'idValPsiq'=>$idValPsiq,
-				'estadoCompVal'=>$estadoCompVal
-			),true,false),
     ),
     'options'=>array('collapsible'=>false),
 )); 

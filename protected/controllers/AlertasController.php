@@ -19,7 +19,7 @@ class AlertasController extends Controller{
 	public $numCasosSeguimMD=0;	/**< Número de casos de segjimiento no psicosocial*/
 	public $numCasosRef=0;		/**< Número de casos de segjimiento de referenciación*/
 	public $icono;				/**< nombre icono de alerta*/
-	
+	public $numCasosGen=0;		/**< Número de casos para alertas generales */
 	/** Método de filtro.       
 	*  Se ejecuta en segunda instancia para comprobar si el usuario está logueado o no.  
 	*/		
@@ -47,7 +47,18 @@ class AlertasController extends Controller{
 		$alertas=array();
 		switch($rolUsuario){
 			case 1:
-			
+				$alertasCoord=$this->alertasPrueba();
+				if($this->numCasosGen==0){
+					$icono="glyphicon glyphicon-ok";
+				}
+				else{
+					$icono="glyphicon glyphicon-warning-sign";
+				}
+				$alertas=array("alertaMenu"=>$icono);
+				$alertas["alertaSlider"]=array();				
+				array_push($alertas["alertaSlider"],
+					$alertasCoord
+				);
 			break;
 			case 2:
 				$arrayAlDB=$this->generaAlertaDatosBasicos();				
@@ -222,6 +233,76 @@ class AlertasController extends Controller{
 			break;
 		}		
 		echo CJSON::encode($alertas);	
+	}
+	
+	public function alertasPrueba(){
+		$sedeForjar=$this->sedeForjar;
+		$adols=$this->consultaAdol();
+		if(!empty($adols)){
+			foreach($adols as $adolescente){
+				$consPsicolAdol="";
+				$alertasGen=false;
+				$consPsicolAdol=$this->consultaValPsicol($adolescente["num_doc"]);
+				if(empty($consPsicolAdol)){
+					$alertasGen=true;
+				}
+				else{
+					if(empty($consPsicolAdol["fecha_iniciovalpsicol"])){
+						$alertasGen=true;
+					}
+				}
+				if($alertasGen==true){
+					$this->numCasosGen+=1;
+				}
+			}
+		}	
+		if($this->numCasosGen==0){
+			$iconoSeg="glyphicon glyphicon-ok";
+		}
+		else{
+			$iconoSeg="glyphicon glyphicon-warning-sign";
+		}	
+		$arraySeguimMD=array(
+			'url'=>CHtml::encode('alertasGen'),
+			'icono'=>CHtml::encode($iconoSeg),
+			'modulo'=>CHtml::encode('Generales'),
+			'numCasos'=>CHtml::encode($this->numCasosGen)
+		);
+		return 	$arraySeguimMD;	
+	}
+	
+	public function actionAlertasGen(){
+		$this->sedeForjar=Yii::app()->user->getState('sedeForjar');
+		$sedeForjar=$this->sedeForjar;
+		$adols=$this->consultaAdol();
+		$infFaltante=array("cabezote"=>array(
+			"c1"=>CHtml::encode("Nombre Adolescente"),
+			"c2"=>CHtml::encode("Valoración Psicología"),
+		));
+		$infFaltante["titulo"]=array("titulo"=>"Alertas Generales");
+		$infFaltante["infoFaltantes"]=array();
+		if(!empty($adols)){
+			foreach($adols as $adolescente){
+				$consPsicolAdol="";
+				$alertasGen=false;
+				$consPsicolAdol=$this->consultaValPsicol($adolescente["num_doc"]);
+				if(empty($consPsicolAdol)){
+					$alertasGen=true;
+				}
+				else{
+					if(empty($consPsicolAdol["fecha_iniciovalpsicol"])){
+						$alertasGen=true;
+					}
+				}
+				if($alertasGen==true){
+					array_push($infFaltante["infoFaltantes"],array(
+						"nombre"=>$adolescente["nombres"]." ".$adolescente["apellido_1"]." ".$adolescente["apellido_2"],
+						"sinVPsicol"=>"X",
+					));	
+				}
+			}
+		}	
+		echo CJSON::encode($infFaltante);	
 	}
 	public function actionMuestraFaltantes(){
 		$datos=Yii::app()->input->post();
@@ -1302,7 +1383,7 @@ class AlertasController extends Controller{
 	*/											
 	public function consultaValPsicol($numDoc){
 		$conect= Yii::app()->db;
-		$sqlConsValPsicol="select * from valoracion_psicologia where num_doc=:num_doc";
+		$sqlConsValPsicol="select * from valoracion_psicologia where num_doc=:num_doc and val_act_psicol is true";
 		$consValPsicol=$conect->createCommand($sqlConsValPsicol);
 		$consValPsicol->bindParam(":num_doc",$numDoc);
 		$consValPsicol->execute();
@@ -1317,7 +1398,7 @@ class AlertasController extends Controller{
 	*/											
 	public function consultaValTrSoc($numDoc){
 		$conect= Yii::app()->db;
-		$sqlConsValTrSoc="select * from valoracion_trabajo_social where num_doc=:num_doc";
+		$sqlConsValTrSoc="select * from valoracion_trabajo_social where num_doc=:num_doc and val_act_trsoc is true";
 		$consValTrSoc=$conect->createCommand($sqlConsValTrSoc);
 		$consValTrSoc->bindParam(":num_doc",$numDoc);
 		$consValTrSoc->execute();
@@ -1332,7 +1413,7 @@ class AlertasController extends Controller{
 	*/											
 	public function consultaValTO($numDoc){
 		$conect= Yii::app()->db;
-		$sqlConsValTO="select * from valoracion_teo where num_doc=:num_doc";
+		$sqlConsValTO="select * from valoracion_teo where num_doc=:num_doc and val_act_to is true";
 		$consValTO=$conect->createCommand($sqlConsValTO);
 		$consValTO->bindParam(":num_doc",$numDoc);
 		$consValTO->execute();
@@ -1347,7 +1428,7 @@ class AlertasController extends Controller{
 	*/											
 	public function consultaValPsiq($numDoc){
 		$conect= Yii::app()->db;
-		$sqlConsValPsiq="select * from valoracion_psiquiatria where num_doc=:num_doc";
+		$sqlConsValPsiq="select * from valoracion_psiquiatria where num_doc=:num_doc and val_act_psiq is true";
 		$consValPsiq=$conect->createCommand($sqlConsValPsiq);
 		$consValPsiq->bindParam(":num_doc",$numDoc);
 		$consValPsiq->execute();
@@ -1362,7 +1443,7 @@ class AlertasController extends Controller{
 	*/											
 	public function consultaValEnf($numDoc){
 		$conect= Yii::app()->db;
-		$sqlConsValEnf="select * from valoracion_enfermeria where num_doc=:num_doc";
+		$sqlConsValEnf="select * from valoracion_enfermeria where num_doc=:num_doc and val_act_enf is true";
 		$consValEnf=$conect->createCommand($sqlConsValEnf);
 		$consValEnf->bindParam(":num_doc",$numDoc);
 		$consValEnf->execute();

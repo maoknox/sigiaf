@@ -27,13 +27,6 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
                         'modeloValPsiq'=>$modeloValPsiq,
                         'idValPsicol'=>$idValPsiq,
                     ),true,false),
-                'Estado de la Valoración'=> $this->renderPartial('_valoracionEstadoValPsiqTab', 
-                    array(
-                        'numDocAdol'=>$numDocAdol,
-                        'modeloValPsiq'=>$modeloValPsiq,
-                        'idValPsiq'=>$idValPsiq,
-                        'estadoCompVal'=>$estadoCompVal
-                    ),true,false),
             ),
             'options'=>array('collapsible'=>false),
         )); 

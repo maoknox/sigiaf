@@ -30,7 +30,7 @@ return array(
 			'class'=>'system.gii.GiiModule',
 			'password'=>'root',
 			// If removed, Gii defaults to localhost only. Edit carefully to taste.
-			'ipFilters'=>array('127.0.0.1','::1'),
+			'ipFilters'=>array('192.168.0.104','127.0.0.1','::1'),
 		),
 		 'modIdenReg',
 		 'valoracionIntegral',
@@ -96,9 +96,9 @@ return array(
 		
 		'db'=>array(
  	       'tablePrefix'=>'',
- 	       'connectionString' => 'pgsql:host=localhost;port=5432;dbname=cforjarv2_4',
- 	       'username'=>'postgres',
- 	       'password'=>'root',
+ 	       'connectionString' => 'pgsql:host=localhost;port=5432;dbname=sigiaf',
+ 	       'username'=>'sigiaf',
+ 	       'password'=>'sigiaf2016',
  	       'charset'=>'UTF8',
 		),
 		

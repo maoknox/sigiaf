@@ -14,13 +14,15 @@
  * @property string $dependencia_entidadsj
  * @property string $nombre_contactosj
  * @property string $telefono_contactosj
+ * @property string $observaciones_gestionsj 
  *
  * The followings are the available model relations:
  * @property SeguimientoAsesoriasj[] $seguimientoAsesoriasjs
  * @property Adolescente $numDoc
- * @property MorivoAsesoriasj $idMotivoasesoriasj
+ * @property MotivoAsesoriasj $idMotivoasesoriasj
  * @property RemisionGestionsj $idRemisionsj
  * @property TipoGestionsj $idTipogestionsj
+ * @property SeguimientoAsesoriasj[] $seguimientoAsesoriasjs 
  */
 class GestionSociojuridica extends CActiveRecord
 {
@@ -45,9 +47,10 @@ class GestionSociojuridica extends CActiveRecord
 			array('num_doc', 'length', 'max'=>15),
 			array('dependencia_entidadsj', 'length', 'max'=>1000),
 			array('nombre_contactosj, telefono_contactosj', 'length', 'max'=>500),
+			array('observaciones_gestionsj', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id_gestionsj, id_motivoasesoriasj, id_tipogestionsj, num_doc, id_remisionsj, fecha_regsitrogestionsj, fecha_gestionsj, dependencia_entidadsj, nombre_contactosj, telefono_contactosj', 'safe', 'on'=>'search'),
+			array('id_gestionsj, id_motivoasesoriasj, id_tipogestionsj, num_doc, id_remisionsj, fecha_regsitrogestionsj, fecha_gestionsj, dependencia_entidadsj, nombre_contactosj, telefono_contactosj, observaciones_gestionsj', 'safe', 'on'=>'search'),
 			array('dependencia_entidadsj','validaDependencia',$this->id_remisionsj),
 			//array('id_tipogestionsj','validaTipoGestion',$this->id_remisionsj),
 			//array('nombre_contactosj','validaNombreContacto',$this->id_remisionsj),
@@ -92,6 +95,7 @@ class GestionSociojuridica extends CActiveRecord
 			'idMotivoasesoriasj' => array(self::BELONGS_TO, 'MorivoAsesoriasj', 'id_motivoasesoriasj'),
 			'idRemisionsj' => array(self::BELONGS_TO, 'RemisionGestionsj', 'id_remisionsj'),
 			'idTipogestionsj' => array(self::BELONGS_TO, 'TipoGestionsj', 'id_tipogestionsj'),
+			'seguimientoAsesoriasjs' => array(self::HAS_MANY, 'SeguimientoAsesoriasj', 'id_gestionsj'),
 		);
 	}
 
@@ -111,6 +115,7 @@ class GestionSociojuridica extends CActiveRecord
 			'dependencia_entidadsj' => 'Dependencia-Entidad',
 			'nombre_contactosj' => 'Nombre del contacto',
 			'telefono_contactosj' => 'Teléfono del contacto',
+			'observaciones_gestionsj' => 'Observaciones',
 		);
 	}
 
@@ -142,6 +147,7 @@ class GestionSociojuridica extends CActiveRecord
 		$criteria->compare('dependencia_entidadsj',$this->dependencia_entidadsj,true);
 		$criteria->compare('nombre_contactosj',$this->nombre_contactosj,true);
 		$criteria->compare('telefono_contactosj',$this->telefono_contactosj,true);
+		$criteria->compare('observaciones_gestionsj',$this->observaciones_gestionsj,true);		
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -186,7 +192,8 @@ class GestionSociojuridica extends CActiveRecord
 				fecha_gestionsj,
 				dependencia_entidadsj,
 				nombre_contactosj,
-				telefono_contactosj						
+				telefono_contactosj,
+				observaciones_gestionsj						
 			) values (
 				default,
 				:id_motivoasesoriasj,
@@ -197,12 +204,14 @@ class GestionSociojuridica extends CActiveRecord
 				:fecha_gestionsj,
 				:dependencia_entidadsj,
 				:nombre_contactosj,
-				:telefono_contactosj			
+				:telefono_contactosj,
+				:observaciones_gestionsj			
 			)";
 			if(empty($this->id_tipogestionsj)){$this->id_tipogestionsj=null;}
 			if(empty($this->dependencia_entidadsj)){$this->dependencia_entidadsj=null;}
 			if(empty($this->nombre_contactosj)){$this->nombre_contactosj=null;}
 			if(empty($this->telefono_contactosj)){$this->telefono_contactosj=null;}
+			if(empty($this->observaciones_gestionsj)){$this->observaciones_gestionsj=null;}
 
 			$regGestionSJ=$conect->createCommand($sqlRegGestionSJ);
 			$regGestionSJ->bindParam(":id_motivoasesoriasj",$this->id_motivoasesoriasj,PDO::PARAM_INT);
@@ -214,6 +223,7 @@ class GestionSociojuridica extends CActiveRecord
 			$regGestionSJ->bindParam(":dependencia_entidadsj",$this->dependencia_entidadsj,PDO::PARAM_NULL);
 			$regGestionSJ->bindParam(":nombre_contactosj",$this->nombre_contactosj,PDO::PARAM_NULL);
 			$regGestionSJ->bindParam(":telefono_contactosj",$this->telefono_contactosj,PDO::PARAM_NULL);
+			$regGestionSJ->bindParam(":observaciones_gestionsj",$this->observaciones_gestionsj,PDO::PARAM_NULL);
 			$regGestionSJ->execute();
 			
 			$transaction->commit();
