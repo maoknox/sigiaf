@@ -155,7 +155,7 @@ class GrupocomidaValnutr extends CActiveRecord
 			$regFrecCons->bindParam(":id_frec_cons",$this->id_frec_cons,PDO::PARAM_INT);	
 			$regFrecCons->bindParam(":id_val_nutricion",$this->id_val_nutricion,PDO::PARAM_INT);	
 			$regFrecCons->bindParam(":id_grupo_comida",$this->id_grupo_comida,PDO::PARAM_INT);
-			$regFrecCons->bindParam(":observ_frec_cons",$this->observ_frec_cons,PDO::PARAM_NULL);
+			$regFrecCons->bindParam(":observ_frec_cons",$this->observ_frec_cons);
 			$regFrecCons->execute();
 			$transaction->commit();
 			return "exito";
@@ -190,7 +190,7 @@ class GrupocomidaValnutr extends CActiveRecord
 			$regFrecCons->bindParam(":id_frec_cons",$this->id_frec_cons,PDO::PARAM_INT);	
 			$regFrecCons->bindParam(":id_val_nutricion",$this->id_val_nutricion,PDO::PARAM_INT);	
 			$regFrecCons->bindParam(":id_grupo_comida",$this->id_grupo_comida,PDO::PARAM_INT);
-			$regFrecCons->bindParam(":observ_frec_cons",$this->observ_frec_cons,PDO::PARAM_NULL);
+			$regFrecCons->bindParam(":observ_frec_cons",$this->observ_frec_cons);
 			$regFrecCons->execute();
 			$transaction->commit();
 			return "exito";

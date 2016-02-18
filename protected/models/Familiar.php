@@ -175,7 +175,7 @@ class Familiar extends CActiveRecord
 			$creaAcud=$conect->createCommand($sqlCreaAcud);
 			$creaAcud->bindParam(':idTipoDoc',$this->id_tipo_doc,PDO::PARAM_INT);
 			$creaAcud->bindParam(':idParentesco',$this->id_parentesco,PDO::PARAM_INT);
-			$creaAcud->bindParam(':numDocFam',$this->num_doc_fam,PDO::PARAM_NULL);
+			$creaAcud->bindParam(':numDocFam',$this->num_doc_fam);
 			$creaAcud->bindParam(':nombresFamiliar',$this->nombres_familiar,PDO::PARAM_STR);
 			$creaAcud->bindParam(':apellidosFamiliar',$this->apellidos_familiar,PDO::PARAM_STR);
 			$read_IdFam=$creaAcud->query();
@@ -342,11 +342,11 @@ class Familiar extends CActiveRecord
 			$creaAcud=$conect->createCommand($sqlCreaAcud);
 			$creaAcud->bindParam(':idParentesco',$this->id_parentesco,PDO::PARAM_INT);
 			$creaAcud->bindParam(':id_nivel_educ',$this->id_nivel_educ,PDO::PARAM_INT);
-			$creaAcud->bindParam(':numDocFam',$this->num_doc_fam,PDO::PARAM_NULL);
+			$creaAcud->bindParam(':numDocFam',$this->num_doc_fam);
 			$creaAcud->bindParam(':nombresFamiliar',$this->nombres_familiar,PDO::PARAM_STR);
 			$creaAcud->bindParam(':apellidosFamiliar',$this->apellidos_familiar,PDO::PARAM_STR);
 			$creaAcud->bindParam(':edad_familiar',$this->edad_familiar,PDO::PARAM_STR);
-			$creaAcud->bindParam(':ocupacion_familiar',$this->ocupacion_familiar,PDO::PARAM_NULL);
+			$creaAcud->bindParam(':ocupacion_familiar',$this->ocupacion_familiar);
 			$read_IdFam=$creaAcud->query();
 			$resIdFam=$read_IdFam->read();
 			$this->id_doc_familiar=$resIdFam["id_doc_familiar"];
@@ -458,7 +458,7 @@ class Familiar extends CActiveRecord
 			) returning id_doc_familiar";
 			$creaAcud=$conect->createCommand($sqlCreaAcud);
 			$creaAcud->bindParam(':idParentesco',$this->id_parentesco,PDO::PARAM_INT);
-			$creaAcud->bindParam(':numDocFam',$this->num_doc_fam,PDO::PARAM_NULL);
+			$creaAcud->bindParam(':numDocFam',$this->num_doc_fam);
 			$creaAcud->bindParam(':nombresFamiliar',$this->nombres_familiar,PDO::PARAM_STR);
 			$creaAcud->bindParam(':apellidosFamiliar',$this->apellidos_familiar,PDO::PARAM_STR);
 			$read_IdFam=$creaAcud->query();
@@ -482,7 +482,7 @@ class Familiar extends CActiveRecord
 			$registraAdolAcud->bindParam(':numDoc',$this->numDocAdol,PDO::PARAM_STR);
 			$registraAdolAcud->bindParam(':idDocFamiliar',$this->id_doc_familiar,PDO::PARAM_INT);
 			$registraAdolAcud->bindParam(':otro_referente',$otroReferente,PDO::PARAM_BOOL);
-			$registraAdolAcud->bindParam(':datos_compl_fam',$this->datos_compl_fam,PDO::PARAM_NULL);
+			$registraAdolAcud->bindParam(':datos_compl_fam',$this->datos_compl_fam);
 			$registraAdolAcud->execute();
 			$transaction->commit();
 			return "exito";

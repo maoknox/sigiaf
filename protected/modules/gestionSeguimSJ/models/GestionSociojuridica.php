@@ -215,15 +215,15 @@ class GestionSociojuridica extends CActiveRecord
 
 			$regGestionSJ=$conect->createCommand($sqlRegGestionSJ);
 			$regGestionSJ->bindParam(":id_motivoasesoriasj",$this->id_motivoasesoriasj,PDO::PARAM_INT);
-			$regGestionSJ->bindParam(":id_tipogestionsj",$this->id_tipogestionsj,PDO::PARAM_NULL);
+			$regGestionSJ->bindParam(":id_tipogestionsj",$this->id_tipogestionsj);
 			$regGestionSJ->bindParam(":num_doc",$this->num_doc,PDO::PARAM_STR);
 			$regGestionSJ->bindParam(":id_remisionsj",$this->id_remisionsj,PDO::PARAM_INT);
 			$regGestionSJ->bindParam(":fecha_regsitrogestionsj",$this->fecha_regsitrogestionsj,PDO::PARAM_STR);
 			$regGestionSJ->bindParam(":fecha_gestionsj",$this->fecha_gestionsj,PDO::PARAM_STR);
-			$regGestionSJ->bindParam(":dependencia_entidadsj",$this->dependencia_entidadsj,PDO::PARAM_NULL);
-			$regGestionSJ->bindParam(":nombre_contactosj",$this->nombre_contactosj,PDO::PARAM_NULL);
-			$regGestionSJ->bindParam(":telefono_contactosj",$this->telefono_contactosj,PDO::PARAM_NULL);
-			$regGestionSJ->bindParam(":observaciones_gestionsj",$this->observaciones_gestionsj,PDO::PARAM_NULL);
+			$regGestionSJ->bindParam(":dependencia_entidadsj",$this->dependencia_entidadsj);
+			$regGestionSJ->bindParam(":nombre_contactosj",$this->nombre_contactosj);
+			$regGestionSJ->bindParam(":telefono_contactosj",$this->telefono_contactosj);
+			$regGestionSJ->bindParam(":observaciones_gestionsj",$this->observaciones_gestionsj);
 			$regGestionSJ->execute();
 			
 			$transaction->commit();

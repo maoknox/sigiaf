@@ -162,6 +162,44 @@ class Rol extends CActiveRecord
 		}
 		
 	}
+	public function modificaAccesosRol(){
+		$conect=Yii::app()->db;
+		$transaction=$conect->beginTransaction();
+		try{
+			if(!empty($this->menu) && is_array($this->menu)){
+				foreach($this->menu as $pk=>$dataInputPr){
+					$this->asignaModulo($pk);
+					$this->asignaRolMenu($pk);
+					//echo $pk."<br>";
+					if(is_array($dataInputPr)){	
+						foreach($dataInputPr as $pki=>$dataInputPrSec){
+							if($dataInputPrSec=="on"){
+								$this->asignaRolMenu($pki);
+								//echo "-".$pki." ".$dataInputPrSec."<br>";
+							}
+							else{
+								$this->asignaRolMenu($pki);
+								if(is_array($dataInputPrSec)){
+									//echo "-".$pki."<br>";
+									foreach($dataInputPrSec as $pkii=>$dataInputPrTer){
+										$this->asignaRolMenu($pkii);
+										//echo "--".$pkii." ".$dataInputPrTer."<br>";
+									}
+								}
+							}
+						}
+					}	
+				}
+			}
+			$transaction->commit();			
+			return "exito";
+		}
+		catch(CDbException $e){		
+			$transaction->rollBack();
+			throw new CHttpException(403,'Error en la creación del rol: '.$e->getMessage());						
+		}
+		
+	}
 	private function asignaRolMenu($idMenu){
 		$conect=Yii::app()->db;
 		$sqlCreaMenuRol="insert into rol_menu (
@@ -212,5 +250,14 @@ class Rol extends CActiveRecord
 				$creaMenuRol->execute();
 			}
 		}
+	}
+	public function consultaRoles(){
+		$conect=Yii::app()->db;
+		$sqlConsRol="select id_rol,nombre_rol from rol";
+		$consRol=$conect->createCommand($sqlConsRol);
+		$resConsRol=$consRol->query();
+		$readRol=$resConsRol->readAll();
+		$resConsRol->close();
+		return $readRol;				
 	}
 }

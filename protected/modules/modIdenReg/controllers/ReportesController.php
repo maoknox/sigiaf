@@ -41,12 +41,13 @@ class ReportesController extends Controller{
 						'operaciones'=>$operaciones,
 						'modeloPai'=>$modeloPai,
 						'modeloInfJud'=>$modeloInfJud,
-						'modeloCompSanc'=>$modeloCompSanc,												
+						'modeloCompSanc'=>$modeloCompSanc,
+						'nombreFormulario'=>'Reporte Valoración Integral'												
 					)
 				);
 			}
 			else{
-				$this->render('index',array('accion'=>$controlAcceso->accion));
+				$this->render('index',array('accion'=>$controlAcceso->accion,'nombreFormulario'=>'Reporte Valoración Integral'));
 			}
 		}
 		else{
@@ -125,7 +126,7 @@ class ReportesController extends Controller{
 				);
 			}
 			else{
-				$this->render('index',array('accion'=>$controlAcceso->accion));
+				$this->render('index',array('accion'=>$controlAcceso->accion,'nombreFormulario'=>'Reporte Plan de atención integral'));
 			}
 		}
 		else{
@@ -203,7 +204,7 @@ class ReportesController extends Controller{
 					$seguimientosNutr=$modeloNutricionAdol->consultaNutricionAdolSeg();
 				}
 				if(!empty($mensaje)){
-					$this->render('indexFecha',array('accion'=>$controlAcceso->accion,"mensaje"=>$mensaje));
+					$this->render('indexFecha',array('accion'=>$controlAcceso->accion,"mensaje"=>$mensaje,'nombreFormulario'=>'Reporte de seguimiento'));
 				}
 				else{
 					$this->renderPartial('_informeSeguimiento',
@@ -237,7 +238,7 @@ class ReportesController extends Controller{
 				if(!empty($datosInput["numDocAdol"]) && empty($datosInput["fecha_reporte"]) || !empty($datosInput["numDocAdol"]) && empty($datosInput["fecha_fin_reporte"])){
 					$mensaje="Debe seleccionar ambas fechas";
 				}
-				$this->render('indexFecha',array('accion'=>$controlAcceso->accion,"mensaje"=>$mensaje));
+				$this->render('indexFecha',array('accion'=>$controlAcceso->accion,"mensaje"=>$mensaje,'nombreFormulario'=>'Reporte de seguimiento'));
 			}
 		}
 		else{

@@ -66,23 +66,29 @@
         <div class="form-group">
             <div class="col-sm-2">
 				<?php echo $derecho["derechocespa"];?>
-                <?php echo $formPaiCompDer->textArea($modeloCompDer,'derecho_compderecho',array('class'=>'form-control'));?>
+                <div class='cont-infopai'><?php echo $modeloCompDer->derecho_compderecho;?></div>
+
+                <?php //echo $formPaiCompDer->textArea($modeloCompDer,'derecho_compderecho',array('class'=>'form-control'));?>
                 <?php echo $formPaiCompDer->error($modeloCompDer,'derecho_compderecho',array('style' => 'color:#F00'));?>
             </div>
             <div class="col-sm-3">
-				<?php echo $formPaiCompDer->textArea($modeloCompDer,'objetivo_compderecho',array('class'=>'form-control'));?>
+                <div class='cont-infopai'><?php echo $modeloCompDer->objetivo_compderecho;?></div>
+				<?php //echo $formPaiCompDer->textArea($modeloCompDer,'objetivo_compderecho',array('class'=>'form-control'));?>
                 <?php echo $formPaiCompDer->error($modeloCompDer,'objetivo_compderecho',array('style' => 'color:#F00'));?>
             </div>
             <div class="col-sm-3">
-				<?php echo $formPaiCompDer->textArea($modeloCompDer,'actividades_compderecho',array('class'=>'form-control'));?>
+                <div class='cont-infopai'><?php echo $modeloCompDer->actividades_compderecho;?></div>
+				<?php //echo $formPaiCompDer->textArea($modeloCompDer,'actividades_compderecho',array('class'=>'form-control'));?>
 				<?php echo $formPaiCompDer->error($modeloCompDer,'actividades_compderecho',array('style' => 'color:#F00'));?>
             </div>
             <div class="col-sm-2">
-				<?php echo $formPaiCompDer->textArea($modeloCompDer,'indicadores_compderecho',array('class'=>'form-control'));?>
+                <div class='cont-infopai'><?php echo $modeloCompDer->indicadores_compderecho;?></div>
+				<?php //echo $formPaiCompDer->textArea($modeloCompDer,'indicadores_compderecho',array('class'=>'form-control'));?>
                 <?php echo $formPaiCompDer->error($modeloCompDer,'indicadores_compderecho',array('style' => 'color:#F00'));?>
             </div>
             <div class="col-sm-2">
-				<?php echo $formPaiCompDer->textArea($modeloCompDer,'responsable_compderecho',array('class'=>'form-control'));?>
+                <div class='cont-infopai'><?php echo $modeloCompDer->responsable_compderecho;?></div>
+				<?php //echo $formPaiCompDer->textArea($modeloCompDer,'responsable_compderecho',array('class'=>'form-control'));?>
                 <?php echo $formPaiCompDer->error($modeloCompDer,'responsable_compderecho',array('style' => 'color:#F00'));?>
             </div>
         </div>
@@ -100,7 +106,7 @@
     <div id="Mensaje" style="font-size:14px;" ></div>
         <div class="form-group">
             <div class="col-sm-2">
-                Componente/Delito
+                Componente/Sanción
             </div>
             <div class="col-sm-3">
                 Objetivo
@@ -147,29 +153,41 @@
 		?>
 		<div class="form-group">
             <div class="col-sm-2">
+            	<div class='cont-infopai'>
 				<?php
                     $modeloInfJud->id_inf_judicial=$modeloCompSanc->id_inf_judicial;
                     $delitos=$modeloInfJud->consultaDelito();  
-                    foreach($delitos as $delito){
-                        echo $delito["del_remcespa"]."<br/>";
-                    }
-                ?>
+					$consSancion=$modeloInfJud->consultaSancion(); 	
+                   // foreach($delitos as $delito):?>
+               		<?php
+						
+						echo $consSancion["tipo_sancion"];
+						//echo $delito["del_remcespa"];
+					?>
+                       
+                    
+                <?php //endforeach;?>
+                </div>
           </div>
             <div class="col-sm-3">
-			<?php echo $formPaiCompSanc->textArea($modeloCompSanc,'objetivo_compsanc',array('class'=>'form-control'));?>
-           	<?php echo $formPaiCompSanc->error($modeloCompSanc,'objetivo_compsanc',array('style' => 'color:#F00'));?>
+                <div class='cont-infopai'><?php echo $modeloCompSanc->objetivo_compsanc;?></div>
+				<?php //	echo $formPaiCompSanc->textArea($modeloCompSanc,'objetivo_compsanc',array('class'=>'form-control'));?>
+           		<?php echo $formPaiCompSanc->error($modeloCompSanc,'objetivo_compsanc',array('style' => 'color:#F00'));?>
           </div>
             <div class="col-sm-3">
-			<?php echo $formPaiCompSanc->textArea($modeloCompSanc,'actividades_compsanc',array('class'=>'form-control'));?>
-           	<?php echo $formPaiCompSanc->error($modeloCompSanc,'actividades_compsanc',array('style' => 'color:#F00'));?>
+                <div class='cont-infopai'><?php echo $modeloCompSanc->actividades_compsanc;?></div>
+				<?php //echo $formPaiCompSanc->textArea($modeloCompSanc,'actividades_compsanc',array('class'=>'form-control'));?>
+           		<?php echo $formPaiCompSanc->error($modeloCompSanc,'actividades_compsanc',array('style' => 'color:#F00'));?>
             </div>
             <div class="col-sm-2">
-			<?php echo $formPaiCompSanc->textArea($modeloCompSanc,'indicador_compsanc',array('class'=>'form-control'));?>
-           	<?php echo $formPaiCompSanc->error($modeloCompSanc,'indicador_compsanc',array('style' => 'color:#F00'));?>
+                <div class='cont-infopai'><?php echo $modeloCompSanc->indicador_compsanc;?></div>
+				<?php //echo $formPaiCompSanc->textArea($modeloCompSanc,'indicador_compsanc',array('class'=>'form-control'));?>
+           		<?php echo $formPaiCompSanc->error($modeloCompSanc,'indicador_compsanc',array('style' => 'color:#F00'));?>
           </div>
             <div class="col-sm-2">
-		<?php echo $formPaiCompSanc->textArea($modeloCompSanc,'responsable_compsancion',array('class'=>'form-control'));?>
-           	<?php echo $formPaiCompSanc->error($modeloCompSanc,'responsable_compsancion',array('style' => 'color:#F00'));?>
+                <div class='cont-infopai'><?php echo $modeloCompSanc->responsable_compsancion;?></div>
+				<?php //echo $formPaiCompSanc->textArea($modeloCompSanc,'responsable_compsancion',array('class'=>'form-control'));?>
+                <?php echo $formPaiCompSanc->error($modeloCompSanc,'responsable_compsancion',array('style' => 'color:#F00'));?>
           </div>
           </div>
        <?php $this->endWidget(); ?>	

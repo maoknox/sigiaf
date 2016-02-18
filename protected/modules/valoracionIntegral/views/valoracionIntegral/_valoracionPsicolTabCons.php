@@ -94,7 +94,8 @@ echo Chtml::hiddenField('numDelitoGen',$pk);
     	<div class="col-md-12">
 	<!--campo de texto para nombres del adolescente -->	
 		<?php echo $formHisVida->labelEx($modeloValPsicol,'historia_vida',array('class'=>'control-label','for'=>'searchinput'));?>
-		<?php echo $formHisVida->textArea($modeloValPsicol,'historia_vida',array('class'=>'form-control','disabled'=>'disabled'));?>
+    	<div class="cont-infoval"><?php echo $modeloValPsicol->historia_vida?></div>
+		<?php //echo $formHisVida->textArea($modeloValPsicol,'historia_vida',array('class'=>'form-control','disabled'=>'disabled'));?>
         <?php echo $formHisVida->error($modeloValPsicol,'historia_vida',array('style' => 'color:#F00'));?>
     	</div>
     </div>
@@ -115,7 +116,8 @@ echo Chtml::hiddenField('numDelitoGen',$pk);
 	<div id="dn_fn_familiar" class="form-group"> 
     	<div class="col-md-12">
 			<?php echo $formDinFunFam->labelEx($modeloValPsicol,'dn_fn_familiar',array('class'=>'control-label','for'=>'searchinput'));?>
-            <?php echo $formDinFunFam->textArea($modeloValPsicol,'dn_fn_familiar',array('class'=>'form-control','disabled'=>'disabled'));?>
+        	<div class="cont-infoval"><?php echo $modeloValPsicol->dn_fn_familiar?></div>        
+			<?php //echo $formDinFunFam->textArea($modeloValPsicol,'dn_fn_familiar',array('class'=>'form-control','disabled'=>'disabled'));?>
             <?php echo $formDinFunFam->error($modeloValPsicol,'dn_fn_familiar',array('style' => 'color:#F00'));?>
     	</div>
     </div>
@@ -136,7 +138,8 @@ echo Chtml::hiddenField('numDelitoGen',$pk);
 	<div id="hist_conducta" class="form-group"> 
     	<div class="col-md-12">
 			<?php echo $formHistCond->labelEx($modeloValPsicol,'hist_conducta',array('class'=>'control-label','for'=>'searchinput'));?>
-            <?php echo $formHistCond->textArea($modeloValPsicol,'hist_conducta',array('class'=>'form-control','disabled'=>'disabled'));?>
+        	<div class="cont-infoval"><?php echo $modeloValPsicol->hist_conducta?></div>        
+            <?php //echo $formHistCond->textArea($modeloValPsicol,'hist_conducta',array('class'=>'form-control','disabled'=>'disabled'));?>
             <?php echo $formHistCond->error($modeloValPsicol,'hist_conducta',array('style' => 'color:#F00'));?>
     	</div>
     </div>
@@ -162,7 +165,8 @@ echo Chtml::hiddenField('numDelitoGen',$pk);
 	<div id="analisis_est_mental" class="form-group"> 
     	<div class="col-md-12">
 			<?php echo $formEstMental->labelEx($modeloValPsicol,'analisis_est_mental',array('class'=>'control-label','for'=>'searchinput'));?>
-			<?php echo $formEstMental->textArea($modeloValPsicol,'analisis_est_mental',array('class'=>'form-control','disabled'=>'disabled'));?>
+        	<div class="cont-infoval"><?php echo $modeloValPsicol->analisis_est_mental?></div>        			
+			<?php //echo $formEstMental->textArea($modeloValPsicol,'analisis_est_mental',array('class'=>'form-control','disabled'=>'disabled'));?>
             <?php echo $formEstMental->error($modeloValPsicol,'analisis_est_mental',array('style' => 'color:#F00'));?>
    		</div>
     </div>

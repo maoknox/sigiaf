@@ -254,18 +254,18 @@ class InformacionJudicial extends CActiveRecord
 			$registraInfJudAdmin->bindParam(':numDoc',$this->num_doc,PDO::PARAM_STR);
 			$registraInfJudAdmin->bindParam(':idTipoSancion',$this->id_tipo_sancion,PDO::PARAM_INT);
 			$registraInfJudAdmin->bindParam(':idInstanciaRem',$this->id_instancia_rem,PDO::PARAM_INT);
-			$registraInfJudAdmin->bindParam(':defensor',$this->defensor,PDO::PARAM_NULL);
-			$registraInfJudAdmin->bindParam(':juez',$this->juez,PDO::PARAM_NULL);
-			$registraInfJudAdmin->bindParam(':juzgado',$this->juzgado,PDO::PARAM_NULL);
+			$registraInfJudAdmin->bindParam(':defensor',$this->defensor);
+			$registraInfJudAdmin->bindParam(':juez',$this->juez);
+			$registraInfJudAdmin->bindParam(':juzgado',$this->juzgado);
 			$registraInfJudAdmin->bindParam(':tiempoSancion',$this->tiempo_sancion,PDO::PARAM_STR);
-			$registraInfJudAdmin->bindParam(':tiempoSanciondias',$this->tiempo_sancion_dias,PDO::PARAM_NULL);
+			$registraInfJudAdmin->bindParam(':tiempoSanciondias',$this->tiempo_sancion_dias);
 			$registraInfJudAdmin->bindParam(':fechaRemision',$this->fecha_remision,PDO::PARAM_STR);
 			$registraInfJudAdmin->bindParam(':fechaAprehension',$this->fecha_aprehension,PDO::PARAM_STR);
 			$registraInfJudAdmin->bindParam(':noProceso',$this->no_proceso,PDO::PARAM_INT);
-			$registraInfJudAdmin->bindParam(':defensorPublico',$this->defensor_publico,PDO::PARAM_NULL);
-			$registraInfJudAdmin->bindParam(':fechaImposicion',$this->fecha_imposicion,PDO::PARAM_NULL);
+			$registraInfJudAdmin->bindParam(':defensorPublico',$this->defensor_publico);
+			$registraInfJudAdmin->bindParam(':fechaImposicion',$this->fecha_imposicion);
 			$registraInfJudAdmin->bindParam(':pard',$this->pard,PDO::PARAM_BOOL);
-			$registraInfJudAdmin->bindParam(':observacionesSancion',$this->observaciones_sancion,PDO::PARAM_NULL);
+			$registraInfJudAdmin->bindParam(':observacionesSancion',$this->observaciones_sancion);
 			$registraInfJudAdmin->bindParam(':mecSustLib',$this->mec_sust_lib,PDO::PARAM_BOOL);
 			$registraInfJudAdmin->bindParam(':fechaRegInfjud',$fechaRegistro,PDO::PARAM_STR);
 			$registraInfJudAdmin->bindParam(':novedad_infjud',$this->novedad_infjud,PDO::PARAM_BOOL);
@@ -513,6 +513,16 @@ class InformacionJudicial extends CActiveRecord
 		$resDel=$readDel->readAll();
 		$readDel->close();
 		return $resDel;
+	}
+	public function consultaSancion(){
+		$conect=Yii::app()->db;
+		$sqlCons="select tipo_sancion from informacion_judicial as a left join tipo_sancion as b on a.id_tipo_sancion=b.id_tipo_sancion where a.id_inf_judicial=:id_inf_judicial";
+		$cons=$conect->createCommand($sqlCons);	
+		$cons->bindParam(":id_inf_judicial",$this->id_inf_judicial,PDO::PARAM_INT);
+		$read=$cons->query();
+		$res=$read->read();
+		$read->close();
+		return $res;
 	}
 	/**
 	 * Modifica por campo la información judicial.

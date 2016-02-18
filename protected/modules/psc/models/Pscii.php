@@ -244,7 +244,7 @@ class Psc extends CActiveRecord
 			$creaPsc->bindParam(":fecha_inicio_psc",$this->fecha_inicio_psc,PDO::PARAM_STR);
 			$creaPsc->bindParam(":fecha_fin_psc",$this->fecha_fin_psc,PDO::PARAM_STR);
 			$creaPsc->bindParam(":horas_semana",$this->horas_semana,PDO::PARAM_INT);
-			$creaPsc->bindParam(":observaciones_psc",$this->observaciones_psc,PDO::PARAM_NULL);
+			$creaPsc->bindParam(":observaciones_psc",$this->observaciones_psc);
 			$creaPsc->bindParam(":responsable_psc",$this->responsable_psc,PDO::PARAM_STR);
 			$creaPsc->bindParam(":telefono_resp",$this->telefono_resp,PDO::PARAM_STR);
 			$creaPsc->bindParam(":num_dias_psc",$this->num_dias_psc,PDO::PARAM_INT);

@@ -9,7 +9,7 @@
         <div class="panel-body">
             <div class="row">
                 <div class="col-lg-3 text-center">
-                    <img src="/login_sdis/public/img/logo.svg" />
+                    <img src="<?php echo Yii::app()->baseUrl?>/images/centroForjar.png" />
                 </div>
                 <div class="col-lg-9 text-justify">
 					Este PAI ya se culminó.  Si desea consultarlo genere el reporte de PAI.
@@ -20,23 +20,36 @@
 <hr />
 <?php else:?>
 <fieldset>
-<legend>Concepto Integral</legend>
+<div class="panel-heading color-sdis">Concepto integral</div>
 <?php 
 	echo $conceptoInt["concepto_integral"];
 ?>
 </fieldset>
 <fieldset>
-<legend>PAI-Componente Derecho</legend>
+<div class="panel-heading color-sdis">PAI Componente Derecho</div>
 <div id="Mensaje" style="font-size:14px;" ></div>
-<table style="width:100%">
-	<tr>
-    	<td>Componente/Situación</td>
-        <td>Objetivo</td>
-        <td>Actividades</td>
-        <td>Indicador</td>
-        <td>Responsable</td>
-        <td>Botón</td>
-    </tr></table>  
+<div id="Mensaje" style="font-size:14px;" ></div>
+    <div class="form-group">
+    	<div class="col-sm-2">
+        	Componente/Situación
+		</div>
+    	<div class="col-sm-2">
+        	Objetivo
+		</div>
+    	<div class="col-sm-2">
+        	Actividades
+		</div>
+    	<div class="col-sm-2">
+        	Indicador
+		</div>
+    	<div class="col-sm-2">
+        	Responsable
+		</div>
+    	<div class="col-sm-2">
+        	Botón
+		</div>
+</div>
+<hr />
 <?php 
 	foreach($derechos as $pk=>$derecho):
 		$idPai=$modeloCompDer->id_pai;
@@ -59,57 +72,77 @@
 			'clientOptions'=>array(
 				'validateOnSubmit'=>false,
 			),
+			'htmlOptions' => array('class' => 'form-horizontal')
 		));
-		?><table>
-        <tr>
-       	<td><?php echo $derecho["derechocespa"];?><br /> <hr />
-            <?php echo $formPaiCompDer->textArea($modeloCompDer,'derecho_compderecho');?>
-        	<?php echo $formPaiCompDer->error($modeloCompDer,'derecho_compderecho',array('style' => 'color:#F00'));?></td>
-        <td><?php echo $formPaiCompDer->textArea($modeloCompDer,'objetivo_compderecho');?>
-           	<?php echo $formPaiCompDer->error($modeloCompDer,'objetivo_compderecho',array('style' => 'color:#F00'));?></td>
-        <td><?php echo $formPaiCompDer->textArea($modeloCompDer,'actividades_compderecho');?>
-           	<?php echo $formPaiCompDer->error($modeloCompDer,'actividades_compderecho',array('style' => 'color:#F00'));?></td>
-        <td><?php echo $formPaiCompDer->textArea($modeloCompDer,'indicadores_compderecho');?>
-           	<?php echo $formPaiCompDer->error($modeloCompDer,'indicadores_compderecho',array('style' => 'color:#F00'));?></td>
-        <td><?php echo $formPaiCompDer->textArea($modeloCompDer,'responsable_compderecho');?>
-           	<?php echo $formPaiCompDer->error($modeloCompDer,'responsable_compderecho',array('style' => 'color:#F00'));?></td>
-        <td><?php 			
-			echo $formPaiCompDer->hiddenField($modeloCompDer,'id_pai');
-			echo $formPaiCompDer->hiddenField($modeloCompDer,'id_derechocespa');
-			$modeloCompDer->num_doc=$numDocAdol;
-			echo $formPaiCompDer->hiddenField($modeloCompDer,'num_doc');
-			echo $formPaiCompDer->hiddenField($modeloCompDer,'fecha_estab_compderecho');
-			echo CHtml::Button (
-				'Registrar',   
-				array('id'=>'btnPaiDer_'.$derecho["id_derechocespa"],'name'=>'btnPaiDer_'.$derecho["id_derechocespa"],'onclick'=>$funcion)
-			);
-			
-    ?>
+		?><div class="form-group">
+                <div class="col-sm-2">
+                    <?php echo $derecho["derechocespa"];?>
+                    <?php echo $formPaiCompDer->textArea($modeloCompDer,'derecho_compderecho',array('class'=>'form-control'));?>
+                    <?php echo $formPaiCompDer->error($modeloCompDer,'derecho_compderecho',array('style' => 'color:#F00'));?>
+       			</div>
+                <div class="col-sm-2">
+					<?php echo $formPaiCompDer->textArea($modeloCompDer,'objetivo_compderecho',array('class'=>'form-control'));?>
+                    <?php echo $formPaiCompDer->error($modeloCompDer,'objetivo_compderecho',array('style' => 'color:#F00'));?>
+       			</div>
+                <div class="col-sm-2">
+					<?php echo $formPaiCompDer->textArea($modeloCompDer,'actividades_compderecho',array('class'=>'form-control'));?>
+                    <?php echo $formPaiCompDer->error($modeloCompDer,'actividades_compderecho',array('style' => 'color:#F00'));?>
+       			</div>
+                <div class="col-sm-2">
+					<?php echo $formPaiCompDer->textArea($modeloCompDer,'indicadores_compderecho',array('class'=>'form-control'));?>
+                    <?php echo $formPaiCompDer->error($modeloCompDer,'indicadores_compderecho',array('style' => 'color:#F00'));?>
+       			</div>
+                <div class="col-sm-2">
+					<?php echo $formPaiCompDer->textArea($modeloCompDer,'responsable_compderecho',array('class'=>'form-control'));?>
+                    <?php echo $formPaiCompDer->error($modeloCompDer,'responsable_compderecho',array('style' => 'color:#F00'));?>
+       			</div>
+                <div class="col-sm-1">
+					<?php 			
+						echo $formPaiCompDer->hiddenField($modeloCompDer,'id_pai');
+						echo $formPaiCompDer->hiddenField($modeloCompDer,'id_derechocespa');
+						$modeloCompDer->num_doc=$numDocAdol;
+						echo $formPaiCompDer->hiddenField($modeloCompDer,'num_doc');
+						echo $formPaiCompDer->hiddenField($modeloCompDer,'fecha_estab_compderecho');
+						echo CHtml::Button (
+							'Registrar',   
+							array('id'=>'btnPaiDer_'.$derecho["id_derechocespa"],'class'=>'btn btn-default btn-sdis','name'=>'btnPaiDer_'.$derecho["id_derechocespa"],'onclick'=>$funcion)
+						);
+					?>
     <?php echo $boton; //CHtml::submitButton('Crear');?>
-			
-		</td>
-       
-        </tr>
-        </table><?php $this->endWidget(); ?>
+       			</div>
+            </div>
+            <hr />
+		<?php $this->endWidget(); ?>
         <?php endforeach; ?>
  
 </fieldset>
 <div id="Mensaje" style="font-size:14px;" ></div>
 <fieldset>
-<legend>PAI-Componente Sanción</legend>
+<div class="panel-heading color-sdis">PAI Componente Sanción</div>
 <?php if(empty($infJudicial)):?>
 	<p>Aún no se ha registrado la información judicial del adolescente</p>
 <?php else:?>
-<table style="width:100%">
-	<tr>
-    	<td>Componente/Situación</td>
-        <td>Objetivo</td>
-        <td>Actividades</td>
-        <td>Indicador</td>
-        <td>Responsable</td>
-        <td>Botón</td>
-    </tr></table>  
-
+<div class="form-group">
+    <div class="col-sm-2">
+        Componente/Sanción
+    </div>
+    <div class="col-sm-2">
+        Objetivo
+    </div>
+    <div class="col-sm-2">
+        Actividades
+    </div>
+    <div class="col-sm-2">
+        Indicador
+    </div>
+    <div class="col-sm-2">
+        Responsable
+    </div>
+    <div class="col-sm-2">
+        Botón
+    </div>
+</div>
+<hr />
 	<?php foreach($infJudicial as $infJudicialPai):
 		$modeloCompSanc->id_inf_judicial=$infJudicialPai["id_inf_judicial"];
 		$modeloCompSanc->num_doc=$numDocAdol;
@@ -130,41 +163,53 @@
 			'clientOptions'=>array(
 				'validateOnSubmit'=>false,
 			),
+			'htmlOptions' => array('class' => 'form-horizontal')			
 		));
-		?><table>
-        <tr>
-       	<td><?php
-			$modeloInfJud->id_inf_judicial=$modeloCompSanc->id_inf_judicial;
-			$delitos=$modeloInfJud->consultaDelito();  
-			foreach($delitos as $delito){
-				echo $delito["del_remcespa"]."<br/>";
-			}
-		?>
-		</td>
-        <td><?php echo $formPaiCompSanc->textArea($modeloCompSanc,'objetivo_compsanc');?>
-           	<?php echo $formPaiCompSanc->error($modeloCompSanc,'objetivo_compsanc',array('style' => 'color:#F00'));?></td>
-        <td><?php echo $formPaiCompSanc->textArea($modeloCompSanc,'actividades_compsanc');?>
+		?>			
+        <div class="form-group">
+			<div class="col-sm-2">
+			<?php
+                    $modeloInfJud->id_inf_judicial=$modeloCompSanc->id_inf_judicial;
+                    $delitos=$modeloInfJud->consultaDelito();  
+					$consSancion=$modeloInfJud->consultaSancion(); 	
+                   // foreach($delitos as $delito):?>
+               		<?php
+						
+						echo $consSancion["tipo_sancion"];
+						//echo $delito["del_remcespa"];
+					?>
+                       
+                    
+                <?php //endforeach;?>
+        </div>
+		<div class="col-sm-2">
+			<?php echo $formPaiCompSanc->textArea($modeloCompSanc,'objetivo_compsanc',array('class'=>'form-control'));?>
+           	<?php echo $formPaiCompSanc->error($modeloCompSanc,'objetivo_compsanc',array('style' => 'color:#F00'));?>
+         </div>   
+         <div class="col-sm-2">
+		 	<?php echo $formPaiCompSanc->textArea($modeloCompSanc,'actividades_compsanc',array('class'=>'form-control'));?>
            	<?php echo $formPaiCompSanc->error($modeloCompSanc,'actividades_compsanc',array('style' => 'color:#F00'));?></td>
-        <td>
-			<?php echo $formPaiCompSanc->textArea($modeloCompSanc,'indicador_compsanc');?>
-           	<?php echo $formPaiCompSanc->error($modeloCompSanc,'indicador_compsanc',array('style' => 'color:#F00'));?></td>
-        <td><?php echo $formPaiCompSanc->textArea($modeloCompSanc,'responsable_compsancion');?>
-           	<?php echo $formPaiCompSanc->error($modeloCompSanc,'responsable_compsancion',array('style' => 'color:#F00'));?></td>
-        <td><?php 			
+        </div>
+        <div class="col-sm-2">
+			<?php echo $formPaiCompSanc->textArea($modeloCompSanc,'indicador_compsanc',array('class'=>'form-control'));?>
+           	<?php echo $formPaiCompSanc->error($modeloCompSanc,'indicador_compsanc',array('style' => 'color:#F00'));?>
+         </div>         
+        <div class="col-sm-2">
+			<?php echo $formPaiCompSanc->textArea($modeloCompSanc,'responsable_compsancion',array('class'=>'form-control'));?>
+           	<?php echo $formPaiCompSanc->error($modeloCompSanc,'responsable_compsancion',array('style' => 'color:#F00'));?>
+        </div>
+        <div class="col-sm-2"><?php 			
 			echo $formPaiCompSanc->hiddenField($modeloCompSanc,'id_pai');
 			echo $formPaiCompSanc->hiddenField($modeloCompSanc,'id_inf_judicial');
 			echo $formPaiCompDer->hiddenField($modeloCompSanc,'num_doc');
-			echo $formPaiCompDer->hiddenField($modeloCompSanc,'fecha_establec_compsanc');
+			echo $formPaiCompDer->hiddenField($modeloCompSanc,'fecha_establec_compsanc');	
 			echo CHtml::Button (
 				'Registrar',   
-				array('id'=>'btnPaiSanc_'.$modeloInfJud->id_inf_judicial,'name'=>'btnPaiSanc_'.$modeloInfJud->id_inf_judicial,'onclick'=>$funcion)
+				array('id'=>'btnPaiSanc_'.$modeloInfJud->id_inf_judicial,'class'=>'btn btn-default btn-sdis','name'=>'btnPaiSanc_'.$modeloInfJud->id_inf_judicial,'onclick'=>$funcion)
 			);
-?>
-			
-		</td>
-       
-        </tr>
-        </table><?php $this->endWidget(); ?>	
+			?>
+            </div></div>			
+		<?php $this->endWidget(); ?>	
 	<?php endforeach;?>
 <?php endif;?>
 </fieldset>

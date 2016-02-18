@@ -34,10 +34,7 @@
 </div>
 <div class="form-group">
     <div class="col-md-12">
-		<?php echo $formEstVal->textArea($modeloValEnf,
-            'observ_estvalenf',
-            array('class'=>'form-control'));
-        ?>    
+		<div class='cont-infoval'><?php echo $modeloValEnf->observ_estvalenf;?></div>									
         <?php echo $formEstVal->error($modeloValEnf,'observ_estvalenf',array('style' => 'color:#F00'));?>
 	</div>
 </div>

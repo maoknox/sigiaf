@@ -277,7 +277,7 @@ class ValoracionTeo extends CActiveRecord
 				where id_valor_teo=:id_valor_teo";
 			$modValTO=$conect->createCommand($sqlModValTO);
 			$modValTO->bindParam(':fecha',$this->fecha,PDO::PARAM_STR);
-			$modValTO->bindParam(':contVal',$this->contenidoValoracion,PDO::PARAM_NULL);
+			$modValTO->bindParam(':contVal',$this->contenidoValoracion);
 			$modValTO->bindParam(':id_valor_teo',$this->id_valor_teo,PDO::PARAM_INT);
 			$modValTO->execute();
 			$this->creaRegProfVal($this->id_valor_teo,$accion);
@@ -314,8 +314,8 @@ class ValoracionTeo extends CActiveRecord
 				where id_valor_teo=:id_valor_teo and num_doc=:num_doc";
 			$modValTo=$conect->createCommand($sqlModValTO);
 			$modValTo->bindParam(':fecha',$this->fecha,PDO::PARAM_STR);
-			$modValTo->bindParam(':contVal',$this->contenidoValoracion,PDO::PARAM_NULL);
-			$modValTo->bindParam(':contVali',$this->contenidoValoracioni,PDO::PARAM_NULL);
+			$modValTo->bindParam(':contVal',$this->contenidoValoracion);
+			$modValTo->bindParam(':contVali',$this->contenidoValoracioni);
 			$modValTo->bindParam(':id_valor_teo',$this->id_valor_teo,PDO::PARAM_INT);
 			$modValTo->bindParam(':num_doc',$this->num_doc,PDO::PARAM_STR);
 			$modValTo->execute();

@@ -23,11 +23,7 @@
 			$selOpt=false;
 		}
 	?>
-    <?php echo $formEstVal->textArea($modeloValPsicol,
-		'observ_estvalpsicol',
-		array('style'=>'width:99.5%;',
-		'onkeyup'=>'js:$("#btnFormEstVal").css("color","#F00")'));
-	?>    
+ 	<div class="cont-infoval"><?php echo $modeloValPsicol->observ_estvalpsicol?></div>
 	<?php echo $formEstVal->error($modeloValPsicol,'observ_estvalpsicol',array('style' => 'color:#F00'));?>
 
     </div>

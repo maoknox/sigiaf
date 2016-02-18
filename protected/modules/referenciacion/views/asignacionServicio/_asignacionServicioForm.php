@@ -66,7 +66,6 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
        		</div>  
         </div>  
  </div>
- 
 <div class="form-group">
         <?php echo $formRef->labelEx($modeloRef,'id_beneficiario',array('class'=>'col-md-4 control-label','for'=>'searchinput'));?>
      <div class="checkbox">

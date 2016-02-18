@@ -427,7 +427,7 @@ class ValoracionNutricional extends CActiveRecord
 				where id_val_nutricion=:id_val_nutricion";
 			$modVal=$conect->createCommand($sqlModVal);
 			$modVal->bindParam(':fecha',$this->fecha,PDO::PARAM_STR);
-			$modVal->bindParam(':contVal',$this->contenidoValoracion,PDO::PARAM_NULL);
+			$modVal->bindParam(':contVal',$this->contenidoValoracion);
 			$modVal->bindParam(':id_val_nutricion',$this->id_val_nutricion,PDO::PARAM_INT);
 			$modVal->execute();
 			$this->creaRegProfVal($this->id_val_nutricion,$accion);

@@ -112,7 +112,7 @@ if(!empty($numDocAdol)):
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-lg-3 text-center">
-                                    <img src="/login_sdis/public/img/logo.svg" />
+                                    <img src="<?php echo Yii::app()->baseUrl?>/images/centroForjar.png" />
                                 </div>
                                 <div class="col-lg-9 text-justify">
                                     El adolescente no tiene una prestación de servicios en desarrollo.
@@ -133,7 +133,7 @@ if(!empty($numDocAdol)):
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-lg-3 text-center">
-                                <img src="/login_sdis/public/img/logo.svg" />
+                                <img src="<?php echo Yii::app()->baseUrl?>/images/centroForjar.png" />
                             </div>
                             <div class="col-lg-9 text-justify">
 								<?php echo Yii::app()->user->getFlash('verifEstadoAdolForjar'); ?>
@@ -154,7 +154,7 @@ if(!empty($numDocAdol)):
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-3 text-center">
-                            <img src="/login_sdis/public/img/logo.svg" />
+                            <img src="<?php echo Yii::app()->baseUrl?>/images/centroForjar.png" />
                         </div>
                         <div class="col-lg-9 text-justify">
                             El adolescente no tiene una sanción de PSC (Prestación de servicios a la comunidad)
@@ -175,7 +175,7 @@ if(!empty($numDocAdol)):
             <div class="panel-body">
                 <div class="row">
                     <div class="col-lg-3 text-center">
-                        <img src="/login_sdis/public/img/logo.svg" />
+                        <img src="<?php echo Yii::app()->baseUrl?>/images/centroForjar.png" />
                     </div>
                     <div class="col-lg-9 text-justify">
                         No se ha creado el registro de Información Judicial Administrativa del adolescente o el adolescente no tiene una sanción de PSC (Prestación de servicios a la comunidad)

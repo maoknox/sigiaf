@@ -133,7 +133,7 @@ class LogAcceso extends CActiveRecord
 				$creaRegAcceso->bindParam(":id_cedula",$this->id_cedula,PDO::PARAM_INT);
 				$creaRegAcceso->bindParam(":id_tipoacceso",$this->id_tipoacceso,PDO::PARAM_INT);
 				$creaRegAcceso->bindParam(":fecha_logacceso",$this->fecha_logacceso,PDO::PARAM_STR);
-				$creaRegAcceso->bindParam(":ip_acceso",$this->ip_acceso,PDO::PARAM_NULL);
+				$creaRegAcceso->bindParam(":ip_acceso",$this->ip_acceso);
 				$creaRegAcceso->execute();
 				$transaction->commit();
 			}

@@ -1,4 +1,7 @@
 <?php $this->widget('application.extensions.loading.LoadingWidget');?>
+<fieldset>
+<legend>Asignación de equipo psicosocial</legend>
+
 <?php
 $this->widget('application.extensions.jqAjaxSearch.AjaxSearch', 
     array('action'=>Yii::app()->createUrl('modIdenReg/identificacionRegistro/buscaAdolGen'), 
@@ -13,8 +16,9 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
 );
 ?>
 <?php if(!empty($numDocAdol)):?>
-<fieldset>
-<legend>Equipo asignado actualmente</legend>
+
+<?php echo CHtml::label("Equipo asignado actualmente");?>
+
 <?php if(!empty($equipoPsicoSoc)):
 foreach($equipoPsicoSoc as $profesional):?>
 	Nombres: <?php echo $profesional["nombrecomp_pers"];?> ||	Profesión: <?php echo $profesional["nombre_rol"];?>
@@ -119,7 +123,6 @@ endif;
         ?>
         <?php echo $boton; //CHtml::submitButton('Crear');?>
     <?php $this->endWidget();?>
-</fieldset>    
 <?php Yii::app()->getClientScript()->registerScript('scriptRegistraDatos','
 $(document).ready(function(){
 	$("form").find(":input").change(function(){
@@ -137,4 +140,5 @@ $(window).bind("beforeunload", function(){
 ,CClientScript::POS_END);
 ?>
 <?php endif;?>
+</fieldset>    
 	

@@ -60,7 +60,17 @@ class Usuario extends CActiveRecord
 			if(isset($_POST["Usuario"]["verificaClave"])){
 				if($this->clave!=$this->verificaClave){
 					$this->addError('clave',"La clave no coincide con la verificación");
-				}
+				}elseif(strlen($this->clave) < 6){
+				  $this->addError('clave',"La clave debe tener al menso seis carácteres");
+			   }elseif(strlen($this->clave) > 16){
+				  $this->addError('clave',"La clave no puede tener mas de 16 carácteres");
+			   }elseif (!preg_match('`[a-z]`',$this->clave)){
+				  $this->addError('clave',"La clave debe tener al menos una letra minúscula");
+			   }elseif (!preg_match('`[A-Z]`',$this->clave)){
+				  $this->addError('clave',"La clave debe tener al menos una letra mayúscula");
+			   }elseif (!preg_match('`[0-9]`',$this->clave)){
+				  $this->addError('clave',"La clave debe tener al menos un caracter numérico");
+			   }
 			}	
 		}
 	}

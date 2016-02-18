@@ -146,10 +146,7 @@
     <div class="form-group">
     	<div class="col-md-12">
        	<?php echo $formObsFam->labelEx($modelValTrSoc,'obs_familiares_ts',array('class'=>'control-label','for'=>'searchinput'));?>
-		<?php echo $formObsFam->textArea($modelValTrSoc,
-            'obs_familiares_ts',
-            array('class'=>'form-control'));
-        ?>
+	 	<div class="cont-infoval"><?php echo $modelValTrSoc->obs_familiares_ts?></div>		
 		<?php echo $formObsFam->error($modelValTrSoc,'obs_familiares_ts',array('style' => 'color:#F00'));?>
     	</div>
     </div>
@@ -445,10 +442,7 @@ else{
 	<div class="form-group">
         <div class="col-md-12">
        		<?php echo $formHistFam->labelEx($modelValTrSoc,'historia_famvaltsic',array('class'=>'control-label','for'=>'searchinput'));?>
-			<?php echo $formHistFam->textArea($modelValTrSoc,
-                'historia_famvaltsic',
-                array('class'=>'form-control'));
-            ?>
+		 	<div class="cont-infoval"><?php echo $modelValTrSoc->historia_famvaltsic?></div>					
             <?php echo $formHistFam->error($modelValTrSoc,'historia_famvaltsic',array('style' => 'color:#F00'));?>
     	</div>
     </div>
@@ -472,10 +466,7 @@ else{
 	<div class="form-group">
         <div class="col-md-12">
        		<?php echo $formPerc->labelEx($modelValTrSoc,'pa_f_dc',array('class'=>'control-label','for'=>'searchinput'));?>
-			<?php echo $formPerc->textArea($modelValTrSoc,
-                'pa_f_dc',
-                array('class'=>'form-control'));
-            ?>
+		 	<div class="cont-infoval"><?php echo $modelValTrSoc->pa_f_dc?></div>								
 			<?php echo $formPerc->error($modelValTrSoc,'pa_f_dc',array('style' => 'color:#F00'));?>
        </div>
     </div>

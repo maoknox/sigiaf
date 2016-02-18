@@ -277,8 +277,8 @@ class ReferenciacionAdol extends CActiveRecord
 			$creaRef->bindParam(':id_beneficiario',$this->id_beneficiario,PDO::PARAM_INT);
 			$creaRef->bindParam(':num_doc',$this->num_doc,PDO::PARAM_STR);
 			$creaRef->bindParam(':id_tipo_referenciacion',$this->id_tipo_referenciacion,PDO::PARAM_INT);
-			$creaRef->bindParam(':id_esp_soliii',$this->id_esp_soliii,PDO::PARAM_NULL);
-			$creaRef->bindParam(':id_esp_solii',$this->id_esp_solii,PDO::PARAM_NULL);
+			$creaRef->bindParam(':id_esp_soliii',$this->id_esp_soliii);
+			$creaRef->bindParam(':id_esp_solii',$this->id_esp_solii);
 			$creaRef->bindParam(':id_estadoref',$this->id_estadoref,PDO::PARAM_INT);
 			$creaRef->bindParam(':fecha_referenciacion',$this->fecha_referenciacion,PDO::PARAM_STR);
 			$creaRef->bindParam(':institucion_ref',$this->institucion_ref,PDO::PARAM_STR);

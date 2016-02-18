@@ -16,7 +16,7 @@
 <div id="Mensaje" style="font-size:14px;" ></div>
     <div class="form-group">
     	<div class="col-sm-2">
-        	Componente/Situación
+        	Componente/Derecho
 		</div>
     	<div class="col-sm-2">
         	Objetivo
@@ -117,7 +117,7 @@
 <?php else:?>
 <div class="form-group">
     <div class="col-sm-2">
-        Componente/Delito
+        Componente/Sanción
     </div>
     <div class="col-sm-2">
         Objetivo
@@ -179,12 +179,18 @@
 			<div class="form-group">
 				<div class="col-sm-2">
 					<?php
-						$modeloInfJud->id_inf_judicial=$modeloCompSanc->id_inf_judicial;
-						$delitos=$modeloInfJud->consultaDelito();  
-						foreach($delitos as $delito){
-							echo $delito["del_remcespa"]."<br/>";
-						}
+                    $modeloInfJud->id_inf_judicial=$modeloCompSanc->id_inf_judicial;
+                    $delitos=$modeloInfJud->consultaDelito();  
+					$consSancion=$modeloInfJud->consultaSancion(); 	
+                   // foreach($delitos as $delito):?>
+               		<?php
+						
+						echo $consSancion["tipo_sancion"];
+						//echo $delito["del_remcespa"];
 					?>
+                       
+                    
+                <?php //endforeach;?>
 				</div>
 				<div class="col-sm-2">
 					<?php echo $formPaiCompSanc->textArea($modeloCompSanc,'objetivo_compsanc',array('class'=>'form-control'));?>

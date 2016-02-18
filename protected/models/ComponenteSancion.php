@@ -230,10 +230,10 @@ class ComponenteSancion extends CActiveRecord
 			$registraSancPai->bindParam(":id_inf_judicial",$this->id_inf_judicial,PDO::PARAM_INT);
 			$registraSancPai->bindParam(":id_pai",$this->id_pai,PDO::PARAM_INT);
 			$registraSancPai->bindParam(":num_doc",$this->num_doc,PDO::PARAM_STR);
-			$registraSancPai->bindParam(":objetivo_compsanc",$this->objetivo_compsanc,PDO::PARAM_NULL);
-			$registraSancPai->bindParam(":actividades_compsanc",$this->actividades_compsanc,PDO::PARAM_NULL);
-			$registraSancPai->bindParam(":indicador_compsanc",$this->indicador_compsanc,PDO::PARAM_NULL);
-			$registraSancPai->bindParam(":responsable_compsancion",$this->responsable_compsancion,PDO::PARAM_NULL);
+			$registraSancPai->bindParam(":objetivo_compsanc",$this->objetivo_compsanc);
+			$registraSancPai->bindParam(":actividades_compsanc",$this->actividades_compsanc);
+			$registraSancPai->bindParam(":indicador_compsanc",$this->indicador_compsanc);
+			$registraSancPai->bindParam(":responsable_compsancion",$this->responsable_compsancion);
 			$registraSancPai->execute();
 			$transaction->commit();
 			$this->fecha_establec_compsanc=$fechaRegSancion;

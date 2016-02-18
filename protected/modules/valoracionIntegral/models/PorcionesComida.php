@@ -168,9 +168,9 @@ class PorcionesComida extends CActiveRecord
 			$regPorcRec->bindParam(":id_grupo_comida",$this->id_grupo_comida,PDO::PARAM_INT);
 			$regPorcRec->bindParam(":id_nutradol",$this->id_nutradol,PDO::PARAM_STR);
 			$regPorcRec->bindParam(":id_val_nutricion",$this->id_val_nutricion,PDO::PARAM_INT);
-			$regPorcRec->bindParam(":num_porc_cons_diario",$this->num_porc_cons_diario,PDO::PARAM_NULL);
+			$regPorcRec->bindParam(":num_porc_cons_diario",$this->num_porc_cons_diario);
 			$regPorcRec->bindParam(":num_porc_recomendadas",$this->num_porc_recomendadas,PDO::PARAM_INT);
-			$regPorcRec->bindParam(":dif_num_porc_cons_rec",$this->dif_num_porc_cons_rec,PDO::PARAM_NULL);
+			$regPorcRec->bindParam(":dif_num_porc_cons_rec",$this->dif_num_porc_cons_rec);
 			$regPorcRec->execute();
 			$transaction->commit();
 			return "exito";
@@ -212,9 +212,9 @@ class PorcionesComida extends CActiveRecord
 			$regPorcRec->bindParam(":id_grupo_comida",$this->id_grupo_comida,PDO::PARAM_INT);
 			$regPorcRec->bindParam(":id_nutradol",$this->id_nutradol,PDO::PARAM_STR);
 			$regPorcRec->bindParam(":id_val_nutricion",$this->id_val_nutricion,PDO::PARAM_INT);
-			$regPorcRec->bindParam(":num_porc_cons_diario",$this->num_porc_cons_diario,PDO::PARAM_NULL);
+			$regPorcRec->bindParam(":num_porc_cons_diario",$this->num_porc_cons_diario);
 			$regPorcRec->bindParam(":num_porc_recomendadas",$this->num_porc_recomendadas,PDO::PARAM_INT);
-			$regPorcRec->bindParam(":dif_num_porc_cons_rec",$this->dif_num_porc_cons_rec,PDO::PARAM_NULL);
+			$regPorcRec->bindParam(":dif_num_porc_cons_rec",$this->dif_num_porc_cons_rec);
 			$regPorcRec->execute();
 			$transaction->commit();
 			return "exito";

@@ -18,10 +18,7 @@
 	<div class="form-group">
         <div class="col-md-12">
        		<?php echo $formConcOc->labelEx($modeloValTO,'concepto_teo',array('class'=>'control-label','for'=>'searchinput'));?>
-			<?php echo $formConcOc->textArea($modeloValTO,
-                'concepto_teo',
-                array('class'=>'form-control'));
-            ?>
+			<div class="cont-infoval"><?php echo $modeloValTO->concepto_teo?></div>									
 			<?php echo $formConcOc->error($modeloValTO,'concepto_teo',array('style' => 'color:#F00'));?>
     	</div>
     </div>
@@ -44,10 +41,7 @@
 	<div class="form-group">
         <div class="col-md-12">
        		<?php echo $formPryPlInt->labelEx($modeloValTO,'plan_interv_teo',array('class'=>'control-label','for'=>'searchinput'));?>
-			<?php echo $formPryPlInt->textArea($modeloValTO,
-                'plan_interv_teo',
-                array('style'=>'width:99.5%;'));
-            ?>
+			<div class="cont-infoval"><?php echo $modeloValTO->plan_interv_teo?></div>												
             <?php echo $formPryPlInt->error($modeloValTO,'plan_interv_teo',array('style' => 'color:#F00'));?>
     	</div>
     </div>

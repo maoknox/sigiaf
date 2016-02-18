@@ -75,17 +75,12 @@
 	<div class="form-group">
         <div class="col-md-12">
        		<?php echo $formAntCl->labelEx($modeloValEnf,'antecedentes_clinic',array('class'=>'control-label','for'=>'searchinput'));?>
-			<?php echo $formAntCl->textArea($modeloValEnf,
-                'antecedentes_clinic',
-                array('class'=>'form-control'));
-            ?>
-            <?php echo $formAntCl->error($modeloValEnf,'antecedentes_clinic',array('style' => 'color:#F00'));?>
+			<div class='cont-infoval'><?php echo $modeloValEnf->antecedentes_clinic;?></div>
     	</div>
     </div>
 <?php $this->endWidget();?>
 <hr />
 </fieldset>
-<hr />
 
 <fieldset id="examFis">
 <?php $formExFis=$this->beginWidget('CActiveForm', array(
@@ -103,10 +98,7 @@
 	<div class="form-group">
         <div class="col-md-12">
        		<?php echo $formExFis->labelEx($modeloValEnf,'examen_fisico_fisiol',array('class'=>'control-label','for'=>'searchinput'));?>
-			<?php echo $formExFis->textArea($modeloValEnf,
-                'examen_fisico_fisiol',
-                array('class'=>'form-control'));
-            ?>
+			<div class='cont-infoval'><?php echo $modeloValEnf->examen_fisico_fisiol;?></div>			
             <?php echo $formExFis->error($modeloValEnf,'examen_fisico_fisiol',array('style' => 'color:#F00'));?>
         </div>
     </div>
@@ -129,10 +121,7 @@
 	<div class="form-group">
         <div class="col-md-12">
        		<?php echo $formObs->labelEx($modeloValEnf,'obs_gen_enferm',array('class'=>'control-label','for'=>'searchinput'));?>
-			<?php echo $formObs->textArea($modeloValEnf,
-                'obs_gen_enferm',
-                array('class'=>'form-control'));
-            ?>
+			<div class='cont-infoval'><?php echo $modeloValEnf->obs_gen_enferm;?></div>						
             <?php echo $formObs->error($modeloValEnf,'obs_gen_enferm',array('style' => 'color:#F00'));?>
    		</div>
     </div>
@@ -155,10 +144,7 @@
 	<div class="form-group">
         <div class="col-md-12">
        		<?php echo $formRecom->labelEx($modeloValEnf,'recom_aten_salud',array('class'=>'control-label','for'=>'searchinput'));?>
-			<?php echo $formRecom->textArea($modeloValEnf,
-                'recom_aten_salud',
-                array('class'=>'form-control'));
-            ?>
+			<div class='cont-infoval'><?php echo $modeloValEnf->recom_aten_salud;?></div>									
             <?php echo $formRecom->error($modeloValEnf,'recom_aten_salud',array('style' => 'color:#F00'));?>
     	</div>
 	</div>        

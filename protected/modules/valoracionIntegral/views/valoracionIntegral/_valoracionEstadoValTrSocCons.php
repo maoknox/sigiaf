@@ -35,10 +35,7 @@
 </div>
 <div class="form-group">
     <div class="col-md-12">
-        <?php echo $formEstVal->textArea($modelValTrSoc,
-            'observ_estvaltsoc',
-            array('class'=>'form-control'));
-        ?>    
+		<div class="cont-infoval"><?php echo $modelValTrSoc->observ_estvaltsoc?></div>											        
         <?php echo $formEstVal->error($modelValTrSoc,'observ_estvaltsoc',array('style' => 'color:#F00'));?>
     </div>
 </div>

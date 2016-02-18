@@ -1,4 +1,6 @@
 <?php $this->widget('application.extensions.loading.LoadingWidget');?>
+<fieldset >
+<legend>Consultar datos del adolescente</legend>
 <?php
 $this->widget('application.extensions.jqAjaxSearch.AjaxSearch', 
     array('action'=>Yii::app()->createUrl('modIdenReg/identificacionRegistro/buscaAdolGen'), 
@@ -15,7 +17,7 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
 
 
 <?php if(!empty($numDocAdol)):?>
-<fieldset >
+
 <?php
 $this->widget('zii.widgets.jui.CJuiTabs', array(
 	'id'=>'article_tab',
@@ -75,6 +77,5 @@ $this->widget('zii.widgets.jui.CJuiTabs', array(
 )); 
 
 ?>
-</fieldset>
 <?php endif;?>
-
+</fieldset>

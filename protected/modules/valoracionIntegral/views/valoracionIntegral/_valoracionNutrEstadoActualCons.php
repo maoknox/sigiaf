@@ -13,7 +13,7 @@
 	<div id="divProcPadres" class="form-group">
     	<div class="col-sm-12">
             <?php echo $formularioExamenFisico->labelEx($modeloValNutr,'examen_fisico',array('class'=>'control-label','for'=>'searchinput'));//'onblur'=>'js:enviaFormNutr("formularioHistVida","divObsNacim")'?>
-			<?php echo $formularioExamenFisico->textArea($modeloValNutr,'examen_fisico',array('class'=>'form-control','onchange'=>'js:$("#formularioExamenFisico").addClass("has-warning");'));?>
+			<div class='cont-infoval'><?php echo $modeloValNutr->examen_fisico;?></div>												
         	<?php echo $formularioExamenFisico->error($modeloValNutr,'examen_fisico',array('style' => 'color:#F00'));?>
     	</div>
     </div>

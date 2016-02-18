@@ -131,7 +131,7 @@
 										if(errorLoc.length !== 0){
 											errorLoc="Aunque ha habido un error en el registro de la localización del acudiente. El código del error es:" +errorLoc;
 										}
-										if(errorTel.length !== 0){
+										if(errorTel != "exito"){
 											errorTel="Aunque ha habido un error en el registro de los teléfonos del acudiente. El código del error es:" +errorTel;											
 										}
 										$("#MensajeFam").html("Se ha creado el registro del acudiente<br/>"+errorLoc+"<br/>"+errorTel);

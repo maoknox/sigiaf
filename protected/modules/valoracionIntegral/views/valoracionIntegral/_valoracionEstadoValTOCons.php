@@ -33,10 +33,7 @@
 </div>
 <div class="form-group">
     <div class="col-md-12">
-		<?php echo $formEstVal->textArea($modeloValTO,
-            'observ_estvalto',
-            array('class'=>'form-control'));
-        ?>    
+		<div class="cont-infoval"><?php echo $modeloValTO->observ_estvalto?></div>														  
         <?php echo $formEstVal->error($modeloValTO,'observ_estvalto',array('style' => 'color:#F00'));?>
     </div>
 </div>

@@ -220,9 +220,9 @@ class ForjarAdol extends CActiveRecord
 			$sqlActualiza="update forjar_adol set fecha_primer_ingreso=:fecha_primer_ingreso,fecha_vinc_forjar=:fecha_vinc_forjar,num_ingresos=:num_ingresos where num_doc=:num_doc";
 			$actializa=$conect->createCommand($sqlActualiza);
 			$actializa->bindParam(":num_doc",$this->num_doc,PDO::PARAM_STR);
-			$actializa->bindParam(":fecha_primer_ingreso",$this->fecha_primer_ingreso,PDO::PARAM_NULL);
-			$actializa->bindParam(":fecha_vinc_forjar",$this->fecha_vinc_forjar,PDO::PARAM_NULL);
-			$actializa->bindParam(":num_ingresos",$this->num_ingresos,PDO::PARAM_NULL);
+			$actializa->bindParam(":fecha_primer_ingreso",$this->fecha_primer_ingreso);
+			$actializa->bindParam(":fecha_vinc_forjar",$this->fecha_vinc_forjar);
+			$actializa->bindParam(":num_ingresos",$this->num_ingresos);
 			$actializa->execute();
 			$transaction->commit();
 			return "exito";

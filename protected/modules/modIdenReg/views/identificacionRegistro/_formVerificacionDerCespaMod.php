@@ -26,25 +26,25 @@
 <?php if(strpos($derecho["derechocespa"],"Protecc")!==FALSE): 
 	
 ?>
-<tr><td style="border:1px solid #000">
+<tr><td style="border:1px solid #000" align="center">
 <label for="DerechoAdol_id_derechocespa_Nombre<?php echo $pk;?>"><?php echo $derecho["derechocespa"];?></label>
 </td><td style="border:1px solid #000"><label for="DerechoAdol_id_derechocespa_<?php echo $pk;?>"><?php echo $derecho["situacion_derecho"];?></label><hr />
 	<input id="DerechoAdol_id_derechocespa_<?php echo $pk;?>" onclick="javascript:habilitaSitRiesgo(this);" type="checkbox" name="DerechoAdol[id_derechocespa][]" value="<?php echo $derecho["id_derechocespa"];?>" <?php if($derecho["estado_derecho"]==1){echo "checked";}?> />
 	<label for="DerechoAdol_id_derechocespa_obs_<?php echo $pk;?>">Seleccione si cumple</label><br />
     <hr />
   
-  	<div class="row">
+  	<div class="row" style="width:80%">
     <?php
     	$reisgos=$modeloVerifDerechos->consultaProteccion($derecho["id_derecho_adol"]);
 		foreach($reisgos as $reisgosAdol){
 			$op[$reisgosAdol["id_sit_riesgo"]]=array('selected'=>true);
 		}
 	?>
-    <?php echo $formAdolDerechos->dropDownList($modeloVerifDerechos,'situacionesRiesgos',CHtml::listData($proteccion,'id_sit_riesgo', 'sit_riesgo'), array('multiple'=>true,'disabled'=>false,'style'=>';width:80%','options' => $op)); ?></br>
+    <?php echo $formAdolDerechos->dropDownList($modeloVerifDerechos,'situacionesRiesgos',CHtml::listData($proteccion,'id_sit_riesgo', 'sit_riesgo'), array('multiple'=>true,'disabled'=>false,'class'=>'selectpicker form-control','data-hide-disabled'=>'true','data-live-search'=>'true','options' => $op)); ?></br>
     <?php echo $formAdolDerechos->error($modeloVerifDerechos,'situacionesRiesgos',array('style' => 'color:#F00')); ?>
 	</div>
     </td><td style="border:1px solid #000">    
-	<?php echo CHtml::textArea('DerechoAdol[observaciones_derecho_'.$derecho["id_derechocespa"].']',$derecho["observaciones_derecho"],array('id'=>'DerechoAdol_observaciones_derecho_'.$derecho["id_derechocespa"])); ?>
+	<?php echo CHtml::textArea('DerechoAdol[observaciones_derecho_'.$derecho["id_derechocespa"].']',$derecho["observaciones_derecho"],array('id'=>'DerechoAdol_observaciones_derecho_'.$derecho["id_derechocespa"],'class'=>'form-control')); ?>
 </td></tr>
 <?php elseif(strpos($derecho["derechocespa"],"Participac")!==FALSE): ?>
 <tr>
@@ -68,7 +68,7 @@
     <?php echo $formAdolDerechos->dropDownList($modeloVerifDerechos,'alternativasParticipacions',CHtml::listData($participacion,'id_alternativaproc', 'alternativaproc'), array('multiple'=>true,'disabled'=>false,'style'=>';width:80%','options' => $op)); ?></br>
     <?php echo $formAdolDerechos->error($modeloVerifDerechos,'alternativasParticipacions',array('style' => 'color:#F00')); ?>
 	</div>
-    </td><td style="border:1px solid #000"><?php echo CHtml::textArea('DerechoAdol[observaciones_derecho_'.$derecho["id_derechocespa"].']',$derecho["observaciones_derecho"],array('id'=>'DerechoAdol_observaciones_derecho_'.$derecho["id_derechocespa"])); ?></td></tr>
+    </td><td style="border:1px solid #000"><?php echo CHtml::textArea('DerechoAdol[observaciones_derecho_'.$derecho["id_derechocespa"].']',$derecho["observaciones_derecho"],array('id'=>'DerechoAdol_observaciones_derecho_'.$derecho["id_derechocespa"],'class'=>'form-control')); ?></td></tr>
 <?php else:?>
 <tr><td style="border:1px solid #000">
 <label for="DerechoAdol_id_derechocespa_Nombre<?php echo $pk;?>"><?php echo $derecho["derechocespa"];?></label>
@@ -78,7 +78,7 @@
 <?php if($derecho["estado_derecho"]==1){echo "checked";}?> />
 <label for="DerechoAdol_id_derechocespa_obs_<?php echo $pk;?>">Seleccione si cumple</label><br />
 </td><td style="border:1px solid #000">
-<?php echo CHtml::textArea('DerechoAdol[observaciones_derecho_'.$derecho["id_derechocespa"].']',$derecho["observaciones_derecho"],array('id'=>'DerechoAdol_observaciones_derecho_'.$derecho["id_derechocespa"])); ?>
+<?php echo CHtml::textArea('DerechoAdol[observaciones_derecho_'.$derecho["id_derechocespa"].']',$derecho["observaciones_derecho"],array('id'=>'DerechoAdol_observaciones_derecho_'.$derecho["id_derechocespa"],'class'=>'form-control')); ?>
 </td>
 </tr>
 <?php endif;?>
@@ -180,7 +180,7 @@ $boton=CHtml::ajaxSubmitButton (
 <?php $this->endWidget();?>
 <?php //script de seguridad que previene dejar la página si no se han guardado los datos
 Yii::app()->getClientScript()->registerScript('prepFormDerechoCespa','
-		var numDocAdol="";
+		var numDocAdol="";		
 		numDocAdol="'.$numDocAdol.'";
 		function habilitaSitRiesgo(elemento){
 			if($(elemento).is(":checked")) {  

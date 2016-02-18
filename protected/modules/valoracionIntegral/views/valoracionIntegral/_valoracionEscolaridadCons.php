@@ -90,10 +90,7 @@
     <div class="form-group">
     	<div class="col-md-12">
        		<?php echo $formHistEsc->labelEx($modelValTrSoc,'dr_hist_escolar',array('class'=>'control-label','for'=>'searchinput'));?>
-			<?php echo $formHistEsc->textArea($modelValTrSoc,
-                'dr_hist_escolar',
-                array('class'=>'form-control'));
-            ?>
+		 	<div class="cont-infoval"><?php echo $modelValTrSoc->dr_hist_escolar?></div>								
             <?php echo $formHistEsc->error($modelValTrSoc,'dr_hist_escolar',array('style' => 'color:#F00'));?>
         </div>
     </div>

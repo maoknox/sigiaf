@@ -1,3 +1,4 @@
+<div class="panel-heading color-sdis">Valoración en Nutrición</div><br /> 
 <?php $this->widget('application.extensions.loading.LoadingWidget');?>
 <?php
 $this->widget('application.extensions.jqAjaxSearch.AjaxSearch', 

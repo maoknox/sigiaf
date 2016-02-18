@@ -237,7 +237,7 @@ class SeguimientoAdol extends CActiveRecord
 	 */
 	public function consSegAdol(){
 		$conect=Yii::app()->db;
-		$sqlConsSegAdol="select * from seguimiento_adol where num_doc=:num_doc and seg_posegreso='false' and seg_extraordinario='false' order by fecha_registro_seg desc";
+		$sqlConsSegAdol="select * from seguimiento_adol where num_doc=:num_doc and seg_posegreso='false' and seg_extraordinario='false' order by fecha_seguimiento desc";
 		$consSegAdol=$conect->createCommand($sqlConsSegAdol);
 		$consSegAdol->bindParam("num_doc",$this->num_doc,PDO::PARAM_STR);
 		$readSegAdol=$consSegAdol->query();
@@ -376,8 +376,8 @@ class SeguimientoAdol extends CActiveRecord
 			$regSeg=$conect->createCommand($sqlRegSeg);
 			$regSeg->bindParam(":fecha_registro_seg",$fechaRegistro,PDO::PARAM_STR);
 			$regSeg->bindParam(":num_doc",$this->num_doc,PDO::PARAM_STR);
-			$regSeg->bindParam(":id_area_seguimiento",$this->id_area_seguimiento,PDO::PARAM_NULL);
-			$regSeg->bindParam(":id_tipo_seguim",$this->id_tipo_seguim,PDO::PARAM_NULL);
+			$regSeg->bindParam(":id_area_seguimiento",$this->id_area_seguimiento);
+			$regSeg->bindParam(":id_tipo_seguim",$this->id_tipo_seguim);
 			$regSeg->bindParam(":seguimiento_adol",$this->seguimiento_adol,PDO::PARAM_STR);
 			$regSeg->bindParam(":seguim_conj",$this->seguim_conj,PDO::PARAM_BOOL);
 			$regSeg->bindParam(":fecha_seguimiento",$this->fecha_seguimiento,PDO::PARAM_BOOL);

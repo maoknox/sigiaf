@@ -216,7 +216,7 @@ class DerechoAdol extends CActiveRecord
 				$registraDerecho->bindParam(":idInstanciaderecho",$this->atributos["id_instanciader"],PDO::PARAM_INT);
 				$registraDerecho->bindParam(":id_momento_verif",$this->id_momento_verif,PDO::PARAM_INT);
 				$registraDerecho->bindParam(":numDoc",$this->atributos["num_doc"],PDO::PARAM_STR);								
-				$registraDerecho->bindParam(":observDerecho",$observacionesDer,PDO::PARAM_NULL);
+				$registraDerecho->bindParam(":observDerecho",$observacionesDer);
 				$registraDerecho->bindParam(":fechaRegDerecho",$fechaRegistro,PDO::PARAM_STR);
 				$readIdDerecho=$registraDerecho->query();
 				$resIdDerecho=$readIdDerecho->read();
@@ -345,8 +345,8 @@ class DerechoAdol extends CActiveRecord
 				$registraDerecho->bindParam(":estadoDerecho",$cumple,PDO::PARAM_BOOL);
 				$registraDerecho->bindParam(":idInstanciaderecho",$this->atributos["id_instanciader"],PDO::PARAM_INT);
 				$registraDerecho->bindParam(":numDoc",$this->atributos["num_doc"],PDO::PARAM_STR);
-				$registraDerecho->bindParam(":observDerecho",$observacionesDer,PDO::PARAM_NULL);
-				$registraDerecho->bindParam(":id_momento_verif",$this->id_momento_verif,PDO::PARAM_NULL);
+				$registraDerecho->bindParam(":observDerecho",$observacionesDer);
+				$registraDerecho->bindParam(":id_momento_verif",$this->id_momento_verif);
 				//$registraDerecho->bindParam(":fechaRegDerecho",$fechaRegistro,PDO::PARAM_STR);
 				$readIdDerecho=$registraDerecho->query();
 				$resIdDerecho=$readIdDerecho->read();

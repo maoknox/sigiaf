@@ -12,7 +12,7 @@
 	<div id="divProcPadres" class="form-group">
     	<div class="col-sm-12">
             <?php echo $formularioProcPadres->labelEx($modeloValNutr,'procedencia_padres',array('class'=>'control-label','for'=>'searchinput'));//'onblur'=>'js:enviaFormNutr("formularioHistVida","divObsNacim")'?>
-			<?php echo $formularioProcPadres->textArea($modeloValNutr,'procedencia_padres',array('class'=>'form-control','onkeyup'=>'js:$("#divProcPadres").addClass("has-warning");'));?>
+			<div class='cont-infoval'><?php echo $modeloValNutr->procedencia_padres;?></div>									
         	<?php echo $formularioProcPadres->error($modeloValNutr,'procedencia_padres',array('style' => 'color:#F00'));?>
     	</div>
     </div>
@@ -31,7 +31,7 @@
 	<div id="divAlimPref" class="form-group">
     	<div class="col-sm-12">
             <?php echo $formularioAlimPref->labelEx($modeloValNutr,'alimentos_preferidos',array('class'=>'control-label','for'=>'searchinput'));//'onblur'=>'js:enviaFormNutr("formularioHistVida","divObsNacim")'?>
-			<?php echo $formularioAlimPref->textArea($modeloValNutr,'alimentos_preferidos',array('class'=>'form-control','onkeyup'=>'js:$("#divAlimPref").addClass("has-warning");'));?>
+			<div class='cont-infoval'><?php echo $modeloValNutr->alimentos_preferidos;?></div>									
         	<?php echo $formularioAlimPref->error($modeloValNutr,'alimentos_preferidos',array('style' => 'color:#F00'));?>
     	</div>
     </div>
@@ -50,7 +50,7 @@
 	<div id="divAlimRech" class="form-group">
     	<div class="col-sm-12">
             <?php echo $formularioAlimRech->labelEx($modeloValNutr,'alimentos_rechazados',array('class'=>'control-label','for'=>'searchinput'));//'onblur'=>'js:enviaFormNutr("formularioHistVida","divObsNacim")'?>
-			<?php echo $formularioAlimRech->textArea($modeloValNutr,'alimentos_rechazados',array('class'=>'form-control','onkeyup'=>'js:$("#divAlimRech").addClass("has-warning");'));?>
+			<div class='cont-infoval'><?php echo $modeloValNutr->alimentos_rechazados;?></div>									
         	<?php echo $formularioAlimRech->error($modeloValNutr,'alimentos_rechazados',array('style' => 'color:#F00'));?>
     	</div>
     </div>
@@ -69,7 +69,7 @@
 	<div id="divAlimInt" class="form-group">
     	<div class="col-sm-12">
             <?php echo $formularioAlimInt->labelEx($modeloValNutr,'alimentos_intolerados',array('class'=>'control-label','for'=>'searchinput'));//'onblur'=>'js:enviaFormNutr("formularioHistVida","divObsNacim")'?>
-			<?php echo $formularioAlimInt->textArea($modeloValNutr,'alimentos_intolerados',array('class'=>'form-control','onkeyup'=>'js:$("#divAlimInt").addClass("has-warning");'));?>
+			<div class='cont-infoval'><?php echo $modeloValNutr->alimentos_intolerados;?></div>									
         	<?php echo $formularioAlimInt->error($modeloValNutr,'alimentos_intolerados',array('style' => 'color:#F00'));?>
     	</div>
     </div>
@@ -88,7 +88,7 @@
 	<div id="divSupComplNtr" class="form-group">
     	<div class="col-sm-12">
             <?php echo $formularioSupComplNtr->labelEx($modeloValNutr,'supl_compl_nutr',array('class'=>'control-label','for'=>'searchinput'));//'onblur'=>'js:enviaFormNutr("formularioHistVida","divObsNacim")'?>
-			<?php echo $formularioSupComplNtr->textArea($modeloValNutr,'supl_compl_nutr',array('class'=>'form-control','onkeyup'=>'js:$("#divAlimInt").addClass("has-warning");'));?>
+			<div class='cont-infoval'><?php echo $modeloValNutr->supl_compl_nutr;?></div>									
         	<?php echo $formularioSupComplNtr->error($modeloValNutr,'supl_compl_nutr',array('style' => 'color:#F00'));?>
     	</div>
     </div>
@@ -445,7 +445,7 @@
         <div class="form-group">
             <div class="col-sm-12">
            		<?php echo $formularioFisico->labelEx($modeloValNutr,'desarrollo_psicomotor',array('class'=>'control-label','for'=>'searchinput'));//'onblur'=>'js:enviaFormNutr("formularioHistVida","divObsNacim")'?>
-				<?php echo $formularioFisico->textArea($modeloValNutr,'desarrollo_psicomotor',array('class'=>'form-control input-md','onkeyup'=>'js:$("#formularioFisico").addClass("has-warning");'));?>
+                <div class='cont-infoval'><?php echo $modeloValNutr->desarrollo_psicomotor;?></div>									
     		</div>
         </div>
         <?php $this->endWidget();?>

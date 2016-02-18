@@ -15,13 +15,7 @@
 <div class="form-group">
     <div class="col-md-12">	
     <?php echo $formConcGen->labelEx($modeloValPsicol,'concl_gen_vpsicol',array('class'=>'control-label','for'=>'searchinput'));?>
-	<?php echo $formConcGen->textArea($modeloValPsicol,
-		'concl_gen_vpsicol',
-		array('class'=>'form-control',
-			'onblur'=>'js:enviaForm("formularioConcGen","conclGenVpsicol");',
-			'onkeyup'=>'js:$("#conclGenVpsicol").addClass("has-warning")'
-		));
-	?>
+   	<div class="cont-infoval"><?php echo $modeloValPsicol->concl_gen_vpsicol?></div>        												    	    								
 	<?php echo $formConcGen->error($modeloValPsicol,'concl_gen_vpsicol',array('style' => 'color:#F00'));?>
     </div>
 </div>
@@ -44,13 +38,7 @@
 <div class="form-group">
     <div class="col-md-12">	
     <?php echo $formConcGen->labelEx($modeloValPsicol,'pry_plan_interv',array('class'=>'control-label','for'=>'searchinput'));?>
-	<?php echo $formProyPlInt->textArea($modeloValPsicol,
-		'pry_plan_interv',
-		array('class'=>'form-control',
-			'onblur'=>'js:enviaForm("formularioProyPlInt","pryPlanInterv")',
-			'onkeyup'=>'js:$("#pryPlanInterv").addClass("has-warning")'
-		));
-	?>
+   	<div class="cont-infoval"><?php echo $modeloValPsicol->pry_plan_interv?></div>
 	<?php echo $formProyPlInt->error($modeloValPsicol,'pry_plan_interv',array('style' => 'color:#F00'));?>
     </div>
 </div>
@@ -89,14 +77,11 @@
     </div>
     <div class="form-group">
     	<div class="col-md-12">
-	<?php echo $formRemPsiq->textArea($modeloValPsicol,
-		'objetivo_remitpsiq',
-		array('class'=>'form-control',
-		'onblur'=>'js:enviaFormOpt("formularioRemPsiq","remisPsiquiatria")',
-		'onkeyup'=>'js:$("#remisPsiquiatria").addClass("has-warning")'));
-	?>
-	<?php echo $formRemPsiq->error($modeloValPsicol,'objetivo_remitpsiq',array('style' => 'color:#F00'));?>
-</div></div>
+           	<div class="cont-infoval">
+			<?php echo $modeloValPsicol->objetivo_remitpsiq?></div>	
+			<?php echo $formRemPsiq->error($modeloValPsicol,'objetivo_remitpsiq',array('style' => 'color:#F00'));?>
+			</div>
+		</div>
 <?php $this->endWidget();?>
 <hr />
 </fieldset>

@@ -70,7 +70,7 @@ class Telefono extends CActiveRecord
 			'id_doc_familiar' => 'Documento Familiar',
 			'id_tipo_telefono' => 'Tipo Teléfono',
 			'num_doc' => 'Número documento adolescente',
-			'telefono' => 'Teléfono',
+			'telefono' => 'Teléfono Principal',
 			'tel_sec'=>'Teléfono secundario'
 		);
 	}

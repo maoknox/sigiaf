@@ -241,7 +241,7 @@ class ValoracionTrabajoSocial extends CActiveRecord
 				where id_valtsoc=:idValTrSoc";
 			$modValTrSoc=$conect->createCommand($sqlModValTrSoc);
 			$modValTrSoc->bindParam(':fecha',$this->fecha,PDO::PARAM_STR);
-			$modValTrSoc->bindParam(':contVal',$this->contenidoValoracion,PDO::PARAM_NULL);
+			$modValTrSoc->bindParam(':contVal',$this->contenidoValoracion);
 			$modValTrSoc->bindParam(':idValTrSoc',$this->id_valtsoc,PDO::PARAM_INT);
 			$modValTrSoc->execute();
 			$this->creaRegProfVal($this->id_valtsoc,$accion);
@@ -327,8 +327,8 @@ class ValoracionTrabajoSocial extends CActiveRecord
 				where id_valtsoc=:idValTrSoc and num_doc=:num_doc";
 			$modValTrSoc=$conect->createCommand($sqlModValTrsSoc);
 			$modValTrSoc->bindParam(':fecha',$this->fecha,PDO::PARAM_STR);
-			$modValTrSoc->bindParam(':contVal',$this->contenidoValoracion,PDO::PARAM_NULL);
-			$modValTrSoc->bindParam(':contVali',$this->contenidoValoracioni,PDO::PARAM_NULL);
+			$modValTrSoc->bindParam(':contVal',$this->contenidoValoracion);
+			$modValTrSoc->bindParam(':contVali',$this->contenidoValoracioni);
 			$modValTrSoc->bindParam(':idValTrSoc',$this->id_valtsoc,PDO::PARAM_INT);
 			$modValTrSoc->bindParam(':num_doc',$this->num_doc,PDO::PARAM_STR);
 			$modValTrSoc->execute();

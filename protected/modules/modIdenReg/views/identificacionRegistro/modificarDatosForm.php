@@ -1,4 +1,6 @@
 <?php $this->widget('application.extensions.loading.LoadingWidget');?>
+<fieldset >
+<legend>Modificar datos del adolescente</legend>
 <?php
 $this->widget('application.extensions.jqAjaxSearch.AjaxSearch', 
     array('action'=>Yii::app()->createUrl('modIdenReg/identificacionRegistro/buscaAdolGen'), 
@@ -15,7 +17,7 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
 
 
 <?php if(!empty($numDocAdol)):?>
-<fieldset >
+
 <?php
 $this->widget('zii.widgets.jui.CJuiTabs', array(
 	'id'=>'article_tab',
@@ -75,7 +77,7 @@ $this->widget('zii.widgets.jui.CJuiTabs', array(
 )); 
 
 ?>
-</fieldset>
+
 <?php Yii::app()->getClientScript()->registerScript('scriptRegistraDatos','
 $(document).ready(function(){
 	$("form").find(":input").change(function(){
@@ -94,4 +96,4 @@ $(window).bind("beforeunload", function(){
 ?>
 
 <?php endif;?>
-
+</fieldset>

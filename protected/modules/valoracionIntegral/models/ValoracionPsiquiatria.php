@@ -249,7 +249,7 @@ class ValoracionPsiquiatria extends CActiveRecord
 				where id_val_psiquiatria=:id_val_psiquiatria";
 			$modValPsiq=$conect->createCommand($sqlModValPsiq);
 			$modValPsiq->bindParam(':fecha',$this->fecha,PDO::PARAM_STR);
-			$modValPsiq->bindParam(':contVal',$this->contenidoValoracion,PDO::PARAM_NULL);
+			$modValPsiq->bindParam(':contVal',$this->contenidoValoracion);
 			$modValPsiq->bindParam(':id_val_psiquiatria',$this->id_val_psiquiatria,PDO::PARAM_INT);
 			$modValPsiq->execute();
 			$this->creaRegProfVal($this->id_val_psiquiatria,$accion);
@@ -286,8 +286,8 @@ class ValoracionPsiquiatria extends CActiveRecord
 				where id_val_psiquiatria=:id_val_psiquiatria and num_doc=:num_doc";
 			$modValPsiq=$conect->createCommand($sqlModValPsiq);
 			$modValPsiq->bindParam(':fecha',$this->fecha,PDO::PARAM_STR);
-			$modValPsiq->bindParam(':contVal',$this->contenidoValoracion,PDO::PARAM_NULL);
-			$modValPsiq->bindParam(':contVali',$this->contenidoValoracioni,PDO::PARAM_NULL);
+			$modValPsiq->bindParam(':contVal',$this->contenidoValoracion);
+			$modValPsiq->bindParam(':contVali',$this->contenidoValoracioni);
 			$modValPsiq->bindParam(':id_val_psiquiatria',$this->id_val_psiquiatria,PDO::PARAM_INT);
 			$modValPsiq->bindParam(':num_doc',$this->num_doc,PDO::PARAM_STR);
 			$modValPsiq->execute();

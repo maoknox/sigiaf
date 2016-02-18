@@ -86,7 +86,7 @@ class Adolescente extends CActiveRecord
 	 * 	método que valida al momento de crear el registro del adolescente si ya está registrado con el número del documento, 
 	 */
 	public function validaAdol($attribute=NULL,$params=NULL){
-		if(Yii::app()->controller->action->id!="modifDocAdol"){		
+		if(Yii::app()->controller->action->id!="modifDocAdol" && Yii::app()->controller->action->id!="modifRegAdol"){		
 			$consultaAdol=$this->find('num_doc=:numDoc or id_doc_adol=:id_doc_adol',
 			array(
 				':numDoc'=>$_POST["Adolescente"]["num_doc"],
@@ -96,15 +96,15 @@ class Adolescente extends CActiveRecord
 				$this->addError($attribute,"Este número de documento ya se encuentra registrado");
 			}
 		}
-		else{
+		/*else{
 			$consultaAdol=$this->find('id_doc_adol=:id_doc_adol',
 			array(
-				':id_doc_adol'=>$_POST["Adolescente"]["id_doc_adol"]
+				:id_doc_adol'=>$_POST["Adolescente"]["id_doc_adol"]
 			));
 			if(!empty($consultaAdol)){
 				$this->addError("id_doc_adol","Este número de documento ya se encuentra registrado");
 			}
-		}
+		}*/
 	}
 	
 	/**
@@ -308,9 +308,9 @@ class Adolescente extends CActiveRecord
 				$registraReg->bindParam(':tipoDoc',$this->id_tipo_doc,PDO::PARAM_INT);
 				$registraReg->bindParam(':sexo',$this->id_sexo,PDO::PARAM_INT);
 				$registraReg->bindParam(':municipio',$this->id_municipio,PDO::PARAM_STR);
-				$registraReg->bindParam(':etnia',$this->id_etnia,PDO::PARAM_NULL);
+				$registraReg->bindParam(':etnia',$this->id_etnia);
 				$registraReg->bindParam(':apellido1',$this->apellido_1,PDO::PARAM_STR);
-				$registraReg->bindParam(':apellido2',$this->apellido_2,PDO::PARAM_NULL);
+				$registraReg->bindParam(':apellido2',$this->apellido_2,PDO::PARAM_STR);
 				$registraReg->bindParam(':nombres',$this->nombres,PDO::PARAM_STR);
 				$registraReg->bindParam(':fechaNacimiento',$this->fecha_nacimiento,PDO::PARAM_STR);
 				$registraReg->bindParam(':edadIngreso',$this->edad_ingreso);

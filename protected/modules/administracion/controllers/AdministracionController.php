@@ -596,12 +596,14 @@ class AdministracionController extends Controller{
 			$modeloUsuario->attributes=$dataInput["Usuario"];
 			$modeloPersona->attributes=$dataInput["Persona"];
 			$modeloUsuario->id_cedula=$modeloPersona->id_cedula;
-			$clave=$this->generaCadenaAleatoria();
-			$operGenerales=new OperacionesGenerales();
-			$modeloUsuario->clave=$operGenerales->encriptaClaveHMAC($clave);				
+			$modeloUsuario->clave='123456aA';
+			$operGenerales=new OperacionesGenerales();							
 			$modeloUsuario->pers_habilitado=true;
 			if($modeloPersona->validate()&&$modeloUsuario->validate()){	
+				$clave=$this->generaCadenaAleatoria();
+				$modeloUsuario->clave=$operGenerales->encriptaClaveHMAC($clave);
 				$resultado=$modeloPersona->creaPersona($modeloUsuario);
+				//$resultado="exito";
 				if($resultado=="exito"){
 					try{
 						Yii::import('application.extensions.yii-mail-master.YiiMailMessage');
@@ -725,7 +727,7 @@ class AdministracionController extends Controller{
 	 *  @return $cadena, que contiene la cadena aleatoria de 10 carácteres
 	 */			
 	public function generaCadenaAleatoria(){
-		$caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890$%_-/"; /**< carácteres a usar en la generación de cadena aleatoria */
+		$caracteres = "1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz$%_-/"; /**< carácteres a usar en la generación de cadena aleatoria */
 		$numerodeletras=10; /**< número de letras para generar el texto */
 		$cadena = ""; /**< variable que almacena los 10 datos generados aleatoriamente */
 		for($i=0;$i<$numerodeletras;$i++){
@@ -761,6 +763,67 @@ class AdministracionController extends Controller{
 		}
 	}
 	/**
+	 *	Acción que renderiza el formulario seleccionar un rol para modificar el acceso a funciones.
+	 *  Vista a renderizar:
+	 *	- _seleccRolForm
+	 *	Modelos instanciados
+	 *	- Rol.
+	 *  @param array $roles.  Objeto $modeloRol 
+	 */		
+	public function actionSeleccionaRolForm(){
+		$controlAcceso=new ControlAcceso();
+		$controlAcceso->accion="seleccionaRolForm";
+		$permiso=$controlAcceso->controlAccesoAcciones();
+		if($permiso["acceso_rolmenu"]==1){
+			$modeloRol= new Rol();
+			$roles=$modeloRol->consultaRoles();
+			$this->render("_seleccionaRolForm",array('modeloRol'=>$modeloRol,'roles'=>$roles,'modeloRolMenu'=>$modeloRolMenu,'menu'=>$menu,'nivelMenu'=>$nivelMenu));		
+		}
+		else{
+			throw new CHttpException(403,'No tiene acceso a esta acción');						
+		}
+	}
+	
+	/**
+	 *	Acción que renderiza el formulario cambiar accesos al rol seleccionado.
+	 *  Vista a renderizar:
+	 *	- _modificaAccesosRol
+	 *	Modelos instanciados
+	 *	- Rol.
+	 *	- Menu.
+	 *	- RolMenu.
+	 *  @param array $menu,$nivelMenu.  Objeto $modeloMenu, $modeloRol,$modeloRolMenu, 
+	 */		
+	public function actionModificaAccesosRolForm(){
+		$controlAcceso=new ControlAcceso();
+		$controlAcceso->accion="seleccionaRolForm";
+		$permiso=$controlAcceso->controlAccesoAcciones();
+		if($permiso["acceso_rolmenu"]==1){
+			$dataInput=Yii::app()->input->post();
+			//print_r($dataInput);
+			//exit; 	
+			if(!empty($dataInput["Rol"]["id_rol"])){
+				$modeloRol= new Rol();
+				$modeloRol->id_rol=$dataInput["Rol"]["id_rol"];
+				$modeloRol->nombre_rol=$dataInput["Rol"]["nombre_rol"];
+				$modeloMenu= new Menu();
+				$modeloRolMenu= new RolMenu();
+				$modeloRolMenu->id_rol=$modeloRol->id_rol;
+				$menuRol=$modeloRolMenu->consultaMenuRol();
+				$menu=$modeloMenu->consultaMenu();
+				$nivelMenu=$modeloMenu->consultaNivelMenu();
+				$this->render("_modificaAccesosRol",array('modeloMenu'=>$modeloMenu,'modeloRol'=>$modeloRol,'modeloRolMenu'=>$modeloRolMenu,'menu'=>$menu,'nivelMenu'=>$nivelMenu,'dataInput'=>$dataInput,'menuRol'=>$menuRol));		
+			}
+			else{
+				$this->actionSeleccionaRolForm();			
+			}
+		}
+		else{
+			throw new CHttpException(403,'No tiene acceso a esta acción');						
+		}
+	}	
+	
+	/**
 	 *	Acción que captura el nombre de nuevo rol y los módulos, menús y submenús alos cuales tendrá acceso.  
 	 *	Modelos instanciados
 	 *	- Rol.
@@ -788,6 +851,50 @@ class AdministracionController extends Controller{
 			if($modeloRol->validate() && $modeloRolMenu->validate()){				
 				$modeloRol->menu=$dataInput["Menu"];
 				$resultado=$modeloRol->creaRolMenu();				
+				echo CJSON::encode(array("estadoComu"=>"exito","resultado"=>$resultado));				
+			}else{
+				echo CActiveForm::validate(array($modeloRol,$modeloRolMenu));
+			}
+		}
+		else{
+			throw new CHttpException(403,'No tiene acceso a esta acción');						
+		}
+	}
+	/**
+	 *	Acción que captura el id del rol, los módulos, menús y submenús alos cuales tendrá acceso.  
+	 *	Modelos instanciados
+	 *	- Rol.
+	 *	- Menu.
+	 *	- RolMenu.
+	 *  @param int $modeloRolMenu->id_rol,String $modeloUsuario->nombre_usuario,resultado de la transacción, array $dataInput["Menu"],$dataInput["Rol"]
+	 *  @return json resultado de la transacción
+	 */		
+	public function actionModificaAccesosRol(){
+		$controlAcceso=new ControlAcceso();
+		$controlAcceso->accion="seleccionaRolForm";
+		$permiso=$controlAcceso->controlAccesoAcciones();
+		if($permiso["acceso_rolmenu"]==1){
+			$modeloRol= new Rol();
+			$modeloMenu= new Menu();
+			$modeloRolMenu= new RolMenu();
+			$menu=$modeloMenu->consultaMenu();
+			$nivelMenu=$modeloMenu->consultaNivelMenu();
+			$dataInput=Yii::app()->input->post();
+			if(!empty($dataInput["Menu"])){
+				$modeloRolMenu->id_menu="id_aux";
+				$modeloRolMenu->id_rol=$dataInput["Rol"]["id_rol"];
+			}
+			$modeloRol->attributes=$dataInput["Rol"];
+			$modeloRol->id_rol=$dataInput["Rol"]["id_rol"];			
+			if($modeloRol->validate() && $modeloRolMenu->validate()){				
+				$modeloRol->menu=$dataInput["Menu"];
+				$resultado=$modeloRolMenu->limpiaModuloRol();
+				if($resultado=="exito"){
+					$resultado=$modeloRolMenu->limpiaMenuRol();
+					if($resultado=="exito"){
+						$resultado=$modeloRol->modificaAccesosRol();				
+					}
+				}
 				echo CJSON::encode(array("estadoComu"=>"exito","resultado"=>$resultado));				
 			}else{
 				echo CActiveForm::validate(array($modeloRol,$modeloRolMenu));
@@ -1469,6 +1576,9 @@ class AdministracionController extends Controller{
 						echo CJSON::encode(array("estadoComu"=>"exito",'resultado'=>$e->getMessage()));
 					}
 				}
+			}
+			else{
+				$resultado="nocorreo";	
 			}			
 			echo CJSON::encode(array("estadoComu"=>"exito",'resultado'=>$resultado,'correo'=>$correoOculto));
 		}

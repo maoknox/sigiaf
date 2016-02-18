@@ -145,7 +145,7 @@ class ConsultasGenerales extends CFormModel{
 		return $resConsulta;
 	}
 	public function conectaBDSinPdo(){
-		$pgConn = pg_connect('host=localhost port=5432 dbname=sigiaf user=sigiaf password=sigiaf2016') or die("Error al conectar a la base de datos");
+		$pgConn = pg_connect('host=localhost port=5433 dbname=sigiaf user=sigiaf password=sigiaf2016') or die("Error al conectar a la base de datos");
 		if($pgConn){
 			return $pgConn;
 		}
@@ -482,7 +482,7 @@ class ConsultasGenerales extends CFormModel{
 	}
 	public function consultaDatosAdol($numDocAdol){
 		$conect= Yii::app()->db;
-		$sqlConsultaAdol="select *,(apellido_1 || ' ' || apellido_2) as apellidos from adolescente as a left join forjar_adol as b on a.num_doc=b.num_doc 
+		$sqlConsultaAdol="select * from adolescente as a left join forjar_adol as b on a.num_doc=b.num_doc 
 			left join localizacion_viv as c on a.num_doc=c.num_doc
 			left join sgsss as d on d.num_doc=a.num_doc 
 			left join numero_carpeta as e on e.num_doc=a.num_doc 
@@ -679,7 +679,7 @@ class ConsultasGenerales extends CFormModel{
 		$conect=Yii::app()->db;
 		$sqlConsDocRem="select * from documento_cespa order by id_doccespa asc";
 		$consDocRem=$conect->createCommand($sqlConsDocRem);
-		$consDocRem->bindParam(":num_doc",$this->numDocAdol,PDO::PARAM_STR);
+		//$consDocRem->bindParam(":num_doc",$this->numDocAdol,PDO::PARAM_STR);
 		$readDocRem=$consDocRem->query();
 		$resDocRem=$readDocRem->readAll();
 		$readDocRem->close();
@@ -774,8 +774,7 @@ class ConsultasGenerales extends CFormModel{
 	public function consultarRol(){
 		$conect=Yii::app()->db;
 		$sqlConsRol="select * from rol order by nombre_rol asc";
-		$consRol=$conect->createCommand($sqlConsRol);
-		$consRol->bindParam(":num_doc",$numDocAdol);
+		$consRol=$conect->createCommand($sqlConsRol);		
 		$consRol->execute();
 		$readRol=$consRol->query();
 		$resRol=$readRol->readAll();
@@ -819,7 +818,6 @@ class ConsultasGenerales extends CFormModel{
 		$conect=Yii::app()->db;
 		$sqlConsProbAsoc="select * from problemas_asociados order by id_problema_asoc asc";
 		$consProbAsoc=$conect->createCommand($sqlConsProbAsoc);
-		$consProbAsoc->bindParam(":num_doc",$this->numDocAdol);
 		$readProbAsoc=$consProbAsoc->query();
 		$resProbAsoc=$readProbAsoc->readAll();
 		$readProbAsoc->close();
@@ -829,7 +827,6 @@ class ConsultasGenerales extends CFormModel{
 		$conect=Yii::app()->db;
 		$sqlConsAntFam="select * from antecedentes_familiares order by id_ant_fam asc";
 		$consAntFam=$conect->createCommand($sqlConsAntFam);
-		$consAntFam->bindParam(":num_doc",$this->numDocAdol);
 		$readAntFam=$consAntFam->query();
 		$resAntFam=$readAntFam->readAll();
 		$readAntFam->close();

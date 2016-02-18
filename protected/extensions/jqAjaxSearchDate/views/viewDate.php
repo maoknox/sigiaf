@@ -88,7 +88,7 @@ echo CHtml::submitButton('Cargar',array(
 <table style="width:100%;border-collapse:collapse" cellpadding="0px" cellspacing="0px" border="1px">
 	<tr>
     	<td style="border:1px solid #003;">
-        	Nombre: <?php echo $datosAdol["nombres"]." ".$datosAdol["apellidos"];?>
+        	Nombre: <?php echo $datosAdol["nombres"]." ".$datosAdol["apellido_1"]." ".$datosAdol["apellido_2"];?>
         </td>
         <td style="border:1px solid #003;">
         	Número de carpeta: <?php echo $datosAdol["id_numero_carpeta"];?>

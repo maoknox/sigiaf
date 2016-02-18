@@ -337,7 +337,7 @@ class ValoracionPsicologia extends CActiveRecord
 			if(empty($this->idTipoSancion)){$this->idTipoSancion=null;}
 			$queryCreaVincPrevSrpa=$conect->createCommand($sqlCreaVincPrevSrpa);
 			$queryCreaVincPrevSrpa->bindParam(':idValPsicol',$this->id_valoracion_psicol,PDO::PARAM_INT);
-			$queryCreaVincPrevSrpa->bindParam(':idTipoSanc',$this->idTipoSancion,PDO::PARAM_NULL);
+			$queryCreaVincPrevSrpa->bindParam(':idTipoSanc',$this->idTipoSancion);
 			$queryCreaVincPrevSrpa->bindParam(':idDelRc',$this->idDelRc,PDO::PARAM_INT);
 			$queryCreaVincPrevSrpa->bindParam(':medIntPrev',$this->medidaIntPrev,PDO::PARAM_BOOL);
 			$queryCreaVincPrevSrpa->bindParam(':sancImp',$this->sancImp,PDO::PARAM_BOOL);
@@ -378,7 +378,7 @@ class ValoracionPsicologia extends CActiveRecord
 			if($this->sancImp==="false"){$this->idTipoSancion=null;}
 			if(empty($this->idTipoSancion)){$this->idTipoSancion=null;}
 			$queryModVincPrevSrpa=$conect->createCommand($sqlModVincPrevSrpa);
-			$queryModVincPrevSrpa->bindParam(':idTipoSanc',$this->idTipoSancion,PDO::PARAM_NULL);
+			$queryModVincPrevSrpa->bindParam(':idTipoSanc',$this->idTipoSancion);
 			$queryModVincPrevSrpa->bindParam(':idDelRc',$this->idDelRc,PDO::PARAM_INT);
 			$queryModVincPrevSrpa->bindParam(':medIntPrev',$this->medidaIntPrev,PDO::PARAM_BOOL);
 			$queryModVincPrevSrpa->bindParam(':sancImp',$this->sancImp,PDO::PARAM_BOOL);
@@ -464,7 +464,7 @@ class ValoracionPsicologia extends CActiveRecord
 				where id_valoracion_psicol=:idValPsicol";
 			$modValPsicol=$conect->createCommand($sqlModValPsicol);
 			$modValPsicol->bindParam(':fecha',$this->fecha,PDO::PARAM_STR);
-			$modValPsicol->bindParam(':contVal',$this->contenidoValoracion,PDO::PARAM_NULL);
+			$modValPsicol->bindParam(':contVal',$this->contenidoValoracion);
 			$modValPsicol->bindParam(':idValPsicol',$this->id_valoracion_psicol,PDO::PARAM_INT);
 			$modValPsicol->execute();
 			$this->creaRegProfVal($this->id_valoracion_psicol,$accion);
@@ -501,8 +501,8 @@ class ValoracionPsicologia extends CActiveRecord
 				where id_valoracion_psicol=:idValPsicol and num_doc=:num_doc";
 			$modValPsicol=$conect->createCommand($sqlModValPsicol);
 			$modValPsicol->bindParam(':fecha',$this->fecha,PDO::PARAM_STR);
-			$modValPsicol->bindParam(':contVal',$this->contenidoValoracion,PDO::PARAM_NULL);
-			$modValPsicol->bindParam(':contVali',$this->contenidoValoracioni,PDO::PARAM_NULL);
+			$modValPsicol->bindParam(':contVal',$this->contenidoValoracion);
+			$modValPsicol->bindParam(':contVali',$this->contenidoValoracioni);
 			$modValPsicol->bindParam(':idValPsicol',$this->id_valoracion_psicol,PDO::PARAM_INT);
 			$modValPsicol->bindParam(':num_doc',$this->num_doc,PDO::PARAM_STR);
 			$modValPsicol->execute();

@@ -147,7 +147,7 @@ class Persona extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id_cedula' => 'Profesional',
+			'id_cedula' => 'Cédula',
 			'nombre_personal' => 'Nombres Persona',
 			'apellidos_personal' => 'Apellidos Persona',
 			'numero_tarjetaprof' => 'Numero Tarjetaprof',
@@ -344,7 +344,7 @@ class Persona extends CActiveRecord
 			$creaPersona->bindParam(":nombre_personal",$this->nombre_personal,PDO::PARAM_STR);
 			$creaPersona->bindParam(":apellidos_personal",$this->apellidos_personal,PDO::PARAM_STR);
 			$creaPersona->bindParam(":numero_tarjetaprof",$this->numero_tarjetaprof,PDO::PARAM_STR);
-			$creaPersona->bindParam(":correo_electronico",$this->correo_electronico,PDO::PARAM_NULL);
+			$creaPersona->bindParam(":correo_electronico",$this->correo_electronico);
 			$creaPersona->execute();
 			
 			$sqlCreaUsuario="insert into usuario (

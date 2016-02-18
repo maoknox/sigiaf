@@ -1,4 +1,6 @@
 <?php $this->widget('application.extensions.loading.LoadingWidget');?>
+<fieldset >
+<legend>Consulta información Judicial/Administrativa</legend>
 <?php
 $this->widget('application.extensions.jqAjaxSearch.AjaxSearch', 
     array('action'=>Yii::app()->createUrl('modIdenReg/identificacionRegistro/buscaAdolGen'), 
@@ -13,7 +15,7 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
 );
 ?>
 <?php if(!empty($numDocAdol)):?>
-    <fieldset >
+
     <?php
     $this->widget('zii.widgets.jui.CJuiTabs', array(
         'id'=>'article_tab',
@@ -34,5 +36,6 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
     )); 
     
     ?>
-    </fieldset>
+    
 <?php endif;?>
+</fieldset>

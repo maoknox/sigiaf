@@ -15,10 +15,7 @@
 	<div class="form-group">
         <div class="col-md-12">
        		<?php echo $formDiagnostico->labelEx($modeloValPsiq,'diagnostico_psiq',array('class'=>'control-label','for'=>'searchinput'));?>
-			<?php echo $formDiagnostico->textArea($modeloValPsiq,
-                'diagnostico_psiq',
-                array('class'=>'form-control'));
-            ?>
+        	<div class="cont-infoval"><?php echo $modeloValPsiq->diagnostico_psiq?></div>        												
             <?php echo $formDiagnostico->error($modeloValPsiq,'diagnostico_psiq',array('style' => 'color:#F00'));?>
    		</div>
 	</div>    
@@ -41,10 +38,7 @@
 	<div class="form-group">
         <div class="col-md-12">
        		<?php echo $formRecomendaciones->labelEx($modeloValPsiq,'recomend_psic',array('class'=>'control-label','for'=>'searchinput'));?>
-			<?php echo $formRecomendaciones->textArea($modeloValPsiq,
-                'recomend_psic',
-                array('class'=>'form-control'));
-            ?>
+        	<div class="cont-infoval"><?php echo $modeloValPsiq->recomend_psic?></div>        									
             <?php echo $formDiagnostico->error($modeloValPsiq,'recomend_psic',array('style' => 'color:#F00'));?>
         </div>
 	</div>  

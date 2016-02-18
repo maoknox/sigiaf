@@ -1767,7 +1767,7 @@ class IdentificacionRegistroController extends Controller
 				
 				//$resultado=$modeloInfJudAdmon->registraInfJudAdminAdol();
 				echo CJSON::encode(array("estadoComu"=>"exito",
-				'resultado'=>$resultado,
+				'resultado'=>'exito',
 				'msnError'=>CJavaScript::encode(CJavaScript::quote($modeloInfJudAdmon->mensajeErrorInfJud))));
 			}else{
 				echo CActiveForm::validate($modeloInfJudAdmon);

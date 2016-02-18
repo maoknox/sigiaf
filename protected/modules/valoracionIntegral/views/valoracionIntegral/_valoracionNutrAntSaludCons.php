@@ -135,7 +135,7 @@
 	<div id="divObsNacim" class="form-group"> 
     	<div class="col-md-12">
 			<?php echo $formularioObsNacim->labelEx($modeloValNutr,'observaciones_nacim',array('class'=>'control-label','for'=>'searchinput'));//'onblur'=>'js:enviaFormNutr("formularioHistVida","divObsNacim")'?>
-			<?php echo $formularioObsNacim->textArea($modeloValNutr,'observaciones_nacim',array('class'=>'form-control'));?>
+			<div class='cont-infoval'><?php echo $modeloValNutr->observaciones_nacim;?></div>									
         	<?php echo $formularioObsNacim->error($modeloValNutr,'observaciones_nacim',array('style' => 'color:#F00'));?>
     	</div>
     </div>
@@ -153,7 +153,7 @@
 	<div id="divPatologicos" class="form-group"> 
     	<div class="col-md-12">
 			<?php echo $formularioPatologicos->labelEx($modeloValNutr,'patologicos',array('class'=>'control-label','for'=>'searchinput'));//'onblur'=>'js:enviaFormNutr("formularioHistVida","divObsNacim")'?>
-			<?php echo $formularioPatologicos->textArea($modeloValNutr,'patologicos',array('class'=>'form-control'));?>
+			<div class='cont-infoval'><?php echo $modeloValNutr->patologicos;?></div>									
         	<?php echo $formularioPatologicos->error($modeloValNutr,'patologicos',array('style' => 'color:#F00'));?>
     	</div>
     </div>
@@ -171,7 +171,7 @@
 	<div id="divQuirurgicos" class="form-group"> 
     	<div class="col-md-12">
 			<?php echo $formularioQuirurgicos->labelEx($modeloValNutr,'quirurgicos',array('class'=>'control-label','for'=>'searchinput'));//'onblur'=>'js:enviaFormNutr("formularioHistVida","divObsNacim")'?>
-			<?php echo $formularioQuirurgicos->textArea($modeloValNutr,'quirurgicos',array('class'=>'form-control'));?>
+			<div class='cont-infoval'><?php echo $modeloValNutr->quirurgicos;?></div>									
         	<?php echo $formularioQuirurgicos->error($modeloValNutr,'quirurgicos',array('style' => 'color:#F00'));?>
     	</div>
     </div>    
@@ -189,7 +189,7 @@
     <div id="divHospitCausas" class="form-group"> 
     	<div class="col-md-12">
 			<?php echo $formularioHospitCausas->labelEx($modeloValNutr,'hospitaliz_causas',array('class'=>'control-label','for'=>'searchinput'));//'onblur'=>'js:enviaFormNutr("formularioHistVida","divObsNacim")'?>
-			<?php echo $formularioHospitCausas->textArea($modeloValNutr,'hospitaliz_causas',array('class'=>'form-control'));?>
+			<div class='cont-infoval'><?php echo $modeloValNutr->hospitaliz_causas;?></div>									
         	<?php echo $formularioHospitCausas->error($modeloValNutr,'hospitaliz_causas',array('style' => 'color:#F00'));?>
     	</div>
     </div>
@@ -207,7 +207,7 @@
     <div id="divAlergicos" class="form-group"> 
     	<div class="col-md-12">
 			<?php echo $formularioAlergicos->labelEx($modeloValNutr,'alergicos',array('class'=>'control-label','for'=>'searchinput'));//'onblur'=>'js:enviaFormNutr("formularioHistVida","divObsNacim")'?>
-			<?php echo $formularioAlergicos->textArea($modeloValNutr,'alergicos',array('class'=>'form-control'));?>
+			<div class='cont-infoval'><?php echo $modeloValNutr->alergicos;?></div>									
         	<?php echo $formularioAlergicos->error($modeloValNutr,'alergicos',array('style' => 'color:#F00'));?>
     	</div>
     </div>
@@ -225,7 +225,7 @@
     <div id="divToxicos" class="form-group"> 
     	<div class="col-md-12">
 			<?php echo $formularioAlergicos->labelEx($modeloValNutr,'toxicos',array('class'=>'control-label','for'=>'searchinput'));//'onblur'=>'js:enviaFormNutr("formularioHistVida","divObsNacim")'?>
-			<?php echo $formularioAlergicos->textArea($modeloValNutr,'toxicos',array('class'=>'form-control','onkeyup'=>'js:$("#divToxicos").addClass("has-warning");'));?>
+			<div class='cont-infoval'><?php echo $modeloValNutr->toxicos;?></div>									
         	<?php echo $formularioAlergicos->error($modeloValNutr,'toxicos',array('style' => 'color:#F00'));?>
     	</div>
     </div>
@@ -244,7 +244,7 @@
     <div id="divFamiliares" class="form-group"> 
     	<div class="col-md-12">
 			<?php echo $formularioFamiliares->labelEx($modeloValNutr,'familiares_nutr',array('class'=>'control-label','for'=>'searchinput'));//'onblur'=>'js:enviaFormNutr("formularioHistVida","divObsNacim")'?>
-			<?php echo $formularioFamiliares->textArea($modeloValNutr,'familiares_nutr',array('class'=>'form-control'));?>
+			<div class='cont-infoval'><?php echo $modeloValNutr->familiares_nutr;?></div>									
         	<?php echo $formularioFamiliares->error($modeloValNutr,'familiares_nutr',array('style' => 'color:#F00'));?>
     	</div>
     </div>
@@ -262,7 +262,7 @@
     <div id="divFOtrosAntNutr" class="form-group"> 
     	<div class="col-md-12">
 			<?php echo $formularioOtrosAntNutr->labelEx($modeloValNutr,'otros_nutr',array('class'=>'control-label','for'=>'searchinput'));//'onblur'=>'js:enviaFormNutr("formularioHistVida","divObsNacim")'?>
-			<?php echo $formularioOtrosAntNutr->textArea($modeloValNutr,'otros_nutr',array('class'=>'form-control'));?>
+			<div class='cont-infoval'><?php echo $modeloValNutr->otros_nutr;?></div>									
         	<?php echo $formularioOtrosAntNutr->error($modeloValNutr,'otros_nutr',array('style' => 'color:#F00'));?>
     	</div>
     </div>

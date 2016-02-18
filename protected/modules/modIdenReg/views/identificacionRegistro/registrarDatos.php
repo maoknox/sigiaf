@@ -1,5 +1,6 @@
 <?php $this->widget('application.extensions.loading.LoadingWidget');?>
 <fieldset >
+<legend>Registrar datos del adolescente</legend>
 <?php
 $this->widget('zii.widgets.jui.CJuiTabs', array(
 	'id'=>'article_tab',

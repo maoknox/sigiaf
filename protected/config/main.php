@@ -53,11 +53,11 @@ return array(
 			'class' => 'application.extensions.yii-mail-master.YiiMail',
 			'transportType'=>'smtp',
 			'transportOptions'=>array(
-				'host'=>'smtp.gmail.com',
+				'host'=>'smtp.gmail.com',				
 				'username'=>'soportecentroforjar@gmail.com',
 				'password'=>'SDIS_&%_1',
-				'port'=>'587 ',
-				//'encryption'=>'openssl',
+				'port'=>'465',
+				'encryption'=>'tls',
 			),
 				'viewPath' => 'application.views.mail',
 				'logging' => true,
@@ -96,7 +96,7 @@ return array(
 		
 		'db'=>array(
  	       'tablePrefix'=>'',
- 	       'connectionString' => 'pgsql:host=localhost;port=5432;dbname=sigiaf',
+ 	       'connectionString' => 'pgsql:host=localhost;port=5433;dbname=sigiaf',
  	       'username'=>'sigiaf',
  	       'password'=>'sigiaf2016',
  	       'charset'=>'UTF8',

@@ -1,4 +1,5 @@
 <?php $this->widget('application.extensions.loading.LoadingWidget');?>
+<div class="panel-heading color-sdis">Actualización del Plan de Atención Integral</div>
 <?php
 $this->widget('application.extensions.jqAjaxSearch.AjaxSearch', 
     array('action'=>Yii::app()->createUrl('valoracionIntegral/valoracionIntegral/buscaAdolGen'), 
@@ -103,7 +104,7 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
                                 <div class="panel-body">
                                     <div class="row">
                                         <div class="col-lg-3 text-center">
-                                            <img src="/login_sdis/public/img/logo.svg" />
+                                            <img src="<?php echo Yii::app()->baseUrl?>/images/centroForjar.png" />
                                         </div>
                                         <div class="col-lg-9 text-justify">
                                              El PAI actual no se ha cerrado para su modificación.  Nota: La actualización del PAI se podrá hacer una vez haya pasado el tiempo permitido de creación del PAI.
@@ -124,7 +125,7 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
                                 <div class="panel-body">
                                     <div class="row">
                                         <div class="col-lg-3 text-center">
-                                            <img src="/login_sdis/public/img/logo.svg" />
+                                            <img src="<?php echo Yii::app()->baseUrl?>/images/centroForjar.png" />
                                         </div>
                                         <div class="col-lg-9 text-justify">
                                             No se ha creado un PAI hasta el momento.  Vaya a menú-Plan de Atención Integral-Crear/Modificar PAI
@@ -146,7 +147,7 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
             <div class="panel-body">
                 <div class="row">
                     <div class="col-lg-3 text-center">
-                        <img src="/login_sdis/public/img/logo.svg" />
+                        <img src="<?php echo Yii::app()->baseUrl?>/images/centroForjar.png" />
                     </div>
                     <div class="col-lg-9 text-justify">
                         <?php echo Yii::app()->user->getFlash('verifEstadoAdolForjar'); ?>

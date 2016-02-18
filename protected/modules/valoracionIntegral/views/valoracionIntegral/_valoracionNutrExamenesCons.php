@@ -141,13 +141,7 @@
     </div>
     <div class="form-group">
         <div class="col-md-12">
-    
-			<?php echo $formEsquemaVac->textArea($modeloValNutr,
-                'obs_esquema_vac',
-                array('class'=>'form-control',
-                //'onblur'=>'js:enviaFormOpt("formEsquemaVac","fieldEsqVac")',
-                'onkeyup'=>'js:$("#fieldEsqVac").addClass("has-warning");'));
-            ?>
+			<div class='cont-infoval'><?php echo $modeloValNutr->obs_esquema_vac;?></div>												
             <?php echo $formEsquemaVac->error($modeloValNutr,'obs_esquema_vac',array('style' => 'color:#F00'));?>
         </div>
     </div>    
@@ -198,13 +192,7 @@
     </div>
     <div class="form-group">
     	<div class="col-md-12">
-			<?php echo $formControlCrecim->textArea($modeloValNutr,
-                'obs_crec_des',
-                array('class'=>'form-control',
-                //'onblur'=>'js:enviaFormOpt("formControlCrecim","fieldControlCrecim")',
-                'onkeyup'=>'js:$("#fieldControlCrecim").addClass("has-warning");'));
-            ?>
-            
+			<div class='cont-infoval'><?php echo $modeloValNutr->obs_crec_des;?></div>									
             <?php echo $formControlCrecim->error($modeloValNutr,'obs_crec_des',array('style' => 'color:#F00'));?>
     	</div>
     </div>
@@ -277,7 +265,7 @@
     ?>
 	<div id="divMedicamentos" class="form-group"> 
     	<div class="col-md-12">
-			<?php echo $formularioMedicamentos->textArea($modeloValNutr,'medicamentos_nutr',array('class'=>'form-control'));?>
+			<div class='cont-infoval'><?php echo $modeloValNutr->medicamentos_nutr;?></div>									
         	<?php echo $formularioMedicamentos->error($modeloValNutr,'medicamentos_nutr',array('style' => 'color:#F00'));?>
     	</div>
     </div>

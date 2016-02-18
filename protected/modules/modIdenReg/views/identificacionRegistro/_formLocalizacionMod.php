@@ -72,13 +72,6 @@
             <?php echo $formLoc->error($modeloTelefono,'tel_sec',array('style' => 'color:#F00'));?>
         </div>    
 	</div>
-	<div class="form-group">                                       
-	<?php echo $formLoc->labelEx($modeloTelefono,'celular',array('class'=>'col-md-4 control-label','for'=>'searchinput'));?>
-        <div class="col-md-4">
-			<?php echo $formLoc->textField($modeloTelefono,'celular',array('class'=>'form-control input-md'));?>
-            <?php echo $formLoc->error($modeloTelefono,'celular',array('style' => 'color:#F00'));?>
-        </div>    
-	</div>
     <hr />
      <div class="row">
 	<?php 

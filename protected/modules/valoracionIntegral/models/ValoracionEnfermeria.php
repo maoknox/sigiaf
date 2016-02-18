@@ -250,7 +250,7 @@ class ValoracionEnfermeria extends CActiveRecord
 				where id_valor_enf=:id_valor_enf";
 			$modValEnf=$conect->createCommand($sqlModValEnf);
 			$modValEnf->bindParam(':fecha',$this->fecha,PDO::PARAM_STR);
-			$modValEnf->bindParam(':contVal',$this->contenidoValoracion,PDO::PARAM_NULL);
+			$modValEnf->bindParam(':contVal',$this->contenidoValoracion);
 			$modValEnf->bindParam(':id_valor_enf',$this->id_valor_enf,PDO::PARAM_INT);
 			$modValEnf->execute();
 			$transaction->commit();
@@ -286,8 +286,8 @@ class ValoracionEnfermeria extends CActiveRecord
 				where id_valor_enf=:id_valor_enf and num_doc=:num_doc";
 			$modValEnf=$conect->createCommand($sqlModValEnf);
 			$modValEnf->bindParam(':fecha',$this->fecha,PDO::PARAM_STR);
-			$modValEnf->bindParam(':contVal',$this->contenidoValoracion,PDO::PARAM_NULL);
-			$modValEnf->bindParam(':contVali',$this->contenidoValoracioni,PDO::PARAM_NULL);
+			$modValEnf->bindParam(':contVal',$this->contenidoValoracion);
+			$modValEnf->bindParam(':contVali',$this->contenidoValoracioni);
 			$modValEnf->bindParam(':id_valor_enf',$this->id_valor_enf,PDO::PARAM_INT);
 			$modValEnf->bindParam(':num_doc',$this->num_doc,PDO::PARAM_STR);
 			$modValEnf->execute();

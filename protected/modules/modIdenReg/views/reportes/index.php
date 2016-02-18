@@ -1,6 +1,7 @@
+<fieldset>
+<legend><?php echo $nombreFormulario;?></legend>
 
 <?php
-echo $accion;
 $this->widget('application.extensions.jqAjaxSearch.AjaxSearch', 
     array('action'=>Yii::app()->createUrl('modIdenReg/identificacionRegistro/buscaAdolGen'), 
 		'target'=>'resultado', 
@@ -17,4 +18,4 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
 print_r($infJudicial);
 ?>
 
-
+</fieldset>

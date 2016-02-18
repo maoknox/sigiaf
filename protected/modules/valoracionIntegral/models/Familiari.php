@@ -157,7 +157,7 @@ class Familiar extends CActiveRecord
 			$creaAcud=$conect->createCommand($sqlCreaAcud);
 			$creaAcud->bindParam(':idTipoDoc',$this->id_tipo_doc,PDO::PARAM_INT);
 			$creaAcud->bindParam(':idParentesco',$this->id_parentesco,PDO::PARAM_INT);
-			$creaAcud->bindParam(':numDocFam',$this->num_doc_fam,PDO::PARAM_NULL);
+			$creaAcud->bindParam(':numDocFam',$this->num_doc_fam);
 			$creaAcud->bindParam(':nombresFamiliar',$this->nombres_familiar,PDO::PARAM_STR);
 			$creaAcud->bindParam(':apellidosFamiliar',$this->apellidos_familiar,PDO::PARAM_STR);
 			$read_IdFam=$creaAcud->query();
@@ -282,7 +282,7 @@ class Familiar extends CActiveRecord
 			$creaAcud=$conect->createCommand($sqlCreaAcud);
 			$creaAcud->bindParam(':idTipoDoc',$this->id_tipo_doc,PDO::PARAM_INT);
 			$creaAcud->bindParam(':idParentesco',$this->id_parentesco,PDO::PARAM_INT);
-			$creaAcud->bindParam(':numDocFam',$this->num_doc_fam,PDO::PARAM_NULL);
+			$creaAcud->bindParam(':numDocFam',$this->num_doc_fam);
 			$creaAcud->bindParam(':nombresFamiliar',$this->nombres_familiar,PDO::PARAM_STR);
 			$creaAcud->bindParam(':apellidosFamiliar',$this->apellidos_familiar,PDO::PARAM_STR);
 			$read_IdFam=$creaAcud->query();

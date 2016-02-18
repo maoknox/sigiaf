@@ -189,8 +189,8 @@ class Asistencia extends CActiveRecord
 			$fechaRegistro=$date.$milisec[1];
 			$regAsistencia=$conect->createCommand($sqlRegAsistencia);
 			$regAsistencia->bindParam(":id_asistencia",$fechaRegistro,PDO::PARAM_STR);
-			$regAsistencia->bindParam(":id_areapresencial",$this->id_areapresencial,PDO::PARAM_NULL);
-			$regAsistencia->bindParam(":id_areainteres",$this->id_areainteres,PDO::PARAM_NULL);
+			$regAsistencia->bindParam(":id_areapresencial",$this->id_areapresencial);
+			$regAsistencia->bindParam(":id_areainteres",$this->id_areainteres);
 			$regAsistencia->bindParam(":num_doc",$this->num_doc,PDO::PARAM_STR);
 			$regAsistencia->bindParam(":fecha_asistencia",$this->fecha_asistencia,PDO::PARAM_STR);
 			$regAsistencia->execute();
@@ -261,7 +261,7 @@ class Asistencia extends CActiveRecord
 		$readConsAreaIns=$consAreaIns->query();
 		while($resConsAreaIns=$readConsAreaIns->read()){
 			$areaPres.='<td rowspan="3" >'.$resConsAreaIns["area_interes"].'</td>';
-			$idAreaInsc[]=$resConsAreaIns["id_areainscr"];			
+			$idAreaInsc[]=$resConsAreaIns["id_areainteres"];			
 		}	
 		$readConsAreaIns->close();
 		//$tabSemana .="<tr>".$tabNomD."</tr>";
@@ -294,8 +294,11 @@ class Asistencia extends CActiveRecord
 			//'".$registroAdol[$contRegAd]["num_doc"].	
 			$repAsistAdol[$pk]=$registroAdol[$pk];
 		}*/
-		$fechaIni = "01/".$mes."/".$anio;
-		$fechaFin = $ultimo_dia."/".$mes."/".$anio;
+		//$fechaIni = "01/".$mes."/".$anio;
+		//$fechaFin = $ultimo_dia."/".$mes."/".$anio;
+		$fechaIni = $anio."-".$mes."-01";
+		$fechaFin = $anio."-".$mes."-".$ultimo_dia;
+
 		foreach($registroAdol as $pk=>$asistAdol){
 			$semana =1;
 			$dia = 1;
@@ -448,6 +451,12 @@ class Asistencia extends CActiveRecord
 		$readAdAsist->close();
 		$numAsistAint=0;
 		$numAsistDep=0;
+		if(!empty($resConsAdAsist)){
+			
+			
+		}
+		
+		
 		if(!empty($resConsAdAsist)){
 			foreach($resConsAdAsist as $asistAreaInsc){			
 				$areaInsc[$asistAreaInsc["id_areainteres"]]+=1;		

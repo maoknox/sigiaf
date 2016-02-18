@@ -195,15 +195,8 @@ echo Chtml::hiddenField('numSpaConsGen',$pk);
     </div>
     <div class="form-group">
     	<div class="col-md-12">
-
-	<?php echo $formPatCons->textArea($modeloValPsicol,
-		'patron_consumo_desc',
-		array('class'=>'form-control',
-		'onblur'=>'js:enviaFormOpt("formularioPatCons","btnFormPatCons")',
-		'onkeyup'=>'js:$("#btnFormPatCons").css("color","#F00")'));
-	?>
-    
-	<?php echo $formPatCons->error($modeloValPsicol,'patron_consumo_desc',array('style' => 'color:#F00'));?>
+        	<div class="cont-infoval"><?php echo $modeloValPsicol->patron_consumo_desc?></div>        												    
+			<?php echo $formPatCons->error($modeloValPsicol,'patron_consumo_desc',array('style' => 'color:#F00'));?>
     </div>
     </div>
     
@@ -241,15 +234,9 @@ echo Chtml::hiddenField('numSpaConsGen',$pk);
 </div>
     <div class="form-group">
     	<div class="col-md-12">
-	<?php echo $formExamenToxic->textArea($modeloValPsicol,
-		'resultado_examtox',
-		array('class'=>'form-control',
-		'onblur'=>'js:enviaFormOpt("formularioExamenToxic","btnFormExamenToxic")',
-		'onkeyup'=>'js:$("#btnFormExamenToxic").css("color","#F00")'));
-	?>
-    
-	<?php echo $formExamenToxic->error($modeloValPsicol,'resultado_examtox',array('style' => 'color:#F00'));?>
-    </div>
+           	<div class="cont-infoval"><?php echo $modeloValPsicol->resultado_examtox?></div>        												    	    
+			<?php echo $formExamenToxic->error($modeloValPsicol,'resultado_examtox',array('style' => 'color:#F00'));?>
+    	</div>
     </div>
 <?php $this->endWidget();?>
 <hr />
@@ -268,9 +255,7 @@ echo Chtml::hiddenField('numSpaConsGen',$pk);
     <div class="form-group">
     	<div class="col-md-12">
         	<?php echo $formUltEpCons->labelEx($modeloValPsicol,'ultimo_ep_cons',array('class'=>'control-label','for'=>'searchinput'));?>
-			<?php echo $formUltEpCons->textArea($modeloValPsicol,'ultimo_ep_cons',array('class'=>'form-control',
-            'onblur'=>'js:enviaForm("formularioUltEpCons","btnFormUltEpCons")',
-            'onkeyup'=>'js:$("#btnFormUltEpCons").css("color","#F00")'));?>
+           	<div class="cont-infoval"><?php echo $modeloValPsicol->ultimo_ep_cons?></div>        												    	    					
 			<?php echo $formUltEpCons->error($modeloValPsicol,'ultimo_ep_cons',array('style' => 'color:#F00'));?>
     	</div>
 	</div>
@@ -292,11 +277,7 @@ echo Chtml::hiddenField('numSpaConsGen',$pk);
     <div class="form-group">
     	<div class="col-md-12">
         	<?php echo $formIntPrevMCons->labelEx($modeloValPsicol,'interv_prev_spa',array('class'=>'control-label','for'=>'searchinput'));?>
-			<?php echo $formIntPrevMCons->textArea($modeloValPsicol,
-            'interv_prev_spa',
-            array('class'=>'form-control',
-            'onblur'=>'js:enviaForm("formularioIntPrevMCons","btnFormIntPrevMCons")',
-            'onkeyup'=>'js:$("#btnFormIntPrevMCons").css("color","#F00")'));?>
+           	<div class="cont-infoval"><?php echo $modeloValPsicol->interv_prev_spa?></div>        												    	    								
             <?php echo $formIntPrevMCons->error($modeloValPsicol,'btnFormIntPrevMCons',array('style' => 'color:#F00'));?>
    		</div>
     </div>

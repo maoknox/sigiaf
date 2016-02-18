@@ -9,6 +9,35 @@ div.cont-seg{
     outline: 1;
     box-shadow: inset 0 1px 1px rgba(0,0,0,0.075),0 0 1px rgba(131, 31, 71, 0.6);
 }
+div.cont-verder{
+	overflow-y:scroll;
+	height:50px;
+	padding:10px 10px 10px 10px; 
+	font-size:12px;
+	border-radius:4px;
+    border-color: #831F47;
+    outline: 1;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.075),0 0 1px rgba(131, 31, 71, 0.6);
+}
+div.cont-infoval{	
+	padding:10px 10px 10px 10px; 
+	font-size:12px;
+	border-radius:4px;
+    border-color: #831F47;
+    outline: 1;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.075),0 0 1px rgba(131, 31, 71, 0.6);
+}
+div.cont-infopai{	
+	padding:10px 10px 10px 10px; 
+	font-size:12px;
+	border-radius:4px;
+    border-color: #831F47;
+    outline: 1;
+	height:100px;
+	overflow-y:scroll;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.075),0 0 1px rgba(131, 31, 71, 0.6);
+}
+
 div.cont-f-seg{
 	overflow-y:scroll; 
 	height:200px;

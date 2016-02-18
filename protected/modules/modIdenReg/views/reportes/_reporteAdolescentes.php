@@ -154,6 +154,7 @@
 			$tabla.="<td>".$datosRemision["num_ingresos"]."</td>";
 			$tabla.="<td>".$datosRemision["fecha_vinc_forjar"]."</td>";
 			$idInstanciaDer=1;
+			$consultaDerechoAdolForjar="";
 			$consultaDerechoAdolForjar=$modeloVerifDerechos->findAll('num_doc=:numDoc and id_instanciader=:id_instanciader',
 				array(
 				':numDoc'=>$adolescente["num_doc"],
@@ -180,6 +181,7 @@
 			}
 
 			$idInstanciaDer=2;
+			$consultaDerechoAdolCespa="";
 			$consultaDerechoAdolCespa=$modeloVerifDerechos->findAll('num_doc=:numDoc and id_instanciader=:id_instanciader',
 				array(
 				':numDoc'=>$adolescente["num_doc"],

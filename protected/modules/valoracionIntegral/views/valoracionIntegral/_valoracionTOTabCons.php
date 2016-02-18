@@ -16,10 +16,7 @@
 	<div class="form-group">
         <div class="col-md-12">
 			<?php echo $formDesArOc->labelEx($modeloValTO,'desemp_area_ocup',array('class'=>'control-label','for'=>'searchinput'));?>
-            <?php echo $formDesArOc->textArea($modeloValTO,
-                'desemp_area_ocup',
-                array('class'=>'form-control'));
-            ?>
+			<div class="cont-infoval"><?php echo $modeloValTO->desemp_area_ocup?></div>											                    
             <?php echo $formDesArOc->error($modeloValTO,'desemp_area_ocup',array('style' => 'color:#F00'));?>
     	</div>
     </div>
@@ -93,13 +90,7 @@
 	<div class="form-group">
         <div class="col-md-12">
 			<?php echo $formularioDesLabTxt->labelEx($modeloValTO,'desemp_laboral',array('class'=>'control-label','for'=>'searchinput'));?> - Observaciones
-			<?php echo $formularioDesLabTxt->textArea($modeloValTO,
-                'desemp_laboral',
-                array('style'=>'width:99.5%;',
-                    'onblur'=>'js:enviaForm("formularioDesLabTxt","desempLaboralTxt")',
-                    'onkeyup'=>'js:$("#desempLaboralTxt").addClass("has-warning")'
-                ));
-            ?>
+			<div class="cont-infoval"><?php echo $modeloValTO->desemp_laboral?></div>											                    			
             <?php echo $formularioDesLabTxt->error($modeloValTO,'desemp_laboral',array('style' => 'color:#F00'));?>
         </div>    
     </div>
@@ -122,10 +113,7 @@
 	<div class="form-group">
         <div class="col-md-12">
 			<?php echo $formPatDes->labelEx($modeloValTO,'patron_desemp',array('class'=>'control-label','for'=>'searchinput'));?>
-			<?php echo $formPatDes->textArea($modeloValTO,
-                'patron_desemp',
-                array('style'=>'width:99.5%;'));
-            ?>
+			<div class="cont-infoval"><?php echo $modeloValTO->patron_desemp?></div>											                    						
             <?php echo $formPatDes->error($modeloValTO,'patron_desemp',array('style' => 'color:#F00'));?>
         </div>    
     </div>
@@ -148,10 +136,7 @@
 	<div class="form-group">
         <div class="col-md-12">
 			<?php echo $formIntExp->labelEx($modeloValTO,'interes_expect_ocup',array('class'=>'control-label','for'=>'searchinput'));?>
-			<?php echo $formIntExp->textArea($modeloValTO,
-                'interes_expect_ocup',
-                array('style'=>'width:99.5%;'));
-            ?>
+			<div class="cont-infoval"><?php echo $modeloValTO->interes_expect_ocup?></div>											                    									
             <?php echo $formIntExp->error($modeloValTO,'interes_expect_ocup',array('style' => 'color:#F00'));?>
     	</div>
     </div>
@@ -174,10 +159,7 @@
 	<div class="form-group">
         <div class="col-md-12">
 			<?php echo $formApHabDes->labelEx($modeloValTO,'aptit_habilid_destrezas',array('class'=>'control-label','for'=>'searchinput'));?>
-			<?php echo $formApHabDes->textArea($modeloValTO,
-                'aptit_habilid_destrezas',
-                array('style'=>'width:99.5%;'));
-            ?>
+			<div class="cont-infoval"><?php echo $modeloValTO->aptit_habilid_destrezas?></div>			
             <?php echo $formApHabDes->error($modeloValTO,'aptit_habilid_destrezas',array('style' => 'color:#F00'));?>
     	</div>
     </div>
@@ -200,10 +182,7 @@
 	<div class="form-group">
         <div class="col-md-12">
 			<?php echo $formUbArInt->labelEx($modeloValTO,'criterios_area_int',array('class'=>'control-label','for'=>'searchinput'));?>
-			<?php echo $formUbArInt->textArea($modeloValTO,
-                'criterios_area_int',
-                array('style'=>'width:99.5%;'));
-            ?>
+			<div class="cont-infoval"><?php echo $modeloValTO->criterios_area_int?></div>						
             <?php echo $formUbArInt->error($modeloValTO,'criterios_area_int',array('style' => 'color:#F00'));?>
     	</div>
     </div>

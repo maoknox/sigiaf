@@ -27,12 +27,7 @@
     </div>
     <div class="form-group">
     	<div class="col-md-12">
-    <?php echo $formEstVal->textArea($modeloValNutr,
-		'observ_estvalnutr',
-		array('class'=>'form-control',
-		'onblur'=>'js:validaDilValoracion("formularioEstVal","estadoVal")',
-		'onkeyup'=>'js:$("#estadoVal").addClass("has-warning");'));
-	?>    
+   		<div class='cont-infoval'><?php echo $modeloValNutr->observ_estvalpsicol;?></div>												   
 	<?php echo $formEstVal->error($modeloValNutr,'observ_estvalpsicol',array('style' => 'color:#F00'));?>
 </div>
     </div>

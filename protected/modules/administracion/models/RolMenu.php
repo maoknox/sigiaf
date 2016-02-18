@@ -100,4 +100,52 @@ class RolMenu extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+	/**
+	 * Returns the static model of the specified AR class.
+	 * Please note that you should have this exact method in all your CActiveRecord descendants!
+	 * @param array $readMenuRol.
+	 * @return $readMenuRol 
+	 */
+	public function consultaMenuRol(){
+		$conect=Yii::app()->db;
+		$sqlConsMenuRol="select id_menu from rol_menu where id_rol=:id_rol";
+		$consMenuRol=$conect->createCommand($sqlConsMenuRol);
+		$consMenuRol->bindParam(':id_rol',$this->id_rol);
+		$resConsMenuRol=$consMenuRol->query();
+		$readMenuRol=$resConsMenuRol->readAll();
+		$resConsMenuRol->close();
+		return $readMenuRol;				
+	}
+	public function limpiaMenuRol(){
+		$conect=Yii::app()->db;
+		$transaction=$conect->beginTransaction();
+		try{
+			$sqlDelMenuRol="delete from rol_menu where id_rol=:id_rol";
+			$delMenuRol=$conect->createCommand($sqlDelMenuRol);
+			$delMenuRol->bindParam(':id_rol',$this->id_rol);
+			$delMenuRol->execute();
+			$transaction->commit();
+			return "exito";
+		}
+		catch(CDbCommand $e){
+			$transaction->rollBack();
+			return $e;			
+		}
+	}
+	public function limpiaModuloRol(){
+		$conect=Yii::app()->db;
+		$transaction=$conect->beginTransaction();
+		try{
+			$sqlDelModuloRol="delete from rol_modulo where id_rol=:id_rol";
+			$delModuloRol=$conect->createCommand($sqlDelModuloRol);
+			$delModuloRol->bindParam(':id_rol',$this->id_rol);
+			$delModuloRol->execute();
+			$transaction->commit();
+			return "exito";
+		}
+		catch(CDbCommand $e){
+			$transaction->rollBack();
+			return $e;			
+		}
+	}
 }

@@ -12,7 +12,7 @@
 	<div id="divProcPadres" class="form-group">
     	<div class="col-sm-12">
             <?php echo $formularioConceptoNutr->labelEx($modeloValNutr,'concepto_nutr',array('class'=>'control-label','for'=>'searchinput'));//'onblur'=>'js:enviaFormNutr("formularioHistVida","divObsNacim")'?>
-			<?php echo $formularioConceptoNutr->textArea($modeloValNutr,'concepto_nutr',array('class'=>'form-control','onkeyup'=>'js:$("#formularioConceptoNutr").addClass("has-warning");'));?>
+			<div class='cont-infoval'><?php echo $modeloValNutr->concepto_nutr;?></div>												
         	<?php echo $formularioConceptoNutr->error($modeloValNutr,'concepto_nutr',array('style' => 'color:#F00'));?>
     	</div>
     </div>
@@ -31,7 +31,7 @@
 	<div id="divProcPadres" class="form-group">
     	<div class="col-sm-12">
             <?php echo $formularioEstratInterv->labelEx($modeloValNutr,'estrategia_intervencion',array('class'=>'control-label','for'=>'searchinput'));//'onblur'=>'js:enviaFormNutr("formularioHistVida","divObsNacim")'?>
-			<?php echo $formularioEstratInterv->textArea($modeloValNutr,'estrategia_intervencion',array('class'=>'form-control','onkeyup'=>'js:$("#formularioEstratInterv").addClass("has-warning");'));?>
+			<div class='cont-infoval'><?php echo $modeloValNutr->estrategia_intervencion;?></div>												
         	<?php echo $formularioEstratInterv->error($modeloValNutr,'estrategia_intervencion',array('style' => 'color:#F00'));?>
     	</div>
     </div>
@@ -50,7 +50,7 @@
 	<div id="divProcPadres" class="form-group">
     	<div class="col-sm-12">
             <?php echo $formularioObjAlimNutr->labelEx($modeloValNutr,'objetivo_aliment_nutr',array('class'=>'control-label','for'=>'searchinput'));//'onblur'=>'js:enviaFormNutr("formularioHistVida","divObsNacim")'?>
-			<?php echo $formularioObjAlimNutr->textArea($modeloValNutr,'objetivo_aliment_nutr',array('class'=>'form-control','onkeyup'=>'js:$("#formularioObjAlimNutr").addClass("has-warning");'));?>
+			<div class='cont-infoval'><?php echo $modeloValNutr->objetivo_aliment_nutr;?></div>												
         	<?php echo $formularioObjAlimNutr->error($modeloValNutr,'objetivo_aliment_nutr',array('style' => 'color:#F00'));?>
     	</div>
     </div>
@@ -69,7 +69,7 @@
 	<div id="divProcPadres" class="form-group">
     	<div class="col-sm-12">
             <?php echo $formularioDiagnClasifNutr->labelEx($modeloValNutr,'diagnostico_clasif_nutr',array('class'=>'control-label','for'=>'searchinput'));//'onblur'=>'js:enviaFormNutr("formularioHistVida","divObsNacim")'?>
-			<?php echo $formularioDiagnClasifNutr->textArea($modeloValNutr,'diagnostico_clasif_nutr',array('class'=>'form-control','onkeyup'=>'js:$("#formularioDiagnClasifNutr").addClass("has-warning");'));?>
+			<div class='cont-infoval'><?php echo $modeloValNutr->diagnostico_clasif_nutr;?></div>												
         	<?php echo $formularioDiagnClasifNutr->error($modeloValNutr,'diagnostico_clasif_nutr',array('style' => 'color:#F00'));?>
     	</div>
     </div>

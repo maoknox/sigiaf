@@ -15,10 +15,7 @@
     <div class="form-group">
     	<div class="col-md-12">
        		<?php echo $formPerfGV->labelEx($modelValTrSoc,'perfil_gener_vuln',array('class'=>'control-label','for'=>'searchinput'));?>
-			<?php echo $formPerfGV->textArea($modelValTrSoc,
-                'perfil_gener_vuln',
-                array('class'=>'form-control'));
-            ?>
+		 	<div class="cont-infoval"><?php echo $modelValTrSoc->perfil_gener_vuln?></div>								
             <?php echo $formPerfGV->error($modelValTrSoc,'perfil_gener_vuln',array('style' => 'color:#F00'));?>
    		</div>
     </div>
@@ -39,10 +36,7 @@
     <div class="form-group">
     	<div class="col-md-12">
        		<?php echo $formConcSoc->labelEx($modelValTrSoc,'concepto_social',array('class'=>'control-label','for'=>'searchinput'));?>
-			<?php echo $formConcSoc->textArea($modelValTrSoc,
-                'concepto_social',
-                array('class'=>'form-control'));
-            ?>
+		 	<div class="cont-infoval"><?php echo $modelValTrSoc->concepto_social?></div>								
             <?php echo $formConcSoc->error($modelValTrSoc,'concepto_social',array('style' => 'color:#F00'));?>
         </div>
     </div>
@@ -63,10 +57,7 @@
     <div class="form-group">
     	<div class="col-md-12">
        		<?php echo $formPrInt->labelEx($modelValTrSoc,'pry_pl_int_tsocial',array('class'=>'control-label','for'=>'searchinput'));?>
-			<?php echo $formPrInt->textArea($modelValTrSoc,
-                'pry_pl_int_tsocial',
-                array('class'=>'form-control'));
-            ?>
+		 	<div class="cont-infoval"><?php echo $modelValTrSoc->pry_pl_int_tsocial?></div>											
 			<?php echo $formPrInt->error($modelValTrSoc,'pry_pl_int_tsocial',array('style' => 'color:#F00'));?>
         </div>
     </div>

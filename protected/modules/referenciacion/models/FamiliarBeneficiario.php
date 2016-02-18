@@ -137,9 +137,9 @@ class FamiliarBeneficiario extends CActiveRecord
 			if(empty($this->apellidos_fam_ben)){$this->apellidos_fam_ben=null;}
 			$creaFamBen=$conect->createCommand($sqlCreaFamBen);
 			$creaFamBen->bindParam(':id_referenciacion',$this->id_referenciacion,PDO::PARAM_INT);
-			$creaFamBen->bindParam(':id_doc_fam_ben',$this->id_doc_fam_ben,PDO::PARAM_NULL);
-			$creaFamBen->bindParam(':nombres_fam_ben',$this->nombres_fam_ben,PDO::PARAM_NULL);
-			$creaFamBen->bindParam(':apellidos_fam_ben',$this->apellidos_fam_ben,PDO::PARAM_NULL);
+			$creaFamBen->bindParam(':id_doc_fam_ben',$this->id_doc_fam_ben);
+			$creaFamBen->bindParam(':nombres_fam_ben',$this->nombres_fam_ben);
+			$creaFamBen->bindParam(':apellidos_fam_ben',$this->apellidos_fam_ben);
 			$creaFamBen->execute();
 			$transaction->commit();
 			return "exito";

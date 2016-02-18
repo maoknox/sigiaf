@@ -183,11 +183,11 @@ class ComponenteDerecho extends CActiveRecord
 			$registraDerPai->bindParam(":id_derechocespa",$this->id_derechocespa,PDO::PARAM_INT);
 			$registraDerPai->bindParam(":id_pai",$this->id_pai,PDO::PARAM_INT);
 			$registraDerPai->bindParam(":num_doc",$this->num_doc,PDO::PARAM_STR);
-			$registraDerPai->bindParam(":derecho_compderecho",$this->derecho_compderecho,PDO::PARAM_NULL);
-			$registraDerPai->bindParam(":objetivo_compderecho",$this->objetivo_compderecho,PDO::PARAM_NULL);
-			$registraDerPai->bindParam(":actividades_compderecho",$this->actividades_compderecho,PDO::PARAM_NULL);
-			$registraDerPai->bindParam(":indicadores_compderecho",$this->indicadores_compderecho,PDO::PARAM_NULL);
-			$registraDerPai->bindParam(":responsable_compderecho",$this->responsable_compderecho,PDO::PARAM_NULL);
+			$registraDerPai->bindParam(":derecho_compderecho",$this->derecho_compderecho);
+			$registraDerPai->bindParam(":objetivo_compderecho",$this->objetivo_compderecho);
+			$registraDerPai->bindParam(":actividades_compderecho",$this->actividades_compderecho);
+			$registraDerPai->bindParam(":indicadores_compderecho",$this->indicadores_compderecho);
+			$registraDerPai->bindParam(":responsable_compderecho",$this->responsable_compderecho);
 			$registraDerPai->execute();
 			$transaction->commit();
 			$this->fecha_estab_compderecho=$fechaRegDerecho;

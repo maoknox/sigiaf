@@ -1,6 +1,6 @@
-
+<fieldset>
+<legend><?php echo $nombreFormulario;?></legend>
 <?php
-echo $accion;
 $this->widget('application.extensions.jqAjaxSearchDate.AjaxSearch', 
     array('action'=>Yii::app()->createUrl('modIdenReg/identificacionRegistro/buscaAdolGen'), 
 		'target'=>'resultado', 
@@ -27,7 +27,7 @@ $this->widget('application.extensions.jqAjaxSearchDate.AjaxSearch',
         <div class="panel-body">
             <div class="row">
                 <div class="col-lg-3 text-center">
-                    <img src="/login_sdis/public/img/logo.svg" />
+                    <img src="<?php echo Yii::app()->baseUrl?>/images/centroForjar.png" />
                 </div>
                 <div class="col-lg-9 text-justify">
                     <?php echo $mensaje;?>
@@ -39,3 +39,4 @@ $this->widget('application.extensions.jqAjaxSearchDate.AjaxSearch',
 
 	
 <?php endif?>
+</fieldset>

@@ -1,4 +1,5 @@
 <?php $this->widget('application.extensions.loading.LoadingWidget');?>
+<div class="panel-heading color-sdis">Valoración Enfermería</div><br /> 
 <?php
 $this->widget('application.extensions.jqAjaxSearch.AjaxSearch', 
     array('action'=>Yii::app()->createUrl('valoracionIntegral/valoracionIntegral/buscaAdolGen'), 

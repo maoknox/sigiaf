@@ -178,7 +178,7 @@
                             if(!empty($seguimientos)):?>
                                 <?php foreach($seguimientos as $pk=>$seguimiento):?>
                                     <?php $profSeg=$modeloSeguimiento->consultaProfSeg('true',$seguimiento["fecha_registro_seg"],$seguimiento["id_seguimientoadol"]);?>
-                                    <a name="<?php echo $pk;?>"><strong>Fecha del registro: <?php echo $seguimiento["fecha_registro_seg"] ?>||Fecha del seguimiento: <?php echo $seguimiento["fecha_seguimiento"] ?>
+                                    <a name="<?php echo $pk;?>"><strong>Fecha del seguimiento: <?php echo $seguimiento["fecha_seguimiento"] ?>
                                     || Nombre del profesional <?php echo $profSeg["nombrespersonal"]?> || Profesión: <?php echo $profSeg["nombre_rol"]?></strong></a><br />
                                     <?php 
 									$fechaComp=split(" ",$seguimiento["fecha_registro_seg"]);
@@ -194,6 +194,7 @@
                                         <?php $profSeg=$modeloSeguimiento->consultaProfSeg('false',$seguimiento["fecha_registro_seg"],$seguimiento["id_seguimientoadol"]);?>	
                                         <strong>Nombre del profesional <?php echo $profSeg["nombrespersonal"]?> || Profesión: <?php echo $profSeg["nombre_rol"]?></strong>
                                     <?php	endif;?>
+                                    <strong>Fecha del registro: <?php echo $seguimiento["fecha_registro_seg"] ?></strong>
                                     <hr />
                                 <?php endforeach;?>					
                             <?php endif;?>
@@ -203,7 +204,7 @@
                         <div class="cont-f-seg">
                             <?php if(!empty($seguimientos)):?>
                                 <?php foreach($seguimientos as $pk=>$seguimiento): ?>
-                                    <a href="#<?php echo $pk;?>">Fecha: <?php echo $pk."-".$seguimiento["fecha_registro_seg"] ?></a><br />
+                                    <a href="#<?php echo $pk;?>">Fecha: <?php echo $pk."-".$seguimiento["fecha_seguimiento"] ?></a><br />
                                 <?php endforeach;?>					
                             <?php endif;?>
                         </div>
