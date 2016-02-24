@@ -302,7 +302,8 @@ class Familiar extends CActiveRecord
 		$conect= Yii::app()->db;
 		$sqlConsOtrRef="select * from familiar_adolescente as a 
 			left join familiar as b on a.id_doc_familiar=b.id_doc_familiar 
-			where num_doc=:numDoc and otro_referente = 'true' ";
+			left join telefono as c on c.id_doc_familiar=a.id_doc_familiar
+			where a.num_doc=:numDoc and otro_referente = 'true' ";
 		$consOtrRef=$conect->createCommand($sqlConsOtrRef);
 		$consOtrRef->bindParam(':numDoc',$this->num_docAdolFam,PDO::PARAM_STR);
 		$readConsOtrRef=$consOtrRef->query();
@@ -484,6 +485,24 @@ class Familiar extends CActiveRecord
 			$registraAdolAcud->bindParam(':otro_referente',$otroReferente,PDO::PARAM_BOOL);
 			$registraAdolAcud->bindParam(':datos_compl_fam',$this->datos_compl_fam);
 			$registraAdolAcud->execute();
+			if(!empty($this->telefonoPrincipal)){
+				$sqlRegTelefono="insert into telefono (
+					id_telefono,
+					id_doc_familiar,
+					id_tipo_telefono,
+					telefono
+				) values(
+					default,
+					:id_doc_familiar,
+					1,
+					:telefono
+				)";
+				$creRegTelFam=$conect->createCommand($sqlRegTelefono);
+				$creRegTelFam->bindParam(":id_doc_familiar",$this->id_doc_familiar,PDO::PARAM_INT);
+				$creRegTelFam->bindParam(":telefono",$this->telefonoPrincipal,PDO::PARAM_STR);
+				$creRegTelFam->execute();				
+			}
+
 			$transaction->commit();
 			return "exito";
 		}

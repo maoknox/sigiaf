@@ -134,6 +134,9 @@
 										if(errorTel != "exito"){
 											errorTel="Aunque ha habido un error en el registro de los teléfonos del acudiente. El código del error es:" +errorTel;											
 										}
+										else{
+											errorTel="";
+										}
 										$("#MensajeFam").html("Se ha creado el registro del acudiente<br/>"+errorLoc+"<br/>"+errorTel);
 										$("#formularioAcudiente").find("input, textarea, button, select").attr("disabled",true);	
 										$("#formularioAcudiente").removeClass("unsavedForm");										

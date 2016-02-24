@@ -27,8 +27,8 @@
     </div>
     <div class="form-group">
     	<div class="col-md-12">
-   		<div class='cont-infoval'><?php echo $modeloValNutr->observ_estvalpsicol;?></div>												   
-	<?php echo $formEstVal->error($modeloValNutr,'observ_estvalpsicol',array('style' => 'color:#F00'));?>
+   		<div class='cont-infoval'><?php echo $modeloValNutr->observ_estvalnutr;?></div>												   
+	<?php echo $formEstVal->error($modeloValNutr,'observ_estvalnutr',array('style' => 'color:#F00'));?>
 </div>
     </div>
 <?php $this->endWidget();?>

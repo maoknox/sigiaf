@@ -33,7 +33,7 @@
 		<label for="DerechoAdol_id_derechocespa_obs_<?php echo $pk;?>">Seleccione si cumple</label><br />
     <hr>
   	<div class="row" style="width:90%; text-align:left">
-    <?php echo $formAdolDerechos->dropDownList($modeloVerifDerechos,'situacionesRiesgos',CHtml::listData($proteccion,'id_sit_riesgo', 'sit_riesgo'), array('multiple'=>true,'disabled'=>false,'style'=>'text-align:left','class'=>'selectpicker form-control','data-hide-disabled'=>'true','data-live-search'=>'true')); ?></br>
+    <?php echo $formAdolDerechos->dropDownList($modeloVerifDerechos,'situacionesRiesgos',CHtml::listData($proteccion,'id_sit_riesgo', 'sit_riesgo'), array('multiple'=>true,'style'=>'text-align:left','class'=>'selectpicker form-control','data-hide-disabled'=>'true','data-live-search'=>'true')); ?></br>
     <?php echo $formAdolDerechos->error($modeloVerifDerechos,'situacionesRiesgos',array('style' => 'color:#F00')); ?>
 	</div>
     </td>
@@ -51,8 +51,8 @@
 		<input id="DerechoAdol_id_derechocespa_<?php echo $pk;?>" onclick="javascript:habilitaAltPart(this);" type="checkbox" name="DerechoAdol[id_derechocespa][]" value="<?php echo $derecho["id_derechocespa"];?>">
 		<label for="DerechoAdol_id_derechocespa_obs_<?php echo $pk;?>">Seleccione si cumple</label><br />
 		<hr />
-    	<div class="row" style="width:90%;text-align:left"">
-    	<?php echo $formAdolDerechos->dropDownList($modeloVerifDerechos,'alternativasParticipacions',CHtml::listData($participacion,'id_alternativaproc', 'alternativaproc'), array('multiple'=>true,'disabled'=>false,'class'=>'selectpicker form-control','data-hide-disabled'=>'true','data-live-search'=>'true')); ?></br>
+    	<div class="row" style="width:90%;text-align:left">
+    	<?php echo $formAdolDerechos->dropDownList($modeloVerifDerechos,'alternativasParticipacions',CHtml::listData($participacion,'id_alternativaproc', 'alternativaproc'), array('multiple'=>true,'class'=>'selectpicker form-control','data-hide-disabled'=>'true','data-live-search'=>'true')); ?></br>
     	<?php echo $formAdolDerechos->error($modeloVerifDerechos,'alternativasParticipacions',array('style' => 'color:#F00')); ?>
 		</div>
     </td>

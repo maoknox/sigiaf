@@ -1,4 +1,4 @@
-<?
+<?php
 	if(!empty($id_cedula)){?>
 		Asociar Sede a Usuariosss
 	<?php 

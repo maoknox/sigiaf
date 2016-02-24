@@ -94,7 +94,12 @@ Yii::app()->getClientScript()->registerScript('scriptValPsiq','
 			dirtyForm.addClass("unsavedForm");
 		});
 	});	
-		function enviaForm(nombreForm,btnForm){
+	function enviaForm(nombreForm,btnForm){
+		if($("#"+nombreForm+" textarea.form-control:first").val().length==0){
+			jAlert("El campo no puede estar vacío");
+			 $("#"+nombreForm).removeClass("unsavedForm");								
+			return;	
+		}
 			$.ajax({
 				url: "modificaValoracionPsiq",
 				data:$("#"+nombreForm).serialize()+"&id_val_psiquiatria="+$("#id_val_psiquiatria").val()+"&num_doc="+$("#num_doc").val(),

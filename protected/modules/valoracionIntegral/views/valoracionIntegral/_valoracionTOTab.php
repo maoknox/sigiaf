@@ -71,7 +71,7 @@
                         array(
                             'value'=>$tipoTrabajadorVal["id_tipo_trab"],
                             'id'=>'ValoracionTeo_id_tipo_trab_'.$tipoTrabajadorVal["id_tipo_trab"],
-                            'onclick'=>'js:$("#desempLaboral").addClass("has-warning");enviaFormOpt("formularioDesLab","desempLaboral");'))."".$tipoTrabajadorVal["tipo_trab"]."<br/>";
+                            'onclick'=>'js:$("#desempLaboral").addClass("has-warning");enviaFormOptLab("formularioDesLab","desempLaboral");'))."".$tipoTrabajadorVal["tipo_trab"]."<br/>";
                     $selOpt=false;
                 }
             ?>
@@ -87,7 +87,7 @@
                         array(
                             'value'=>$sectorLaboralVal["id_sector_lab"],
                             'id'=>'ValoracionTeo_id_sector_lab_'.$sectorLaboralVal["id_sector_lab"],
-                            'onclick'=>'js:$("#desempLaboral").addClass("has-warning");enviaFormOpt("formularioDesLab","desempLaboral");'))."".$sectorLaboralVal["sector_lab"]."<br/>";
+                            'onclick'=>'js:$("#desempLaboral").addClass("has-warning");enviaFormOptLab("formularioDesLab","desempLaboral");'))."".$sectorLaboralVal["sector_lab"]."<br/>";
                     $selOpt=false;
                 }
             ?>
@@ -99,7 +99,7 @@
 			<?php
                 $boton=CHtml::Button (
                     'Registrar',   
-                    array('id'=>'btnFormDesLab','class'=>'btn btn-default btn-sdis','name'=>'btnFormDesLab','onclick'=>'js:enviaFormOpt("formularioDesLab","desempLaboral")')
+                    array('id'=>'btnFormDesLab','class'=>'btn btn-default btn-sdis','name'=>'btnFormDesLab','onclick'=>'js:enviaFormOptLab("formularioDesLab","desempLaboral")')
                 );
             ?>
             <?php echo $boton; //CHtml::submitButton('Crear');?>
@@ -326,7 +326,12 @@ Yii::app()->getClientScript()->registerScript('scriptValTO','
 			dirtyForm.addClass("unsavedForm");
 		});
 	});	
-		function enviaForm(nombreForm,btnForm){
+	function enviaForm(nombreForm,btnForm){
+		if($("#"+nombreForm+" textarea:first").val().length==0){
+			jAlert("El campo no puede estar vacío");
+			 $("#"+nombreForm).removeClass("unsavedForm");								
+			return;	
+		}
 			$.ajax({
 				url: "modificaValoracionTO",
 				data:$("#"+nombreForm).serialize()+"&id_valor_teo="+$("#id_valor_teo").val()+"&num_doc="+$("#num_doc").val(),
@@ -372,6 +377,80 @@ Yii::app()->getClientScript()->registerScript('scriptValTO','
 			$("[data-toggle=\"tooltip\"]").tooltip();
 		});
 	function enviaFormOpt(nombreForm,btnForm){
+		var nameInput=$("#"+nombreForm+" input:first").attr("name");
+		//jAlert($("#"+nombreForm+" input:radio:checked").val());return;
+		if(!$("#"+nombreForm+" input:radio:checked").is(":empty")){
+			if($("#"+nombreForm+" textarea:first").val().length==0){
+				jAlert("El campo no puede estar en blanco");return;
+				$("#"+nombreForm).removeClass("unsavedForm");
+			}
+			else{
+				jAlert("Debe seleccionar una opción");return;
+				$("#"+nombreForm).removeClass("unsavedForm");
+			}
+		}
+		if($("#"+nombreForm+" textarea:first").val().length==0){
+			var valPas="";
+			if(nameInput=="ValoracionTeo[id_estado_val]" && $("#"+nombreForm+" input:radio:checked").val()==1){
+				valPas=false;
+			}
+			else{
+				valPas=true
+			}
+			if(valPas){
+				jAlert("Debe realizar una justificación de la selección de la opción");
+				$("#"+nombreForm).removeClass("unsavedForm");								
+				return;	
+			}
+		}
+	$.ajax({
+		url: "modificaValoracionTOOpt",
+		data:$("#"+nombreForm).serialize()+"&id_valor_teo="+$("#id_valor_teo").val()+"&num_doc="+$("#num_doc").val(),
+		dataType:"json",
+		type: "post",
+		beforeSend:function (){Loading.show();},
+		success: function(datos){
+			Loading.hide();
+			if(datos.estadoComu=="exito"){
+				
+				if(datos.resultado=="\'exito\'"){
+					$("#"+nombreForm).removeClass("unsavedForm");
+					$("#"+btnForm).removeClass("has-warning");
+					$("#Mensaje").text("exito");
+				}
+				else{
+					$("#Mensaje").text("Error en la creación del registro.  Motivo "+datos.resultado);
+				}
+			}
+			else{
+				$("#Mensaje").text("no exito");
+			}
+		},
+		error:function (xhr, ajaxOptions, thrownError){
+			Loading.hide();
+			//0 para error en comunicación
+			//200 error en lenguaje o motor de base de datos
+			//500 Internal server error
+			if(xhr.status==0){
+				$("#Mensaje").text("Se ha perdido la cumunicación con el servidor.  Espere unos instantes y vuelva a intentarlo. <br/> Si el problema persiste comuníquese con el área encargada del Sistema");
+			}
+			else{
+				if(xhr.status==500){
+					$("#Mensaje").text("Hay un error en el servidor del Sistema de información. Comuníquese con el área encargada del Sistema de información");
+				}
+				else{
+					$("#Mensaje").text("No se ha creado el registro del adolescente debido al siguiente error \n"+xhr.responseText+" Comuníquese con el ingeniero encargado");
+				}	
+			}	
+		}
+	});
+}		
+	function enviaFormOptLab(nombreForm,btnForm){
+		var nameInput=$("#"+nombreForm+" input:first").attr("name");
+		//jAlert($("#"+nombreForm+" input:radio:checked").val());return;
+		if(!$("#"+nombreForm+" input:radio:checked").is(":empty")){
+			jAlert("Debe seleccionar una opción");
+		}
 	$.ajax({
 		url: "modificaValoracionTOOpt",
 		data:$("#"+nombreForm).serialize()+"&id_valor_teo="+$("#id_valor_teo").val()+"&num_doc="+$("#num_doc").val(),

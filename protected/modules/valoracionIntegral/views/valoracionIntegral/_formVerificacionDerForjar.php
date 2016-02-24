@@ -123,10 +123,11 @@ $boton=CHtml::ajaxSubmitButton (
 								Loading.hide();		
 								if(datosVerifDer.estadoComu=="exito"){
 									if(datosVerifDer.resultado=="exito"){
-										$("#MensajeVerifDer").text("Se ha creado el registro de la verificación de derechos del Cespa");	
+										$("#MensajeVerifDer").text("Se ha creado el registro de la verificación de derechos");	
 										$("#formularioVerifDer #formularioVerifDer_es_").html("");                                                    
 										$("#formularioVerifDer #formularioVerifDer_es_").hide();
 										$("#formularioVerifDer").find("input, textarea, button, select").attr("disabled",true);
+										$("#formularioVerifDer").removeClass("unsavedForm");                                                    
 									}
 									else{
 										$("#MensajeVerifDer").text("Ha habido un error en la creación del registro. Código del error: "+datosVerifDer.msnError.errorInfo);
@@ -203,7 +204,26 @@ Yii::app()->getClientScript()->registerScript('prepFormDerechoCespa','
 			$("#btnFormVerifDer").hide();
 			$("#formularioVerifDer").find("input, textarea, button, select").attr("disabled",true);
 		}
+		
+		
 	'
 ,CClientScript::POS_END);
  ?>
+ <?php Yii::app()->getClientScript()->registerScript('scriptRegistraDatos','
+$(document).ready(function(){
+	$("#formularioVerifDer").find(":input").change(function(){
+		var dirtyForm = $(this).parents("form");
+		// change form status to dirty
+		dirtyForm.addClass("unsavedForm");
+	});
+});	
+var campoText=0;
+$(window).bind("beforeunload", function(){
+	if($(".unsavedForm").size()){
+		return "Aún no ha guardado cambios.  Los perderá si abandona.";
+	}
+});'
+,CClientScript::POS_END);
+?>
+
  

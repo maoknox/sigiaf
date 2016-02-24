@@ -413,6 +413,11 @@ Yii::app()->getClientScript()->registerScript('scriptValNutr_1','
 	});	
 	function enviaFormNutr(nombreForm,divGr){
 		//jAlert($("#"+nombreForm).serialize()+"&idValNutr="+$("#idValNutr").val()+"&numDocAdolValPsicol="+$("#num_doc").val());return;
+		if($("#"+nombreForm+" textarea:first").val().length==0){
+			jAlert("El campo no puede estar vacío");
+			 $("#"+nombreForm).removeClass("unsavedForm");								
+			return;	
+		}
 		$.ajax({
 			url: "registraCampoTextoValNutr",
 			data:$("#"+nombreForm).serialize()+"&idValNutr="+$("#idValNutr").val()+"&numDocAdolValNutr="+$("#num_doc").val(),

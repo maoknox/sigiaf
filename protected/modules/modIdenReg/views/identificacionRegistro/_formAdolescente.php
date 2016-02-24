@@ -214,6 +214,7 @@
 									errores+="</ul>";
 									$("#formularioAdol #formularioAdol_es_").html(errores);                                                    
 									$("#formularioAdol #formularioAdol_es_").show(); 
+									jAlert(errores);
 								}
 								
 							}',

@@ -243,6 +243,11 @@ Yii::app()->getClientScript()->registerScript('scriptValpsic_1','
 });});	
 
 	function enviaForm(nombreForm,divGr,campo){
+		if($("#"+nombreForm+" textarea.form-control:first").val().length==0){
+			jAlert("El campo no puede estar vacío");
+			 $("#"+nombreForm).removeClass("unsavedForm");								
+			return;	
+		}
 			$.ajax({
 				url: "modificaValoracionPsicol",
 				data:$("#"+nombreForm).serialize()+"&idValPsicol="+$("#idValPsicol").val()+"&numDocAdolValPsicol="+$("#numDocAdolValPsicol").val(),

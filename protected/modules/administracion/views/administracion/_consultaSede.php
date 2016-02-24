@@ -7,7 +7,7 @@
         </tr>
     </thead>
  	<tbody>
-<?
+<?php
 //echo "<pre>";
 //print_r($sedes);
 

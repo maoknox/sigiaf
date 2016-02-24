@@ -196,11 +196,22 @@ Yii::app()->getClientScript()->registerScript('scripValTrSoc_2','
 		var id_municipio=$("#mun_es_adol_"+numEscAdol+" option:selected").val();
 		var id_jornada_educ=$("#jor_es_adol_"+numEscAdol+" option:selected").val();
 		if(!/^[0-9]*$/.test(anio_escolaridad)){
-			alert("debe digitar solo números en la fecha");
+			jAlert("debe digitar solo números en la fecha","Mensaje");
 			return;
 		}
+		var fecha = new Date();
+		var anio = fecha.getFullYear();
+		var anioIni=fecha.getFullYear()-18;
+		if(anio_escolaridad>anio){
+			jAlert("La fecha no debe ser mayor al año actual","Mensaje");
+			return;			
+		}
+		if(anio_escolaridad<anioIni){
+			jAlert("La fecha no es válida","Mensaje");
+			return;			
+		}
 		if(id_nivel_educ.length==0 || anio_escolaridad.length==0 || instituto_escolaridad.length==0 ||  id_municipio.length==0 ||  id_jornada_educ.length==0){
-			alert("Faltan por diligenciar datos");	
+			jAlert("Faltan por diligenciar datos","Mensaje");	
 			return;
 		}
 		var datos="id_nivel_educ="+id_nivel_educ+"&anio_escolaridad="+anio_escolaridad+"&instituto_escolaridad="+instituto_escolaridad+"&id_municipio="+id_municipio;

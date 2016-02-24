@@ -260,11 +260,18 @@ class IdentificacionRegistroController extends Controller
 					$modeloLocalizacion->id_doc_familiar=$modeloAcudiente->id_doc_familiar;
 					$modeloTelefono->id_doc_familiar=$modeloAcudiente->id_doc_familiar;
 					$modeloLocalizacion->registraLocAcudiente();
-					if(!empty($modeloTelefono->telefono)){$modeloTelefono->registraTelefonoAcud(1,$modeloTelefono->telefono);}
+					if(!empty($modeloTelefono->telefono)){$modeloTelefono->registraTelefonoAcud(1,$modeloTelefono->telefono);
+						$msnI=$modeloTelefono->mensajeErrorTel;;
+					}
 					if(!empty($modeloTelefono->tel_sec)){$modeloTelefono->registraTelefonoAcud(2,$modeloTelefono->tel_sec);
-						$modeloTelefono->mensajeErrorTel.=$modeloTelefono->mensajeErrorTel;}
+						$msnII=$modeloTelefono->mensajeErrorTel;}
 					if(!empty($modeloTelefono->celular)){$modeloTelefono->registraTelefonoAcud(3,$modeloTelefono->celular);
-						$modeloTelefono->mensajeErrorTel.=$modeloTelefono->mensajeErrorTel;}
+						$msnIII=$modeloTelefono->mensajeErrorTel.=$modeloTelefono->mensajeErrorTel;
+					}
+					if($msnI=='exito' && $msnII=='exito' && $msnIII=='exito'){
+						$modeloTelefono->mensajeErrorTel='exito';
+						
+					}
 				}
 				echo CJSON::encode(array("estadoComu"=>"exito",'resultado'=>$resultado,'msnError'=>$modeloAcudiente->mensajeErrorAcud,'mensajeErrorTel'=>$modeloTelefono->mensajeErrorTel,'mensajeErrorLocAcud'=>$modeloLocalizacion->mensajeErrorLocAcud));
 			}else{

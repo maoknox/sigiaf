@@ -1,8 +1,9 @@
 <fieldset>  
     <legend>Vincular/Desvincular Sedes</legend>
        
+</fieldset>
 
-<?
+<?php
 	if(!empty($id_cedula)){?>
 		 Nombre funcionario:<strong> <?php echo $persona['nombre_personal']." ".$persona['apellidos_personal'];?></strong>
 		<?php $modeloCForjarPersonal->id_cedula=$id_cedula;
@@ -183,5 +184,3 @@
 	}
 	
 ?>
-</fieldset>
-

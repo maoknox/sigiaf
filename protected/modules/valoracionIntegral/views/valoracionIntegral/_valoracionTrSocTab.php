@@ -291,6 +291,7 @@ else{
     <td style=" border:1px solid #000;width:15%">Apellidos</td>
     <td style=" border:1px solid #000;width:10%">Parentesco</td>
     <td style=" border:1px solid #000;width:10%">Dirección</td>
+    <td style=" border:1px solid #000;width:10%">Teléfono</td>    
     <td style=" border:1px solid #000;width:10%"></td>
 </tr>
 <tr>
@@ -314,6 +315,14 @@ else{
 		echo $formOtrRef->textField($modeloFamiliar,'datos_compl_fam');
 		echo $formOtrRef->error($modeloFamiliar,'datos_compl_fam',array('style' => 'color:#F00'));?>
     </td>
+    <td style=" border:1px solid #000;width:10%">
+		<?php						
+            $modeloTelefono->idFamiliar=$modeloFamiliar->id_doc_familiar;
+            $telefonoFam=$modeloTelefono->consultaTelFamiliar(); 
+            echo CHtml::textField('telefonoOtrRef',$telefonoFam["telefono"],array('style'=>'width:90%')); 
+        ?>                    
+    </td>
+
     <td>
 		<?php		
 		echo $formOtrRef->hiddenField($modeloFamiliar,'id_doc_familiar');
@@ -698,6 +707,11 @@ Yii::app()->getClientScript()->registerScript('scripValTrSoc_1','
 		});
 	});
 	function enviaForm(nombreForm,btnForm){
+		if($("#"+nombreForm+" textarea.form-control:first").val().length==0){
+			jAlert("El campo no puede estar vacío");
+			 $("#"+nombreForm).removeClass("unsavedForm");								
+			return;	
+		}
 		$.ajax({
 			url: "modificaValoracionTrSoc",
 			data:$("#"+nombreForm).serialize()+"&idValTrSoc="+$("#idValTrSoc").val()+"&numDocAdolValTrSoc="+$("#numDocAdolValTrSoc").val(),

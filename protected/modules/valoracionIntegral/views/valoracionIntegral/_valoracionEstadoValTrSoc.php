@@ -116,6 +116,28 @@ function validaDilValoracion(nombreForm,btnForm){//coment: función ajax que lla
 }
 
 function enviaFormOpt(nombreForm,btnForm){
+		//alert($("#numDocAdolValPsicol").val());return;
+	var nameInput=$("#"+nombreForm+" input:first").attr("name");
+		//jAlert($("#"+nombreForm+" input:radio:checked").val());return;
+		if(!$("#"+nombreForm+" input:radio:checked").is(":empty")){
+			jAlert("Debe seleccionar una opción");return;
+			$("#"+nombreForm).removeClass("unsavedForm");
+		}
+		if($("#"+nombreForm+" textarea.form-control:first").val().length==0){
+			var valPas="";
+			if(nameInput=="ValoracionTrabajoSocial[id_estado_val]" && $("#"+nombreForm+" input:radio:checked").val()==1){
+				valPas=false;
+			}
+			else{
+				valPas=true
+			}
+			if(valPas){
+				jAlert("Debe realizar una justificación de la selección de la opción");
+				$("#"+nombreForm).removeClass("unsavedForm");								
+				return;	
+			}
+		}
+
 	$.ajax({
 		url: "modificaValoracionTrSocOpt",
 		data:$("#"+nombreForm).serialize()+"&idValTrSoc="+$("#idValTrSoc").val()+"&numDocAdolValTrSoc="+$("#numDocAdolValTrSoc").val(),

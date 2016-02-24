@@ -1662,13 +1662,14 @@ class ValoracionIntegralController extends Controller{
 	public function actionCreaOtrRef(){
 		$controlAcceso=new ControlAcceso();
 		$controlAcceso->accion="valoracionTrSocForm";
-		$permiso=$controlAcceso->controlAccesoAcciones();
+		$permiso=$controlAcceso->controlAccesoAcciones();		
 		if($permiso["acceso_rolmenu"]==1){
 			$dataInput=Yii::app()->input->post();
 			$modeloFamiliar=new Familiar();
 			$modeloFamiliar->attributes=$dataInput["Familiar"];	
 			$modeloFamiliar->datos_compl_fam=$dataInput["Familiar"]["datos_compl_fam"];
 			$modeloFamiliar->numDocAdol=$dataInput["numDocAdol"];
+			$modeloFamiliar->telefonoPrincipal=$dataInput["telefonoOtrRef"];
 			if($modeloFamiliar->validate()){
 				$resultado=$modeloFamiliar->creaOtrRef();
 				echo CJSON::encode(array("estadoComu"=>"exito",'resultado'=>CJavaScript::encode(CJavaScript::quote($resultado))));
@@ -1702,6 +1703,7 @@ class ValoracionIntegralController extends Controller{
 			$modeloFamiliar->datos_compl_fam=$dataInput["Familiar"]["datos_compl_fam"];
 			$modeloFamiliar->numDocAdol=$dataInput["numDocAdol"];
 			$modeloFamiliar->num_docAdolFam=$dataInput["numDocAdol"];
+			$modeloFamiliar->telefonoPrincipal=$dataInput["telefonoOtrRef"];
 			if($modeloFamiliar->validate()){
 				$datosOtrRef=$modeloFamiliar->consultaOtrRef();
 				if($modeloFamiliar->nombres_familiar!=$datosOtrRef["nombres_familiar"]){
@@ -1728,7 +1730,9 @@ class ValoracionIntegralController extends Controller{
 					$modeloFamiliar->tipoDato=PDO::PARAM_STR;
 					$resultado=$modeloFamiliar->modificaRegFamAdol();				
 				}
-	
+				if($modeloFamiliar->telefonoPrincipal!=$datosOtrRef["telefono"]){				
+					$resultado=$modeloFamiliar->modificaTelFam();				
+				}
 				//$resultado=$modeloFamiliar->creaOtrRef();
 				echo CJSON::encode(array("estadoComu"=>"exito",'resultado'=>CJavaScript::encode(CJavaScript::quote($resultado))));
 			}

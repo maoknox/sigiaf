@@ -114,6 +114,32 @@ function validaDilValoracion(nombreForm,btnForm){//coment: función ajax que lla
 
 
 function enviaFormOpt(nombreForm,btnForm){
+	var nameInput=$("#"+nombreForm+" input:first").attr("name");
+		//jAlert($("#"+nombreForm+" input:radio:checked").val());return;
+		if(!$("#"+nombreForm+" input:radio:checked").is(":empty")){
+			if($("#"+nombreForm+" textarea:first").val().length==0){
+				jAlert("El campo no puede estar en blanco");return;
+				$("#"+nombreForm).removeClass("unsavedForm");
+			}
+			else{
+				jAlert("Debe seleccionar una opción");return;
+				$("#"+nombreForm).removeClass("unsavedForm");
+			}
+		}
+		if($("#"+nombreForm+" textarea:first").val().length==0){
+			var valPas="";
+			if(nameInput=="ValoracionTeo[id_estado_val]" && $("#"+nombreForm+" input:radio:checked").val()==1){
+				valPas=false;
+			}
+			else{
+				valPas=true
+			}
+			if(valPas){
+				jAlert("Debe realizar una justificación de la selección de la opción");
+				$("#"+nombreForm).removeClass("unsavedForm");								
+				return;	
+			}
+		}
 	$.ajax({
 		url: "modificaValoracionEnfOpt",
 		data:$("#"+nombreForm).serialize()+"&id_valor_enf="+$("#id_valor_enf").val()+"&num_doc="+$("#num_doc").val(),

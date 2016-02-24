@@ -16,16 +16,26 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
 );
 ?>
 <?php if(!empty($numDocAdol)):?>
-
-<?php echo CHtml::label("Equipo asignado actualmente");?>
-
-<?php if(!empty($equipoPsicoSoc)):
-foreach($equipoPsicoSoc as $profesional):?>
-	Nombres: <?php echo $profesional["nombrecomp_pers"];?> ||	Profesión: <?php echo $profesional["nombre_rol"];?>
-	<?php if($profesional["responsable_caso"]==1):?>|| Responsable del caso<?php endif;?><br />	
-<?php endforeach;
-//print_r($equipoPsicoSoc);
-else:
+<div class="form-group">
+	<?php echo CHtml::label("Equipo asignado actualmente");?>
+    <div class="col-md-4">
+    </div>
+</div>
+<?php if(!empty($equipoPsicoSoc)):?>
+<fieldset class="form-horizontal"><br />
+<?php foreach($equipoPsicoSoc as $profesional):?>
+<div class="form-group">
+    <?php echo CHtml::label('Nombre:','',array('class'=>'col-md-4 control-label','for'=>'searchinput'));?>
+    <div class="col-md-6">
+        <p class="col-md-8 form-control">
+			 <?php echo $profesional["nombrecomp_pers"];?> ||	Profesión: <?php echo $profesional["nombre_rol"];?>
+            <?php if($profesional["responsable_caso"]==1):?>|| Responsable del caso<?php endif;?><br />
+        </p>     
+    </div>
+</div>   
+<?php endforeach;?>
+</fieldset>
+<?php else:
 ?>
 <p>El adolescente no tiene asignado en el momento un equipo psicosocial</p>
 <?php
@@ -33,9 +43,7 @@ endif;
 ?>
 </fieldset>
 
-<fieldset><legend>Seleccionar equipo psicosocial</legend>
     <div id="Mensaje" style="font-size:14px;" ></div>
-    <p class="note">Campos con <span class="required">*</span> son obligatorios.</p>
     <?php $form=$this->beginWidget('CActiveForm', array(
         'id'=>'formularioAsignaBina',
         'enableAjaxValidation'=>false,
@@ -43,29 +51,41 @@ endif;
         'clientOptions'=>array(
             'validateOnSubmit'=>true,
         ),
+		'htmlOptions' => array('class' => 'form-horizontal')	
     ));
         // si se quisiera ir a otro controlador se crearia una Url dentro del array 'action'=>$this->createUrl('controlador/metodo');
     ?>
         <?php echo  $form->errorSummary($modeloHistPersAdol,'','',array('style' => 'font-size:14px;color:#F00')); ?>
-        <table><tr>
-       <td>
-        <?php echo $form->labelEx($modeloHistPersAdol,'psicologosHist'); ?></td>
-       <td> <?php echo $form->dropDownList($modeloHistPersAdol,'psicologosHist',CHtml::listData($psicologo,'id_cedula', 'nombrecomp_pers'),array('prompt'=>'Seleccione Psocólogo')); ?></br>
-        <?php echo $form->error($modeloHistPersAdol,'psicologosHist',array('style' => 'color:#F00')); ?></td><td rowspan="2">
-        <?php echo $form->radioButtonList($modeloHistPersAdol, 'responsable_caso', array('1'=>'Responsable psicólogo', '2'=>'Responsable Trabajador Social')); //responsable del caso del adolescente?>
-        <?php echo $form->error($modeloHistPersAdol,'responsable_caso',array('style' => 'color:#F00')); ?></td></tr>
-        
-        
-       <tr><td>
-        <?php echo $form->labelEx($modeloHistPersAdol,'trabSocialsHist'); ?></td>
-        <td><?php echo $form->dropDownList($modeloHistPersAdol,'trabSocialsHist',CHtml::listData($trabSocial,'id_cedula', 'nombrecomp_pers'),array('prompt'=>'Seleccione Trabajador social')); ?></br>
-        <?php echo $form->error($modeloHistPersAdol,'trabSocialsHist',array('style' => 'color:#F00')); ?></td></tr></table>
-    
-        <?php
+    <div class="form-group">
+    	<?php echo CHtml::label(" Campos con <span class='required'>*</span> son obligatorios.");?>
+    <div class="col-md-4"> 
+
+    </div>
+</div>
+<div class="form-group">
+        <?php echo $form->labelEx($modeloHistPersAdol,'psicologosHist',array('class'=>'col-md-4 control-label','for'=>'searchinput')); ?>
+        <div class="col-md-4">
+            <?php echo $form->dropDownList($modeloHistPersAdol,'psicologosHist',CHtml::listData($psicologo,'id_cedula', 'nombrecomp_pers'),array('prompt'=>'Seleccione Psocólogo','class'=>'selectpicker form-control','data-hide-disabled'=>'true','data-live-search'=>'true')); ?></br>
+            <?php echo $form->error($modeloHistPersAdol,'psicologosHist',array('style' => 'color:#F00')); ?>
+            <?php echo $form->radioButtonList($modeloHistPersAdol, 'responsable_caso', array('1'=>'Responsable psicólogo','2'=>'Responsable Trabajador Social')); //responsable del caso del adolescente?>
+            <?php echo $form->error($modeloHistPersAdol,'responsable_caso',array('style' => 'color:#F00')); ?>
+        </div>
+    </div>        
+    <div class="form-group">
+        <?php echo $form->labelEx($modeloHistPersAdol,'trabSocialsHist',array('class'=>'col-md-4 control-label','for'=>'searchinput')); ?>
+        <div class="col-md-4">
+			<?php echo $form->dropDownList($modeloHistPersAdol,'trabSocialsHist',CHtml::listData($trabSocial,'id_cedula', 'nombrecomp_pers'),array('prompt'=>'Seleccione Trabajador social','class'=>'selectpicker form-control','data-hide-disabled'=>'true','data-live-search'=>'true')); ?></br>
+			<?php echo $form->error($modeloHistPersAdol,'trabSocialsHist',array('style' => 'color:#F00')); ?>
+        </div>
+    </div>   
+    <div class="form-group">
+    	<?php echo CHtml::label("","",array('class'=>'col-md-4 control-label','for'=>'searchinput'));?>
+         <div class="col-md-4">
+       <?php
 			$modeloHistPersAdol->num_doc=$numDocAdol;			
 			echo $form->hiddenField($modeloHistPersAdol,'num_doc');
             $boton=CHtml::ajaxSubmitButton (
-                            'Crear Registro',   
+                            'Modificar Bina',   
                             array('identificacionRegistro/registraEquipoPsic'),
                             array(				
                                 'dataType'=>'json',
@@ -75,8 +95,12 @@ endif;
                                     Loading.hide();
                                     if(datos.estadoComu=="exito"){
                                         if(datos.resultado=="\'exito\'"){
+											jAlert("La bina ha sido modificada");
                                             $("#Mensaje").html("Registro realizado satisfacotriamente");
-											$("#formularioAsignaBina").removeClass("unsavedForm");	
+											$("#formularioAsignaBina").removeClass("unsavedForm");
+                                            $("#formularioAsignaBina #formularioAsignaBina_es_").html("");                                                    
+                                            $("#formularioAsignaBina #formularioAsignaBina_es_").hide(); 	
+											$(".errorMessage").html("");
                                         }
                                         else{
                                             $("#Mensaje").html("Ha habido un error en la creación del registro. Código del error: "+datos.msnError);
@@ -118,10 +142,11 @@ endif;
                                     
                                 }'
                             ),
-                            array('id'=>'btnFormAdolId','name'=>'btnCreaAdolN')
+                            array('id'=>'btnFormAdolId','name'=>'btnCreaAdolN','class'=>'btn btn-default btn-sdis')
                     );
         ?>
         <?php echo $boton; //CHtml::submitButton('Crear');?>
+        </div></div>
     <?php $this->endWidget();?>
 <?php Yii::app()->getClientScript()->registerScript('scriptRegistraDatos','
 $(document).ready(function(){

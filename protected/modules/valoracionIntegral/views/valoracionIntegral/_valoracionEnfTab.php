@@ -304,6 +304,11 @@ Yii::app()->getClientScript()->registerScript('scriptValEnf','
 		});
 	});	
 		function enviaForm(nombreForm,btnForm){
+			if($("#"+nombreForm+" textarea:first").val().length==0){
+				jAlert("El campo no puede estar vacío");
+				 $("#"+nombreForm).removeClass("unsavedForm");								
+				return;	
+			}
 			$.ajax({
 				url: "modificaValoracionEnf",
 				data:$("#"+nombreForm).serialize()+"&id_valor_enf="+$("#id_valor_enf").val()+"&num_doc="+$("#num_doc").val(),

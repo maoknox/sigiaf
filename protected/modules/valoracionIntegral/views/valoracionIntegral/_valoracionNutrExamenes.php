@@ -497,6 +497,19 @@ Yii::app()->getClientScript()->registerScript('scriptValExamenes','
 	}
 	
 	function validaOpContrCrec(formId,fieldId){
+		var nameInput=$("#"+formId+" input:first").attr("name");
+		//jAlert($("#"+nombreForm+" input:radio:checked").val());return;
+		if(!$("#"+formId+" input:radio:checked").is(":empty")){
+			if($("#"+formId+" textarea:first").val().length==0){
+				jAlert("El campo no puede estar en blanco");return;
+				$("#"+nombreForm).removeClass("unsavedForm");
+			}
+			else{
+				jAlert("Debe seleccionar una opción");return;
+				$("#"+formId).removeClass("unsavedForm");
+			}
+		}
+		
 		//jAlert($("#"+formId+" #ValoracionNutricional_obs_crec_des").val().length);
 		$("#"+formId+" #ValoracionNutricional_control_crec_des_em_").text("");                                                    
 		$("#"+formId+" #ValoracionNutricional_control_crec_des_em_").show(); 
@@ -512,6 +525,18 @@ Yii::app()->getClientScript()->registerScript('scriptValExamenes','
 		
 	}
 	function registraEsquemaVac(formId,fieldId){
+			var nameInput=$("#"+formId+" input:first").attr("name");
+		//jAlert($("#"+nombreForm+" input:radio:checked").val());return;
+		if(!$("#"+formId+" input:radio:checked").is(":empty")){
+			if($("#"+formId+" textarea:first").val().length==0){
+				jAlert("El campo no puede estar en blanco");return;
+				$("#"+nombreForm).removeClass("unsavedForm");
+			}
+			else{
+				jAlert("Debe seleccionar una opción");return;
+				$("#"+formId).removeClass("unsavedForm");
+			}
+		}
 	//jAlert($("#"+formId).serialize()+"&idValNutr="+$("#idValNutr").val()+"&numDocAdolValNutr="+$("#num_doc").val());return;
 		$.ajax({
 			url: "registraEsquemaVac",

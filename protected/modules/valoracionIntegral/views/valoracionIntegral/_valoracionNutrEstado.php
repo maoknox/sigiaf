@@ -34,7 +34,7 @@
 		'onblur'=>'js:validaDilValoracion("formularioEstVal","estadoVal")',
 		'onkeyup'=>'js:$("#estadoVal").addClass("has-warning");'));
 	?>    
-	<?php echo $formEstVal->error($modeloValNutr,'observ_estvalpsicol',array('style' => 'color:#F00'));?>
+	<?php echo $formEstVal->error($modeloValNutr,'observ_estvalnutr',array('style' => 'color:#F00'));?>
 </div>
     </div>
    	<div class="form-group">

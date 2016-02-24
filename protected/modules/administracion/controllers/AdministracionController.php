@@ -980,7 +980,7 @@ class AdministracionController extends Controller{
 					array(
 						'modeloPersona'=>$modeloPersona,
 						'personas'=>$personas,
-						'sedesForjar'=>$sedesForjar
+						//'sedesForjar'=>$sedesForjar
 					)
 				);	
 			}
