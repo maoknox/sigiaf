@@ -1,7 +1,7 @@
 <?php $this->widget('application.extensions.loading.LoadingWidget');?>
 <?php
 $this->widget('application.extensions.jqAjaxSearchAs.AjaxSearch', 
-    array('action'=>Yii::app()->createUrl('referenciacion/asignacionServicio/buscaAdolGen'), 
+    array('action'=>Yii::app()->createUrl('modIdenReg/IdentificacionRegistro/buscaAdolAsistencia'), 
 		'target'=>'resultado', 
 		'minChar'=>2,
 		'numDocAdol'=>$numDocAdol,

@@ -230,7 +230,19 @@
 
 <?php
 Yii::app()->getClientScript()->registerScript('scripPai_1','
-	
+		$(document).ready(function(){
+			$("form").find(":input").change(function(){
+		  	var dirtyForm = $(this).parents("form");
+		  // change form status to dirty
+		  	dirtyForm.addClass("unsavedForm");
+		});});			
+		var campoText=0;
+		$(window).bind("beforeunload", function(){
+			if($(".unsavedForm").size()){
+				return "va a cerrar";
+			}
+		});
+
 		/*$(window).bind("beforeunload", function(){
 			//return "Va a dejar la página"
 		});*/
@@ -246,12 +258,13 @@ Yii::app()->getClientScript()->registerScript('scripPai_1','
 					if(datos.estadoComu=="exito"){
 						//$("#"+btnForm).css("color","#000");
 						if(datos.resultado=="\'exito\'"){
-							$("#Mensaje").text("exito");
+							jAlert("Componente registrado","Mensaje");
 							$("#btnPaiDer_"+idComponente).removeAttr("onclick");
 							$("#"+nombreForm+idComponente+" #ComponenteDerecho_fecha_estab_compderecho").val(datos.fechaRegPai);
 							$("#btnPaiDer_"+idComponente).click(function (){
 								modificaRegPai(idComponente,accion,nombreForm,datos.fechaRegPai);	
 							});
+							$("#"+nombreForm+idComponente).removeClass("unsavedForm");
 						}
 						else{
 							$("#Mensaje").text("Error en la creación del registro.  Motivo "+datos.resultado);
@@ -292,7 +305,8 @@ Yii::app()->getClientScript()->registerScript('scripPai_1','
 					if(datos.estadoComu=="exito"){
 						//$("#"+btnForm).css("color","#000");
 						if(datos.resultado=="\'exito\'"){
-							$("#Mensaje").text("exito");
+							jAlert("Componente registrado","Mensaje");
+							$("#"+nombreForm+idComponente).removeClass("unsavedForm");
 						}
 						else{
 							$("#Mensaje").text("Error en la creación del registro.  Motivo "+datos.resultado);
@@ -339,6 +353,8 @@ Yii::app()->getClientScript()->registerScript('scripPai_1','
 							$("#btnPaiSanc_"+idComponente).click(function (){
 								modificaRegPaiSanc(idComponente,accion,nombreForm,datos.fechaRegPai);	
 							});
+							$("#"+nombreForm+idComponente).removeClass("unsavedForm");
+							jAlert("Componente registrado","Mensaje");
 						}
 						else{
 							$("#MensajeSan").text("Error en la creación del registro.  Motivo "+datos.resultado);
@@ -379,7 +395,8 @@ Yii::app()->getClientScript()->registerScript('scripPai_1','
 					if(datos.estadoComu=="exito"){
 						//$("#"+btnForm).css("color","#000");
 						if(datos.resultado=="\'exito\'"){
-							$("#Mensaje").text("exito");
+							jAlert("Componente registrado","Mensaje");
+							$("#"+nombreForm+idComponente).removeClass("unsavedForm");
 						}
 						else{
 							$("#Mensaje").text("Error en la creación del registro.  Motivo "+datos.resultado);

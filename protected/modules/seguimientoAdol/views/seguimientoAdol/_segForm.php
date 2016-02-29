@@ -78,6 +78,7 @@
                             'showOtherMonths'=>true,
                             'changeMonth'=>'true',
                             'changeYear'=>'true',
+							'minDate'=>'date("Y-m-d")-2w',
                             'maxDate'=>date("Y-m-d")					
                     ),
                 ));

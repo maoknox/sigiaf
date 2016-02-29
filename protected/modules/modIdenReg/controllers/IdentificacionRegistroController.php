@@ -677,7 +677,18 @@ class IdentificacionRegistroController extends Controller
 		}
 		 echo CJSON::encode($res);
 	}	//Consulta Municipio segun departamento
-	
+	public function actionBuscaAdolAsistencia(){
+		$datos=Yii::app()->input->post();
+		$consAdol=new ConsultasGenerales();
+		$consAdol->searchTerm=$datos["search_term"];
+		if(!empty($datos["search_term"])){
+			$res=$consAdol->buscaAdolAsistencia();
+		}
+		else{
+			//$res[]=array( "numDocAdol" =>0, "nombre"=>'');
+		}
+		 echo CJSON::encode($res);
+	}	//Consulta Municipio segun departamento
 	/**
 	 *	Acción que renderiza la vista que contiene los formularios para modificar los datos básicos del adolescente.
 	 *	En el caso que haya un formulario que no tenga un registro principal realiza un rendePartial del formulario de creación de registro, en caso contrato renderiza.
@@ -2076,6 +2087,95 @@ class IdentificacionRegistroController extends Controller
 			'tipoSancion'=>$tipoSancion,
 		));
 	}
+	
+	/**
+	 *	Acción que renderiza la vista para egresar al adolescente.
+	 *
+	 *	Vista a renderizar:
+	 *		- _egresaAdolForm.
+	 *
+	 *	Modelos instanciados:
+	 * 		- ForjarAdol
+	 * 		- ConsultasGenerales
+	 * 		- OperacionesGenerales
+	 *
+	 *	@param object $modeloDatosForjarAdol,
+	 *	@param string $numDocAdol,
+	 *	@param array $datosAdol,
+	 *	@param array $estadosEgreso,
+	 *	@param int $edad,
+	 */		
+	public function actionEgresarAdolescenteForm(){
+		$controlAcceso=new ControlAcceso();
+		$controlAcceso->accion="egresarAdolescenteForm";
+		$permiso=$controlAcceso->controlAccesoAcciones();
+		if($permiso["acceso_rolmenu"]==1){
+			$datosInput=Yii::app()->input->post();
+			if(isset($datosInput["numDocAdol"]) && !empty($datosInput["numDocAdol"])){
+				$numDocAdol=$datosInput["numDocAdol"];
+				Yii::app()->getSession()->add('numDocAdol',$numDocAdol);
+			}
+			else{
+				$numDocAdol=Yii::app()->getSession()->get('numDocAdol');
+			}	
+			if(!empty($numDocAdol)){
+				$operaciones=new OperacionesGenerales();
+				$consultaGeneral=new ConsultasGenerales();
+				$modeloForjarAdol=new ForjarAdol();
+				$modeloForjarAdol->num_doc=$numDocAdol;
+				$datosForjarAdol=$modeloForjarAdol->consultaDatosForjarAdol();
+				$datosAdol=$consultaGeneral->consultaDatosAdol($numDocAdol);	
+				$edad=$operaciones->hallaEdad($datosAdol["fecha_nacimiento"],date("Y-m-d"));			
+				$consultaGeneral->numDocAdol=$numDocAdol;
+				$estadosEgreso=$consultaGeneral->consultaEstadosEgreso();
+			}
+			$this->render('_egresaAdolForm',array(
+				'numDocAdol'=>$numDocAdol,
+				'datosAdol'=>$datosAdol,
+				'edad'=>$edad,
+				'modeloForjarAdol'=>$modeloForjarAdol,
+				'datosForjarAdol'=>$datosForjarAdol,
+				'estadosEgreso'=>$estadosEgreso,
+			));
+			
+		}
+		else{
+			throw new CHttpException(403,'No tiene acceso a esta acción');
+		}
+	}
+	/**
+	 *	Recibe datos del formulario de egreso al adolescente e instancia al modelo ForjarAdol para ejecutar la acción en base de datos.
+	 *
+	 *	Modelos instanciados:
+	 *		- InformacionJudicial
+	 *		- ForjarAdol
+	 *
+	 *	@param arrya $dataClean $_POST	de datos del formulario de información judicial administrativa.
+	 *	@param string $modeloInfJudAdmon->mensajeErrorInfJud.
+	 *	@return json resultado de la transacción.
+	 */		
+	public function actionEgresarAdolescente(){
+		$controlAcceso=new ControlAcceso();
+		$controlAcceso->accion="egresarAdolescenteForm";
+		$permiso=$controlAcceso->controlAccesoAcciones();
+		if($permiso["acceso_rolmenu"]==1){
+			$datosInput=Yii::app()->input->post();
+			$modeloForjarAdol=new ForjarAdol();
+			$modeloForjarAdol->attributes=$datosInput["ForjarAdol"];
+			if($modeloForjarAdol->validate()){
+				$resultado=$modeloForjarAdol->egresaAdolescente();				
+				echo CJSON::encode(array("estadoComu"=>"exito",
+				'resultado'=>$resultado
+				));
+			}else{
+				echo CActiveForm::validate($modeloForjarAdol);
+			}
+		}
+		else{
+			throw new CHttpException(403,'No tiene acceso a esta acción');
+		}
+	}
+	
 	// Uncomment the following methods and override them if needed
 	/*
 

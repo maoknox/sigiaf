@@ -569,6 +569,66 @@ class ConsultasGenerales extends CFormModel{
 		$queryConsulta->close();
 		return $res;	
 	}
+
+	public function buscaAdolAsistencia(){
+		$operaciones=new OperacionesGenerales();		
+		$nombres=$operaciones->quitar_tildes($this->searchTerm);		
+		$nombres=mb_strtoupper($nombres,"UTF-8");
+		$nombres=split(" ",$nombres);
+		$conect=Yii::app()->db;
+		$compConsSql="";
+		$compCondicion="";
+		if(Yii::app()->user->getState('rol')==4 or Yii::app()->user->getState('rol')==5){
+			$compConsSql=", hist_personal_adol as c ";
+			$compCondicion="and c.num_doc=a.num_doc and c.id_cedula=:idCedula and c.asignado_actualmente is true";
+		}
+		else{
+			$compConsSql=", forjar_adol as c ";
+			$compCondicion="and c.num_doc=a.num_doc and id_forjar=:id_forjar and c.id_estado_adol=1";
+		}
+		if(count($nombres)==1 && !empty($nombres[0])){
+			$sqlCons = "select distinct(b.num_doc), nombres,apellido_1,apellido_2,b.num_doc,id_doc_adol ";
+			$sqlCons .= "from (select num_doc from adolescente where sinacentos(nombres) like '%".pg_escape_string($nombres[0])."%' or sinacentos(apellido_1) like '%".pg_escape_string($nombres[0])."%' ";
+			$sqlCons .= "or sinacentos(apellido_2) like '%".pg_escape_string($nombres[0])."%' limit 20) as a,";
+			$sqlCons .= "adolescente as b ".pg_escape_string($compConsSql)." where ";
+			$sqlCons .= "a.num_doc=b.num_doc ".$compCondicion." order by nombres asc";
+		}
+		elseif(count($nombres)==2&&!empty($nombres[1])){
+			$nomb = $nombres[0]." ".$nombres[1];
+			$sqlCons = "select  distinct(b.num_doc), nombres,apellido_1,apellido_2,b.num_doc,id_doc_adol ";
+			$sqlCons .="from (select num_doc from adolescente where sinacentos(nombres) like '%".pg_escape_string($nombres[0])." ".pg_escape_string($nombres[1])."%' or sinacentos(apellido_1) like '%".pg_escape_string($nombres[0])."%' ";
+			$sqlCons .= "and sinacentos(apellido_2) like '%".pg_escape_string($nombres[1])."%' or sinacentos(nombres) like '%".pg_escape_string($nombres[0])."%' and sinacentos(apellido_1) like '%".pg_escape_string($nombres[1])."%' or sinacentos(nombres) like '%".pg_escape_string($nombres[1])."%' and sinacentos(apellido_1) like '%".pg_escape_string($nombres[0])."%' order by nombres asc limit 20) as a,";
+			$sqlCons .= "adolescente as b ".pg_escape_string($compConsSql)." where a.num_doc=b.num_doc ".pg_escape_string($compCondicion)." order by nombres asc";		
+		}
+		elseif(count($nombres)==3&&!empty($nombres[1])&&!empty($nombres[2])){
+			$nomb = $strCons[0]." ".$strCons[1];
+			$sqlCons = "select  distinct(b.num_doc), nombres,apellido_1,apellido_2,b.num_doc,id_doc_adol ";
+			$sqlCons .="from (select num_doc from adolescente where sinacentos(nombres) like '%".pg_escape_string($nomb)."%' and  sinacentos(apellido_1) like '%".pg_escape_string($nombres[2])."%' or  sinacentos(nombres) like '%".pg_escape_string($nombres[2])."%' ";
+			$sqlCons .= "and  sinacentos(apellido_1) like '%".$nombres[0]."%' and  sinacentos(apellido_2) like '%".pg_escape_string($nombres[1])."%' order by nombres asc limit 20) as a,";
+			$sqlCons .= "adolescente as b ".pg_escape_string($compConsSql)." where a.num_doc=b.num_doc ".pg_escape_string($compCondicion)." order by nombres asc";
+		}
+		elseif(count($nombres)==4&&$nombres[1]!=""&&$nombres[2]!=""&&$nombres[3]!=""){
+			$nomb = $nombres[0]." ".$nombres[1];
+			$nombi = $nombres[2]." ".$nombres[3];
+			$sqlCons = "select  distinct(b.num_doc), nombres,apellido_1,apellido_2,b.num_doc,id_doc_adol ";
+			$sqlCons .="from (select num_doc from adolescente where  sinacentos(nombres) like '%".pg_escape_string($nomb)."%' and  sinacentos(apellido_1) like '%".pg_escape_string($nombres[2])."%' ";
+			$sqlCons .= "and  sinacentos(apellido_2) like '%".pg_escape_string($nombres[3])."%' or  sinacentos(nombres) like '%".pg_escape_string($nombi)."%' and  sinacentos(apellido_1) like '%".pg_escape_string($nombres[0])."%' and  sinacentos(apellido_2) like '%".pg_escape_string($nombres[1])."%' order by nombres asc limit 20) as a,";
+			$sqlCons .= "adolescente as b ".pg_escape_string($compConsSql)." where a.num_doc=b.num_doc and a.num_doc=b.num_doc ".pg_escape_string($compCondicion)." order by nombres asc";
+		}
+		$consultaAdol=$conect->createCommand($sqlCons);
+		if(Yii::app()->user->getState('rol')==4 or Yii::app()->user->getState('rol')==5){
+			$consultaAdol->bindParam(':idCedula',Yii::app()->user->getState('cedula'),PDO::PARAM_INT);
+		}
+		else{
+			$consultaAdol->bindParam(':id_forjar',Yii::app()->user->getState('sedeForjar'),PDO::PARAM_STR);
+		}
+		$queryConsulta=$consultaAdol->query();
+		while($readConsulta=$queryConsulta->read()){
+			$res[]=array("idDocAdolBd"=>$readConsulta["id_doc_adol"], "numDocAdol" =>$readConsulta["num_doc"], "nombre"=>$readConsulta["nombres"]." ".$readConsulta["apellido_1"]." ".$readConsulta["apellido_2"]);
+		}
+		$queryConsulta->close();
+		return $res;	
+	}
 	//consultas para el reporte de adolescentes
 	
 	public function consultaAdolescentesSede(){
@@ -646,7 +706,7 @@ class ConsultasGenerales extends CFormModel{
 	}
 	public function consultaDatosRemision(){
 		$conect=Yii::app()->db;
-		$sqlConsRem="select * from forjar_adol where num_doc=:num_doc";
+		$sqlConsRem="select * from forjar_adol as a left join estado_adol as b on b.id_estado_adol=a.id_estado_adol where num_doc=:num_doc";
 		$consRem=$conect->createCommand($sqlConsRem);
 		$consRem->bindParam(":num_doc",$this->numDocAdol,PDO::PARAM_STR);
 		$readRem=$consRem->query();
@@ -688,7 +748,7 @@ class ConsultasGenerales extends CFormModel{
 	
 	public function consultaAcudiente(){
 		$conect=Yii::app()->db;
-		$sqlConsAcud="select b.nombres_familiar,b.apellidos_familiar,f.tipo_doc,b.num_doc_fam,i.parentesco,d.localidad,c.barrio,c.direccion,e.estrato 
+		$sqlConsAcud="select b.id_doc_familiar,b.nombres_familiar,b.apellidos_familiar,f.tipo_doc,b.num_doc_fam,i.parentesco,d.localidad,c.barrio,c.direccion,e.estrato 
 			from familiar_adolescente as a left join familiar as b on a.id_doc_familiar=b.id_doc_familiar 
 			left join localizacion_viv as c on c.id_doc_familiar=a.id_doc_familiar left join localidad as d on d.id_localidad=c.id_localidad 
 			left join estrato as e on e.id_estrato=c.id_estrato left join tipo_documento as f on f.id_tipo_doc=b.id_tipo_doc 
@@ -1006,6 +1066,15 @@ class ConsultasGenerales extends CFormModel{
 		$resDelitos=$readDelitos->readAll();
 		$readDelitos->close();
 		return $resDelitos;
+	}
+	public function consultaEstadosEgreso(){
+		$conect=Yii::app()->db;
+		$sqlConsEstadoEgr="select * from estado_adol where id_estado_adol>2";
+		$consEstadoEgr=$conect->createCommand($sqlConsEstadoEgr);
+		$readEstadoEgr=$consEstadoEgr->query();
+		$resEstadoEgr=$readEstadoEgr->readAll();
+		$readEstadoEgr->close();
+		return $resEstadoEgr;
 	}
 }  
 

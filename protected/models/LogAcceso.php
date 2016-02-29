@@ -19,6 +19,7 @@ class LogAcceso extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
+	//public $id_cedula;
 	public function tableName()
 	{
 		return 'log_acceso';

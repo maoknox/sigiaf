@@ -45,7 +45,10 @@ if(empty($consAcud["estrato"])){$consAcud["estrato"]="Sin Inf.";}
 if(!empty($consAcud)){
 	$consultaGeneral->searchTerm=$consAcud["id_doc_familiar"];
 	$telsAcud=$consultaGeneral->consultaTelAcud();
-}			
+}	
+
+$telefonoPrincipal=$modeloTelefono->consultaTelefonoAdol($adolescente["num_doc"],1);		
+$telefonoSecundario=$modeloTelefono->consultaTelefonoAdol($adolescente["num_doc"],2);		
 $modeloPai->num_doc=$adolescente["num_doc"];
 $paiActual=$modeloPai->consultaPAIActual();
 //print_r($paiActual);
@@ -136,7 +139,7 @@ $table1='<table width="100%" border="1" cellpadding="0px" cellspacing="0px">
   </tr>
   <tr>
     <td colspan="3">'.utf8_decode("Dirección: ").'
-		'.utf8_decode($adolescente["direccion"]).' Localidad: '.utf8_decode($adolescente["localidad"]).' Barrio: '.utf8_decode($adolescente["barrio"]).' - '.utf8_decode("Teléfono: ").' '.$telefono.'
+		'.utf8_decode($adolescente["direccion"]).' Localidad: '.utf8_decode($adolescente["localidad"]).' Barrio: '.utf8_decode($adolescente["barrio"]).' - '.utf8_decode("Teléfono(s): ").' '.$telefonoPrincipal["telefono"].' - '.$telefonoSecundario["telefono"].'
 	</td>
   </tr>
   <tr>
@@ -151,11 +154,11 @@ $table1='<table width="100%" border="1" cellpadding="0px" cellspacing="0px">
     <td colspan="2">Trabajador Social:  '.utf8_decode($trsoc).' </td>
   </tr>
 	<tr>
-    <td colspan="3">Nombre acudiente: '.utf8_decode($consAcud["nombres_familiar"]).' '.utf8_decode($consAcud["apellidos_familiar"]).'</td>
+    <td colspan="3">Nombre acudiente: '.utf8_decode($consAcud["nombres_familiar"]).' '.utf8_decode($consAcud["apellidos_familiar"]).' - Documento: '.utf8_decode($consAcud["id_doc_familiar"]).'</td>
   </tr>
   <tr>
     <td colspan="3">'.utf8_decode("Dirección acudiente: ").'
-		'.utf8_decode($consAcud["direccion"]).' Localidad: '.utf8_decode($consAcud["localidad"]).' Barrio: '.utf8_decode($consAcud["barrio"]).'|| '.utf8_decode("Teléfono: ").' '.$telefonoAcud.'
+		'.utf8_decode($consAcud["direccion"]).' Localidad: '.utf8_decode($consAcud["localidad"]).' Barrio: '.utf8_decode($consAcud["barrio"]).'|| '.utf8_decode("Teléfono: ").' '.$telsAcud[0]["telefono"].' - '.$telsAcud[0]["telefono"].'
 	</td>
   </tr>
 

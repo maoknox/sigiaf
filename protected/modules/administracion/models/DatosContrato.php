@@ -22,6 +22,7 @@ class DatosContrato extends CActiveRecord
 	 * @return string the associated database table name
 	 */
 	public $contrato;
+	//public $id_cedula;
 	public function tableName()
 	{
 		return 'datos_contrato';

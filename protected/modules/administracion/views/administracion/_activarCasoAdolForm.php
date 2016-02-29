@@ -12,7 +12,7 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
 );
 ?>
 <?php if(!empty($numDocAdol)): ?>
-	<?php if($datosForjarAdol["id_estado_adol"]==2): ?>
+	<?php if($datosForjarAdol["id_estado_adol"]>=2): ?>
 	<div class="panel-heading color-sdis">Activar caso adolescente</div> 
 	<br />
 		<?php $formActivaCaso=$this->beginWidget('CActiveForm', array(

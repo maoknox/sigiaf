@@ -54,7 +54,7 @@
 		<td>Tiempo de la sanci&oacute;n meses</td>
 		<td>Tiempo de la sanci&oacute;n d&iacute;as</td>
 		<td>Observaciones</td>-->
-		<td>Estado SIRBE</td>
+		<td>Estado Vinculación</td>
 		<td>Fecha primer ingreso al SRPA</td>
 		<td>N&uacute;mero de ingresos</td>
 		<td>Fecha de vinculaci&oacute;n al programa</td>
@@ -145,11 +145,13 @@
 				$tabla.="<td>Sin Inf.</td>";
 			}
 			//consulta datos de remision
-			$datosRemision==$consultaGeneral->consultaDatosRemision();
+			$consultaGeneral->numDocAdol=$adolescente["num_doc"];
+			$datosRemision=$consultaGeneral->consultaDatosRemision();
 			if(empty($datosRemision["fecha_primer_ingreso"])){$datosRemision["fecha_primer_ingreso"]="Sin Inf.";}
 			if(empty($datosRemision["num_ingresos"])){$datosRemision["num_ingresos"]="Sin Inf.";}
 			if(empty($datosRemision["fecha_vinc_forjar"])){$datosRemision["fecha_vinc_forjar"]="Sin Inf.";}
-			$tabla.="<td>Estado SIRBE</td>";
+			if(empty($datosRemision["estado_adol"])){$datosRemision["estado_adol"]="Sin Inf.";}
+			$tabla.="<td>".$datosRemision["estado_adol"]."</td>";
 			$tabla.="<td>".$datosRemision["fecha_primer_ingreso"]."</td>";
 			$tabla.="<td>".$datosRemision["num_ingresos"]."</td>";
 			$tabla.="<td>".$datosRemision["fecha_vinc_forjar"]."</td>";

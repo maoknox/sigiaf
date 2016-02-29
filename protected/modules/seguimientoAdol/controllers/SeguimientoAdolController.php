@@ -34,7 +34,8 @@ class SeguimientoAdolController extends Controller{
 		return array(
 			'enforcelogin',
 			array('application.filters.ActionLogFilter - buscaAdolGen','modulo'=>$this->module->id,'controlador'=>$this->id,'parametros'=>Yii::app()->input->post()),
-			array('application.filters.ActionVerifEstadoFilter + consPscSeg seguimientoNutrForm','num_doc'=>Yii::app()->getSession()->get('numDocAdol'))
+			array('application.filters.ActionVerifEstadoFilter + consPscSeg seguimientoNutrForm','num_doc'=>Yii::app()->getSession()->get('numDocAdol')),
+			array('application.filters.ActionVerifEgresoSinCump + registrarSeg','num_doc'=>Yii::app()->getSession()->get('numDocAdol'))
 		);
 	}
 	/**

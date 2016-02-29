@@ -34,6 +34,7 @@ class ReportesController extends Controller{
 				$modeloCompSanc=new ComponenteSancion();
 				$consultaGeneral->numDocAdol=$datosInput["numDocAdol"];
 				$adolescente=$consultaGeneral->consultaAdolescenteSede();	
+				$modeloTelefono=new Telefono();
 				$this->renderPartial('_informeVII',
 					array(
 						'adolescente'=>$adolescente,
@@ -42,6 +43,7 @@ class ReportesController extends Controller{
 						'modeloPai'=>$modeloPai,
 						'modeloInfJud'=>$modeloInfJud,
 						'modeloCompSanc'=>$modeloCompSanc,
+						'modeloTelefono'=>$modeloTelefono,
 						'nombreFormulario'=>'Reporte Valoración Integral'												
 					)
 				);
@@ -103,6 +105,7 @@ class ReportesController extends Controller{
 						}
 					}
 				}
+				$modeloTelefono=new Telefono();
 				$this->renderPartial('_informePAI',
 					array(
 						'adolescente'=>$adolescente,
@@ -121,6 +124,7 @@ class ReportesController extends Controller{
 						'compSancInfJud'=>$compSancInfJud,
 						'infJudicialPai'=>$infJudicialPai,
 						'consultaDerechoAdol'=>$consultaDerechoAdol,
+						'modeloTelefono'=>$modeloTelefono,
 						'accion'=>$controlAcceso->accion
 					)
 				);
@@ -196,6 +200,7 @@ class ReportesController extends Controller{
 				$modeloValNutr=new ValoracionNutricional();
 				$modeloValNutr->num_doc=$datosInput["numDocAdol"];
 				$valNutr=$modeloValNutr->consultaIdValNutr();
+				$modeloTelefono=new Telefono();
 				if(!empty($valNutr)){
 					$modeloValNutr->id_val_nutricion=$valNutr["id_val_nutricion"];
 					$modeloNutricionAdol= new NutricionAdol();
@@ -230,6 +235,7 @@ class ReportesController extends Controller{
 							'modeloGestionSociojuridica'=>$modeloGestionSociojuridica,
 							'seguimientosNutr'=>$seguimientosNutr,
 							'valNutr'=>$valNutr,
+							'modeloTelefono'=>$modeloTelefono
 						)
 					);
 				}

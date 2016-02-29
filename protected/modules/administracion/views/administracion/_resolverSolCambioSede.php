@@ -7,7 +7,7 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
 		'url'=>Yii::app()->createUrl('administracion/administracion/resolverSolicitudCambioSede'),
 		'datosAdol'=>$datosAdol,
 		'edad'=>$edad,
-		'telefonoAdol'=>$telefonoAdol
+		//'telefonoAdol'=>$telefonoAdol
 	)
 );
 

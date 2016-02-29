@@ -100,7 +100,7 @@ class PlanpostegresoController extends Controller{
 				$modeloVerifDerechos->id_momento_verif=2; 
 				$verifDerEgreso=$modeloVerifDerechos->consultaDerechos();//id_derechocespa
 				if(empty($verifDerEgreso)){								
-					Yii::app()->user->setFlash('verifderechoegreso', "Debe primero realizar la verificación de derechos antes de realizar el plan post-egreso");									
+					Yii::app()->user->setFlash('verifderechoegreso', "Debe primero realizar la verificación de derechos al egreso antes de realizar el plan post-egreso");									
 				}
 				$modeloPAI=new Pai();
 				$modeloInfJud=new InformacionJudicial();
@@ -394,6 +394,9 @@ class PlanpostegresoController extends Controller{
 			if(!empty($numDocAdol)){
 				$operaciones=new OperacionesGenerales();
 				$consultaGeneral=new ConsultasGenerales();
+				$modeloPai=new Pai();
+				$modeloPai->num_doc=$numDocAdol;
+				$consPaiAct=$modeloPai->consultaPAIActual();
 				$datosAdol=$consultaGeneral->consultaDatosAdol($numDocAdol);	
 				$edad=$operaciones->hallaEdad($datosAdol["fecha_nacimiento"],date("Y-m-d"));
 				$derechos=$consultaGeneral->consultaDerechos();
@@ -434,7 +437,8 @@ class PlanpostegresoController extends Controller{
 				'participacion'=>$participacion,
 				'proteccion'=>$proteccion,
 				'edad'=>$edad,
-				'consultaDerechoAdol'=>$consultaDerechoAdol
+				'consultaDerechoAdol'=>$consultaDerechoAdol,
+				'consPaiAct'=>$consPaiAct
 			));
 		}
 		else{

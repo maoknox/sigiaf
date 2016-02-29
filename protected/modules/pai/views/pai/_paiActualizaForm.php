@@ -216,13 +216,9 @@
 
 <?php
 Yii::app()->getClientScript()->registerScript('scripPai_1','
-	
-		/*$(window).bind("beforeunload", function(){
-			//return "Va a dejar la página"
-		});*/
 		function creaRegPai(idComponente,accion,nombreForm){
 			$.ajax({
-				url: "creaActDerPai",
+				url: "creaDerPai",
 				data:$("#"+nombreForm+idComponente).serialize(),
 				dataType:"json",
 				type: "post",

@@ -7,7 +7,7 @@ class ActionVerifEstadoFilter extends CFilter{
 		$modeloForjarAdol=new ForjarAdol();
 		$modeloForjarAdol->num_doc=$this->num_doc;
 		$estadoAdol=$modeloForjarAdol->consultaDatosForjarAdol();		
-			if($estadoAdol["id_estado_adol"]==2){
+			if($estadoAdol["id_estado_adol"]>=2){
 				Yii::app()->user->setFlash('verifEstadoAdolForjar', "El adolescente está en este momento egresado del servicio.");									
 			}
 			elseif(empty($estadoAdol)){

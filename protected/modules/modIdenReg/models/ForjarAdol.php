@@ -12,6 +12,7 @@
  * @property integer $num_ingresos
  * @property string $observaciones_ingreso
  * @property integer $tiempo_modificacion
+ * @property string $observaciones_egreso
  */
 class ForjarAdol extends CActiveRecord
 {
@@ -35,7 +36,7 @@ class ForjarAdol extends CActiveRecord
 			array('id_estado_adol, num_ingresos, tiempo_modificacion', 'numerical', 'integerOnly'=>true),
 			array('id_forjar', 'length', 'max'=>10),
 			array('num_doc', 'length', 'max'=>15),
-			array('fecha_primer_ingreso, fecha_vinc_forjar, observaciones_ingreso', 'safe'),
+			array('fecha_primer_ingreso, fecha_vinc_forjar, observaciones_ingreso, observaciones_egreso', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id_forjar, num_doc, id_estado_adol, fecha_primer_ingreso, fecha_vinc_forjar, num_ingresos, observaciones_ingreso, tiempo_modificacion', 'safe', 'on'=>'search'),
@@ -67,6 +68,7 @@ class ForjarAdol extends CActiveRecord
 			'num_ingresos' => 'Num. Ingresos',
 			'observaciones_ingreso' => 'Observaciones Ingreso',
 			'tiempo_modificacion' => 'Tiempo Modificación',
+			'observaciones_egreso' => 'Observaciones de egreso',			
 		);
 	}
 
@@ -96,6 +98,7 @@ class ForjarAdol extends CActiveRecord
 		$criteria->compare('num_ingresos',$this->num_ingresos);
 		$criteria->compare('observaciones_ingreso',$this->observaciones_ingreso,true);
 		$criteria->compare('tiempo_modificacion',$this->tiempo_modificacion);
+		$criteria->compare('observaciones_egreso',$this->observaciones_egreso,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -118,7 +121,7 @@ class ForjarAdol extends CActiveRecord
 	 */		
 	public function consultaDatosForjarAdol(){
 		$conect=Yii::app()->db;
-		$sqlConsForjarAdol="select * from forjar_adol where num_doc=:num_doc";
+		$sqlConsForjarAdol="select * from forjar_adol as a left join estado_adol as b on a.id_estado_adol=b.id_estado_adol where num_doc=:num_doc";
 		$consForjarAdol=$conect->createCommand($sqlConsForjarAdol);	
 		$consForjarAdol->bindParam(":num_doc",$this->num_doc,PDO::PARAM_STR);
 		$readForjarAdol=$consForjarAdol->query();
@@ -190,7 +193,6 @@ class ForjarAdol extends CActiveRecord
 					$actualizaVigenciaPsiq=$conect->createCommand($sqlActualizaVigenciaNutr);
 					$actualizaVigenciaPsiq->bindParam(":num_doc",$this->num_doc,PDO::PARAM_STR);
 					$actualizaVigenciaPsiq->execute();
-
 				}
 			}
 			$transaction->commit();
@@ -230,7 +232,26 @@ class ForjarAdol extends CActiveRecord
 		catch(CDbCommand $e){
 			$transaction->rollBack();
 			return $e->getMessage();
+		}	
+	}
+	public function egresaAdolescente(){
+		$conect=Yii::app()->db;
+		$transaction=$conect->beginTransaction();
+		try{
+			if(empty($this->observaciones_egreso)){$this->observaciones_egreso=null;}
+			$sqlEgresaAdol="update forjar_adol set id_estado_adol=:id_estado_adol, observaciones_egreso=:observaciones_egreso where num_doc=:num_doc";
+			$egresoAdol=$conect->createCommand($sqlEgresaAdol);
+			$egresoAdol->bindParam(":id_estado_adol",$this->id_estado_adol,PDO::PARAM_INT);
+			$egresoAdol->bindParam(":observaciones_egreso",$this->observaciones_egreso);
+			$egresoAdol->bindParam(":num_doc",$this->num_doc,PDO::PARAM_STR);
+			$egresoAdol->execute();
+			$transaction->commit();
+			return "exito";
 		}
-		
+		catch(CDbCommand $e){
+			$transaction->rollBack();
+			return $e;
+			
+		}
 	}
 }

@@ -3,7 +3,7 @@ return array (
   'template' => 'default',
   'connectionId' => 'db',
   'tablePrefix' => '',
-  'modelPath' => 'application.modules.gestionSeguimSJ.models',
+  'modelPath' => 'application.modules.modIdenReg.models',
   'baseClass' => 'CActiveRecord',
   'buildRelations' => '1',
   'commentsAsLabels' => '1',
