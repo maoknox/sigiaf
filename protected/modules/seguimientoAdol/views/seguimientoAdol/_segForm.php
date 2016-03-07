@@ -49,7 +49,15 @@
                         ));?>
                     <?php echo $form->error($modeloSeguimiento,'seguim_conj',array('style' => 'color:#F00'));?>
                     <?php echo $form->labelEx($modeloSeguimiento,'idCedula');?></br>
-                    <?php echo $form->dropDownList($modeloSeguimiento,'idCedula',array(""=>"Seleccione conjunción"),array('disabled'=>true)) ?>
+                    <?php echo $form->dropDownList($modeloSeguimiento,'idCedula',
+						array(""=>"Seleccione conjunción"),
+							array(
+								'disabled'=>true,
+								'class'=>'form-control',
+								'data-hide-disabled'=>'true',
+								'data-live-search'=>'true'
+							)
+						) ?>
                     <?php echo $form->error($modeloSeguimiento,'idCedula',array('style' => 'color:#F00'));?>
                 </div>
             </div>
@@ -241,7 +249,7 @@
 				url:"'.CController::createUrl("consProf").'", //url to call.
 				beforeSend:function(){
 					if(idSegConj==1){
-						$("#SeguimientoAdol_idCedula").attr("disabled",true);
+						$(".btn dropdown-toggle selectpicker").attr("disabled",true);
 						$("#formularioSegAdol #SeguimientoAdol_idCedula_em_").hide(""); 
 						return;  
 					}

@@ -22,7 +22,7 @@ class ControlApController extends Controller
 	*  Se ejecuta primero esta acción para  
 	*/		
 	public function filters(){
-		return array('enforcelogin',array('application.filters.ActionLogFilter - buscaAdolGen','modulo'=>$this->module->id,'controlador'=>$this->id,'parametros'=>Yii::app()->input->post()));
+		return array('enforcelogin',array('application.filters.ActionLogFilter - buscaAdolGen','controlador'=>$this->id,'parametros'=>Yii::app()->input->post()));
 	}
 	
 	/** Acción index.       
@@ -189,8 +189,8 @@ class ControlApController extends Controller
 				$k=0;
 				$consSubMenuNi=$this->_muestraMenu->consultaSubMenu($menu['id_menu']);
 				$targetMenu="_self";
-				if(!empty($consSubMenuNi[$i]['target'])){
-					$targetMenu=$consSubMenuNi[$i]['target'];
+				if(!empty($consSubMenuNi[$k]['target'])){
+					$targetMenu=$consSubMenuNi[$k]['target'];
 				}	
 				$menuPr['items'][$pk+4]=array('label'=>$menu['titulo_menu'], 'url'=>'#','linkOptions'=>array('target'=>$targetMenu), 'items'=>array());
 				for($i=0;$i<=count($consSubMenuNi)-1;$i++){

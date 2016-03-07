@@ -125,22 +125,23 @@ class SiteController extends Controller
 			$model->attributes=$_POST['LoginForm'];
 			// validate user input and redirect to the previous page if valid
 			if($model->validate() && $model->login()){
-				if (isset($_SERVER)) {
-					if (isset($_SERVER["HTTP_X_FORWARDED_FOR"]))
-						$ip=$_SERVER["HTTP_X_FORWARDED_FOR"];
-					if (isset($_SERVER["HTTP_CLIENT_IP"]))
-						$ip=$_SERVER["HTTP_CLIENT_IP"];
-					$ip=$_SERVER["REMOTE_ADDR"];
-				}
-				else{
-					if (getenv('HTTP_X_FORWARDED_FOR'))
-						$ip=getenv('HTTP_X_FORWARDED_FOR');
-					if (getenv('HTTP_CLIENT_IP'))
-						$ip=getenv('HTTP_CLIENT_IP');
-					$ip=getenv('REMOTE_ADDR');
-				}
+				if (getenv('HTTP_CLIENT_IP'))
+					$ipaddress = getenv('HTTP_CLIENT_IP');
+				else if(getenv('HTTP_X_FORWARDED_FOR'))
+					$ipaddress = getenv('HTTP_X_FORWARDED_FOR');
+				else if(getenv('HTTP_X_FORWARDED'))
+					$ipaddress = getenv('HTTP_X_FORWARDED');
+				else if(getenv('HTTP_FORWARDED_FOR'))
+					$ipaddress = getenv('HTTP_FORWARDED_FOR');
+				else if(getenv('HTTP_FORWARDED'))
+					$ipaddress = getenv('HTTP_FORWARDED');
+				else if(getenv('REMOTE_ADDR'))
+					$ipaddress = getenv('REMOTE_ADDR');
+				else
+				$ipaddress = 'UNKNOWN';
+				$ip=$ipaddress;
 				$modeloLogAcceso=new LogAcceso();
-				$modeloLogAcceso->ip_acceso=$ip;
+				$modeloLogAcceso->ip_acceso=$ipaddress;
 				$modeloLogAcceso->id_tipoacceso=1;
 				$modeloLogAcceso->fecha_logacceso=date("Y-m-d H:i:s");
 				$modeloLogAcceso->id_cedula=Yii::app()->user->getState('cedula');								

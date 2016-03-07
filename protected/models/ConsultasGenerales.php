@@ -72,16 +72,16 @@ class ConsultasGenerales extends CFormModel{
 	public function consultaProfSeg(){
 		switch($this->searchTerm){
 			case 2:
-				$cond=" a.id_rol=4 or a.id_rol=5";
+				$cond=" (a.id_rol=4 or a.id_rol=5)";
 			break;
 			case 3:
-				$cond=" a.id_rol=4 or a.id_rol=7";
+				$cond="( a.id_rol=4 or a.id_rol=7)";
 			break;
 			case 4:
-				$cond=" a.id_rol=6 or a.id_rol=9 and a.id_rol=10";
+				$cond=" ((a.id_rol=6 or a.id_rol=9) and a.id_rol=10)";
 			break;
 			case 5:
-				$cond=" a.id_rol=12 or a.id_rol=14";
+				$cond=" (a.id_rol=12 or a.id_rol=14)";
 			break;
 			case 6:
 				$cond=" a.id_rol=13";
@@ -93,8 +93,10 @@ class ConsultasGenerales extends CFormModel{
 		$conect= Yii::app()->db;	
 			
 		$sqlConsProf="select a.id_cedula,(nombre_personal ||' '|| apellidos_personal) as nombres_persona from usuario as a 
-			left join persona as b on a.id_cedula=b.id_cedula where ".$cond;	
+			left join persona as b on a.id_cedula=b.id_cedula left join cforjar_personal as c on c.id_cedula=a.id_cedula where ".$cond." and id_forjar=:id_forjar and pers_habilitado is true and a.id_cedula<>:id_cedula"; 	
 		$consProf=$conect->createCommand($sqlConsProf);
+		$consProf->bindParam(":id_forjar",Yii::app()->user->getState('sedeForjar'));
+		$consProf->bindParam(":id_cedula",Yii::app()->user->getState('cedula'));
 		$readConsProf=$consProf->query();
 		while($resConsProf=$readConsProf->read()){
 			$profesional[$resConsProf["id_cedula"]]=$resConsProf["nombres_persona"];	

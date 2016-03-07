@@ -119,7 +119,7 @@ class IdentificacionRegistroController extends Controller
 			$proteccion=$consGen->consultaProteccion();
 			$this->render('registrarDatos',
 				array('formAdol'=>$formAdol,
-					'modeloInfJudAdmon'=>$modeloInfJudAdmon,
+					//'modeloInfJudAdmon'=>$modeloInfJudAdmon,
 					'tipoDocBd'=>$tipoDocBd,
 					'departamento'=>$departamento,
 					'sexo'=>$sexo,

@@ -22,7 +22,6 @@ class DatosContrato extends CActiveRecord
 	 * @return string the associated database table name
 	 */
 	public $contrato;
-	//public $id_cedula;
 	public function tableName()
 	{
 		return 'datos_contrato';
@@ -186,8 +185,9 @@ class DatosContrato extends CActiveRecord
 	public function consultaContratoAct(){
 		$conect= Yii::app()->db;
 		$sqlConsContrato="select * from datos_contrato where id_cedula=:id_cedula and contrato_actual='true'";
-		$consContrato=$conect->createCommand($sqlConsContrato);		
-		$consContrato->bindParam(":id_cedula",$this->id_cedula);
+		$consContrato=$conect->createCommand($sqlConsContrato);	
+		$idCedula=$this->id_cedula;
+		$consContrato->bindValue(":id_cedula",$this->id_cedula);
 		$readContrato=$consContrato->query();
 		$resContrato=$readContrato->read();
 		$readContrato->close();

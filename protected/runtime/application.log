@@ -26877,3 +26877,468 @@ Stack trace:
 REQUEST_URI=/sigiaf/controlAp/index.cforjar
 in C:\xampp\htdocs\sigiaf\protected\controllers\ControlApController.php (25)
 in C:\xampp\htdocs\sigiaf\index.php (12)
+2016/02/29 11:35:43 [error] [php] Trying to get property of non-object (C:\xampp\htdocs\sigiaf\protected\controllers\AlertasController.php:37)
+Stack trace:
+#0 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#1 C:\xampp\htdocs\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\sigiaf\index.php(12): CWebApplication->run()
+REQUEST_URI=/sigiaf/alertas/asociaAlertas.cforjar
+in C:\xampp\htdocs\sigiaf\protected\controllers\AlertasController.php (37)
+in C:\xampp\htdocs\sigiaf\index.php (12)
+2016/02/29 11:35:54 [error] [php] Indirect modification of overloaded property LogAcceso::$id_tipoacceso has no effect (C:\xampp\htdocs\sigiaf\protected\models\LogAcceso.php:135)
+Stack trace:
+#0 C:\xampp\htdocs\yii\framework\web\CController.php(308): CInlineAction->runWithParams()
+#1 C:\xampp\htdocs\yii\framework\web\CController.php(286): SiteController->runAction()
+#2 C:\xampp\htdocs\yii\framework\web\CController.php(265): SiteController->runActionWithFilters()
+#3 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(282): SiteController->run()
+#4 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#5 C:\xampp\htdocs\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#6 C:\xampp\htdocs\sigiaf\index.php(12): CWebApplication->run()
+REQUEST_URI=/sigiaf/site/logout.cforjar
+in C:\xampp\htdocs\sigiaf\protected\models\LogAcceso.php (135)
+in C:\xampp\htdocs\sigiaf\protected\controllers\SiteController.php (192)
+in C:\xampp\htdocs\sigiaf\index.php (12)
+2016/02/29 11:36:15 [error] [php] Indirect modification of overloaded property LogAcceso::$fecha_logacceso has no effect (C:\xampp\htdocs\sigiaf\protected\models\LogAcceso.php:137)
+Stack trace:
+#0 C:\xampp\htdocs\yii\framework\web\CController.php(308): CInlineAction->runWithParams()
+#1 C:\xampp\htdocs\yii\framework\web\CController.php(286): SiteController->runAction()
+#2 C:\xampp\htdocs\yii\framework\web\CController.php(265): SiteController->runActionWithFilters()
+#3 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(282): SiteController->run()
+#4 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#5 C:\xampp\htdocs\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#6 C:\xampp\htdocs\sigiaf\index.php(12): CWebApplication->run()
+REQUEST_URI=/sigiaf/site/logout.cforjar
+in C:\xampp\htdocs\sigiaf\protected\models\LogAcceso.php (137)
+in C:\xampp\htdocs\sigiaf\protected\controllers\SiteController.php (192)
+in C:\xampp\htdocs\sigiaf\index.php (12)
+2016/02/29 11:36:38 [error] [php] Indirect modification of overloaded property LogAcceso::$ip_acceso has no effect (C:\xampp\htdocs\sigiaf\protected\models\LogAcceso.php:139)
+Stack trace:
+#0 C:\xampp\htdocs\yii\framework\web\CController.php(308): CInlineAction->runWithParams()
+#1 C:\xampp\htdocs\yii\framework\web\CController.php(286): SiteController->runAction()
+#2 C:\xampp\htdocs\yii\framework\web\CController.php(265): SiteController->runActionWithFilters()
+#3 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(282): SiteController->run()
+#4 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#5 C:\xampp\htdocs\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#6 C:\xampp\htdocs\sigiaf\index.php(12): CWebApplication->run()
+REQUEST_URI=/sigiaf/site/logout.cforjar
+in C:\xampp\htdocs\sigiaf\protected\models\LogAcceso.php (139)
+in C:\xampp\htdocs\sigiaf\protected\controllers\SiteController.php (192)
+in C:\xampp\htdocs\sigiaf\index.php (12)
+2016/02/29 11:37:00 [error] [php] Trying to get property of non-object (C:\xampp\htdocs\sigiaf\protected\controllers\AlertasController.php:37)
+Stack trace:
+#0 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#1 C:\xampp\htdocs\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\sigiaf\index.php(12): CWebApplication->run()
+REQUEST_URI=/sigiaf/alertas/asociaAlertas.cforjar
+in C:\xampp\htdocs\sigiaf\protected\controllers\AlertasController.php (37)
+in C:\xampp\htdocs\sigiaf\index.php (12)
+2016/02/29 11:38:17 [error] [php] Indirect modification of overloaded property DatosContrato::$contrato_actual has no effect (C:\xampp\htdocs\sigiaf\protected\modules\administracion\models\DatosContrato.php:301)
+Stack trace:
+#0 C:\xampp\htdocs\sigiaf\protected\models\LoginForm.php(103): UserIdentity->authenticate()
+#1 C:\xampp\htdocs\yii\framework\validators\CInlineValidator.php(42): LoginForm->authenticate()
+#2 C:\xampp\htdocs\yii\framework\validators\CValidator.php(213): CInlineValidator->validateAttribute()
+#3 C:\xampp\htdocs\yii\framework\base\CModel.php(159): CInlineValidator->validate()
+#4 C:\xampp\htdocs\yii\framework\web\widgets\CActiveForm.php(920): LoginForm->validate()
+#5 C:\xampp\htdocs\sigiaf\protected\controllers\SiteController.php(118): validate()
+#6 C:\xampp\htdocs\yii\framework\web\actions\CInlineAction.php(49): SiteController->actionLogin()
+#7 C:\xampp\htdocs\yii\framework\web\CController.php(308): CInlineAction->runWithParams()
+#8 C:\xampp\htdocs\yii\framework\web\CController.php(286): SiteController->runAction()
+#9 C:\xampp\htdocs\yii\framework\web\CController.php(265): SiteController->runActionWithFilters()
+#10 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(282): SiteController->run()
+#11 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#12 C:\xampp\htdocs\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#13 C:\xampp\htdocs\sigiaf\index.php(12): CWebApplication->run()
+REQUEST_URI=/sigiaf/site/login.cforjar
+in C:\xampp\htdocs\sigiaf\protected\modules\administracion\models\DatosContrato.php (301)
+in C:\xampp\htdocs\sigiaf\protected\modules\administracion\models\DatosContrato.php (207)
+in C:\xampp\htdocs\sigiaf\protected\components\UserIdentity.php (48)
+2016/02/29 11:38:26 [error] [php] Indirect modification of overloaded property DatosContrato::$contrato_actual has no effect (C:\xampp\htdocs\sigiaf\protected\modules\administracion\models\DatosContrato.php:301)
+Stack trace:
+#0 C:\xampp\htdocs\sigiaf\protected\models\LoginForm.php(103): UserIdentity->authenticate()
+#1 C:\xampp\htdocs\yii\framework\validators\CInlineValidator.php(42): LoginForm->authenticate()
+#2 C:\xampp\htdocs\yii\framework\validators\CValidator.php(213): CInlineValidator->validateAttribute()
+#3 C:\xampp\htdocs\yii\framework\base\CModel.php(159): CInlineValidator->validate()
+#4 C:\xampp\htdocs\yii\framework\web\widgets\CActiveForm.php(920): LoginForm->validate()
+#5 C:\xampp\htdocs\sigiaf\protected\controllers\SiteController.php(118): validate()
+#6 C:\xampp\htdocs\yii\framework\web\actions\CInlineAction.php(49): SiteController->actionLogin()
+#7 C:\xampp\htdocs\yii\framework\web\CController.php(308): CInlineAction->runWithParams()
+#8 C:\xampp\htdocs\yii\framework\web\CController.php(286): SiteController->runAction()
+#9 C:\xampp\htdocs\yii\framework\web\CController.php(265): SiteController->runActionWithFilters()
+#10 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(282): SiteController->run()
+#11 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#12 C:\xampp\htdocs\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#13 C:\xampp\htdocs\sigiaf\index.php(12): CWebApplication->run()
+REQUEST_URI=/sigiaf/site/login.cforjar
+in C:\xampp\htdocs\sigiaf\protected\modules\administracion\models\DatosContrato.php (301)
+in C:\xampp\htdocs\sigiaf\protected\modules\administracion\models\DatosContrato.php (207)
+in C:\xampp\htdocs\sigiaf\protected\components\UserIdentity.php (48)
+2016/02/29 11:39:04 [error] [system.db.CDbCommand] CDbCommand::execute() falló: SQLSTATE[23502]: Not null violation: 7 ERROR:  null value in column "contrato_actual" violates not-null constraint
+DETAIL:  Failing row contains (1, 53096609, 123456, 2015-01-01, 2015-01-01, 2016-12-01, null, null).. La sentencia SQL ejecutada fue: update datos_contrato set contrato_actual=:contrato_actual where id_cedula=:id_cedula.
+in C:\xampp\htdocs\sigiaf\protected\modules\administracion\models\DatosContrato.php (303)
+in C:\xampp\htdocs\sigiaf\protected\modules\administracion\models\DatosContrato.php (207)
+in C:\xampp\htdocs\sigiaf\protected\components\UserIdentity.php (48)
+2016/02/29 11:39:04 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[23502]: Not null violation: 7 ERROR:  null value in column "contrato_actual" violates not-null constraint
+DETAIL:  Failing row contains (1, 53096609, 123456, 2015-01-01, 2015-01-01, 2016-12-01, null, null).. The SQL statement executed was: update datos_contrato set contrato_actual=:contrato_actual where id_cedula=:id_cedula' in C:\xampp\htdocs\yii\framework\db\CDbCommand.php:358
+Stack trace:
+#0 C:\xampp\htdocs\sigiaf\protected\modules\administracion\models\DatosContrato.php(303): CDbCommand->execute()
+#1 C:\xampp\htdocs\sigiaf\protected\modules\administracion\models\DatosContrato.php(207): DatosContrato->cambiaEstadoContrato()
+#2 C:\xampp\htdocs\sigiaf\protected\components\UserIdentity.php(48): DatosContrato->consultaContratoAct()
+#3 C:\xampp\htdocs\sigiaf\protected\models\LoginForm.php(103): UserIdentity->authenticate()
+#4 C:\xampp\htdocs\yii\framework\validators\CInlineValidator.php(42): LoginForm->authenticate('claveusr', Array)
+#5 C:\xampp\htdocs\yii\framework\validators\CValidator.php(213): CInlineValidator->validateAttribute(Object(LoginForm), 'claveusr')
+#6 C:\xampp\htdocs\yii\framework\base\CModel.php(159): CValidator->validate(Object(LoginForm), NULL)
+#7 C:\xampp\htdocs\yii\framework\web\widgets\CActiveForm.php(920): CModel->validate(NULL)
+#8 C:\xampp\htdocs\sigiaf\protected\controllers\SiteController.php(118): CActiveForm::validate(Object(LoginForm))
+#9 C:\xampp\htdocs\yii\framework\web\actions\CInlineAction.php(49): SiteController->actionLogin()
+#10 C:\xampp\htdocs\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#11 C:\xampp\htdocs\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#12 C:\xampp\htdocs\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(282): CController->run('login')
+#14 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#15 C:\xampp\htdocs\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#16 C:\xampp\htdocs\sigiaf\index.php(12): CApplication->run()
+#17 {main}
+REQUEST_URI=/sigiaf/site/login.cforjar
+HTTP_REFERER=http://localhost/sigiaf/site/login.cforjar
+---
+2016/02/29 11:39:08 [error] [system.db.CDbCommand] CDbCommand::execute() falló: SQLSTATE[23502]: Not null violation: 7 ERROR:  null value in column "contrato_actual" violates not-null constraint
+DETAIL:  Failing row contains (1, 53096609, 123456, 2015-01-01, 2015-01-01, 2016-12-01, null, null).. La sentencia SQL ejecutada fue: update datos_contrato set contrato_actual=:contrato_actual where id_cedula=:id_cedula.
+in C:\xampp\htdocs\sigiaf\protected\modules\administracion\models\DatosContrato.php (303)
+in C:\xampp\htdocs\sigiaf\protected\modules\administracion\models\DatosContrato.php (207)
+in C:\xampp\htdocs\sigiaf\protected\components\UserIdentity.php (48)
+2016/02/29 11:39:08 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[23502]: Not null violation: 7 ERROR:  null value in column "contrato_actual" violates not-null constraint
+DETAIL:  Failing row contains (1, 53096609, 123456, 2015-01-01, 2015-01-01, 2016-12-01, null, null).. The SQL statement executed was: update datos_contrato set contrato_actual=:contrato_actual where id_cedula=:id_cedula' in C:\xampp\htdocs\yii\framework\db\CDbCommand.php:358
+Stack trace:
+#0 C:\xampp\htdocs\sigiaf\protected\modules\administracion\models\DatosContrato.php(303): CDbCommand->execute()
+#1 C:\xampp\htdocs\sigiaf\protected\modules\administracion\models\DatosContrato.php(207): DatosContrato->cambiaEstadoContrato()
+#2 C:\xampp\htdocs\sigiaf\protected\components\UserIdentity.php(48): DatosContrato->consultaContratoAct()
+#3 C:\xampp\htdocs\sigiaf\protected\models\LoginForm.php(103): UserIdentity->authenticate()
+#4 C:\xampp\htdocs\yii\framework\validators\CInlineValidator.php(42): LoginForm->authenticate('claveusr', Array)
+#5 C:\xampp\htdocs\yii\framework\validators\CValidator.php(213): CInlineValidator->validateAttribute(Object(LoginForm), 'claveusr')
+#6 C:\xampp\htdocs\yii\framework\base\CModel.php(159): CValidator->validate(Object(LoginForm), NULL)
+#7 C:\xampp\htdocs\yii\framework\web\widgets\CActiveForm.php(920): CModel->validate(NULL)
+#8 C:\xampp\htdocs\sigiaf\protected\controllers\SiteController.php(118): CActiveForm::validate(Object(LoginForm))
+#9 C:\xampp\htdocs\yii\framework\web\actions\CInlineAction.php(49): SiteController->actionLogin()
+#10 C:\xampp\htdocs\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#11 C:\xampp\htdocs\yii\framework\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#12 C:\xampp\htdocs\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(282): CController->run('login')
+#14 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('site/login')
+#15 C:\xampp\htdocs\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#16 C:\xampp\htdocs\sigiaf\index.php(12): CApplication->run()
+#17 {main}
+REQUEST_URI=/sigiaf/site/login.cforjar
+HTTP_REFERER=http://localhost/sigiaf/site/login.cforjar
+---
+2016/02/29 11:40:13 [error] [exception.CHttpException.403] exception 'CHttpException' with message 'Debe loguearse primero' in C:\xampp\htdocs\sigiaf\protected\controllers\ControlApController.php:16
+Stack trace:
+#0 C:\xampp\htdocs\yii\framework\web\filters\CInlineFilter.php(58): ControlApController->filterEnforcelogin(Object(CFilterChain))
+#1 C:\xampp\htdocs\yii\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#2 C:\xampp\htdocs\yii\framework\web\CController.php(291): CFilterChain->run()
+#3 C:\xampp\htdocs\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#4 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(282): CController->run('index')
+#5 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('controlAp/index')
+#6 C:\xampp\htdocs\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#7 C:\xampp\htdocs\sigiaf\index.php(12): CApplication->run()
+#8 {main}
+REQUEST_URI=/sigiaf/controlAp/index.cforjar
+---
+2016/02/29 11:44:38 [error] [php] Trying to get property of non-object (C:\xampp\htdocs\sigiaf\protected\controllers\AlertasController.php:37)
+Stack trace:
+#0 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#1 C:\xampp\htdocs\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\sigiaf\index.php(12): CWebApplication->run()
+REQUEST_URI=/sigiaf/alertas/asociaAlertas.cforjar
+in C:\xampp\htdocs\sigiaf\protected\controllers\AlertasController.php (37)
+in C:\xampp\htdocs\sigiaf\index.php (12)
+2016/02/29 11:45:51 [error] [php] Trying to get property of non-object (C:\xampp\htdocs\sigiaf\protected\controllers\AlertasController.php:37)
+Stack trace:
+#0 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#1 C:\xampp\htdocs\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\sigiaf\index.php(12): CWebApplication->run()
+REQUEST_URI=/sigiaf/alertas/asociaAlertas.cforjar
+in C:\xampp\htdocs\sigiaf\protected\controllers\AlertasController.php (37)
+in C:\xampp\htdocs\sigiaf\index.php (12)
+2016/02/29 11:52:14 [error] [php] Trying to get property of non-object (C:\xampp\htdocs\sigiaf\protected\controllers\AlertasController.php:37)
+Stack trace:
+#0 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#1 C:\xampp\htdocs\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\sigiaf\index.php(12): CWebApplication->run()
+REQUEST_URI=/sigiaf/alertas/asociaAlertas.cforjar
+in C:\xampp\htdocs\sigiaf\protected\controllers\AlertasController.php (37)
+in C:\xampp\htdocs\sigiaf\index.php (12)
+2016/02/29 11:57:16 [error] [php] Trying to get property of non-object (C:\xampp\htdocs\sigiaf\protected\controllers\AlertasController.php:37)
+Stack trace:
+#0 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#1 C:\xampp\htdocs\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\sigiaf\index.php(12): CWebApplication->run()
+REQUEST_URI=/sigiaf/alertas/asociaAlertas.cforjar
+in C:\xampp\htdocs\sigiaf\protected\controllers\AlertasController.php (37)
+in C:\xampp\htdocs\sigiaf\index.php (12)
+2016/02/29 12:00:26 [error] [php] Trying to get property of non-object (C:\xampp\htdocs\sigiaf\protected\controllers\AlertasController.php:37)
+Stack trace:
+#0 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#1 C:\xampp\htdocs\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\sigiaf\index.php(12): CWebApplication->run()
+REQUEST_URI=/sigiaf/alertas/asociaAlertas.cforjar
+in C:\xampp\htdocs\sigiaf\protected\controllers\AlertasController.php (37)
+in C:\xampp\htdocs\sigiaf\index.php (12)
+2016/02/29 12:14:31 [error] [php] Trying to get property of non-object (C:\xampp\htdocs\sigiaf\protected\controllers\AlertasController.php:37)
+Stack trace:
+#0 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#1 C:\xampp\htdocs\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\sigiaf\index.php(12): CWebApplication->run()
+REQUEST_URI=/sigiaf/alertas/asociaAlertas.cforjar
+in C:\xampp\htdocs\sigiaf\protected\controllers\AlertasController.php (37)
+in C:\xampp\htdocs\sigiaf\index.php (12)
+2016/02/29 12:16:02 [error] [php] Trying to get property of non-object (C:\xampp\htdocs\sigiaf\protected\controllers\AlertasController.php:37)
+Stack trace:
+#0 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#1 C:\xampp\htdocs\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\sigiaf\index.php(12): CWebApplication->run()
+REQUEST_URI=/sigiaf/alertas/asociaAlertas.cforjar
+in C:\xampp\htdocs\sigiaf\protected\controllers\AlertasController.php (37)
+in C:\xampp\htdocs\sigiaf\index.php (12)
+2016/02/29 12:16:07 [error] [php] Trying to get property of non-object (C:\xampp\htdocs\sigiaf\protected\controllers\AlertasController.php:37)
+Stack trace:
+#0 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#1 C:\xampp\htdocs\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\sigiaf\index.php(12): CWebApplication->run()
+REQUEST_URI=/sigiaf/alertas/asociaAlertas.cforjar
+in C:\xampp\htdocs\sigiaf\protected\controllers\AlertasController.php (37)
+in C:\xampp\htdocs\sigiaf\index.php (12)
+2016/02/29 12:16:12 [error] [php] Trying to get property of non-object (C:\xampp\htdocs\sigiaf\protected\controllers\AlertasController.php:37)
+Stack trace:
+#0 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#1 C:\xampp\htdocs\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\sigiaf\index.php(12): CWebApplication->run()
+REQUEST_URI=/sigiaf/alertas/asociaAlertas.cforjar
+in C:\xampp\htdocs\sigiaf\protected\controllers\AlertasController.php (37)
+in C:\xampp\htdocs\sigiaf\index.php (12)
+2016/02/29 12:16:17 [error] [php] Undefined variable: i (C:\xampp\htdocs\sigiaf\protected\controllers\ControlApController.php:192)
+Stack trace:
+#0 C:\xampp\htdocs\yii\framework\web\actions\CInlineAction.php(49): ControlApController->actionModulos()
+#1 C:\xampp\htdocs\yii\framework\web\CController.php(308): CInlineAction->runWithParams()
+#2 C:\xampp\htdocs\yii\framework\web\filters\CFilterChain.php(133): ControlApController->runAction()
+#3 C:\xampp\htdocs\sigiaf\protected\filters\ActionLogFilter.php(58): CFilterChain->run()
+#4 C:\xampp\htdocs\yii\framework\web\filters\CFilter.php(38): ActionLogFilter->preFilter()
+#5 C:\xampp\htdocs\yii\framework\web\filters\CFilterChain.php(130): ActionLogFilter->filter()
+#6 C:\xampp\htdocs\sigiaf\protected\controllers\ControlApController.php(18): CFilterChain->run()
+#7 C:\xampp\htdocs\yii\framework\web\filters\CInlineFilter.php(58): ControlApController->filterEnforcelogin()
+#8 C:\xampp\htdocs\yii\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#9 C:\xampp\htdocs\yii\framework\web\CController.php(291): CFilterChain->run()
+#10 C:\xampp\htdocs\yii\framework\web\CController.php(265): ControlApController->runActionWithFilters()
+#11 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(282): ControlApController->run()
+#12 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#13 C:\xampp\htdocs\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#14 C:\xampp\htdocs\sigiaf\index.php(12): CWebApplication->run()
+REQUEST_URI=/sigiaf/controlAp/modulos
+in C:\xampp\htdocs\sigiaf\protected\controllers\ControlApController.php (192)
+in C:\xampp\htdocs\sigiaf\protected\controllers\ControlApController.php (162)
+in C:\xampp\htdocs\sigiaf\protected\controllers\ControlApController.php (126)
+2016/02/29 12:18:01 [error] [php] Trying to get property of non-object (C:\xampp\htdocs\sigiaf\protected\controllers\AlertasController.php:37)
+Stack trace:
+#0 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#1 C:\xampp\htdocs\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\sigiaf\index.php(12): CWebApplication->run()
+REQUEST_URI=/sigiaf/alertas/asociaAlertas.cforjar
+in C:\xampp\htdocs\sigiaf\protected\controllers\AlertasController.php (37)
+in C:\xampp\htdocs\sigiaf\index.php (12)
+2016/02/29 12:18:05 [error] [php] Trying to get property of non-object (C:\xampp\htdocs\sigiaf\protected\controllers\AlertasController.php:37)
+Stack trace:
+#0 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#1 C:\xampp\htdocs\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\sigiaf\index.php(12): CWebApplication->run()
+REQUEST_URI=/sigiaf/alertas/asociaAlertas.cforjar
+in C:\xampp\htdocs\sigiaf\protected\controllers\AlertasController.php (37)
+in C:\xampp\htdocs\sigiaf\index.php (12)
+2016/02/29 12:18:09 [error] [php] Trying to get property of non-object (C:\xampp\htdocs\sigiaf\protected\controllers\AlertasController.php:37)
+Stack trace:
+#0 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#1 C:\xampp\htdocs\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#2 C:\xampp\htdocs\sigiaf\index.php(12): CWebApplication->run()
+REQUEST_URI=/sigiaf/alertas/asociaAlertas.cforjar
+in C:\xampp\htdocs\sigiaf\protected\controllers\AlertasController.php (37)
+in C:\xampp\htdocs\sigiaf\index.php (12)
+2016/02/29 12:18:19 [error] [php] Undefined variable: modeloInfJudAdmon (C:\xampp\htdocs\sigiaf\protected\modules\modIdenReg\controllers\IdentificacionRegistroController.php:122)
+Stack trace:
+#0 C:\xampp\htdocs\yii\framework\web\filters\CFilterChain.php(133): IdentificacionRegistroController->runAction()
+#1 C:\xampp\htdocs\sigiaf\protected\filters\ActionLogFilter.php(58): CFilterChain->run()
+#2 C:\xampp\htdocs\yii\framework\web\filters\CFilter.php(38): ActionLogFilter->preFilter()
+#3 C:\xampp\htdocs\yii\framework\web\filters\CFilterChain.php(130): ActionLogFilter->filter()
+#4 C:\xampp\htdocs\sigiaf\protected\modules\modIdenReg\controllers\IdentificacionRegistroController.php(20): CFilterChain->run()
+#5 C:\xampp\htdocs\yii\framework\web\filters\CInlineFilter.php(58): IdentificacionRegistroController->filterEnforcelogin()
+#6 C:\xampp\htdocs\yii\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#7 C:\xampp\htdocs\yii\framework\web\CController.php(291): CFilterChain->run()
+#8 C:\xampp\htdocs\yii\framework\web\CController.php(265): IdentificacionRegistroController->runActionWithFilters()
+#9 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(282): IdentificacionRegistroController->run()
+#10 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#11 C:\xampp\htdocs\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#12 C:\xampp\htdocs\sigiaf\index.php(12): CWebApplication->run()
+REQUEST_URI=/sigiaf/modIdenReg/identificacionRegistro/creaRegAdolForm
+in C:\xampp\htdocs\sigiaf\protected\modules\modIdenReg\controllers\IdentificacionRegistroController.php (122)
+in C:\xampp\htdocs\sigiaf\protected\filters\ActionLogFilter.php (58)
+in C:\xampp\htdocs\sigiaf\protected\modules\modIdenReg\controllers\IdentificacionRegistroController.php (20)
+2016/02/29 12:19:25 [error] [php] strcmp() expects parameter 2 to be string, array given (C:\xampp\htdocs\yii\framework\web\helpers\CHtml.php:1164)
+Stack trace:
+#0 C:\xampp\htdocs\yii\framework\web\widgets\CActiveForm.php(895): activeRadioButtonList()
+#1 C:\xampp\htdocs\sigiaf\protected\modules\modIdenReg\views\identificacionRegistro\_formAdolescente.php(131): CActiveForm->radioButtonList()
+#2 C:\xampp\htdocs\yii\framework\web\CBaseController.php(126): require()
+#3 C:\xampp\htdocs\yii\framework\web\CBaseController.php(95): IdentificacionRegistroController->renderInternal()
+#4 C:\xampp\htdocs\yii\framework\web\CController.php(869): IdentificacionRegistroController->renderFile()
+#5 C:\xampp\htdocs\sigiaf\protected\modules\modIdenReg\views\identificacionRegistro\registrarDatos.php(19): IdentificacionRegistroController->renderPartial()
+#6 C:\xampp\htdocs\yii\framework\web\CBaseController.php(126): require()
+#7 C:\xampp\htdocs\yii\framework\web\CBaseController.php(95): IdentificacionRegistroController->renderInternal()
+#8 C:\xampp\htdocs\yii\framework\web\CController.php(869): IdentificacionRegistroController->renderFile()
+#9 C:\xampp\htdocs\yii\framework\web\CController.php(782): IdentificacionRegistroController->renderPartial()
+#10 C:\xampp\htdocs\sigiaf\protected\modules\modIdenReg\controllers\IdentificacionRegistroController.php(143): IdentificacionRegistroController->render()
+#11 C:\xampp\htdocs\yii\framework\web\actions\CInlineAction.php(49): IdentificacionRegistroController->actionCreaRegAdolForm()
+#12 C:\xampp\htdocs\yii\framework\web\CController.php(308): CInlineAction->runWithParams()
+#13 C:\xampp\htdocs\yii\framework\web\filters\CFilterChain.php(133): IdentificacionRegistroController->runAction()
+#14 C:\xampp\htdocs\sigiaf\protected\filters\ActionLogFilter.php(58): CFilterChain->run()
+#15 C:\xampp\htdocs\yii\framework\web\filters\CFilter.php(38): ActionLogFilter->preFilter()
+#16 C:\xampp\htdocs\yii\framework\web\filters\CFilterChain.php(130): ActionLogFilter->filter()
+#17 C:\xampp\htdocs\sigiaf\protected\modules\modIdenReg\controllers\IdentificacionRegistroController.php(20): CFilterChain->run()
+#18 C:\xampp\htdocs\yii\framework\web\filters\CInlineFilter.php(58): IdentificacionRegistroController->filterEnforcelogin()
+#19 C:\xampp\htdocs\yii\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#20 C:\xampp\htdocs\yii\framework\web\CController.php(291): CFilterChain->run()
+#21 C:\xampp\htdocs\yii\framework\web\CController.php(265): IdentificacionRegistroController->runActionWithFilters()
+#22 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(282): IdentificacionRegistroController->run()
+#23 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#24 C:\xampp\htdocs\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#25 C:\xampp\htdocs\sigiaf\index.php(12): CWebApplication->run()
+REQUEST_URI=/sigiaf/modIdenReg/identificacionRegistro/creaRegAdolForm
+in C:\xampp\htdocs\sigiaf\protected\modules\modIdenReg\views\identificacionRegistro\_formAdolescente.php (131)
+in C:\xampp\htdocs\sigiaf\protected\modules\modIdenReg\views\identificacionRegistro\registrarDatos.php (19)
+in C:\xampp\htdocs\sigiaf\protected\modules\modIdenReg\controllers\IdentificacionRegistroController.php (143)
+2016/02/29 12:34:30 [error] [php] Invalid argument supplied for foreach() (C:\xampp\htdocs\yii\framework\web\helpers\CHtml.php:1162)
+Stack trace:
+#0 C:\xampp\htdocs\sigiaf\protected\modules\modIdenReg\views\identificacionRegistro\_formAdolescente.php(131): CActiveForm->radioButtonList()
+#1 C:\xampp\htdocs\yii\framework\web\CBaseController.php(126): require()
+#2 C:\xampp\htdocs\yii\framework\web\CBaseController.php(95): IdentificacionRegistroController->renderInternal()
+#3 C:\xampp\htdocs\yii\framework\web\CController.php(869): IdentificacionRegistroController->renderFile()
+#4 C:\xampp\htdocs\sigiaf\protected\modules\modIdenReg\views\identificacionRegistro\registrarDatos.php(19): IdentificacionRegistroController->renderPartial()
+#5 C:\xampp\htdocs\yii\framework\web\CBaseController.php(126): require()
+#6 C:\xampp\htdocs\yii\framework\web\CBaseController.php(95): IdentificacionRegistroController->renderInternal()
+#7 C:\xampp\htdocs\yii\framework\web\CController.php(869): IdentificacionRegistroController->renderFile()
+#8 C:\xampp\htdocs\yii\framework\web\CController.php(782): IdentificacionRegistroController->renderPartial()
+#9 C:\xampp\htdocs\sigiaf\protected\modules\modIdenReg\controllers\IdentificacionRegistroController.php(143): IdentificacionRegistroController->render()
+#10 C:\xampp\htdocs\yii\framework\web\actions\CInlineAction.php(49): IdentificacionRegistroController->actionCreaRegAdolForm()
+#11 C:\xampp\htdocs\yii\framework\web\CController.php(308): CInlineAction->runWithParams()
+#12 C:\xampp\htdocs\yii\framework\web\filters\CFilterChain.php(133): IdentificacionRegistroController->runAction()
+#13 C:\xampp\htdocs\sigiaf\protected\filters\ActionLogFilter.php(58): CFilterChain->run()
+#14 C:\xampp\htdocs\yii\framework\web\filters\CFilter.php(38): ActionLogFilter->preFilter()
+#15 C:\xampp\htdocs\yii\framework\web\filters\CFilterChain.php(130): ActionLogFilter->filter()
+#16 C:\xampp\htdocs\sigiaf\protected\modules\modIdenReg\controllers\IdentificacionRegistroController.php(20): CFilterChain->run()
+#17 C:\xampp\htdocs\yii\framework\web\filters\CInlineFilter.php(58): IdentificacionRegistroController->filterEnforcelogin()
+#18 C:\xampp\htdocs\yii\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#19 C:\xampp\htdocs\yii\framework\web\CController.php(291): CFilterChain->run()
+#20 C:\xampp\htdocs\yii\framework\web\CController.php(265): IdentificacionRegistroController->runActionWithFilters()
+#21 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(282): IdentificacionRegistroController->run()
+#22 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#23 C:\xampp\htdocs\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#24 C:\xampp\htdocs\sigiaf\index.php(12): CWebApplication->run()
+REQUEST_URI=/sigiaf/modIdenReg/identificacionRegistro/creaRegAdolForm
+in C:\xampp\htdocs\sigiaf\protected\modules\modIdenReg\views\identificacionRegistro\_formAdolescente.php (131)
+in C:\xampp\htdocs\sigiaf\protected\modules\modIdenReg\views\identificacionRegistro\registrarDatos.php (19)
+in C:\xampp\htdocs\sigiaf\protected\modules\modIdenReg\controllers\IdentificacionRegistroController.php (143)
+2016/02/29 12:34:51 [error] [php] strcmp() expects parameter 2 to be string, array given (C:\xampp\htdocs\yii\framework\web\helpers\CHtml.php:1164)
+Stack trace:
+#0 C:\xampp\htdocs\yii\framework\web\widgets\CActiveForm.php(895): activeRadioButtonList()
+#1 C:\xampp\htdocs\sigiaf\protected\modules\modIdenReg\views\identificacionRegistro\_formAdolescente.php(131): CActiveForm->radioButtonList()
+#2 C:\xampp\htdocs\yii\framework\web\CBaseController.php(126): require()
+#3 C:\xampp\htdocs\yii\framework\web\CBaseController.php(95): IdentificacionRegistroController->renderInternal()
+#4 C:\xampp\htdocs\yii\framework\web\CController.php(869): IdentificacionRegistroController->renderFile()
+#5 C:\xampp\htdocs\sigiaf\protected\modules\modIdenReg\views\identificacionRegistro\registrarDatos.php(19): IdentificacionRegistroController->renderPartial()
+#6 C:\xampp\htdocs\yii\framework\web\CBaseController.php(126): require()
+#7 C:\xampp\htdocs\yii\framework\web\CBaseController.php(95): IdentificacionRegistroController->renderInternal()
+#8 C:\xampp\htdocs\yii\framework\web\CController.php(869): IdentificacionRegistroController->renderFile()
+#9 C:\xampp\htdocs\yii\framework\web\CController.php(782): IdentificacionRegistroController->renderPartial()
+#10 C:\xampp\htdocs\sigiaf\protected\modules\modIdenReg\controllers\IdentificacionRegistroController.php(143): IdentificacionRegistroController->render()
+#11 C:\xampp\htdocs\yii\framework\web\actions\CInlineAction.php(49): IdentificacionRegistroController->actionCreaRegAdolForm()
+#12 C:\xampp\htdocs\yii\framework\web\CController.php(308): CInlineAction->runWithParams()
+#13 C:\xampp\htdocs\yii\framework\web\filters\CFilterChain.php(133): IdentificacionRegistroController->runAction()
+#14 C:\xampp\htdocs\sigiaf\protected\filters\ActionLogFilter.php(58): CFilterChain->run()
+#15 C:\xampp\htdocs\yii\framework\web\filters\CFilter.php(38): ActionLogFilter->preFilter()
+#16 C:\xampp\htdocs\yii\framework\web\filters\CFilterChain.php(130): ActionLogFilter->filter()
+#17 C:\xampp\htdocs\sigiaf\protected\modules\modIdenReg\controllers\IdentificacionRegistroController.php(20): CFilterChain->run()
+#18 C:\xampp\htdocs\yii\framework\web\filters\CInlineFilter.php(58): IdentificacionRegistroController->filterEnforcelogin()
+#19 C:\xampp\htdocs\yii\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#20 C:\xampp\htdocs\yii\framework\web\CController.php(291): CFilterChain->run()
+#21 C:\xampp\htdocs\yii\framework\web\CController.php(265): IdentificacionRegistroController->runActionWithFilters()
+#22 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(282): IdentificacionRegistroController->run()
+#23 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(141): CWebApplication->runController()
+#24 C:\xampp\htdocs\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#25 C:\xampp\htdocs\sigiaf\index.php(12): CWebApplication->run()
+REQUEST_URI=/sigiaf/modIdenReg/identificacionRegistro/creaRegAdolForm
+in C:\xampp\htdocs\sigiaf\protected\modules\modIdenReg\views\identificacionRegistro\_formAdolescente.php (131)
+in C:\xampp\htdocs\sigiaf\protected\modules\modIdenReg\views\identificacionRegistro\registrarDatos.php (19)
+in C:\xampp\htdocs\sigiaf\protected\modules\modIdenReg\controllers\IdentificacionRegistroController.php (143)
+2016/03/06 19:34:35 [error] [system.db.CDbCommand] CDbCommand::() falló: SQLSTATE[42702]: Ambiguous column: 7 ERROR:  column reference "id_cedula" is ambiguous
+LINE 2: ... and id_forjar=$1 and pers_habilitado is true and id_cedula<...
+                                                             ^. La sentencia SQL ejecutada fue: select a.id_cedula,(nombre_personal ||' '|| apellidos_personal) as nombres_persona from usuario as a 
+			left join persona as b on a.id_cedula=b.id_cedula left join cforjar_personal as c on c.id_cedula=a.id_cedula where  (a.id_rol=4 or a.id_rol=5) and id_forjar=:id_forjar and pers_habilitado is true and id_cedula<>:id_cedula.
+in C:\xampp\htdocs\sigiaf\protected\models\ConsultasGenerales.php (100)
+in C:\xampp\htdocs\sigiaf\protected\modules\seguimientoAdol\controllers\SeguimientoAdolController.php (174)
+in C:\xampp\htdocs\sigiaf\protected\filters\ActionLogFilter.php (58)
+2016/03/06 19:34:35 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42702]: Ambiguous column: 7 ERROR:  column reference "id_cedula" is ambiguous
+LINE 2: ... and id_forjar=$1 and pers_habilitado is true and id_cedula<...
+                                                             ^. The SQL statement executed was: select a.id_cedula,(nombre_personal ||' '|| apellidos_personal) as nombres_persona from usuario as a 
+			left join persona as b on a.id_cedula=b.id_cedula left join cforjar_personal as c on c.id_cedula=a.id_cedula where  (a.id_rol=4 or a.id_rol=5) and id_forjar=:id_forjar and pers_habilitado is true and id_cedula<>:id_cedula' in C:\xampp\htdocs\yii\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\yii\framework\db\CDbCommand.php(377): CDbCommand->queryInternal('', 0, Array)
+#1 C:\xampp\htdocs\sigiaf\protected\models\ConsultasGenerales.php(100): CDbCommand->query()
+#2 C:\xampp\htdocs\sigiaf\protected\modules\seguimientoAdol\controllers\SeguimientoAdolController.php(174): ConsultasGenerales->consultaProfSeg()
+#3 C:\xampp\htdocs\yii\framework\web\actions\CInlineAction.php(49): SeguimientoAdolController->actionConsProf()
+#4 C:\xampp\htdocs\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 C:\xampp\htdocs\yii\framework\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#6 C:\xampp\htdocs\sigiaf\protected\filters\ActionLogFilter.php(58): CFilterChain->run()
+#7 C:\xampp\htdocs\yii\framework\web\filters\CFilter.php(38): ActionLogFilter->preFilter(Object(CFilterChain))
+#8 C:\xampp\htdocs\yii\framework\web\filters\CFilterChain.php(130): CFilter->filter(Object(CFilterChain))
+#9 C:\xampp\htdocs\sigiaf\protected\modules\seguimientoAdol\controllers\SeguimientoAdolController.php(19): CFilterChain->run()
+#10 C:\xampp\htdocs\yii\framework\web\filters\CInlineFilter.php(58): SeguimientoAdolController->filterEnforcelogin(Object(CFilterChain))
+#11 C:\xampp\htdocs\yii\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#12 C:\xampp\htdocs\yii\framework\web\CController.php(291): CFilterChain->run()
+#13 C:\xampp\htdocs\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#14 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(282): CController->run('consProf')
+#15 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('seguimientoAdol...')
+#16 C:\xampp\htdocs\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#17 C:\xampp\htdocs\sigiaf\index.php(12): CApplication->run()
+#18 {main}
+REQUEST_URI=/sigiaf/seguimientoAdol/seguimientoAdol/consProf.cforjar
+HTTP_REFERER=http://localhost/sigiaf/seguimientoAdol/seguimientoAdol/registrarSeg
+---
+2016/03/06 19:34:45 [error] [system.db.CDbCommand] CDbCommand::() falló: SQLSTATE[42702]: Ambiguous column: 7 ERROR:  column reference "id_cedula" is ambiguous
+LINE 2: ... and id_forjar=$1 and pers_habilitado is true and id_cedula<...
+                                                             ^. La sentencia SQL ejecutada fue: select a.id_cedula,(nombre_personal ||' '|| apellidos_personal) as nombres_persona from usuario as a 
+			left join persona as b on a.id_cedula=b.id_cedula left join cforjar_personal as c on c.id_cedula=a.id_cedula where ( a.id_rol=4 or a.id_rol=7) and id_forjar=:id_forjar and pers_habilitado is true and id_cedula<>:id_cedula.
+in C:\xampp\htdocs\sigiaf\protected\models\ConsultasGenerales.php (100)
+in C:\xampp\htdocs\sigiaf\protected\modules\seguimientoAdol\controllers\SeguimientoAdolController.php (174)
+in C:\xampp\htdocs\sigiaf\protected\filters\ActionLogFilter.php (58)
+2016/03/06 19:34:45 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand falló al ejecutar la sentencia SQL: SQLSTATE[42702]: Ambiguous column: 7 ERROR:  column reference "id_cedula" is ambiguous
+LINE 2: ... and id_forjar=$1 and pers_habilitado is true and id_cedula<...
+                                                             ^. The SQL statement executed was: select a.id_cedula,(nombre_personal ||' '|| apellidos_personal) as nombres_persona from usuario as a 
+			left join persona as b on a.id_cedula=b.id_cedula left join cforjar_personal as c on c.id_cedula=a.id_cedula where ( a.id_rol=4 or a.id_rol=7) and id_forjar=:id_forjar and pers_habilitado is true and id_cedula<>:id_cedula' in C:\xampp\htdocs\yii\framework\db\CDbCommand.php:543
+Stack trace:
+#0 C:\xampp\htdocs\yii\framework\db\CDbCommand.php(377): CDbCommand->queryInternal('', 0, Array)
+#1 C:\xampp\htdocs\sigiaf\protected\models\ConsultasGenerales.php(100): CDbCommand->query()
+#2 C:\xampp\htdocs\sigiaf\protected\modules\seguimientoAdol\controllers\SeguimientoAdolController.php(174): ConsultasGenerales->consultaProfSeg()
+#3 C:\xampp\htdocs\yii\framework\web\actions\CInlineAction.php(49): SeguimientoAdolController->actionConsProf()
+#4 C:\xampp\htdocs\yii\framework\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 C:\xampp\htdocs\yii\framework\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#6 C:\xampp\htdocs\sigiaf\protected\filters\ActionLogFilter.php(58): CFilterChain->run()
+#7 C:\xampp\htdocs\yii\framework\web\filters\CFilter.php(38): ActionLogFilter->preFilter(Object(CFilterChain))
+#8 C:\xampp\htdocs\yii\framework\web\filters\CFilterChain.php(130): CFilter->filter(Object(CFilterChain))
+#9 C:\xampp\htdocs\sigiaf\protected\modules\seguimientoAdol\controllers\SeguimientoAdolController.php(19): CFilterChain->run()
+#10 C:\xampp\htdocs\yii\framework\web\filters\CInlineFilter.php(58): SeguimientoAdolController->filterEnforcelogin(Object(CFilterChain))
+#11 C:\xampp\htdocs\yii\framework\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#12 C:\xampp\htdocs\yii\framework\web\CController.php(291): CFilterChain->run()
+#13 C:\xampp\htdocs\yii\framework\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#14 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(282): CController->run('consProf')
+#15 C:\xampp\htdocs\yii\framework\web\CWebApplication.php(141): CWebApplication->runController('seguimientoAdol...')
+#16 C:\xampp\htdocs\yii\framework\base\CApplication.php(180): CWebApplication->processRequest()
+#17 C:\xampp\htdocs\sigiaf\index.php(12): CApplication->run()
+#18 {main}
+REQUEST_URI=/sigiaf/seguimientoAdol/seguimientoAdol/consProf.cforjar
+HTTP_REFERER=http://localhost/sigiaf/seguimientoAdol/seguimientoAdol/registrarSeg
+---

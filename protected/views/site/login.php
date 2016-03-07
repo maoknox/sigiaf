@@ -75,7 +75,7 @@ $this->breadcrumbs=array(
         <label class="col-md-4 control-label" for="button1id"></label>
         <div class="col-md-8">
        <?php
-	   	//$id=0; 
+	   	$id=0; 
 	   	echo CHtml::link('Restablecer clave', $this->createAbsoluteUrl('administracion/administracion/restablecerClaveForm',array('id'=>$id)));
 		?>
 	</div>
