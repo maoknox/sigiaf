@@ -112,7 +112,7 @@ class SeguimientoRefer extends CActiveRecord
 	 */
 	public function consSegReferAdol(){
 		$conect=Yii::app()->db;
-		$sqlConsSegRefAdol="select a.fecha_seg,a.seg_refer, (nombre_personal||' '||apellidos_personal) as nombrespersonal,d.nombre_rol,a.id_seg_refer  from seguimiento_refer as a 
+		$sqlConsSegRefAdol="select a.id_cedula, a.fecha_seg,a.seg_refer, (nombre_personal||' '||apellidos_personal) as nombrespersonal,d.nombre_rol,a.id_seg_refer  from seguimiento_refer as a 
 		left join persona as b on b.id_cedula=a.id_cedula 
 		left join usuario as c on c.id_cedula=b.id_cedula 
 		left join rol as d on d.id_rol=c.id_rol 

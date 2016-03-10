@@ -328,7 +328,7 @@ class SeguimientoPsc extends CActiveRecord
 	public function consSeguimientosPsc(){
 		$conect=Yii::app()->db;
 		$sqlConsSegPsc="select a.desarrollo_act_psc,a.reporte_nov_psc,a.cump_acu_psc, 
-			a.fecha_seg_ind,(nombre_personal ||' '||apellidos_personal)as nombrespersona,f.nombre_rol,c.institucionpsc, a,id_seguimiento_ind
+			a.fecha_seg_ind,(nombre_personal ||' '||apellidos_personal)as nombrespersona, d.id_cedula,f.nombre_rol,c.institucionpsc, a,id_seguimiento_ind
 			from seguimiento_psc as a left join psc as b on b.id_psc=a.id_psc left join institucion_psc as c on c.id_institucionpsc=b.id_institucionpsc 
 			left join persona as d on a.id_cedula=d.id_cedula 
 			left join usuario as e on d.id_cedula=e.id_cedula 

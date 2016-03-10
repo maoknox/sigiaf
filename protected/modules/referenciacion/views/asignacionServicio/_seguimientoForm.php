@@ -291,7 +291,7 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
                         || Nombre del profesional <?php echo $seguimiento["nombrespersonal"]?> || Profesión: <?php echo $seguimiento["nombre_rol"]?></strong></a><br /><br />
 						<?php 
 							$actModificacion=$operaciones->comparaFecha(date("Y-m-d"),$seguimiento["fecha_seg"]); 
-							if($actModificacion==true):?>
+							if($actModificacion==true && Yii::app()->user->getState('cedula')==$seguimiento["id_cedula"]):?>
                             <?php echo CHtml::link("Modificar este seguimiento","Modificar este seguimiento",array('submit'=>array('modSegServicioForm'),'params'=>array('id_referenciacion'=>$modeloRef->id_referenciacion,'id_seg_refer'=>$seguimiento["id_seg_refer"]))); ?><br />
                         <?php endif?>
 

@@ -304,7 +304,7 @@ class SeguimientoAdol extends CActiveRecord
 		$fechaReg=CHtml::encode($fechaReg);
 		$idRegSeg=CHtml::encode($idRegSeg);
 		$conect=Yii::app()->db;
-		$sqlConsProfReg="select (nombre_personal||' '||apellidos_personal) as nombrespersonal,d.nombre_rol  from persl_seg_adol as a 
+		$sqlConsProfReg="select (nombre_personal||' '||apellidos_personal) as nombrespersonal,d.nombre_rol, b.id_cedula  from persl_seg_adol as a 
 		left join persona as b on b.id_cedula=a.id_cedula 
 		left join usuario as c on c.id_cedula=b.id_cedula 
 		left join rol as d on d.id_rol=c.id_rol 

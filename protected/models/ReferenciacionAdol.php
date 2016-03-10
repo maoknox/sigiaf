@@ -57,7 +57,7 @@ class ReferenciacionAdol extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id_referenciacion,num_doc,id_tipo_referenciacion, id_estadoref, fecha_referenciacion,id_esp_sol,id_beneficiario', 'required'),
+			array('id_referenciacion,num_doc,id_tipo_referenciacion, id_estadoref, fecha_referenciacion,id_esp_sol,id_beneficiario,observaciones_refer', 'required'),
 			array('id_esp_sol, id_beneficiario, id_motivonovinc, id_tipo_referenciacion, id_esp_soliii, id_esp_solii, id_estadoref, satisfactoriedad_gestion, satisfactoriedad_vinculacion, estado_sol_refer,id_cedula', 'numerical', 'integerOnly'=>true),
 			array('num_doc', 'length', 'max'=>15),
 			array('institucion_ref', 'length', 'max'=>500),
@@ -139,7 +139,7 @@ class ReferenciacionAdol extends CActiveRecord
 			'fecha_gestion' => 'Fecha de la gestión',
 			'institucion_ref' => 'Lugar al que referencia',
 			'resultado_gestion' => 'Resultado Gestion',
-			'observaciones_refer' => 'Observaciones de la referenciación',
+			'observaciones_refer' => 'Motivo/Observaciones de la referenciación',
 			'satisfactoriedad_gestion' => 'Satisfactoriedad Gestión',
 			'satisfactoriedad_vinculacion' => 'Satisfactoriedad Vinculacóon',
 			'culminacion_refer' => 'Culminación de la referenciación',

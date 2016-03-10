@@ -27342,3 +27342,47 @@ Stack trace:
 REQUEST_URI=/sigiaf/seguimientoAdol/seguimientoAdol/consProf.cforjar
 HTTP_REFERER=http://localhost/sigiaf/seguimientoAdol/seguimientoAdol/registrarSeg
 ---
+2016/03/07 09:24:55 [warning] [application] Error al establecer unsafe al atributo "id_rol" de "Rol".
+in C:\xampp\htdocs\sigiaf\protected\modules\administracion\controllers\AdministracionController.php (887)
+in C:\xampp\htdocs\sigiaf\protected\filters\ActionLogFilter.php (58)
+in C:\xampp\htdocs\sigiaf\protected\modules\administracion\controllers\AdministracionController.php (25)
+2016/03/07 09:27:30 [warning] [application] Error al establecer unsafe al atributo "id_seguimientoadol" de "SeguimientoAdol".
+in C:\xampp\htdocs\sigiaf\protected\modules\seguimientoAdol\controllers\SeguimientoAdolController.php (1097)
+in C:\xampp\htdocs\sigiaf\protected\filters\ActionLogFilter.php (58)
+in C:\xampp\htdocs\sigiaf\protected\modules\seguimientoAdol\controllers\SeguimientoAdolController.php (19)
+2016/03/07 09:27:30 [warning] [application] Error al establecer unsafe al atributo "fecha_registro_seg" de "SeguimientoAdol".
+in C:\xampp\htdocs\sigiaf\protected\modules\seguimientoAdol\controllers\SeguimientoAdolController.php (1097)
+in C:\xampp\htdocs\sigiaf\protected\filters\ActionLogFilter.php (58)
+in C:\xampp\htdocs\sigiaf\protected\modules\seguimientoAdol\controllers\SeguimientoAdolController.php (19)
+2016/03/07 10:07:47 [warning] [application] Error al establecer unsafe al atributo "id_valor_teo" de "ValoracionTeo".
+in C:\xampp\htdocs\sigiaf\protected\modules\valoracionIntegral\controllers\ValoracionIntegralController.php (4548)
+in C:\xampp\htdocs\sigiaf\protected\filters\ActionVerifEstadoFilter.php (16)
+in C:\xampp\htdocs\sigiaf\protected\filters\ActionLogFilter.php (58)
+2016/03/08 11:50:48 [warning] [application] Error al establecer unsafe al atributo "id_valor_teo" de "ValoracionTeo".
+in C:\xampp\htdocs\sigiaf\protected\modules\valoracionIntegral\controllers\ValoracionIntegralController.php (4548)
+in C:\xampp\htdocs\sigiaf\protected\filters\ActionVerifEstadoFilter.php (16)
+in C:\xampp\htdocs\sigiaf\protected\filters\ActionLogFilter.php (58)
+2016/03/10 10:21:55 [warning] [application] Error al establecer unsafe al atributo "num_horas_1" de "AsistenciaPsc".
+in C:\xampp\htdocs\sigiaf\protected\modules\seguimientoAdol\controllers\SeguimientoAdolController.php (280)
+in C:\xampp\htdocs\sigiaf\protected\filters\ActionLogFilter.php (58)
+in C:\xampp\htdocs\sigiaf\protected\modules\seguimientoAdol\controllers\SeguimientoAdolController.php (19)
+2016/03/10 10:21:55 [warning] [application] Error al establecer unsafe al atributo "num_minutos_1" de "AsistenciaPsc".
+in C:\xampp\htdocs\sigiaf\protected\modules\seguimientoAdol\controllers\SeguimientoAdolController.php (280)
+in C:\xampp\htdocs\sigiaf\protected\filters\ActionLogFilter.php (58)
+in C:\xampp\htdocs\sigiaf\protected\modules\seguimientoAdol\controllers\SeguimientoAdolController.php (19)
+2016/03/10 10:21:55 [warning] [application] Error al establecer unsafe al atributo "num_horas_2" de "AsistenciaPsc".
+in C:\xampp\htdocs\sigiaf\protected\modules\seguimientoAdol\controllers\SeguimientoAdolController.php (280)
+in C:\xampp\htdocs\sigiaf\protected\filters\ActionLogFilter.php (58)
+in C:\xampp\htdocs\sigiaf\protected\modules\seguimientoAdol\controllers\SeguimientoAdolController.php (19)
+2016/03/10 10:21:55 [warning] [application] Error al establecer unsafe al atributo "num_minutos_2" de "AsistenciaPsc".
+in C:\xampp\htdocs\sigiaf\protected\modules\seguimientoAdol\controllers\SeguimientoAdolController.php (280)
+in C:\xampp\htdocs\sigiaf\protected\filters\ActionLogFilter.php (58)
+in C:\xampp\htdocs\sigiaf\protected\modules\seguimientoAdol\controllers\SeguimientoAdolController.php (19)
+2016/03/10 10:21:55 [warning] [application] Error al establecer unsafe al atributo "inpFecha_1" de "AsistenciaPsc".
+in C:\xampp\htdocs\sigiaf\protected\modules\seguimientoAdol\controllers\SeguimientoAdolController.php (280)
+in C:\xampp\htdocs\sigiaf\protected\filters\ActionLogFilter.php (58)
+in C:\xampp\htdocs\sigiaf\protected\modules\seguimientoAdol\controllers\SeguimientoAdolController.php (19)
+2016/03/10 10:21:55 [warning] [application] Error al establecer unsafe al atributo "inpFecha_2" de "AsistenciaPsc".
+in C:\xampp\htdocs\sigiaf\protected\modules\seguimientoAdol\controllers\SeguimientoAdolController.php (280)
+in C:\xampp\htdocs\sigiaf\protected\filters\ActionLogFilter.php (58)
+in C:\xampp\htdocs\sigiaf\protected\modules\seguimientoAdol\controllers\SeguimientoAdolController.php (19)

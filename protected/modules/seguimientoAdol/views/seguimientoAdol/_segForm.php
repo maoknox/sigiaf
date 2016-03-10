@@ -192,7 +192,7 @@
                                     <?php 
 									$fechaComp=split(" ",$seguimiento["fecha_registro_seg"]);
 									$actModificacion=$operaciones->comparaFecha(date("Y-m-d"),$fechaComp[0]); 
-									if($actModificacion==true):?>
+									if($actModificacion==true && Yii::app()->user->getState('cedula')==$profSeg["id_cedula"]):?>
 										<?php echo CHtml::link("Modificar este seguimiento","Modificar este seguimiento",array('submit'=>array('modificarSegForm'),'params'=>array('SeguimientoAdol[fecha_registro_seg]'=>$seguimiento["fecha_registro_seg"],'SeguimientoAdol[id_seguimientoadol]'=>$seguimiento["id_seguimientoadol"],'SeguimientoAdol[num_doc]'=>$numDocAdol))); ?><br />
 									<?php endif?>
                                		<br />
