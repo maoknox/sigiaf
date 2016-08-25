@@ -154,7 +154,7 @@ Yii::app()->getClientScript()->registerScript('scriptValPlandietario','
 							$("#formularioPorcionesComida"+idComida+" #"+key+"_em_").show();                                                
 						});
 						errores+="</ul>";
-						$("#formularioPorcionesComida"+idComida+" #formularioPorcionesComida"+idComida+"_es_").html(errores);                                                    
+						$("#formularioPorcionesComida"+idComida+" #formularioPorcionesComida"+idComida+"_es_").html("Debe digitar al menos en un tiempo de comida");                                                    
 						$("#formularioPorcionesComida"+idComida+" #formularioPorcionesComida"+idComida+"_es_").show(); 
 					}
 				},

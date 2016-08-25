@@ -11,7 +11,7 @@ $sedesForjar=Yii::app()->user->getState('sedesForjar');
   	<div class="panel-body">
 		<div class="row">
         	 <div class="col-lg-3 text-center">
-             	<img src="<?php echo Yii::app()->baseUrl?>/images/centroForjar.png" />
+             	<!--<img src="<?php //echo Yii::app()->baseUrl?>/images/centroForjar.png" />-->
              </div>
              <div class="col-lg-9 text-justify">
                 Tiene asociado <?php echo count($sedesForjar);?> sedes de forjar, a continuación se listan.  Selecciona al cual desea acceder:<br />

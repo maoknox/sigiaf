@@ -1,4 +1,23 @@
 <div id="formNutrResultados">
+	<?php $formularioDiagnClasifNutr=$this->beginWidget('CActiveForm', array(
+			'id'=>'formularioDiagnClasifNutr',
+			'enableAjaxValidation'=>false,
+			'enableClientValidation'=>true,
+			'clientOptions'=>array(
+				'validateOnSubmit'=>false,
+			),
+			'htmlOptions' => array('class' => 'form-horizontal')
+		));
+    ?>
+	<div id="divProcPadres" class="form-group">
+    	<div class="col-sm-12">
+            <?php echo $formularioDiagnClasifNutr->labelEx($modeloValNutr,'diagnostico_clasif_nutr',array('class'=>'control-label','for'=>'searchinput'));//'onblur'=>'js:enviaFormNutr("formularioHistVida","divObsNacim")'?>
+			<div class='cont-infoval'><?php echo $modeloValNutr->diagnostico_clasif_nutr;?></div>												
+        	<?php echo $formularioDiagnClasifNutr->error($modeloValNutr,'diagnostico_clasif_nutr',array('style' => 'color:#F00'));?>
+    	</div>
+    </div>
+   <?php $this->endWidget();?>
+   <hr />
 	<?php $formularioConceptoNutr=$this->beginWidget('CActiveForm', array(
 			'id'=>'formularioConceptoNutr',
 			'enableAjaxValidation'=>false,
@@ -55,26 +74,6 @@
     	</div>
     </div>
    <?php $this->endWidget();?>
-   <hr />
-	<?php $formularioDiagnClasifNutr=$this->beginWidget('CActiveForm', array(
-			'id'=>'formularioDiagnClasifNutr',
-			'enableAjaxValidation'=>false,
-			'enableClientValidation'=>true,
-			'clientOptions'=>array(
-				'validateOnSubmit'=>false,
-			),
-			'htmlOptions' => array('class' => 'form-horizontal')
-		));
-    ?>
-	<div id="divProcPadres" class="form-group">
-    	<div class="col-sm-12">
-            <?php echo $formularioDiagnClasifNutr->labelEx($modeloValNutr,'diagnostico_clasif_nutr',array('class'=>'control-label','for'=>'searchinput'));//'onblur'=>'js:enviaFormNutr("formularioHistVida","divObsNacim")'?>
-			<div class='cont-infoval'><?php echo $modeloValNutr->diagnostico_clasif_nutr;?></div>												
-        	<?php echo $formularioDiagnClasifNutr->error($modeloValNutr,'diagnostico_clasif_nutr',array('style' => 'color:#F00'));?>
-    	</div>
-    </div>
-   <?php $this->endWidget();?>
-
 </div>
 <?php
 Yii::app()->getClientScript()->registerScript('scriptRestuladoCons','		

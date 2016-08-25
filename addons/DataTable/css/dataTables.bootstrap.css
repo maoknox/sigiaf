@@ -284,8 +284,8 @@ div.FixedHeader_Cloned table {
 
 
 .dataTables_wrapper .paginate_button.active a{
-    color: #fff;
-    background-color: #831F47;
+    color: #ffffff;
+	background-color: rgba(0,66,104,1) !important;
     border-color: #831F47;
 }
 
@@ -302,16 +302,16 @@ div.FixedHeader_Cloned table {
 } 
 
 table.dataTable thead .sorting {
-    background-color: #831F47 !important;
+    background-color: rgba(0,173,230,1) !important;
     color:white;
 }
 
 table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc {
-    background-color: #550927 !important;
-    color:white;
+	background-color: rgba(0,66,104,1) !important;
+	color:white;
 }
 .dataTables_wrapper .paginate_button a:hover, .dataTables_wrapper .paginate_button a:focus {
-    color: #550927;
+	background-color: rgba(0,66,104,1) !important;
 }
 /*------------------------------------------------------------------------*/
 
@@ -321,5 +321,5 @@ table.dataTable.no-footer {
 
 
 .pagination>li>a:hover, .pagination>li>span:hover, .pagination>li>a:focus, .pagination>li>span:focus {
-    background-color: #eee !important;
+    background-color: #fff !important;
 }

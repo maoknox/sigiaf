@@ -55,20 +55,24 @@ class InformacionJudicial extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array(
-				'
-				fecha_remision,
-				num_doc,
-				id_tipo_sancion,
+				'num_doc,
 				id_instancia_rem,
-				tiempo_sancion,
-				juzgado,
 				fecha_remision,
 				fecha_aprehension,
-				no_proceso,
-				fecha_imposicion,
+				defensor,
 				id_proc_jud,
 				infjudDelRemcesps',
 				'required'
+			),
+			array(
+				'id_tipo_sancion,
+				tiempo_sancion,
+				juzgado,
+				no_proceso,
+				fecha_imposicion,
+				juez',
+				'required',
+				'on'=>'remJues'
 			),
 			array('id_tipo_sancion, id_instancia_rem, tiempo_sancion, tiempo_sancion_dias', 'numerical', 'integerOnly'=>true),
 			array('num_doc, autoridad_remisora', 'length', 'max'=>15),
@@ -107,8 +111,8 @@ class InformacionJudicial extends CActiveRecord
 			'id_inf_judicial' => 'Información Judicial',
 			'num_doc' => 'Número de documento',
 			'id_tipo_sancion' => 'Tipo Sanción',
-			'id_instancia_rem' => 'Remitido por: ',
-			'defensor' => 'Defensor de familia:',
+			'id_instancia_rem' => 'Remitido por ',
+			'defensor' => 'Defensor de familia',
 			'juez' => 'Juez',
 			'juzgado' => 'Juzgado',
 			'tiempo_sancion' => 'Tiempo sanción en meses',
@@ -198,11 +202,19 @@ class InformacionJudicial extends CActiveRecord
 			
 			if(empty($this->observaciones_sancion)){$this->observaciones_sancion=null;}
 			if(empty($this->defensor)){$this->defensor=null;}
+			if(empty($this->id_tipo_sancion)){$this->id_tipo_sancion=null;}
 			if(empty($this->juez)){$this->juez=null;}
+			if(empty($this->no_proceso)){$this->no_proceso=null;}
+			if(empty($this->juzgado)){$this->juzgado=null;}
+			if(empty($this->fecha_remision)){$this->fecha_remision=null;}
+			if(empty($this->tiempo_sancion)){$this->tiempo_sancion=null;}
 			if(empty($this->tiempo_sancion_dias)){$this->tiempo_sancion_dias=null;}
 			if(empty($this->defensor_publico)){$this->defensor_publico=null;}
 			if(empty($this->pard)){$this->pard=false;}
 			if(empty($this->mec_sust_lib)){$this->mec_sust_lib=false;}
+			if(empty($this->fecha_imposicion)){$this->fecha_imposicion=null;}
+			if(empty($this->id_proc_jud)){$this->id_proc_jud=null;}
+			if(empty($this->infjudDelRemcesps)){$this->infjudDelRemcesps=null;}
 			
 			$fechaRegistro=date("Y-m-d");
 			//$novedadInfjud='false';
@@ -250,18 +262,18 @@ class InformacionJudicial extends CActiveRecord
 				:novedad_infjud
 			) returning id_inf_judicial";
 			$registraInfJudAdmin=$conect->createCommand($sqlRegistraInfJudAdmin);
-			$registraInfJudAdmin->bindParam(':idProcJud',$this->id_proc_jud,PDO::PARAM_INT);
+			$registraInfJudAdmin->bindParam(':idProcJud',$this->id_proc_jud);
 			$registraInfJudAdmin->bindParam(':numDoc',$this->num_doc,PDO::PARAM_STR);
-			$registraInfJudAdmin->bindParam(':idTipoSancion',$this->id_tipo_sancion,PDO::PARAM_INT);
+			$registraInfJudAdmin->bindParam(':idTipoSancion',$this->id_tipo_sancion);
 			$registraInfJudAdmin->bindParam(':idInstanciaRem',$this->id_instancia_rem,PDO::PARAM_INT);
 			$registraInfJudAdmin->bindParam(':defensor',$this->defensor);
 			$registraInfJudAdmin->bindParam(':juez',$this->juez);
 			$registraInfJudAdmin->bindParam(':juzgado',$this->juzgado);
-			$registraInfJudAdmin->bindParam(':tiempoSancion',$this->tiempo_sancion,PDO::PARAM_STR);
+			$registraInfJudAdmin->bindParam(':tiempoSancion',$this->tiempo_sancion);
 			$registraInfJudAdmin->bindParam(':tiempoSanciondias',$this->tiempo_sancion_dias);
-			$registraInfJudAdmin->bindParam(':fechaRemision',$this->fecha_remision,PDO::PARAM_STR);
-			$registraInfJudAdmin->bindParam(':fechaAprehension',$this->fecha_aprehension,PDO::PARAM_STR);
-			$registraInfJudAdmin->bindParam(':noProceso',$this->no_proceso,PDO::PARAM_INT);
+			$registraInfJudAdmin->bindParam(':fechaRemision',$this->fecha_remision);
+			$registraInfJudAdmin->bindParam(':fechaAprehension',$this->fecha_aprehension);
+			$registraInfJudAdmin->bindParam(':noProceso',$this->no_proceso);
 			$registraInfJudAdmin->bindParam(':defensorPublico',$this->defensor_publico);
 			$registraInfJudAdmin->bindParam(':fechaImposicion',$this->fecha_imposicion);
 			$registraInfJudAdmin->bindParam(':pard',$this->pard,PDO::PARAM_BOOL);
@@ -273,18 +285,20 @@ class InformacionJudicial extends CActiveRecord
 			$resInfJudAdol=$readInfJudAdol->read();
 			$readInfJudAdol->close();
 			$this->id_inf_nueva=$resInfJudAdol["id_inf_judicial"];
-			foreach($this->infjudDelRemcesps as $delito){
-				$sqlRegistraDelito="insert into infjud_del_remcesp (
-					id_del_rc,
-					id_inf_judicial
-				) values (
-					:idDelRc,
-					:idInfJudicial
-				)";
-				$registraDelito=$conect->createCommand($sqlRegistraDelito);
-				$registraDelito->bindParam(':idDelRc',$delito,PDO::PARAM_INT);
-				$registraDelito->bindParam(':idInfJudicial',$resInfJudAdol["id_inf_judicial"],PDO::PARAM_INT);
-				$registraDelito->execute();
+			if(!empty($this->infjudDelRemcesps)){
+				foreach($this->infjudDelRemcesps as $delito){
+					$sqlRegistraDelito="insert into infjud_del_remcesp (
+						id_del_rc,
+						id_inf_judicial
+					) values (
+						:idDelRc,
+						:idInfJudicial
+					)";
+					$registraDelito=$conect->createCommand($sqlRegistraDelito);
+					$registraDelito->bindParam(':idDelRc',$delito,PDO::PARAM_INT);
+					$registraDelito->bindParam(':idInfJudicial',$resInfJudAdol["id_inf_judicial"],PDO::PARAM_INT);
+					$registraDelito->execute();
+				}
 			}
 			if($this->novedad_infjud=='true'){
 				$fechaRegNov=date("Y-m-d H:i:s");

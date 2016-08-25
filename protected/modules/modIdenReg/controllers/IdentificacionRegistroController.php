@@ -474,10 +474,15 @@ class IdentificacionRegistroController extends Controller
 				$dataClean=Yii::app()->input->post();
 				$modeloInfJudAdmon->attributes=$dataClean["InformacionJudicial"];
 				$modeloDatosForjarAdol->attributes=$dataClean["ForjarAdol"];
+				$modeloInfJudAdmon->id_proc_jud=$dataClean["InformacionJudicial"]["id_proc_jud"];
+				$modeloInfJudAdmon->infjudDelRemcesps=$dataClean["InformacionJudicial"]["infjudDelRemcesps"];								
+				if($modeloInfJudAdmon->id_instancia_rem==1){
+					$modeloInfJudAdmon->scenario='remJues';					
+				}
 				if($modeloInfJudAdmon->validate() && $modeloDatosForjarAdol->validate()){
 					$modeloInfJudAdmon->novedad_infjud='false';
 					$resultado=$modeloInfJudAdmon->registraInfJudAdminAdol();
-					$resultado=$modeloDatosForjarAdol->actualizaDatosForjarAdol();
+					$modeloDatosForjarAdol->actualizaDatosForjarAdol();
 					echo CJSON::encode(array("estadoComu"=>"exito",
 					'resultado'=>$resultado,
 					'msnError'=>CJavaScript::encode(CJavaScript::quote($modeloInfJudAdmon->mensajeErrorInfJud))));
@@ -1020,42 +1025,42 @@ class IdentificacionRegistroController extends Controller
 				$modeloAcudiente->num_docAdolFam=$modeloLocalizacion->num_doc;
 				//modifica datos de acudiente
 				$datosActAcudiente=$modeloAcudiente->consultaFamiliar($modeloAcudiente->id_doc_familiar);			
-				if($modeloAcudiente->nombres_familiar!==$datosActAcudiente["nombres_familiar"]){
+				if($modeloAcudiente->nombres_familiar!=$datosActAcudiente["nombres_familiar"]){
 					$tipoDato=PDO::PARAM_STR;
 					$modeloAcudiente->modificaDatosAcudiente("nombres_familiar","familiar",$datosActAcudiente["nombres_familiar"],$modeloAcudiente->nombres_familiar,$modeloAcudiente->id_doc_familiar,$tipoDato);
 				}
-				if($modeloAcudiente->apellidos_familiar!==$datosActAcudiente["apellidos_familiar"]){
+				if($modeloAcudiente->apellidos_familiar!=$datosActAcudiente["apellidos_familiar"]){
 					$tipoDato=PDO::PARAM_STR;
 					$modeloAcudiente->modificaDatosAcudiente("apellidos_familiar","familiar",$datosActAcudiente["apellidos_familiar"],$modeloAcudiente->apellidos_familiar,$modeloAcudiente->id_doc_familiar,$tipoDato);
 				}
-				if($modeloAcudiente->id_tipo_doc!==$datosActAcudiente["id_tipo_doc"]){
+				if($modeloAcudiente->id_tipo_doc!=$datosActAcudiente["id_tipo_doc"]){
 					$tipoDato=PDO::PARAM_INT;
 					$modeloAcudiente->modificaDatosAcudiente("id_tipo_doc","familiar",$datosActAcudiente["id_tipo_doc"],$modeloAcudiente->id_tipo_doc,$modeloAcudiente->id_doc_familiar,$tipoDato);
 				}
-				if($modeloAcudiente->num_doc_fam!==$datosActAcudiente["num_doc_fam"]){
-					$tipoDato=PDO::PARAM_NULL;
+				if($modeloAcudiente->num_doc_fam!=$datosActAcudiente["num_doc_fam"]){
+					$tipoDato=PDO::PARAM_STR;
 					$modeloAcudiente->modificaDatosAcudiente("num_doc_fam","familiar",$datosActAcudiente["num_doc_fam"],$modeloAcudiente->num_doc_fam,$modeloAcudiente->id_doc_familiar,$tipoDato);
 				}
-				if($modeloAcudiente->id_parentesco!==$datosActAcudiente["id_parentesco"]){
+				if($modeloAcudiente->id_parentesco!=$datosActAcudiente["id_parentesco"]){
 					$tipoDato=PDO::PARAM_INT;
 					$modeloAcudiente->modificaDatosAcudiente("id_parentesco","familiar",$datosActAcudiente["id_parentesco"],$modeloAcudiente->id_parentesco,$modeloAcudiente->id_doc_familiar,$tipoDato);
 				}
 				//modifica datos de localización
 				$datosLocAcudAct=$modeloLocalizacion->consultaLocVivFam($acudiente["id_doc_familiar"]);
-				if($modeloLocalizacion->id_localidad!==$datosLocAcudAct["id_localidad"]){
-					$tipoDato=PDO::PARAM_NULL;
+				if($modeloLocalizacion->id_localidad!=$datosLocAcudAct["id_localidad"]){
+					$tipoDato=PDO::PARAM_STR;
 					$modeloLocalizacion->modificaDatosLocAcud("id_localidad","localizacion_viv",$datosLocAcudAct["id_localidad"],$modeloLocalizacion->id_localidad,$modeloAcudiente->id_doc_familiar,$tipoDato);
 				}
-				if($modeloLocalizacion->barrio!==$datosLocAcudAct["barrio"]){
+				if($modeloLocalizacion->barrio!=$datosLocAcudAct["barrio"]){
 					$tipoDato=PDO::PARAM_STR;
 					$modeloLocalizacion->modificaDatosLocAcud("barrio","localizacion_viv",$datosLocAcudAct["barrio"],$modeloLocalizacion->barrio,$modeloAcudiente->id_doc_familiar,$tipoDato);
 				}
-				if($modeloLocalizacion->direccion!==$datosLocAcudAct["direccion"]){
-					$tipoDato=PDO::PARAM_NULL;
+				if($modeloLocalizacion->direccion!=$datosLocAcudAct["direccion"]){
+					$tipoDato=PDO::PARAM_STR;
 					$modeloLocalizacion->modificaDatosLocAcud("direccion","localizacion_viv",$datosLocAcudAct["direccion"],$modeloLocalizacion->direccion,$modeloAcudiente->id_doc_familiar,$tipoDato);
 				}
-				if($modeloLocalizacion->id_estrato!==$datosLocAcudAct["id_estrato"]){
-					$tipoDato=PDO::PARAM_NULL;
+				if($modeloLocalizacion->id_estrato!=$datosLocAcudAct["id_estrato"]){
+					$tipoDato=PDO::PARAM_STR;
 					if(empty($modeloLocalizacion->id_estrato)){$modeloLocalizacion->id_estrato=null;}
 					$modeloLocalizacion->modificaDatosLocAcud("id_estrato","localizacion_viv",$datosLocAcudAct["id_estrato"],$modeloLocalizacion->id_estrato,$modeloAcudiente->id_doc_familiar,$tipoDato);
 				}
@@ -1155,7 +1160,7 @@ class IdentificacionRegistroController extends Controller
 					$formPr->modificaDatosAdol('apellido_1','adolescente',$datosAdol["apellido_1"],$formPr->apellido_1,$numDocAdol,$tipoDato);
 				}
 				if($formPr->apellido_2!=$datosAdol["apellido_2"]){
-					$tipoDato=PDO::PARAM_NULL;
+					$tipoDato=PDO::PARAM_STR;
 					$formPr->apellido_2=mb_strtoupper($formPr->apellido_2,"UTF-8");
 					$formPr->modificaDatosAdol('apellido_2','adolescente',$datosAdol["apellido_2"],$formPr->apellido_2,$numDocAdol,$tipoDato);
 				}
@@ -1176,7 +1181,7 @@ class IdentificacionRegistroController extends Controller
 					$formPr->modificaDatosAdol('id_sexo','adolescente',$datosAdol["id_sexo"],$formPr->id_sexo,$numDocAdol,$tipoDato);
 				}
 				if($formPr->id_etnia!=$datosAdol["id_etnia"]){
-					$tipoDato=PDO::PARAM_NULL;
+					$tipoDato=PDO::PARAM_STR;
 					if(empty($formPr->id_etnia)){$formPr->id_etnia=NULL;}
 					$formPr->modificaDatosAdol('id_etnia','adolescente',$datosAdol["id_etnia"],$formPr->id_etnia,$numDocAdol,$tipoDato);
 				}
@@ -1233,7 +1238,7 @@ class IdentificacionRegistroController extends Controller
 			$datosLoc=$modeloLocalizacion->consultaLocVivadol($numDocAdol);
 			//Modifica datos de localizacion
 			if($modeloLocalizacion->id_localidad!=$datosLoc["id_localidad"]){
-				$tipoDato=PDO::PARAM_NULL;
+				$tipoDato=PDO::PARAM_STR;
 				if(empty($modeloLocalizacion->id_localidad)){$modeloLocalizacion->id_localidad=null;}
 				$modeloLocalizacion->modificaDatosLocAdol('id_localidad','localizacion_viv',$datosLoc["id_localidad"],$modeloLocalizacion->id_localidad,$numDocAdol,$tipoDato);
 			}
@@ -1242,12 +1247,12 @@ class IdentificacionRegistroController extends Controller
 				$modeloLocalizacion->modificaDatosLocAdol('barrio','localizacion_viv',$datosLoc["barrio"],$modeloLocalizacion->barrio,$numDocAdol,$tipoDato);
 			}
 			if($modeloLocalizacion->direccion!=$datosLoc["direccion"]){
-				$tipoDato=PDO::PARAM_NULL;
+				$tipoDato=PDO::PARAM_STR;
 				if(empty($modeloLocalizacion->direccion)){$modeloLocalizacion->direccion=null;}
 				$modeloLocalizacion->modificaDatosLocAdol('direccion','localizacion_viv',$datosLoc["direccion"],$modeloLocalizacion->direccion,$numDocAdol,$tipoDato);
 			}
 			if($modeloLocalizacion->direccion!=$datosLoc["id_estrato"]){
-				$tipoDato=PDO::PARAM_NULL;
+				$tipoDato=PDO::PARAM_STR;
 				if(empty($modeloLocalizacion->id_estrato)){$modeloLocalizacion->id_estrato=null;}
 				$modeloLocalizacion->modificaDatosLocAdol('id_estrato','localizacion_viv',$datosLoc["id_estrato"],$modeloLocalizacion->id_estrato,$numDocAdol,$tipoDato);
 			}
@@ -1588,7 +1593,6 @@ class IdentificacionRegistroController extends Controller
 		$datosInput=Yii::app()->input->post();
 		$modeloInfJudAdmon->num_doc=$datosInput["InformacionJudicial"]["num_doc"];
 		$modeloDatosForjarAdol->num_doc=$datosInput["InformacionJudicial"]["num_doc"];
-
 		$modeloInfJudAdmon->id_inf_judicial=$datosInput["InformacionJudicial"]["id_inf_judicial"];
 		$modeloInfJudAdmon->attributes=$modeloInfJudAdmon->consultaInfJudModNov();
 		$modeloDatosForjarAdol->attributes=$modeloDatosForjarAdol->consultaDatosForjarAdol();
@@ -1639,6 +1643,7 @@ class IdentificacionRegistroController extends Controller
 		if(isset($_POST["InformacionJudicial"])){
 			$dataInput=Yii::app()->input->post();
 		 	$modeloInfJudAdmon->attributes=$dataInput["InformacionJudicial"];
+			$modeloInfJudAdmon->id_proc_jud=$dataInput["InformacionJudicial"]["id_proc_jud"];
 			$modeloInfJudAdmon->id_inf_judicial=$dataInput["InformacionJudicial"]["id_inf_judicial"];
 			if($modeloInfJudAdmon->validate()){
 				$infActual=$modeloInfJudAdmon->consultaInfJudInd();

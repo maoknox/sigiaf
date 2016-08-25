@@ -2933,6 +2933,7 @@ class ValoracionIntegralController extends Controller{
 		$derechosAdol=Yii::app()->input->post();
 		if(isset($_POST["DerechoAdol"]) && !empty($_POST["DerechoAdol"])){  
 			$modeloVerifDerechos->attributes=$derechosAdol["DerechoAdol"];
+			$modeloVerifDerechos->id_momento_verif=$derechosAdol["DerechoAdol"]["id_momento_verif"];
 			if($modeloVerifDerechos->validate()){
 				$modeloVerifDerechos->atributos=$derechosAdol["DerechoAdol"];
 				$resultado=$modeloVerifDerechos->modVerifDerAdol();

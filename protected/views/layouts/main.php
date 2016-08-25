@@ -330,7 +330,7 @@
                 </div>
             </div>
             <div class="col-lg-12 app-lineafooter">
-                © Secretaria Distrital de Integración social / Unidad Factoria de Software / 2015
+                © Secretaria Distrital de Integración social / Unidad Factoria de Software / 2016
             </div>
         </div>
         <!-- /Pie  -->

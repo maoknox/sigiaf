@@ -41,7 +41,7 @@ class Antropometria extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('id_val_nutricion, antr_peso_kgs, antr_talla_cms, antr_imc, circunf_cefalica, antr_peso_ideal, antr_talla_ideal, antr_ind_p_t_imc_ed, indice_talla_edad', 'required'),
+			array('id_val_nutricion, antr_peso_kgs, antr_talla_cms, antr_imc, antr_peso_ideal, antr_talla_ideal, antr_ind_p_t_imc_ed, indice_talla_edad', 'required'),
 			array('id_val_nutricion,antr_talla_cms,antr_talla_ideal', 'numerical', 'integerOnly'=>true),
 			array('antr_peso_kgs,antr_imc,antr_peso_ideal,antr_ind_p_t_imc_ed,indice_talla_edad','type','type' => 'float','message'=>'Debe digitar un decimal, con punto'),			
 			array('fecha_antrp', 'safe'),

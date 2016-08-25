@@ -1,4 +1,34 @@
 <div id="formNutrResultados">
+	<?php $formularioDiagnClasifNutr=$this->beginWidget('CActiveForm', array(
+			'id'=>'formularioDiagnClasifNutr',
+			'enableAjaxValidation'=>false,
+			'enableClientValidation'=>true,
+			'clientOptions'=>array(
+				'validateOnSubmit'=>false,
+			),
+			'htmlOptions' => array('class' => 'form-horizontal')
+		));
+    ?>
+	<div id="divProcPadres" class="form-group">
+    	<div class="col-sm-12">
+            <?php echo $formularioDiagnClasifNutr->labelEx($modeloValNutr,'diagnostico_clasif_nutr',array('class'=>'control-label','for'=>'searchinput'));//'onblur'=>'js:enviaFormNutr("formularioHistVida","divObsNacim")'?>
+			<?php echo $formularioDiagnClasifNutr->textArea($modeloValNutr,'diagnostico_clasif_nutr',array('class'=>'form-control','onkeyup'=>'js:$("#formularioDiagnClasifNutr").addClass("has-warning");'));?>
+        	<?php echo $formularioDiagnClasifNutr->error($modeloValNutr,'diagnostico_clasif_nutr',array('style' => 'color:#F00'));?>
+    	</div>
+    </div>
+    <div class="form-group">
+    	<div class="col-md-4">	
+			<?php
+				$boton=CHtml::Button (
+					'Modificar',   
+					array('id'=>'btnFormDiagClNutr','class'=>'btn btn-default btn-sdis','name'=>'btnFormDiagClNutr','onclick'=>'js:enviaFormNutr("formularioDiagnClasifNutr","formularioDiagnClasifNutr")')
+				);
+			?>
+    		<?php echo $boton; //CHtml::submitButton('Crear');?>
+    	</div>
+	</div>    
+   <?php $this->endWidget();?>
+   <hr />
 	<?php $formularioConceptoNutr=$this->beginWidget('CActiveForm', array(
 			'id'=>'formularioConceptoNutr',
 			'enableAjaxValidation'=>false,
@@ -82,36 +112,6 @@
 				$boton=CHtml::Button (
 					'Modificar',   
 					array('id'=>'btnFormObjAlimNutr','class'=>'btn btn-default btn-sdis','name'=>'btnFormObjAlimNutr','onclick'=>'js:enviaFormNutr("formularioObjAlimNutr","formularioObjAlimNutr")')
-				);
-			?>
-    		<?php echo $boton; //CHtml::submitButton('Crear');?>
-    	</div>
-	</div>    
-   <?php $this->endWidget();?>
-   <hr />
-	<?php $formularioDiagnClasifNutr=$this->beginWidget('CActiveForm', array(
-			'id'=>'formularioDiagnClasifNutr',
-			'enableAjaxValidation'=>false,
-			'enableClientValidation'=>true,
-			'clientOptions'=>array(
-				'validateOnSubmit'=>false,
-			),
-			'htmlOptions' => array('class' => 'form-horizontal')
-		));
-    ?>
-	<div id="divProcPadres" class="form-group">
-    	<div class="col-sm-12">
-            <?php echo $formularioDiagnClasifNutr->labelEx($modeloValNutr,'diagnostico_clasif_nutr',array('class'=>'control-label','for'=>'searchinput'));//'onblur'=>'js:enviaFormNutr("formularioHistVida","divObsNacim")'?>
-			<?php echo $formularioDiagnClasifNutr->textArea($modeloValNutr,'diagnostico_clasif_nutr',array('class'=>'form-control','onkeyup'=>'js:$("#formularioDiagnClasifNutr").addClass("has-warning");'));?>
-        	<?php echo $formularioDiagnClasifNutr->error($modeloValNutr,'diagnostico_clasif_nutr',array('style' => 'color:#F00'));?>
-    	</div>
-    </div>
-    <div class="form-group">
-    	<div class="col-md-4">	
-			<?php
-				$boton=CHtml::Button (
-					'Modificar',   
-					array('id'=>'btnFormDiagClNutr','class'=>'btn btn-default btn-sdis','name'=>'btnFormDiagClNutr','onclick'=>'js:enviaFormNutr("formularioDiagnClasifNutr","formularioDiagnClasifNutr")')
 				);
 			?>
     		<?php echo $boton; //CHtml::submitButton('Crear');?>

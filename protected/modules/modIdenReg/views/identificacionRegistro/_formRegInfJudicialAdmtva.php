@@ -141,7 +141,7 @@ if(!empty($numDocAdol)):
    	<div class="form-group"> 
 	<?php echo $formInfJud->labelEx($modeloInfJudAdmon,'id_instancia_rem',array('class'=>'col-md-4 control-label','for'=>'searchinput'));?>
         <div class="col-md-4">
-			<?php echo $formInfJud->dropDownList($modeloInfJudAdmon,'id_instancia_rem',CHtml::listData($instanciaRem,'id_instancia_rem', 'nombre_instancia_rem'),array('prompt'=>'Seleccione quien remite','class'=>'form-control input-md')); ?>
+			<?php echo $formInfJud->dropDownList($modeloInfJudAdmon,'id_instancia_rem',CHtml::listData($instanciaRem,'id_instancia_rem', 'nombre_instancia_rem'),array('onChange'=>'muestraInstRem();','prompt'=>'Seleccione quien remite','class'=>'form-control input-md')); ?>
             <?php echo $formInfJud->error($modeloInfJudAdmon,'id_instancia_rem',array('style' => 'color:#F00'));?>
     	</div>
     </div>
@@ -176,9 +176,9 @@ if(!empty($numDocAdol)):
     </div>
     <hr />
    	<div class="form-group"> 
-		<?php echo $formInfJud->labelEx($modeloInfJudAdmon,'no_proceso',array('class'=>'col-md-4 control-label','for'=>'searchinput'));?>
+     	<?php echo CHtml::activeLabel($modeloInfJudAdmon,'no_proceso',array('required'=>true,'class'=>'col-md-4 control-label','for'=>'searchinput'));?>   
         <div class="col-md-4">
-			<?php echo $formInfJud->textField($modeloInfJudAdmon,'no_proceso',array('class'=>'form-control input-md'));?>
+			<?php echo $formInfJud->textField($modeloInfJudAdmon,'no_proceso',array('required'=>true,'class'=>'form-control input-md'));?>
             <?php echo $formInfJud->error($modeloInfJudAdmon,'no_proceso',array('style' => 'color:#F00'));?><br />
     	</div>
     </div>
@@ -214,14 +214,14 @@ if(!empty($numDocAdol)):
     	</div>
     </div>
    	<div class="form-group"> 
-		<?php echo $formInfJud->labelEx($modeloInfJudAdmon,'infjudDelRemcesps',array('class'=>'col-md-4 control-label','for'=>'searchinput'));?>
+		<?php echo $formInfJud->labelEx($modeloInfJudAdmon,'infjudDelRemcesps',array('required'=>true,'class'=>'col-md-4 control-label','for'=>'searchinput'));?>
         <div class="col-md-4">
 			<?php echo $formInfJud->dropDownList($modeloInfJudAdmon,'infjudDelRemcesps',CHtml::listData($modeloInfJudAdmon->consultaEntidadesPrimarias('delito_rem_cespa','del_remcespa'),'id_del_rc', 'del_remcespa'),
 				array('multiple'=>true,'class'=>'selectpicker form-control','data-hide-disabled'=>'true','data-live-search'=>'true')); ?>
             <?php echo $formInfJud->error($modeloInfJudAdmon,'infjudDelRemcesps',array('style' => 'color:#F00'));?><br />
     	</div>
     </div>
-   	<div class="form-group"> 
+   	<div class="form-group" id="estProcDiv"> 
 		<?php echo $formInfJud->labelEx($modeloInfJudAdmon,'id_proc_jud',array('class'=>'col-md-4 control-label','for'=>'searchinput'));?>
         <div class="col-md-4">
 			<?php echo $formInfJud->radioButtonList($modeloInfJudAdmon,'id_proc_jud',CHtml::listData($estadoProceso,'id_proc_jud','proc_jud'));?>
@@ -331,8 +331,7 @@ if(!empty($numDocAdol)):
 										$("#MensajeInfJud").text("Se ha registrado la información judicial administrativa satisfactoriamente");
 										$("#formularioInfJudAdol #formularioInfJudAdol_es_").html("");                                                    
 										$("#formularioInfJudAdol #formularioInfJudAdol_es_").hide();	
-										$("#formularioInfJudAdol").removeClass("unsavedForm");
-																				
+										$("#formularioInfJudAdol").removeClass("unsavedForm");																														
 									}
 									else{
 	$("#MensajeInfJud").text("Ha habido un error en la creación del registro. Código del error: "+datosInfJud.msnError);
@@ -341,6 +340,7 @@ if(!empty($numDocAdol)):
 									}
 								}
 								else{						
+									$(".errorMessage").html("");
 									$("#btnFormInfJud").show();
 									var errores="Por favor corrija los siguientes errores<br/><ul>";
 									$.each(datosInfJud, function(key, val) {
@@ -399,6 +399,43 @@ if(!empty($numDocAdol)):
 				return "Aún no ha guardado cambios.  Los perderá si abandona.";
 			}
 		});
+		
+		function muestraInstRem(){
+			var idInstRem=$("#InformacionJudicial_id_instancia_rem").val();
+			if(idInstRem==1){
+				habilitaCampos();				
+			}
+			if(idInstRem==2){
+				deshabilitaCampos();
+			}
+		}				
+		function deshabilitaCampos(){	
+			$(".errorMessage").html("");
+			$("#InformacionJudicial_id_tipo_sancion").attr("disabled",true);
+			$("#InformacionJudicial_tiempo_sancion").attr("disabled",true);
+			$("#InformacionJudicial_tiempo_sancion_dias").attr("disabled",true);
+			$("#InformacionJudicial_juzgado").attr("disabled",true);
+			$("#InformacionJudicial_no_proceso").attr("disabled",true);
+			$("#InformacionJudicial_fecha_imposicion").attr("disabled",true);
+			$("#InformacionJudicial_id_proc_jud").attr("disabled",true);
+			$("#InformacionJudicial_juez").attr("disabled",true);
+			$("#InformacionJudicial_mec_sust_lib").attr("disabled",true);
+			$("input[name=\'InformacionJudicial[id_proc_jud]\']").attr("disabled",true);
+		}
+		function habilitaCampos(){
+			$(".errorMessage").html("");
+			$("#InformacionJudicial_id_tipo_sancion").attr("disabled",false);
+			$("#InformacionJudicial_tiempo_sancion").attr("disabled",false);
+			$("#InformacionJudicial_tiempo_sancion_dias").attr("disabled",false);
+			$("#InformacionJudicial_juzgado").attr("disabled",false);
+			$("#InformacionJudicial_no_proceso").attr("disabled",false);
+			$("#InformacionJudicial_fecha_imposicion").attr("disabled",false);
+			$("#InformacionJudicial_id_proc_jud").attr("disabled",false);
+			$("#InformacionJudicial_juez").attr("disabled",false);
+			$("#InformacionJudicial_mec_sust_lib").attr("disabled",false);
+			$("input[name=\'InformacionJudicial[id_proc_jud]\']").attr("disabled",false);
+		}
+
 ',CClientScript::POS_END);		
 ?>
 <?php endif;?>

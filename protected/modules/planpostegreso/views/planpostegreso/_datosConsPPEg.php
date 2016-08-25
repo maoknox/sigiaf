@@ -86,7 +86,7 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-lg-3 text-center">
-                                <img src="<?php echo Yii::app()->baseUrl?>/images/centroForjar.png" />
+                                <!--<img src="<?php //echo Yii::app()->baseUrl?>/images/centroForjar.png" />-->
                             </div>
                             <div class="col-lg-9 text-justify">
                                 Aún no se ha creado el concpeto integral del adolescente.
@@ -107,7 +107,7 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-lg-3 text-center">
-                                <img src="<?php echo Yii::app()->baseUrl?>/images/centroForjar.png" />
+                                <!--<img src="<?php //echo Yii::app()->baseUrl?>/images/centroForjar.png" />-->
                             </div>
                             <div class="col-lg-9 text-justify">
                                 No se ha hecho la verificación de derechos del adolescente.
@@ -128,7 +128,7 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-lg-3 text-center">
-                                <img src="<?php echo Yii::app()->baseUrl?>/images/centroForjar.png" />
+                                <!--<img src="<?php //echo Yii::app()->baseUrl?>/images/centroForjar.png" />-->
                             </div>
                             <div class="col-lg-9 text-justify">
                                 <?php  echo Yii::app()->user->getFlash('verifderechoegreso')?>
@@ -149,7 +149,7 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-lg-3 text-center">
-                                <img src="<?php echo Yii::app()->baseUrl?>/images/centroForjar.png" />
+                                <!--<img src="<?php //echo Yii::app()->baseUrl?>/images/centroForjar.png" />-->
                             </div>
                             <div class="col-lg-9 text-justify">
                                 El adolescente no tiene un PAI actual

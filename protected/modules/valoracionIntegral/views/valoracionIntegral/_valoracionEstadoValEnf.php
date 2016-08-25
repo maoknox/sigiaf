@@ -128,7 +128,7 @@ function enviaFormOpt(nombreForm,btnForm){
 		}
 		if($("#"+nombreForm+" textarea:first").val().length==0){
 			var valPas="";
-			if(nameInput=="ValoracionTeo[id_estado_val]" && $("#"+nombreForm+" input:radio:checked").val()==1){
+			if(nameInput=="ValoracionEnfermeria[id_estado_val]" && $("#"+nombreForm+" input:radio:checked").val()==1){
 				valPas=false;
 			}
 			else{

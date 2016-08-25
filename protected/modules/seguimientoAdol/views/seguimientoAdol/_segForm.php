@@ -183,7 +183,7 @@
                 <tr>
                     <td style="width:80%">
                         <div class="cont-seg">
-                            <?php 
+                            <?php
                             if(!empty($seguimientos)):?>
                                 <?php foreach($seguimientos as $pk=>$seguimiento):?>
                                     <?php $profSeg=$modeloSeguimiento->consultaProfSeg('true',$seguimiento["fecha_registro_seg"],$seguimiento["id_seguimientoadol"]);?>

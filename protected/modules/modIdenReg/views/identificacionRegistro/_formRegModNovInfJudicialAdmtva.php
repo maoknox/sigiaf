@@ -3,12 +3,12 @@
 if($accion=="modificar"){
 	$nombreBoton="Modificación";
 	$accionControllerReg="registraModifInfJud";
-	$mensaje="MODIFICACIÓN";
+	$mensaje="MODIFICACIÓN: En caso que haya digitado un dato erróneo al momento de crear la Información Judicial Administrativa del adolescente, este formulario permite realizar las correcciones.  Esto no genera una nueva información judicial o una novedad.";
 }
 elseif($accion=="regNovedad"){
 	$nombreBoton="Novedad";
 	$accionControllerReg="registraNovInfJud";
-	$mensaje="NOVEDAD";
+	$mensaje="NOVEDAD: En caso que haya algún cambio en la Información Judicial Administrativa, como por ejemplo un cambio de etapa de Investigación a Sanción, se genera al novedad.";
 }
 
 ?>
@@ -79,7 +79,7 @@ if(!empty($numDocAdol)):
    	<div class="form-group"> 
 	<?php echo $formInfJud->labelEx($modeloInfJudAdmon,'id_instancia_rem',array('class'=>'col-md-4 control-label','for'=>'searchinput'));?>
         <div class="col-md-4">
-			<?php echo $formInfJud->dropDownList($modeloInfJudAdmon,'id_instancia_rem',CHtml::listData($instanciaRem,'id_instancia_rem', 'nombre_instancia_rem'),array('prompt'=>'Seleccione quien remite','class'=>'form-control input-md')); ?>
+			<?php echo $formInfJud->dropDownList($modeloInfJudAdmon,'id_instancia_rem',CHtml::listData($instanciaRem,'id_instancia_rem', 'nombre_instancia_rem'),array('onChange'=>'muestraInstRem();','prompt'=>'Seleccione quien remite','class'=>'form-control input-md')); ?>
             <?php echo $formInfJud->error($modeloInfJudAdmon,'id_instancia_rem',array('style' => 'color:#F00'));?>
     	</div>
     </div>
@@ -322,4 +322,47 @@ if(!empty($numDocAdol)):
     </div></div>
 <?php $this->endWidget();?>
 </div></div></fieldset>
+
+
+<?php Yii::app()->getClientScript()->registerScript('tratamientoForm','
+		function muestraInstRem(){
+			var idInstRem=$("#InformacionJudicial_id_instancia_rem").val();
+			if(idInstRem==1){
+				habilitaCampos();				
+			}
+			if(idInstRem==2){
+				deshabilitaCampos();
+			}
+		}				
+		function deshabilitaCampos(){	
+			$(".errorMessage").html("");
+			$("#InformacionJudicial_id_tipo_sancion").attr("disabled",true);
+			$("#InformacionJudicial_tiempo_sancion").attr("disabled",true);
+			$("#InformacionJudicial_tiempo_sancion_dias").attr("disabled",true);
+			$("#InformacionJudicial_juzgado").attr("disabled",true);
+			$("#InformacionJudicial_no_proceso").attr("disabled",true);
+			$("#InformacionJudicial_fecha_imposicion").attr("disabled",true);
+			$("#InformacionJudicial_id_proc_jud").attr("disabled",true);
+			$("#InformacionJudicial_juez").attr("disabled",true);
+			$("#InformacionJudicial_mec_sust_lib").attr("disabled",true);
+			$("input[name=\'InformacionJudicial[id_proc_jud]\']").attr("disabled",true);
+		}
+		function habilitaCampos(){
+			$(".errorMessage").html("");
+			$("#InformacionJudicial_id_tipo_sancion").attr("disabled",false);
+			$("#InformacionJudicial_tiempo_sancion").attr("disabled",false);
+			$("#InformacionJudicial_tiempo_sancion_dias").attr("disabled",false);
+			$("#InformacionJudicial_juzgado").attr("disabled",false);
+			$("#InformacionJudicial_no_proceso").attr("disabled",false);
+			$("#InformacionJudicial_fecha_imposicion").attr("disabled",false);
+			$("#InformacionJudicial_id_proc_jud").attr("disabled",false);
+			$("#InformacionJudicial_juez").attr("disabled",false);
+			$("#InformacionJudicial_mec_sust_lib").attr("disabled",false);
+			$("input[name=\'InformacionJudicial[id_proc_jud]\']").attr("disabled",false);
+		}
+
+',CClientScript::POS_END);		
+?>
+
+
 <?php endif;?>

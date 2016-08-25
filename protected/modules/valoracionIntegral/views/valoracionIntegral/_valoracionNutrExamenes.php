@@ -82,7 +82,7 @@
                                         'showOtherMonths'=>true,
                                         'changeMonth'=>'true',
                                         'changeYear'=>'true',
-                                        'minDate'=>'',//fecha minima
+                                        'minDate'=>'date("Y-m-d")-6m',//fecha minima
                                         'maxDate'=>'date("Y-m-d")',//fecha maxima
                                 ),
                             ));
@@ -226,6 +226,19 @@
     	</div>
     </div>
     <div class="form-group">
+    	<div class="col-md-12">
+        	<?php
+				$cerneCheck=false;  
+				if($modeloValNutr->presenta_carne=='t'){
+					$cerneCheck=true;
+				}				
+			?>
+			<?php echo $formEsquemaVac->labelEx($modeloValNutr,'presenta_carne');	?>
+            <?php echo $formEsquemaVac->checkBox($modeloValNutr,'presenta_carne',array('checked'=>$cerneCheck)); ?>
+            <?php echo $formEsquemaVac->error($modeloValNutr,'id_esquema_vac',array('style' => 'color:#F00'));?>
+    	</div>
+    </div>
+    <div class="form-group">
         <div class="col-md-12">
     
 			<?php echo $formEsquemaVac->textArea($modeloValNutr,
@@ -293,6 +306,7 @@ $boton=CHtml::Button (
                        
                 ?>
            		<?php echo $formControlCrecim->error($modeloValNutr,'control_crec_des',array('style' => 'color:#F00'));?>
+                <hr />
     	</div>
     </div>
     <div class="form-group">

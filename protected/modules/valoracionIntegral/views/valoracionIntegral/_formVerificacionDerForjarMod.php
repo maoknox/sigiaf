@@ -95,7 +95,7 @@ foreach($derechos as $pk=>$derecho):?>
 						$modeloVerifDerechos->fecha_reg_derecho=date("Y-m-d");
 						echo $formAdolDerechos->hiddenField($modeloVerifDerechos,'estado_derecho');
 						echo $formAdolDerechos->hiddenField($modeloVerifDerechos,'fecha_reg_derecho');
-
+						echo $formAdolDerechos->hiddenField($modeloVerifDerechos,'id_momento_verif');
 						if(!empty($numDocAdol)){
 							$modeloVerifDerechos->num_doc=$numDocAdol;
 						}

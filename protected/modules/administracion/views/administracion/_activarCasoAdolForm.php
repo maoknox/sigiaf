@@ -146,7 +146,7 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
   	<div class="panel-body">
 		<div class="row">
         	 <div class="col-lg-3 text-center">
-             	<img src="<?php echo Yii::app()->baseUrl?>/images/centroForjar.png" />
+             	<!--<img src="<?php //echo Yii::app()->baseUrl?>/images/centroForjar.png" />-->
              </div>
              <div class="col-lg-9 text-justify">
                El adolescente no está inactivo en el sistema o no ha egresado del servicio.             

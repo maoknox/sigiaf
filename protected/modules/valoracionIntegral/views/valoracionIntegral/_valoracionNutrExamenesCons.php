@@ -139,6 +139,20 @@
 
     	</div>
     </div>
+        <div class="form-group">
+    	<div class="col-md-12">
+        	<?php
+				$cerneCheck=false;  
+				if($modeloValNutr->presenta_carne=='t'){
+					$cerneCheck=true;
+				}				
+			?>
+			<?php echo $formEsquemaVac->labelEx($modeloValNutr,'presenta_carne');	?>
+            <?php echo $formEsquemaVac->checkBox($modeloValNutr,'presenta_carne',array('checked'=>$cerneCheck)); ?>
+            <?php echo $formEsquemaVac->error($modeloValNutr,'id_esquema_vac',array('style' => 'color:#F00'));?>
+    	</div>
+    </div>
+
     <div class="form-group">
         <div class="col-md-12">
 			<div class='cont-infoval'><?php echo $modeloValNutr->obs_esquema_vac;?></div>												

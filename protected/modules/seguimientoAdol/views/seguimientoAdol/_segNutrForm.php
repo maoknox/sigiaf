@@ -16,6 +16,8 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
 //print_r($seguimientosNutr);
 ?>
 <?php if(!Yii::app()->user->hasFlash('verifEstadoAdolForjar')):?>
+<code  onclick="js:muestraTablaIMCTalla();" style="cursor:help">Ver tabla IMC Talla / Edad</code>
+
 <div id="formSegNutr">
 
     <div class="panel-heading color-sdis"> SEGUIMIENTO NUTRICIONAL </div> <br />
@@ -32,14 +34,14 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
 	<div id="divProcPadres" class="form-group">
         <?php echo $formularioAntrValSeg->labelEx($modeloAntropometria,'antr_peso_kgs',array('class'=>'control-label col-md-5','for'=>'searchinput'));//'onblur'=>'js:enviaFormNutr("formularioHistVida","divObsNacim")'?>
     	<div class="col-md-2">
-			<?php echo $formularioAntrValSeg->textField($modeloAntropometria,'antr_peso_kgs',array('class'=>'form-control input-md','onChange'=>'js:$("#formularioAntrValSeg").addClass("has-warning");'));?>
+			<?php echo $formularioAntrValSeg->textField($modeloAntropometria,'antr_peso_kgs',array('class'=>'form-control input-md','onChange'=>'js:$("#formularioAntrValSeg").addClass("has-warning");hallaImc();'));?>
         	<?php echo $formularioAntrValSeg->error($modeloAntropometria,'antr_peso_kgs',array('style' => 'color:#F00'));?>
     	</div>
     </div>
 	<div id="divProcPadres" class="form-group">
         <?php echo $formularioAntrValSeg->labelEx($modeloAntropometria,'antr_talla_cms',array('class'=>'control-label col-md-5','for'=>'searchinput'));//'onblur'=>'js:enviaFormNutr("formularioHistVida","divObsNacim")'?>
     	<div class="col-md-2">
-			<?php echo $formularioAntrValSeg->textField($modeloAntropometria,'antr_talla_cms',array('class'=>'form-control input-md','onChange'=>'js:$("#formularioAntrValSeg").addClass("has-warning");'));?>
+			<?php echo $formularioAntrValSeg->textField($modeloAntropometria,'antr_talla_cms',array('class'=>'form-control input-md','onChange'=>'js:$("#formularioAntrValSeg").addClass("has-warning");hallaImc();'));?>
         	<?php echo $formularioAntrValSeg->error($modeloAntropometria,'antr_talla_cms',array('style' => 'color:#F00'));?>
     	</div>
     </div>
@@ -48,13 +50,6 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
     	<div class="col-md-2">
 			<?php echo $formularioAntrValSeg->textField($modeloAntropometria,'antr_imc',array('class'=>'form-control input-md','onChange'=>'js:$("#formularioAntrValSeg").addClass("has-warning");'));?>
         	<?php echo $formularioAntrValSeg->error($modeloAntropometria,'antr_imc',array('style' => 'color:#F00'));?>
-    	</div>
-    </div>
-	<div id="divProcPadres" class="form-group">
-        <?php echo $formularioAntrValSeg->labelEx($modeloAntropometria,'circunf_cefalica',array('class'=>'control-label col-md-5','for'=>'searchinput'));//'onblur'=>'js:enviaFormNutr("formularioHistVida","divObsNacim")'?>
-    	<div class="col-md-2">
-			<?php echo $formularioAntrValSeg->textField($modeloAntropometria,'circunf_cefalica',array('class'=>'form-control input-md','onChange'=>'js:$("#formularioAntrValSeg").addClass("has-warning");'));?>
-        	<?php echo $formularioAntrValSeg->error($modeloAntropometria,'circunf_cefalica',array('style' => 'color:#F00'));?>
     	</div>
     </div>
     <hr />
@@ -88,6 +83,13 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
     </div>
     <div id="divProcPadres" class="form-group">
     	<div class="col-sm-12">
+			<?php echo $formularioAntrValSeg->labelEx($modeloNutricionAdol,'diagnostico_clasif_nutr_na',array('class'=>'control-label','for'=>'searchinput'));//'onblur'=>'js:enviaFormNutr("formularioHistVida","divObsNacim")'?>
+			<?php echo $formularioAntrValSeg->textArea($modeloNutricionAdol,'diagnostico_clasif_nutr_na',array('class'=>'form-control input-md','onChange'=>'js:$("#formularioAntrValSeg").addClass("has-warning");'));?>
+        	<?php echo $formularioAntrValSeg->error($modeloNutricionAdol,'diagnostico_clasif_nutr_na',array('style' => 'color:#F00'));?>
+    	</div>
+    </div>        
+    <div id="divProcPadres" class="form-group">
+    	<div class="col-sm-12">
        		<?php echo $formularioAntrValSeg->labelEx($modeloNutricionAdol,'ant_salud_al_cl',array('class'=>'control-label','for'=>'searchinput'));//'onblur'=>'js:enviaFormNutr("formularioHistVida","divObsNacim")'?>
 			<?php echo $formularioAntrValSeg->textArea($modeloNutricionAdol,'ant_salud_al_cl',array('class'=>'form-control input-md','onChange'=>'js:$("#formularioAntrValSeg").addClass("has-warning");'));?>
         	<?php echo $formularioAntrValSeg->error($modeloNutricionAdol,'ant_salud_al_cl',array('style' => 'color:#F00'));?>
@@ -100,13 +102,6 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
         	<?php echo $formularioAntrValSeg->error($modeloNutricionAdol,'eval_cumpl_obj_alim',array('style' => 'color:#F00'));?>
     	</div>
     </div> 
-    <div id="divProcPadres" class="form-group">
-    	<div class="col-sm-12">
-			<?php echo $formularioAntrValSeg->labelEx($modeloNutricionAdol,'diagnostico_clasif_nutr_na',array('class'=>'control-label','for'=>'searchinput'));//'onblur'=>'js:enviaFormNutr("formularioHistVida","divObsNacim")'?>
-			<?php echo $formularioAntrValSeg->textArea($modeloNutricionAdol,'diagnostico_clasif_nutr_na',array('class'=>'form-control input-md','onChange'=>'js:$("#formularioAntrValSeg").addClass("has-warning");'));?>
-        	<?php echo $formularioAntrValSeg->error($modeloNutricionAdol,'diagnostico_clasif_nutr_na',array('style' => 'color:#F00'));?>
-    	</div>
-    </div>        
     <div id="divProcPadres" class="form-group">
     	<div class="col-sm-12">
 			<?php echo $formularioAntrValSeg->labelEx($modeloNutricionAdol,'plan_nutr',array('class'=>'control-label','for'=>'searchinput'));//'onblur'=>'js:enviaFormNutr("formularioHistVida","divObsNacim")'?>
@@ -300,6 +295,26 @@ $this->widget('application.extensions.jqAjaxSearch.AjaxSearch',
 </fieldset>
 
 </div>
+       <?php 
+		$this->beginWidget('zii.widgets.jui.CJuiDialog',array(
+			'id'=>'juiDialogIMCTalla',
+			'options'=>array(				
+				'title'=>'Tabla IMC/EDAD-TALLA/EDAD',
+				'autoOpen'=>false,
+				'width'=>'60%',
+				'show'=>array(
+	                'effect'=>'blind',
+	                'duration'=>500,
+	            ),
+				'hide'=>array(
+					'effect'=>'explode',
+					'duration'=>500,
+				),				
+			),
+		));
+		$this->endWidget('zii.widgets.jui.CJuiDialog');
+	?>     
+
 <?php
 Yii::app()->getClientScript()->registerScript('scriptSegNutricional','
 	$(document).ready(function(){
@@ -315,6 +330,30 @@ Yii::app()->getClientScript()->registerScript('scriptSegNutricional','
 			return "Aún hay datos sin guardar si abandona la página estos no se guardaran";//va a cerrar
 		}
 	});
+	function hallaImc(){
+		$("#Antropometria_antr_imc").val("");
+		if($("#Antropometria_antr_peso_kgs").val().length!=0 && $("#Antropometria_antr_talla_cms").val()!=0){
+			if(!isNaN($("#Antropometria_antr_peso_kgs").val()) && !isNaN($("#Antropometria_antr_talla_cms").val())){
+				var imc=0;
+				var peso=0;
+				var talla=0;					
+				peso=$("#Antropometria_antr_peso_kgs").val();					
+				talla=$("#Antropometria_antr_talla_cms").val();
+				if(peso!=0 && talla!=0){
+					tallMts=talla/60;
+					imc=peso/Math.pow(tallMts,2);
+					$("#Antropometria_antr_imc").val(imc.toFixed(3));
+				}
+				else{
+					jAlert("Debe digitar números mayores a cero");
+				}
+			}
+			else{
+				jAlert("Debe digitar solo números en peso y talla");
+			}
+		}		
+	}
+	
 	function enviaFormSegNutr(formId){
 		$("#"+formId+" .errorMessage").text("");
 		$.ajax({
@@ -372,6 +411,10 @@ Yii::app()->getClientScript()->registerScript('scriptSegNutricional','
 	function enviaFormPlanDietario(nombreForm,idComida){
 		//jAlert($("#formularioPorcionesComida"+idComida).serialize());
 			$("#"+nombreForm+" .errorMessage").text("");
+			if($("#NutricionAdol_id_nutradol").val()==\'aux\'){
+				jAlert("Debe digitar primero la antropometría","Mensaje");
+				return;
+			}
 			$.ajax({
 				url: "'.Yii::app()->createAbsoluteUrl('valoracionIntegral/valoracionIntegral/registraPlanDietario').'",
 				data:$("#formularioPorcionesComida"+idComida).serialize()+"&idNutrAdol="+$("#NutricionAdol_id_nutradol").val()+"&idTipoActividad="+$("#NutricionAdol_id_tipoact_pld").val(),
@@ -444,7 +487,59 @@ Yii::app()->getClientScript()->registerScript('scriptSegNutricional','
 				$("#formularioPorcionesComida"+idComida+" #PorcionesComida_dif_num_porc_cons_rec").val(diferenciaPCPR);	
 			}
 		}
+		
+		function muestraTablaIMCTalla(){
+			var table="<table class=\"table table-striped table-bordered table-responsive\" style=\"font-size:12px\">";
+			table+="<thead><tr>";
+			table+="<td colspan=\'2\' align=\'center\'>Índice de Masa Corporal para la edad (IMC/E)</td>";
+			table+="</tr>";
+			table+="<tr><td>Punto de corte <br />(desviación estándar)</td>";
+			table+="<td>Denominación</td>";
+			table+="</tr></thead><tbody>";	
+			table+="<tr>";
+			table+="<td> < -2 </td>";
+			table+="<td> Delgadez</td>";
+			table+="</tr>";
+			table+="<tr>";
+			table+="<td> >= -2 a < -1</td>";
+			table+="<td>Riesgo para delgadez</td>";
+			table+="</tr>";
+			table+="<tr>";
+			table+="<td> >= -1 a <= 1 </td>";
+			table+="<td> Adecuado para la edad </td>";
+			table+="</tr>";
+			table+="<tr>";
+			table+="<td> > 1 a <= 2</td>";
+			table+="<td>Sobre peso</td>";
+			table+="</tr>";
+			table+="<tr>";
+			table+="<td>  >2 </td>";
+			table+="<td>Obesidad</td>";
+			table+="</tr>";
+			table+="</tbody></table>";
+			var tableI="<table class=\"table table-striped table-bordered table-responsive\" style=\"font-size:12px\">";
+			tableI+="<thead><tr>";
+			tableI+="<td colspan=\'2\' align=\'center\'>Talla para la edad (T/E)</td>";
+			tableI+="</tr>";
+			tableI+="<tr><td>Punto de corte <br />(desviación estándar)</td>";
+			tableI+="<td>Denominación</td>";
+			tableI+="</tr></thead><tbody>";	
+			tableI+="<tr>";
+			tableI+="<td> < -2 </td>";
+			tableI+="<td>Talla baja para la edad o Retraso en la talla</td>";
+			tableI+="</tr>";
+			tableI+="<tr>";
+			tableI+="<td> >= -2 a < -1</td>";
+			tableI+="<td>Riesgo de talla baja</td>";
+			tableI+="</tr>";
+			tableI+="<tr>";
+			tableI+="<td> >= -1 </td>";
+			tableI+="<td> Talla adecuada para la edad </td>";
+			tableI+="</tr>";
+			tableI+="</tbody></table>";
 
+			$("#ui-id-1").text("Tabla examen físico");$("#juiDialog").addClass("panel panel-default"); $("#juiDialogIMCTalla").html(table+tableI); $("#juiDialogIMCTalla").dialog("open");
+		}
 '
 ,CClientScript::POS_END);
 ?>
@@ -459,7 +554,7 @@ Yii::app()->getClientScript()->registerScript('scriptSegNutricional','
         <div class="panel-body">
             <div class="row">
                 <div class="col-lg-3 text-center">
-                    <img src="<?php echo Yii::app()->baseUrl?>/images/centroForjar.png" />
+                    <!--<img src="<?php //echo Yii::app()->baseUrl?>/images/centroForjar.png" />-->
                 </div>
                 <div class="col-lg-9 text-justify">
                     <?php echo Yii::app()->user->getFlash('verifEstadoAdolForjar'); ?>

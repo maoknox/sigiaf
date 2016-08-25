@@ -12,14 +12,11 @@
     <td style=" border:1px solid #000;width:25%">Medida de internamiento preventivo</td>
     <td style=" border:1px solid #000;width:25%">Sanción impuesta</td>
 </tr>
-
-
-	
 	<?php
 		//$consDelitoVinc[]=array('1'=>'1');$consDelitoVinc[]=array('1'=>'1');
 	 if(!empty($consDelitoVinc)):?>
     	
-		<?php  foreach($consDelitoVinc as $pk=>$consDelitoVinc): $pk+=1; //revisar?>
+		<?php $disabled="disabled"; foreach($consDelitoVinc as $pk=>$consDelitoVinc): $pk+=1; //revisar?>
 			<tr>
             	<td style=" border:1px solid #000; width:25%">
 					<?php echo $pk;
@@ -29,7 +26,8 @@
 								'prompt'=>'Seleccione Delito',
                        	 		'options' => $op,
 								'style'=>'width:100%',
-								'onchange'=>'js:$("#btnDelVinc_'.$pk.'").addClass("unsavedForm");$("#btnDelVinc_'.$pk.'").css("color","#F00");'
+								'onchange'=>'js:$("#btnDelVinc_'.$pk.'").addClass("unsavedForm");$("#btnDelVinc_'.$pk.'").css("color","#F00");',
+								'disabled'=>$disabled
                        		)
                     	);
 						$op="";
@@ -40,6 +38,7 @@
                         if($consDelitoVinc["medida_int_prev"]==1){$consDelitoVinc["medida_int_prev"]=true;}else{$consDelitoVinc["medida_int_prev"]=false;}
                             echo CHtml::CheckBox('intprev_'.$pk,$consDelitoVinc["medida_int_prev"], array (
                                 'value'=>'true',
+								'disabled'=>$disabled,
 								'onchange'=>'js:$("#btnDelVinc_'.$pk.'").addClass("unsavedForm");$("#btnDelVinc_'.$pk.'").css("color","#F00");'
                          )); 
                     ?> Si
@@ -49,6 +48,7 @@
                         if($consDelitoVinc["sancion_impuesta_vinc"]==1){$consDelitoVinc["sancion_impuesta_vinc"]=true;}else{$consDelitoVinc["sancion_impuesta_vinc"]=false;}
                             echo CHtml::CheckBox('sansImp_'.$pk,$consDelitoVinc["sancion_impuesta_vinc"], array (
                                 'value'=>'true',
+								'disabled'=>$disabled,
 								'onchange'=>'js:$("#btnDelVinc_'.$pk.'").addClass("unsavedForm");$("#btnDelVinc_'.$pk.'").css("color","#F00");'
                          )); 
                     ?>Si
@@ -57,6 +57,7 @@
                     	echo CHtml::dropDownList('tipoSanImp_'.$pk,'tipoSanImp_'.$pk,CHtml::listData($sancionImp,'id_tipo_sancion','tipo_sancion'),
                      		array(
 								'prompt'=>"seleccione una sanción",
+								'disabled'=>$disabled,
                        	 		'options' => $opTipoSanc,
 								'style'=>'width:100%',
 								'onchange'=>'js:$("#btnDelVinc_'.$pk.'").addClass("unsavedForm");$("#btnDelVinc_'.$pk.'").css("color","#F00");'

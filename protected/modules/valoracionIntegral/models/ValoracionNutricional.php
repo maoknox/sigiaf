@@ -57,6 +57,8 @@
  * @property boolean $val_act_nutr
  * @property string $observ_estvalnutr
  * @property boolean $estado_val_nutr  
+ * @property boolean $presenta_carne
+  
  *
  * The followings are the available model relations:
  * @property Antropometria[] $antropometrias
@@ -106,10 +108,10 @@ class ValoracionNutricional extends CActiveRecord
 			array('num_doc', 'length', 'max'=>15),
 			array('semanas_gestacion, talla_nacim_cms, peso_nacim_kgs', 'length', 'max'=>20),
 			array('tiempo_lactancia, tiempo_biberon, quien_cocina_casa, donde_recibe_alim', 'length', 'max'=>100),
-			array('observaciones_nacim, patologicos, quirurgicos, hospitaliz_causas, alergicos, toxicos, familiares_nutr, otros_nutr, obs_esquema_vac, control_crec_des, obs_crec_des, medicamentos_nutr, procedencia_padres, alimentos_preferidos, alimentos_rechazados, alimentos_intolerados, supl_compl_nutr, recibio_leche_mat, recibio_biberon, quien_cocina_casa, donde_recibe_alim, desarrollo_psicomotor, examen_fisico, concepto_nutr, estrategia_intervencion, objetivo_aliment_nutr, diagnostico_clasif_nutr, fecha_ini_vnutr, fecha_modif_vnutr, val_hab_nutr, val_act_nutr, observ_estvalnutr, estado_val_nutr', 'safe'),
+			array('observaciones_nacim, patologicos, quirurgicos, hospitaliz_causas, alergicos, toxicos, familiares_nutr, otros_nutr, obs_esquema_vac, control_crec_des, obs_crec_des, medicamentos_nutr, procedencia_padres, alimentos_preferidos, alimentos_rechazados, alimentos_intolerados, supl_compl_nutr, recibio_leche_mat, recibio_biberon, quien_cocina_casa, donde_recibe_alim, desarrollo_psicomotor, examen_fisico, concepto_nutr, estrategia_intervencion, objetivo_aliment_nutr, diagnostico_clasif_nutr, fecha_ini_vnutr, fecha_modif_vnutr, val_hab_nutr, val_act_nutr, observ_estvalnutr, estado_val_nutr, presenta_carne', 'safe'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id_val_nutricion, id_esquema_vac, id_masticacion, id_apetito, id_digestion, id_estado_val, id_hab_intest, id_ingesta, id_nivel_act_fis, num_doc, id_tipo_parto, semanas_gestacion, talla_nacim_cms, peso_nacim_kgs, observaciones_nacim, patologicos, quirurgicos, hospitaliz_causas, alergicos, toxicos, familiares_nutr, otros_nutr, obs_esquema_vac, control_crec_des, obs_crec_des, medicamentos_nutr, procedencia_padres, alimentos_preferidos, alimentos_rechazados, alimentos_intolerados, supl_compl_nutr, recibio_leche_mat, tiempo_lactancia, recibio_biberon, tiempo_biberon, personas_alim_olla, quien_cocina_casa, num_comidas_diarias, donde_recibe_alim, inicio_almient_compl, horas_sueno, desarrollo_psicomotor, examen_fisico, concepto_nutr, estrategia_intervencion, objetivo_aliment_nutr, diagnostico_clasif_nutr, fecha_ini_vnutr, fecha_modif_vnutr, val_hab_nutr, val_act_nutr, observ_estvalnutr, estado_val_nutr', 'safe', 'on'=>'search'),
+			array('id_val_nutricion, id_esquema_vac, id_masticacion, id_apetito, id_digestion, id_estado_val, id_hab_intest, id_ingesta, id_nivel_act_fis, num_doc, id_tipo_parto, semanas_gestacion, talla_nacim_cms, peso_nacim_kgs, observaciones_nacim, patologicos, quirurgicos, hospitaliz_causas, alergicos, toxicos, familiares_nutr, otros_nutr, obs_esquema_vac, control_crec_des, obs_crec_des, medicamentos_nutr, procedencia_padres, alimentos_preferidos, alimentos_rechazados, alimentos_intolerados, supl_compl_nutr, recibio_leche_mat, tiempo_lactancia, recibio_biberon, tiempo_biberon, personas_alim_olla, quien_cocina_casa, num_comidas_diarias, donde_recibe_alim, inicio_almient_compl, horas_sueno, desarrollo_psicomotor, examen_fisico, concepto_nutr, estrategia_intervencion, objetivo_aliment_nutr, diagnostico_clasif_nutr, fecha_ini_vnutr, fecha_modif_vnutr, val_hab_nutr, val_act_nutr, observ_estvalnutr, estado_val_nutr, presenta_carne', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -203,6 +205,7 @@ class ValoracionNutricional extends CActiveRecord
 			'val_act_nutr' => 'Valoración actual',
 			'observ_estvalnutr' => 'Observaciones al estado de la valoración',
 			'estado_val_nutr' => 'Estado de la valoración',
+			'presenta_carne' => 'Presenta carné',			
 		);
 	}
 
@@ -277,7 +280,7 @@ class ValoracionNutricional extends CActiveRecord
 		$criteria->compare('val_act_nutr',$this->val_act_nutr);
 		$criteria->compare('observ_estvalnutr',$this->observ_estvalnutr,true);
 		$criteria->compare('estado_val_nutr',$this->estado_val_nutr);
-
+		$criteria->compare('presenta_carne',$this->estado_val_nutr);
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));

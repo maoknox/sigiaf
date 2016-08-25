@@ -377,7 +377,7 @@ else{
                             echo CHtml::CheckBox('AntFFamilia[intprev][int_prev_'.$pkAnt.']',$checked, array (
                                 'id'=>'intprev_'.$pkAnt,
                                 'value'=>$antFam["id_ant_fam"],
-                                'onclick'=>'js:$("#antFamilia").addClass("has-warning")'
+                                'onchange'=>'js:$("#antFamilia").addClass("has-warning")'
                             ))." ".$antFam["ant_fam"];
 							?>
                           </label>
@@ -398,7 +398,7 @@ else{
         <?php echo $boton; //CHtml::submitButton('Crear');?>
         <?php $this->endWidget();?>
     </td>
-     <td>
+     <td id="probAsoc">
 		<?php $formProbAsoc=$this->beginWidget('CActiveForm', array(
             'id'=>'formProbAsoc',
             'enableAjaxValidation'=>false,
@@ -434,7 +434,7 @@ else{
                             echo CHtml::CheckBox('ProblemaValtsocial[probasoc][prob_asoc_'.$pkPrA.']',$checked, array (
                                 'id'=>'prob_asoc_'.$pkPrA,
                                 'value'=>$probAsoci["id_problema_asoc"],
-                                'onclick'=>'js:$("#btnProbAsoc").css("color","#F00")'
+                                'onclick'=>'js:$("#probAsoc").addClass("has-warning")'
                             ))." ".$probAsoci["problema_asoc"]."<br/>-".
                             CHtml::CheckBox('vinc_pand',$checkedVinc, array (
                                 'value'=>'true',
@@ -459,7 +459,7 @@ else{
                             ))." ".$probAsoci["problema_asoc"]."<br/> -".
                             CHtml::CheckBox('vinc_barr_fut',$checkedVinc, array (
                                 'value'=>'true',
-                                'onclick'=>'js:$("#btnProbAsoc").css("color","#F00")'
+                                'onchange'=>'js:$("#probAsoc").addClass("has-warning")'
                             ))
                             ."Vinculado actualmente"; 
 							?>
@@ -477,7 +477,7 @@ else{
                             echo CHtml::CheckBox('ProblemaValtsocial[probasoc][prob_asoc_'.$pkPrA.']',$checked, array (
                                 'id'=>'prob_asoc_'.$pkPrA,
                                 'value'=>$probAsoci["id_problema_asoc"],
-                                'onclick'=>'js:$("#btnProbAsoc").css("color","#F00")'
+                                 'onchange'=>'js:$("#probAsoc").addClass("has-warning")'
                             ))." ".$probAsoci["problema_asoc"]; 	
 							?>
                            </label>
@@ -501,7 +501,7 @@ else{
         <?php echo $boton; //CHtml::submitButton('Crear');?>
         <?php $this->endWidget();?>
     </td>
-    <td valign="top">
+    <td valign="top" id="servProt">
 		<?php $formServProt=$this->beginWidget('CActiveForm', array(
             'id'=>'formServProt',
             'enableAjaxValidation'=>false,
@@ -532,7 +532,7 @@ else{
                             echo CHtml::CheckBox('ServprotecValtsocial[sevprot][serv_protec_'.$pkSrPr.']',$checked, array (
                                 'id'=>'sevprot_serv_protec_'.$pkSrPr,
                                 'value'=>$servProt["id_serv_protec"],
-                                'onclick'=>'js:$("#btnServProt").css("color","#F00")'
+                                'onchange'=>'js:$("#servProt").addClass("has-warning")'
                             ))." ".$servProt["serv_protec"]; 		
                             ?>
                            </label>

@@ -80,11 +80,10 @@ p.cont-inf{
 }
 
 .app-menu{
-    min-height: 24px;
-    background-color: #831F47 !important;
+	min-height: 24px;
+    background-color: rgba(0,173,230,1) !important;
     border: 0px;
-    border-bottom: 4px #BBB082 solid;
-
+    border-bottom: 4px rgba(0,66,104,1) solid !important;
 }
 
 .app-menu .navbar-nav li a:hover{
@@ -103,7 +102,7 @@ p.cont-inf{
 
 }
 .app-menu-links{
-    background-color: #831F47 !important;
+	background-color: rgba(0,173,230,1) !important;
 }
 
 .app-content-1{
@@ -142,12 +141,11 @@ p.cont-inf{
 .app-lineafooter{
     font-family: Arial;
     font-size: 10px;
-    background: #E1E1E1;
+	background-color: rgba(0,173,230,1) !important;
     color: #3c3c3c;
-    background: #3C3C3C;
     color: white;
-    border-bottom: 2px #3C3C3C solid;
-    border-top:2px #3C3C3C solid;
+    border-bottom: 2px rgba(0,173,230,1) solid;
+    border-top:2px rgba(0,173,230,1) solid;
     text-align: center;  
 }
 .app-btn-1{
@@ -156,8 +154,8 @@ p.cont-inf{
     text-shadow: none;
 }
 .color-sdis{
-    background-color: #831F47 !important;
-    color:white !important;
+    background-color: rgba(0,173,230,1) !important;
+    color: white !important;
 }
 .app-title{
     color: #484848;
@@ -179,11 +177,11 @@ p.cont-inf{
     background-color: #999 !important;
 }
 .btn-sdis{
-    background-color: #831F47 !important;
+	background-color: rgba(0,173,230,1) !important;
 	color:white !important
 }
 .btn-sdis:hover{
-    background-color: #550927 !important;
+ background-color: rgba(0,66,104,1) !important;
 }
 /*Modal*/
 .modal-header{

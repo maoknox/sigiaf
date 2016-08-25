@@ -58,7 +58,7 @@ $this->widget('zii.widgets.jui.CJuiTabs', array(
         <div class="panel-body">
             <div class="row">
                 <div class="col-lg-3 text-center">
-                    <img src="<?php echo Yii::app()->baseUrl?>/images/centroForjar.png" />
+                    <!--<img src="<?php //echo Yii::app()->baseUrl?>/images/centroForjar.png" />-->
                 </div>
                 <div class="col-lg-9 text-justify">
                     <?php echo Yii::app()->user->getFlash('verifEstadoAdolForjar'); ?>

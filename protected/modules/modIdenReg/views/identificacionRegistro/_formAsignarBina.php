@@ -65,7 +65,7 @@ endif;
 <div class="form-group">
         <?php echo $form->labelEx($modeloHistPersAdol,'psicologosHist',array('class'=>'col-md-4 control-label','for'=>'searchinput')); ?>
         <div class="col-md-4">
-            <?php echo $form->dropDownList($modeloHistPersAdol,'psicologosHist',CHtml::listData($psicologo,'id_cedula', 'nombrecomp_pers'),array('prompt'=>'Seleccione Psocólogo','class'=>'selectpicker form-control','data-hide-disabled'=>'true','data-live-search'=>'true')); ?></br>
+            <?php echo $form->dropDownList($modeloHistPersAdol,'psicologosHist',CHtml::listData($psicologo,'id_cedula', 'nombrecomp_pers'),array('prompt'=>'Seleccione Psicólogo','class'=>'selectpicker form-control','data-hide-disabled'=>'true','data-live-search'=>'true')); ?></br>
             <?php echo $form->error($modeloHistPersAdol,'psicologosHist',array('style' => 'color:#F00')); ?>
             <?php echo $form->radioButtonList($modeloHistPersAdol, 'responsable_caso', array('1'=>'Responsable psicólogo','2'=>'Responsable Trabajador Social')); //responsable del caso del adolescente?>
             <?php echo $form->error($modeloHistPersAdol,'responsable_caso',array('style' => 'color:#F00')); ?>

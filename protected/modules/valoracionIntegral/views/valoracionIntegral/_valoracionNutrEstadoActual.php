@@ -53,14 +53,14 @@
 	<div id="divProcPadres" class="form-group">
         <?php echo $formularioExamenFisico->labelEx($modeloAntropometria,'antr_peso_kgs',array('class'=>'control-label col-md-5','for'=>'searchinput'));//'onblur'=>'js:enviaFormNutr("formularioHistVida","divObsNacim")'?>
     	<div class="col-md-2">
-			<?php echo $formularioExamenFisico->textField($modeloAntropometria,'antr_peso_kgs',array('class'=>'form-control input-md','onchange'=>'js:$("#formularioAntrValIni").addClass("has-warning");'));?>
+			<?php echo $formularioExamenFisico->textField($modeloAntropometria,'antr_peso_kgs',array('class'=>'form-control input-md','onchange'=>'js:$("#formularioAntrValIni").addClass("has-warning");hallaImc();'));?>
         	<?php echo $formularioExamenFisico->error($modeloAntropometria,'antr_peso_kgs',array('style' => 'color:#F00'));?>
     	</div>
     </div>
 	<div id="divProcPadres" class="form-group">
         <?php echo $formularioExamenFisico->labelEx($modeloAntropometria,'antr_talla_cms',array('class'=>'control-label col-md-5','for'=>'searchinput'));//'onblur'=>'js:enviaFormNutr("formularioHistVida","divObsNacim")'?>
     	<div class="col-md-2">
-			<?php echo $formularioExamenFisico->textField($modeloAntropometria,'antr_talla_cms',array('class'=>'form-control input-md','onchange'=>'js:$("#formularioAntrValIni").addClass("has-warning");'));?>
+			<?php echo $formularioExamenFisico->textField($modeloAntropometria,'antr_talla_cms',array('class'=>'form-control input-md','onchange'=>'js:$("#formularioAntrValIni").addClass("has-warning");hallaImc();'));?>
         	<?php echo $formularioExamenFisico->error($modeloAntropometria,'antr_talla_cms',array('style' => 'color:#F00'));?>
     	</div>
     </div>
@@ -69,13 +69,6 @@
     	<div class="col-md-2">
 			<?php echo $formularioExamenFisico->textField($modeloAntropometria,'antr_imc',array('class'=>'form-control input-md','onchange'=>'js:$("#formularioAntrValIni").addClass("has-warning");'));?>
         	<?php echo $formularioExamenFisico->error($modeloAntropometria,'antr_imc',array('style' => 'color:#F00'));?>
-    	</div>
-    </div>
-	<div id="divProcPadres" class="form-group">
-        <?php echo $formularioExamenFisico->labelEx($modeloAntropometria,'circunf_cefalica',array('class'=>'control-label col-md-5','for'=>'searchinput'));//'onblur'=>'js:enviaFormNutr("formularioHistVida","divObsNacim")'?>
-    	<div class="col-md-2">
-			<?php echo $formularioExamenFisico->textField($modeloAntropometria,'circunf_cefalica',array('class'=>'form-control input-md','onchange'=>'js:$("#formularioAntrValIni").addClass("has-warning");'));?>
-        	<?php echo $formularioExamenFisico->error($modeloAntropometria,'circunf_cefalica',array('style' => 'color:#F00'));?>
     	</div>
     </div>
     <hr />
@@ -128,7 +121,7 @@
 		$this->beginWidget('zii.widgets.jui.CJuiDialog',array(
 			'id'=>'juiDialogExam',
 			'options'=>array(				
-				'title'=>'Tabla examen',
+				'title'=>'Tabla examen físico',
 				'autoOpen'=>false,
 				'width'=>'60%',
 				'show'=>array(
@@ -210,10 +203,34 @@
 				}
 			});
 		}
-		
+		function hallaImc(){
+			$("#Antropometria_antr_imc").val("");
+			if($("#Antropometria_antr_peso_kgs").val().length!=0 && $("#Antropometria_antr_talla_cms").val()!=0){
+				if(!isNaN($("#Antropometria_antr_peso_kgs").val()) && !isNaN($("#Antropometria_antr_talla_cms").val())){
+					var imc=0;
+					var peso=0;
+					var talla=0;					
+					peso=$("#Antropometria_antr_peso_kgs").val();					
+					talla=$("#Antropometria_antr_talla_cms").val();
+					if(peso!=0 && talla!=0){
+						tallMts=talla/60;
+						imc=peso/Math.pow(tallMts,2);
+						$("#Antropometria_antr_imc").val(imc.toFixed(3));
+					}
+					else{
+						jAlert("Debe digitar números mayores a cero");
+					}
+				}
+				else{
+					jAlert("Debe digitar solo números en peso y talla");
+				}
+			}		
+		}
 		function muestraTablaExamen(){
 			var table="<table class=\"table table-striped table-bordered table-responsive\" style=\"font-size:12px\">";
 			table+="<thead><tr>";
+			table+="<td c>ÁREA DE EXAMEN</td>";
+			table+="<\tr>";
 			table+="<td>ÁREA DE EXAMEN</td>";
 			table+="<td>SIGNOS</td>";
 			table+="<td>PROBABLE DEFICIT</td>";				
@@ -255,6 +272,3 @@
 	'
 	,CClientScript::POS_END);
 ?>
-
-
-

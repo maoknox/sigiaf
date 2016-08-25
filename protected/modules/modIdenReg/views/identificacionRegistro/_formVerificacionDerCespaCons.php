@@ -161,7 +161,7 @@
         <div class="panel-body">
             <div class="row">
                 <div class="col-lg-3 text-center">
-                    <img src="<?php echo Yii::app()->baseUrl?>/images/centroForjar.png" />
+                    <!--<img src="<?php //echo Yii::app()->baseUrl?>/images/centroForjar.png" />-->
                 </div>
                 <div class="col-lg-9 text-justify">
                     Al adolescente no se le hizo el análisis de la situación de derechos

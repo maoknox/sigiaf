@@ -237,9 +237,23 @@ class SeguimientoAdol extends CActiveRecord
 	 */
 	public function consSegAdol(){
 		$conect=Yii::app()->db;
-		$sqlConsSegAdol="select * from seguimiento_adol where num_doc=:num_doc and seg_posegreso='false' and seg_extraordinario='false' order by fecha_seguimiento desc";
+		$rolUsuario=Yii::app()->user->getState('rol');
+		$consCedula=false;
+		if($rolUsuario==4 || $rolUsuario==1 || $rolUsuario==5 ||$rolUsuario==6 ||$rolUsuario==18 ||$rolUsuario==7 ||$rolUsuario==18){
+			$sqlConsSegAdol="select * from seguimiento_adol where num_doc=:num_doc and seg_posegreso='false' and seg_extraordinario='false' order by fecha_seguimiento desc";
+		}
+		else{
+			$sqlConsSegAdol="select * from seguimiento_adol as a 
+				left join persl_seg_adol as b on b.fecha_registro_seg=a.fecha_registro_seg 
+				where num_doc=:num_doc and seg_posegreso='false' and seg_extraordinario='false' and id_cedula=:id_cedula  
+				order by fecha_seguimiento desc";
+			$consCedula=true;
+		}
 		$consSegAdol=$conect->createCommand($sqlConsSegAdol);
 		$consSegAdol->bindParam("num_doc",$this->num_doc,PDO::PARAM_STR);
+		if($consCedula==true){
+			$consSegAdol->bindParam("id_cedula",Yii::app()->user->getState('cedula'),PDO::PARAM_INT);
+		}
 		$readSegAdol=$consSegAdol->query();
 		$resSegAdol=$readSegAdol->readAll();
 		$readSegAdol->close();

@@ -60,13 +60,6 @@
         	<?php echo $formularioExamenFisico->error($modeloAntropometria,'antr_imc',array('style' => 'color:#F00'));?>
     	</div>
     </div>
-	<div id="divProcPadres" class="form-group">
-        <?php echo $formularioExamenFisico->labelEx($modeloAntropometria,'circunf_cefalica',array('class'=>'control-label col-md-5','for'=>'searchinput'));//'onblur'=>'js:enviaFormNutr("formularioHistVida","divObsNacim")'?>
-    	<div class="col-md-2">
-			<?php echo $formularioExamenFisico->textField($modeloAntropometria,'circunf_cefalica',array('class'=>'form-control input-md','onchange'=>'js:$("#formularioAntrValIni").addClass("has-warning");'));?>
-        	<?php echo $formularioExamenFisico->error($modeloAntropometria,'circunf_cefalica',array('style' => 'color:#F00'));?>
-    	</div>
-    </div>
     <hr />
 	<div id="divProcPadres" class="form-group">
         <?php echo $formularioExamenFisico->labelEx($modeloAntropometria,'antr_peso_ideal',array('class'=>'control-label col-md-5','for'=>'searchinput'));//'onblur'=>'js:enviaFormNutr("formularioHistVida","divObsNacim")'?>
